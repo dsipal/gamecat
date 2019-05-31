@@ -26,14 +26,14 @@ app.use(express.static(__dirname + '/app/public'));
 
 // build mongo database connection url //
 
-process.env.DB_HOST = process.env.DB_HOST || 'localhost'
-process.env.DB_PORT = process.env.DB_PORT || 27017;
-process.env.DB_NAME = process.env.DB_NAME || 'node-login';
+process.env.DB_HOST = process.env.MONGODB_URI
+process.env.DB_PORT = process.env.DB_PORT || 3000;
+process.env.DB_NAME = process.env.DB_NAME || 'summermoney';
 
 if (app.get('env') != 'live'){
 	process.env.DB_URL = 'mongodb://'+process.env.DB_HOST+':'+process.env.DB_PORT;
 }	else {
-// prepend url with authentication credentials // 
+// prepend url with authentication credentials //
 	process.env.DB_URL = 'mongodb://'+process.env.DB_USER+':'+process.env.DB_PASS+'@'+process.env.DB_HOST+':'+process.env.DB_PORT;
 }
 
@@ -51,4 +51,3 @@ require('./app/server/routes')(app);
 http.createServer(app).listen(app.get('port'), function(){
 	console.log('Express server listening on port ' + app.get('port'));
 });
-

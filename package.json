@@ -1,15 +1,15 @@
 {
-  "name": "node-login",
-  "version": "1.7.0",
-  "description": "A template for quickly building login systems on top of Node.js & MongoDb",
-  "author": "Stephen Braitsch <stephen@braitsch.io>",
+  "name": "moneyplease",
+  "version": "1.0",
+  "description": "get paid to site",
+  "author": "d c",
   "website": {
-    "url": "https://nodejs-login.herokuapp.com"
+    "url": "https://summermoney.herokuapp.com"
   },
-  "private": false,
+  "private": true,
   "repository": {
     "type": "git",
-    "url": "git@github.com:braitsch/node-login.git"
+    "url": "git@github.com:dsipal/moneyplease.git"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
