@@ -25,9 +25,9 @@ app.use(require('stylus').middleware({ src: __dirname + '/app/public' }));
 app.use(express.static(__dirname + '/app/public'));
 
 // build mongo database connection url //
-process.env.DB_HOST = process.env.MONGODB_URI;
-process.env.DB_PORT = process.env.DB_PORT || 63996;
-process.env.DB_NAME = process.env.DB_NAME || 'heroku_f9fjvqkf';
+process.env.DB_HOST = process.env.DB_HOST || 'localhost';
+process.env.DB_PORT = process.env.DB_PORT || 27017;
+process.env.DB_NAME = process.env.DB_NAME || 'node-login';
 
 if (app.get('env') != 'live'){
 	process.env.DB_URL =  process.env.MONGODB_URI;
