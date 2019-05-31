@@ -26,7 +26,6 @@ app.use(express.static(__dirname + '/app/public'));
 
 // build mongo database connection url //
 process.env.DB_HOST = process.env.MONGODB_URI;
-console.log(process.env.MONGODB_URI);
 process.env.DB_PORT = process.env.DB_PORT || 63996;
 process.env.DB_NAME = process.env.DB_NAME || 'heroku_f9fjvqkf';
 

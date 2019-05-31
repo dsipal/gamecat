@@ -201,6 +201,12 @@ module.exports = function(app) {
 		}
 	});
 
+	app.post('/postback', async function(req, res){
+		console.log(req.query.subid);
+		console.log(req.query.payout);
+	})
+
+
 	app.get('/refferals', function(req, res) {
 		if (req.session.user == null) {
 			res.redirect('/');
