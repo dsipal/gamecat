@@ -201,7 +201,7 @@ module.exports = function(app) {
 		}
 	});
 
-	app.post('/postback', async function(req, res){
+	app.get('/postback', async function(req, res){
 		console.log(req.query.subid);
 		console.log(req.query.payout);
 		res.send(req.query.subid);
