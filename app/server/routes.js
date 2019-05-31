@@ -202,9 +202,8 @@ module.exports = function(app) {
 	});
 
 	app.get('/postback', async function(req, res){
-		console.log(req.query.subid);
-		console.log(req.query.payout);
-		res.send(req.query.subid);
+		accounts.findOneAndUpdate({_id:req.query.subid}, {$inc:{points:10*req.query.payout}});
+		res.send(req.query.subid + " was paid " + 10*req.query.payout);
 	});
 
 
