@@ -1,9 +1,11 @@
 
 $(document).ready(function(){
-	
+
+	document.getElementById('points-row').style.display = "none";
+
 	var av = new AccountValidator();
 	var sc = new SignupController();
-	
+
 	$('#account-form').ajaxForm({
 		beforeSubmit : function(formData, jqForm, options){
 			return av.validateForm();
@@ -16,19 +18,21 @@ $(document).ready(function(){
 				av.showInvalidEmail();
 			}	else if (e.responseText == 'username-taken'){
 				av.showInvalidUserName();
+			} else if (e.responseText == 'invalid-refferal'){
+				av.showInvalidReffName();
 			}
 		}
 	});
 	$('#name-tf').focus();
-	
+
 // customize the account signup form //
-	
+
 	$('#account-form h2').text('Signup');
 	$('#account-form #sub').text('Please tell us a little about yourself');
 	$('#account-form-btn1').html('Cancel');
 	$('#account-form-btn2').html('Submit');
 	$('#account-form-btn2').addClass('btn-primary');
-	
+
 // setup the alert that displays when an account is successfully created //
 
 	$('.modal-alert').modal({ show:false, keyboard : false, backdrop : 'static' });

@@ -1,0 +1,6 @@
+extends layout
+
+block content
+    ul
+        each val in offers
+            a(href= val.link).offerlink #{val.title}

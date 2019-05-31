@@ -2,6 +2,7 @@
 var CT = require('./modules/country-list');
 var AM = require('./modules/account-manager');
 var EM = require('./modules/email-dispatcher');
+const request = require("request-promise");
 
 module.exports = function(app) {
 
@@ -27,7 +28,7 @@ module.exports = function(app) {
 			});
 		}
 	});
-	
+
 	app.post('/', function(req, res){
 		AM.manualLogin(req.body['user'], req.body['pass'], function(e, o){
 			if (!o){
@@ -50,11 +51,11 @@ module.exports = function(app) {
 		res.clearCookie('login');
 		req.session.destroy(function(e){ res.status(200).send('ok'); });
 	})
-	
+
 /*
 	control panel
 */
-	
+
 	app.get('/home', function(req, res) {
 		if (req.session.user == null){
 			res.redirect('/');
@@ -66,7 +67,7 @@ module.exports = function(app) {
 			});
 		}
 	});
-	
+
 	app.post('/home', function(req, res){
 		if (req.session.user == null){
 			res.redirect('/');
@@ -95,9 +96,10 @@ module.exports = function(app) {
 	app.get('/signup', function(req, res) {
 		res.render('signup', {  title: 'Signup', countries : CT });
 	});
-	
+
 	app.post('/signup', function(req, res){
 		AM.addNewAccount({
+			reffedby : req.body['reffedby'],
 			name 	: req.body['name'],
 			email 	: req.body['email'],
 			user 	: req.body['user'],
@@ -145,7 +147,7 @@ module.exports = function(app) {
 			}
 		})
 	});
-	
+
 	app.post('/reset-password', function(req, res) {
 		let newPass = req.body['pass'];
 		let passKey = req.session.passKey;
@@ -159,17 +161,17 @@ module.exports = function(app) {
 			}
 		})
 	});
-	
+
 /*
 	view, delete & reset accounts
 */
-	
+
 	app.get('/print', function(req, res) {
 		AM.getAllRecords( function(e, accounts){
 			res.render('print', { title : 'Account List', accts : accounts });
 		})
 	});
-	
+
 	app.post('/delete', function(req, res){
 		AM.deleteAccount(req.session.user._id, function(e, obj){
 			if (!e){
@@ -180,13 +182,30 @@ module.exports = function(app) {
 			}
 		});
 	});
-	
+
 	app.get('/reset', function(req, res) {
 		AM.deleteAllAccounts(function(){
 			res.redirect('/print');
 		});
 	});
-	
+
+	app.get('/offers', async function(req, res){
+
+		if (req.session.user == null){
+			res.redirect('/');
+		}else{
+			console.log(req.connection.remoteAddress);
+
+			var body = await request.get('https://cpalead.com/dashboard/reports/campaign_json.php?id=634293&format=json&show=10&subid='+req.session.user._id, {json: true});
+
+			res.render('offers', {offers: body.offers});
+		}
+
+
+
+
+	});
+
 	app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });
 
 };

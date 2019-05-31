@@ -3,19 +3,19 @@ function AccountValidator()
 {
 // build array maps of the form inputs & control groups //
 
-	this.formFields = [$('#name-tf'), $('#email-tf'), $('#user-tf'), $('#pass-tf')];
-	this.controlGroups = [$('#name-cg'), $('#email-cg'), $('#user-cg'), $('#pass-cg')];
-	
+	this.formFields = [$('#name-tf'), $('#email-tf'), $('#user-tf'), $('#pass-tf'), $('#reffedby')];
+	this.controlGroups = [$('#name-cg'), $('#email-cg'), $('#user-cg'), $('#pass-cg'), $('reff-cg')];
+
 // bind the form-error modal window to this controller to display any errors //
-	
+
 	this.alert = $('.modal-form-errors');
 	this.alert.modal({ show : false, keyboard : true, backdrop : true});
-	
+
 	this.validateName = function(s)
 	{
 		return s.length >= 3;
 	}
-	
+
 	this.validatePassword = function(s)
 	{
 	// if user is logged in and hasn't changed their password, return ok
@@ -25,13 +25,13 @@ function AccountValidator()
 			return s.length >= 6;
 		}
 	}
-	
+
 	this.validateEmail = function(e)
 	{
 		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		return re.test(e);
 	}
-	
+
 	this.showErrors = function(a)
 	{
 		$('.modal-form-errors .modal-body p').text('Please correct the following problems :');
@@ -55,6 +55,12 @@ AccountValidator.prototype.showInvalidUserName = function()
 	this.showErrors(['That username is already in use.']);
 }
 
+AccountValidator.prototype.showInvalidReffName = function()
+{
+	this.controlGroups[3].addClass('error');
+	this.showErrors(['This refferal is not valid.']);
+}
+
 AccountValidator.prototype.validateForm = function()
 {
 	var e = [];
@@ -76,4 +82,3 @@ AccountValidator.prototype.validateForm = function()
 	if (e.length) this.showErrors(e);
 	return e.length === 0;
 }
-

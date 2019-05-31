@@ -26,6 +26,17 @@ input(type='hidden', value= user._id)#userId
 					each item in countries
 						option(selected=item.name == user.country)= item.name
 		hr
+		
+		.form-group.row#points-row
+			label.col-sm-3.col-form-label.col-form-label-sm Points
+			.col-sm-9
+				input.form-control#points(type='text', name='points', value= user.points).disabled
+				
+		.form-group.row
+			label.col-sm-3.col-form-label.col-form-label-sm Reffered By
+			.col-sm-9
+				input.form-control#reffedby(type='text', name='reffedby', value= user.reffedby).disabled
+	
 		.form-group.row
 			label.col-sm-3.col-form-label.col-form-label-sm Username
 			.col-sm-9
@@ -35,6 +46,7 @@ input(type='hidden', value= user._id)#userId
 			label.col-sm-3.col-form-label.col-form-label-sm Password
 			.col-sm-9
 				input.form-control#pass-tf(type='password', name='pass', value='')
+			
 
 		hr
 		.form-buttons

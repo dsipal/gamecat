@@ -21,6 +21,8 @@
     "moment": "^2.22.2",
     "mongodb": "^3.1.10",
     "pug": "^2.0.3",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
     "stylus": "^0.54.5"
   },
   "engines": {

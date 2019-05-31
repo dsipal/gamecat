@@ -3,7 +3,7 @@ $(document).ready(function(){
 
 	var hc = new HomeController();
 	var av = new AccountValidator();
-	
+
 	$('#account-form').ajaxForm({
 		beforeSubmit : function(formData, jqForm, options){
 			if (av.validateForm() == false){
@@ -22,16 +22,20 @@ $(document).ready(function(){
 				av.showInvalidEmail();
 			}	else if (e.responseText == 'username-taken'){
 				av.showInvalidUserName();
+			} else if (e.responseText == 'invalid-refferal'){
+				av.showInvalidReffName();
 			}
 		}
 	});
 	$('#name-tf').focus();
 
 // customize the account settings form //
-	
+
 	$('#account-form h2').text('Account Settings');
 	$('#account-form #sub').text('Here are the current settings for your account.');
 	$('#user-tf').attr('disabled', 'disabled');
+	$('#points').attr('disabled', 'disabled');
+	$('#reffedby').attr('disabled', 'disabled');
 	$('#account-form-btn1').html('Delete');
 	$('#account-form-btn1').removeClass('btn-outline-dark');
 	$('#account-form-btn1').addClass('btn-danger');

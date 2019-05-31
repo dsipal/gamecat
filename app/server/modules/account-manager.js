@@ -56,7 +56,7 @@ exports.generateLoginKey = function(user, ipAddress, callback)
 	accounts.findOneAndUpdate({user:user}, {$set:{
 		ip : ipAddress,
 		cookie : cookie
-	}}, {returnOriginal : false}, function(e, o){ 
+	}}, {returnOriginal : false}, function(e, o){
 		callback(cookie);
 	});
 }
@@ -102,16 +102,31 @@ exports.addNewAccount = function(newData, callback)
 				if (o){
 					callback('email-taken');
 				}	else{
-					saltAndHash(newData.pass, function(hash){
-						newData.pass = hash;
-					// append date stamp when record was created //
-						newData.date = moment().format('MMMM Do YYYY, h:mm:ss a');
-						accounts.insertOne(newData, callback);
+
+					accounts.findOne({user:newData.reffedby}, function(e, o) {
+						if (!o && !(newData.reffedby == "")){
+							callback('invalid-refferal');
+						} else{
+							percolateRefferals(newData.user, newData.reffedby);
+							saltAndHash(newData.pass, function(hash){
+
+								newData.pass = hash;
+								newData.refferals = [];
+							// append date stamp when record was created //
+								newData.date = moment().format('MMMM Do YYYY, h:mm:ss a');
+								newData.points = 0;
+								accounts.insertOne(newData, callback);
+							})
+						}
 					});
 				}
 			});
 		}
 	});
+}
+
+percolateRefferals = function(user, reffedby) {
+	accounts.findOneAndUpdate({user:reffedby}, {$push: {refferals:user}});
 }
 
 exports.updateAccount = function(newData, callback)
@@ -127,7 +142,7 @@ exports.updateAccount = function(newData, callback)
 	}
 	if (newData.pass == ''){
 		findOneAndUpdate(newData);
-	}	else { 
+	}	else {
 		saltAndHash(newData.pass, function(hash){
 			newData.pass = hash;
 			findOneAndUpdate(newData);
@@ -209,4 +224,3 @@ var listIndexes = function()
 		for (var i = 0; i < indexes.length; i++) console.log('index:', i, indexes[i]);
 	});
 }
-
