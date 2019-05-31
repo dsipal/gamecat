@@ -96,13 +96,13 @@ exports.addPoints = function(subid, amount){
 	console.log(subid,amount);
 
 
-	accounts.findOne({_id:subid}).then(function(o){
+	accounts.findOne({user:subid}).then(function(o){
 			console.log(o);
 	})
 
 	console.log();
 
-	accounts.findOneAndUpdate({_id:subid}, {$inc:{points:10*amount}});
+	accounts.findOneAndUpdate({user:subid}, {$inc:{points:10*amount}});
 };
 
 exports.addNewAccount = function(newData, callback)
