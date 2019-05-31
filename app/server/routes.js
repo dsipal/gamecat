@@ -195,7 +195,7 @@ module.exports = function(app) {
 		}else{
 			console.log(req.connection.remoteAddress);
 
-			var body = await request.get('https://cpalead.com/dashboard/reports/campaign_json.php?id=634293&format=json&show=10&subid='+req.session.user._id, {json: true});
+			var body = await request.get('https://cpalead.com/dashboard/reports/campaign_json.php?id=634293&format=json&show=10&subid='+req.session.user._id+'&subid2='+req.sessionID, {json: true});
 
 			res.render('offers', {offers: body.offers});
 		}
@@ -204,7 +204,16 @@ module.exports = function(app) {
 	app.get('/postback', async function(req, res){
 		AM.addPoints(req.query.subid, req.query.payout*10);
 
-		console.log(AM.addPoints(req.query.subid, req.query.payout*10));
+		// req.session.save( function(err) {
+    // 	req.session.reload( function (err) {
+		// 			res.render('home', {
+		// 			 title : 'Control Panel',
+		// 			 countries : CT,
+		// 			 udata : req.session.user
+		// 	 		});
+    // 		});
+		// });
+
 		res.send(req.query.subid + " was paid " + 10*req.query.payout);
 	});
 

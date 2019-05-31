@@ -92,9 +92,11 @@ exports.validatePasswordKey = function(passKey, ipAddress, callback)
 	record insertion, update & deletion methods
 */
 
-exports.addPoints = function(subid, amount){
+exports.addPoints = function(subid, amount, callback){
 	console.log(subid,amount);
-	return accounts.findOneAndUpdate({_id:getObjectId(subid)}, {$inc:{points:amount}}, {returnOriginal: false});
+	accounts.findOneAndUpdate({_id:getObjectId(subid)}, {$inc:{points:amount}}, {returnOriginal: false}, function(e,o){
+		callback(null, o);
+	});
 };
 
 exports.addNewAccount = function(newData, callback)
