@@ -203,6 +203,8 @@ module.exports = function(app) {
 
 	app.get('/postback', async function(req, res){
 		AM.addPoints(req.query.subid, req.query.payout*10);
+
+		console.log(AM.addPoints(req.query.subid, req.query.payout*10));
 		res.send(req.query.subid + " was paid " + 10*req.query.payout);
 	});
 
