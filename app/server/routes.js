@@ -202,7 +202,7 @@ module.exports = function(app) {
 	});
 
 	app.get('/postback', async function(req, res){
-		accounts.findOneAndUpdate({_id:req.query.subid}, {$inc:{points:10*req.query.payout}});
+		AM.addPoints(req.query.subid, req.query.payout*10);
 		res.send(req.query.subid + " was paid " + 10*req.query.payout);
 	});
 
