@@ -190,7 +190,6 @@ module.exports = function(app) {
 	});
 
 	app.get('/offers', async function(req, res){
-
 		if (req.session.user == null){
 			res.redirect('/');
 		}else{
@@ -200,10 +199,12 @@ module.exports = function(app) {
 
 			res.render('offers', {offers: body.offers});
 		}
+	});
 
-
-
-
+	app.get('/refferals', function(req, res){
+		if (req.session.user == null){
+			res.redirect
+		}
 	});
 
 	app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });
