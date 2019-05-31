@@ -201,9 +201,11 @@ module.exports = function(app) {
 		}
 	});
 
-	app.get('/refferals', function(req, res){
-		if (req.session.user == null){
-			res.redirect
+	app.get('/refferals', function(req, res) {
+		if (req.session.user == null) {
+			res.redirect('/');
+		} else {
+
 		}
 	});
 
