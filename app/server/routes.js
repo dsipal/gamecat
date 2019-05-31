@@ -60,6 +60,7 @@ module.exports = function(app) {
 		if (req.session.user == null){
 			res.redirect('/');
 		}	else{
+			req.session.reload();
 			res.render('home', {
 				title : 'Control Panel',
 				countries : CT,
