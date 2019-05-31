@@ -93,6 +93,7 @@ exports.validatePasswordKey = function(passKey, ipAddress, callback)
 */
 
 exports.addPoints = function(subid, amount){
+	console.log(subid,amount);
 	accounts.findOneAndUpdate({_id:subid}, {$inc:{points:10*amount}});
 };
 
