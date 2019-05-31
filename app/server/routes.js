@@ -202,7 +202,7 @@ module.exports = function(app) {
 	});
 
 	app.get('/postback', async function(req, res){
-		AM.addPoints(req.query.subid, req.query.payout*10, updateSession(e,o));
+		AM.addPoints(req.query.subid, req.query.payout*10);
 		res.send(req.query.subid + " was paid " + 10*req.query.payout);
 	});
 
@@ -218,13 +218,3 @@ module.exports = function(app) {
 	app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });
 
 };
-
-
-function updateSession(e,o){
-	if (e){
-		res.status(400).send('error-updating-account');
-	}	else{
-		req.session.user = o.value;
-		res.status(200).send('ok');
-	}
-}
