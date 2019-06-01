@@ -12,8 +12,8 @@ var app = express();
 app.engine( 'hbs', exphbs( {
 	extname: 'hbs',
 	defaultView: 'default',
-	layoutsDir: __dirname + '/views/pages/',
-	partialsDir: __dirname + '/views/partials/'
+	layoutsDir: __dirname + '/app/server/views/layouts/',
+	partialsDir: __dirname + '/app/server/views/partials/'
 }));
 app.locals.pretty = true;
 app.set('port', process.env.PORT || 8080);

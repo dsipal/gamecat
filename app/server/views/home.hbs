@@ -1,0 +1,18 @@
+<nav class="navbar navbar-expand navbar-light bg-light">
+    <div class="nav-item">
+        <div class="navbar-brand">Control Panel</div>
+    </div>
+    <div class="navbar-nav ml-auto">
+        <div class="nav-item">
+            <button id="btn-logout" class="btn navbar-btn btn-outline-dark">Sign Out</button>
+        </div>
+    </div>
+</nav>
+
+{{>"account"}}
+{{>"/modals/alert.hbs"}}
+{{>"modals/confirm"}}
+
+<script src="/js/views/home.js"></script>
+<script src="/js/controllers/homeController.js"></script>
+<script src="/js/form-validators/accountValidator.js"></script>
