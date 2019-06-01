@@ -211,16 +211,6 @@ module.exports = function(app) {
 	app.get('/postback', async function(req, res){
 		AM.addPoints(req.query.subid, req.query.payout*10,req.query.subid2);
 
-		// req.session.save( function(err) {
-    // 	req.session.reload( function (err) {
-		// 			res.render('home', {
-		// 			 title : 'Control Panel',
-		// 			 countries : CT,
-		// 			 udata : req.session.user
-		// 	 		});
-    // 		});
-		// });
-
 		res.send(req.query.subid + " was paid " + 10*req.query.payout);
 	});
 
