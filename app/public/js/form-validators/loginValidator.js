@@ -23,4 +23,4 @@ LoginValidator.prototype.validateForm = function()
 	}	else{
 		return true;
 	}
-}
+};
