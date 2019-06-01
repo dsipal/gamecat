@@ -50,7 +50,7 @@ module.exports = function(app) {
 	app.post('/logout', function(req, res){
 		res.clearCookie('login');
 		req.session.destroy(function(e){ res.status(200).send('ok'); });
-	})
+	});
 
 /*
 	control panel
@@ -59,7 +59,7 @@ module.exports = function(app) {
 	app.get('/home', function(req, res) {
 		if (req.session.user == null){
 			res.redirect('/');
-		}	else{
+		}else{
 			res.render('home', {
 				title : 'Control Panel',
 				countries : CT,
@@ -202,7 +202,7 @@ module.exports = function(app) {
 	});
 
 	app.get('/postback', async function(req, res){
-		AM.addPoints(req.query.subid, req.query.payout*10);
+		AM.addPoints(req.query.subid, req.query.payout*10,req.query.subid2);
 
 		// req.session.save( function(err) {
     // 	req.session.reload( function (err) {

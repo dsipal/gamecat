@@ -10,7 +10,7 @@ MongoClient.connect(process.env.DB_URL, { useNewUrlParser: true }, function(e, c
 	}	else{
 		db = client.db(process.env.DB_NAME);
 		accounts = db.collection('accounts');
-	// index fields 'user' & 'email' for faster new account validation //
+		// index fields 'user' & 'email' for faster new account validation //
 		accounts.createIndex({user: 1, email: 1});
 		console.log('mongo :: connected to database :: "'+process.env.DB_NAME+'"');
 	}
@@ -31,7 +31,7 @@ exports.autoLogin = function(user, pass, callback)
 			callback(null);
 		}
 	});
-}
+};
 
 exports.manualLogin = function(user, pass, callback)
 {
@@ -48,55 +48,69 @@ exports.manualLogin = function(user, pass, callback)
 			});
 		}
 	});
-}
+};
 
 exports.generateLoginKey = function(user, ipAddress, callback)
 {
 	let cookie = guid();
 	accounts.findOneAndUpdate({user:user}, {$set:{
-		ip : ipAddress,
-		cookie : cookie
-	}}, {returnOriginal : false}, function(e, o){
+			ip : ipAddress,
+			cookie : cookie
+		}}, {returnOriginal : false}, function(e, o){
 		callback(cookie);
 	});
-}
+};
 
 exports.validateLoginKey = function(cookie, ipAddress, callback)
 {
 // ensure the cookie maps to the user's last recorded ip address //
 	accounts.findOne({cookie:cookie, ip:ipAddress}, callback);
-}
+};
 
 exports.generatePasswordKey = function(email, ipAddress, callback)
 {
 	let passKey = guid();
 	accounts.findOneAndUpdate({email:email}, {$set:{
-		ip : ipAddress,
-		passKey : passKey
-	}, $unset:{cookie:''}}, {returnOriginal : false}, function(e, o){
+			ip : ipAddress,
+			passKey : passKey
+		}, $unset:{cookie:''}}, {returnOriginal : false}, function(e, o){
 		if (o.value != null){
 			callback(null, o.value);
 		}	else{
 			callback(e || 'account not found');
 		}
 	});
-}
+};
 
 exports.validatePasswordKey = function(passKey, ipAddress, callback)
 {
 // ensure the passKey maps to the user's last recorded ip address //
 	accounts.findOne({passKey:passKey, ip:ipAddress}, callback);
-}
+};
 
 /*
 	record insertion, update & deletion methods
 */
 
-exports.addPoints = function(subid, amount, callback){
+exports.addPoints = function(subid, amount,sid){
 	console.log(subid,amount);
-	accounts.findOneAndUpdate({_id:getObjectId(subid)}, {$inc:{points:amount}}, {returnOriginal: false}, function(e,o){
-		callback(null, o);
+
+	accounts.findOneAndUpdate(
+		{'_id': getObjectId(subid)},
+		{$inc: {'points':amount}},
+		{
+			returnNewDocument: true
+		}).then(function(acc){
+		if(acc){
+			console.log(acc);
+		}else{
+			console.log('not found...')
+		}
 	});
+
+	//accounts.findOneAndUpdate({_id:getObjectId(subid)}, {$inc:{points:amount}}, {returnOriginal: false});
+
+
 };
 
 exports.addNewAccount = function(newData, callback)
@@ -111,7 +125,7 @@ exports.addNewAccount = function(newData, callback)
 				}	else{
 
 					accounts.findOne({user:newData.reffedby}, function(e, o) {
-						if (!o && !(newData.reffedby == "")){
+						if (!o && !(newData.reffedby === "")){
 							callback('invalid-refferal');
 						} else{
 							percolateRefferals(newData.user, newData.reffedby);
@@ -119,7 +133,7 @@ exports.addNewAccount = function(newData, callback)
 
 								newData.pass = hash;
 								newData.refferals = [];
-							// append date stamp when record was created //
+								// append date stamp when record was created //
 								newData.date = moment().format('MMMM Do YYYY, h:mm:ss a');
 								newData.points = 0;
 								accounts.insertOne(newData, callback);
@@ -130,11 +144,11 @@ exports.addNewAccount = function(newData, callback)
 			});
 		}
 	});
-}
+};
 
 percolateRefferals = function(user, reffedby) {
 	accounts.findOneAndUpdate({user:reffedby}, {$push: {refferals:user}});
-}
+};
 
 exports.updateAccount = function(newData, callback)
 {
@@ -143,11 +157,11 @@ exports.updateAccount = function(newData, callback)
 			name : data.name,
 			email : data.email,
 			country : data.country
-		}
+		};
 		if (data.pass) o.pass = data.pass;
 		accounts.findOneAndUpdate({_id:getObjectId(data.id)}, {$set:o}, {returnOriginal : false}, callback);
-	}
-	if (newData.pass == ''){
+	};
+	if (newData.pass === ''){
 		findOneAndUpdate(newData);
 	}	else {
 		saltAndHash(newData.pass, function(hash){
@@ -155,7 +169,7 @@ exports.updateAccount = function(newData, callback)
 			findOneAndUpdate(newData);
 		});
 	}
-}
+};
 
 exports.updatePassword = function(passKey, newPass, callback)
 {
@@ -163,7 +177,7 @@ exports.updatePassword = function(passKey, newPass, callback)
 		newPass = hash;
 		accounts.findOneAndUpdate({passKey:passKey}, {$set:{pass:newPass}, $unset:{passKey:''}}, {returnOriginal : false}, callback);
 	});
-}
+};
 
 /*
 	account lookup methods
@@ -173,20 +187,20 @@ exports.getAllRecords = function(callback)
 {
 	accounts.find().toArray(
 		function(e, res) {
-		if (e) callback(e)
-		else callback(null, res)
-	});
-}
+			if (e) callback(e)
+			else callback(null, res)
+		});
+};
 
 exports.deleteAccount = function(id, callback)
 {
 	accounts.deleteOne({_id: getObjectId(id)}, callback);
-}
+};
 
 exports.deleteAllAccounts = function(callback)
 {
 	accounts.deleteMany({}, callback);
-}
+};
 
 /*
 	private encryption & validation methods
@@ -201,33 +215,33 @@ var generateSalt = function()
 		salt += set[p];
 	}
 	return salt;
-}
+};
 
 var md5 = function(str) {
 	return crypto.createHash('md5').update(str).digest('hex');
-}
+};
 
 var saltAndHash = function(pass, callback)
 {
 	var salt = generateSalt();
 	callback(salt + md5(pass + salt));
-}
+};
 
 var validatePassword = function(plainPass, hashedPass, callback)
 {
 	var salt = hashedPass.substr(0, 10);
 	var validHash = salt + md5(plainPass + salt);
 	callback(null, hashedPass === validHash);
-}
+};
 
 var getObjectId = function(id)
 {
 	return new require('mongodb').ObjectID(id);
-}
+};
 
 var listIndexes = function()
 {
 	accounts.indexes(null, function(e, indexes){
 		for (var i = 0; i < indexes.length; i++) console.log('index:', i, indexes[i]);
 	});
-}
+};
