@@ -57,14 +57,21 @@ module.exports = function(app) {
 */
 
 	app.get('/home', function(req, res) {
+
+
+
 		if (req.session.user == null){
 			res.redirect('/');
 		}else{
-			res.render('home', {
-				title : 'Control Panel',
-				countries : CT,
-				udata : req.session.user
+			AM.getAccountByID(req.session.user._id).then(function(acc){
+				console.log(acc);
+				res.render('home', {
+					title : 'Control Panel',
+					countries : CT,
+					udata : acc
+				});
 			});
+
 		}
 	});
 

@@ -100,16 +100,7 @@ exports.addPoints = function(subid, amount,sid){
 		{$inc: {'points':amount}},
 		{
 			returnNewDocument: true
-		}).then(function(acc){
-		if(acc){
-			console.log(acc);
-		}else{
-			console.log('not found...')
-		}
-	});
-
-	//accounts.findOneAndUpdate({_id:getObjectId(subid)}, {$inc:{points:amount}}, {returnOriginal: false});
-
+		});
 
 };
 
@@ -187,7 +178,7 @@ exports.getAllRecords = function(callback)
 {
 	accounts.find().toArray(
 		function(e, res) {
-			if (e) callback(e)
+			if (e) callback(e);
 			else callback(null, res)
 		});
 };
@@ -200,6 +191,11 @@ exports.deleteAccount = function(id, callback)
 exports.deleteAllAccounts = function(callback)
 {
 	accounts.deleteMany({}, callback);
+};
+
+exports.getAccountByID = function(id){
+    console.log(id);
+    return accounts.findOne({_id: getObjectId(id)});
 };
 
 /*
