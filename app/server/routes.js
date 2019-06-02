@@ -30,17 +30,18 @@ module.exports = function(app) {
 	});
 
 	app.post('/', function(req, res){
-		AM.manualLogin(req.body['user'], req.body['pass'], function(e, o){
+		AM.manualLogin(req.body['username'], req.body['password'], function(e, o){
 			if (!o){
 				res.status(400).send(e);
 			}	else{
+				console.log(o);
 				req.session.user = o;
-				if (req.body['remember-me'] == 'false'){
-					res.status(200).send(o);
+				if (req.body['remember-me'] === 'false'){
+					res.redirect('/home');
 				}	else{
-					AM.generateLoginKey(o.user, req.ip, function(key){
+					AM.generateLoginKey(o.username, req.ip, function(key){
 						res.cookie('login', key, { maxAge: 900000 });
-						res.status(200).send(o);
+						res.redirect('/home');
 					});
 				}
 			}
@@ -57,14 +58,10 @@ module.exports = function(app) {
 */
 
 	app.get('/home', function(req, res) {
-
-
-
 		if (req.session.user == null){
 			res.redirect('/');
 		}else{
 			AM.getAccountByID(req.session.user._id).then(function(acc){
-				console.log(acc);
 				res.render('home', {
 					title : 'Control Panel',
 					countries : CT,
@@ -106,11 +103,11 @@ module.exports = function(app) {
 
 	app.post('/signup', function(req, res){
 		AM.addNewAccount({
-			reffedby : req.body['reffedby'],
+			ref_by : req.body['ref_by'],
 			name 	: req.body['name'],
 			email 	: req.body['email'],
-			user 	: req.body['user'],
-			pass	: req.body['pass'],
+			username 	: req.body['username'],
+			password	: req.body['password'],
 			country : req.body['country']
 		}, function(e){
 			if (e){
@@ -158,7 +155,7 @@ module.exports = function(app) {
 	app.post('/reset-password', function(req, res) {
 		let newPass = req.body['pass'];
 		let passKey = req.session.passKey;
-	// destory the session immediately after retrieving the stored passkey //
+		// destory the session immediately after retrieving the stored passkey //
 		req.session.destroy();
 		AM.updatePassword(passKey, newPass, function(e, o){
 			if (o){
@@ -215,7 +212,7 @@ module.exports = function(app) {
 	});
 
 
-	app.get('/refferals', function(req, res) {
+	app.get('/referrals', function(req, res) {
 		if (req.session.user == null) {
 			res.redirect('/');
 		} else {

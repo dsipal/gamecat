@@ -2,21 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15728544-86a4-49fb-af2c-e1f96d482341" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/server/models/User.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/server/views/404.pug" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/server/views/account.pug" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/server/views/home.pug" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/server/views/layout.pug" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/server/views/login.pug" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/server/views/modals/alert.pug" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/server/views/modals/confirm.pug" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/server/views/modals/form-errors.pug" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/server/views/modals/lost-password.pug" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/server/views/modals/reset-password.pug" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/server/views/offers.pug" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/server/views/print.pug" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/server/views/reset.pug" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/server/views/signup.pug" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/public/js/views/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/js/views/home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/server/modules/account-manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/modules/account-manager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/server/modules/email-dispatcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/modules/email-dispatcher.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/server/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/server/views/account.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/views/partials/account.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/server/views/home.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/views/home.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/server/views/layouts/main.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/views/layouts/main.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/server/views/login.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/views/login.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/server/views/reset.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/views/reset.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/server/views/signup.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/views/signup.hbs" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -30,10 +29,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app.js">
+        <entry file="file://$PROJECT_DIR$/app/server/models/User.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="14" column="55" selection-start-line="14" selection-start-column="55" selection-end-line="14" selection-end-column="55" />
+            <state relative-caret-position="120">
+              <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -41,8 +40,80 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/server/views/home.hbs">
           <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="312">
+              <caret line="13" column="21" lean-forward="true" selection-start-line="13" selection-start-column="21" selection-end-line="13" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/server/views/partials/account.hbs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="30" column="16" lean-forward="true" selection-start-line="30" selection-start-column="16" selection-end-line="30" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/server/routes.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="260">
+              <caret line="23" column="23" lean-forward="true" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/server/views/login.hbs">
+          <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="240">
-              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+              <caret line="10" column="82" lean-forward="true" selection-start-line="10" selection-start-column="82" selection-end-line="10" selection-end-column="82" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/server/views/signup.hbs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="72">
+              <caret line="3" column="22" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/server/views/print.hbs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="240">
+              <caret line="10" column="16" lean-forward="true" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/server/views/offers.hbs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="53" lean-forward="true" selection-start-column="53" selection-end-column="53" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/server/views/404.hbs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="43" selection-start-column="43" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/server/modules/account-manager.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-28">
+              <caret line="48" column="36" selection-start-line="48" selection-start-column="36" selection-end-line="48" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -60,6 +131,11 @@
       <find>findOne</find>
       <find>findOne({'</find>
       <find>session</find>
+      <find>/home</find>
+      <find>userSchema.js</find>
+      <find>user-not</find>
+      <find>userSchema</find>
+      <find>reffed</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -68,26 +144,31 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/server/modules/account-manager.js" />
         <option value="$PROJECT_DIR$/app/public/js/form-validators/loginValidator.js" />
-        <option value="$PROJECT_DIR$/app/server/routes.js" />
         <option value="$PROJECT_DIR$/app/server/views/layout.ejs" />
         <option value="$PROJECT_DIR$/app/server/views/layouts/layout.hbs" />
         <option value="$PROJECT_DIR$/app/server/views/404.hbs" />
-        <option value="$PROJECT_DIR$/app/server/views/account.hbs" />
-        <option value="$PROJECT_DIR$/app/server/views/login.hbs" />
         <option value="$PROJECT_DIR$/app/server/views/offers.hbs" />
         <option value="$PROJECT_DIR$/app/server/views/print.hbs" />
-        <option value="$PROJECT_DIR$/app/server/views/reset.hbs" />
-        <option value="$PROJECT_DIR$/app/server/views/signup.hbs" />
+        <option value="$PROJECT_DIR$/app/server/views/account.hbs" />
+        <option value="$PROJECT_DIR$/app/server/views/layouts/main.hbs" />
         <option value="$PROJECT_DIR$/app/server/views/home.hbs" />
+        <option value="$PROJECT_DIR$/app/server/schemas/user.js" />
+        <option value="$PROJECT_DIR$/app/server/schemas/userSchema.js" />
         <option value="$PROJECT_DIR$/app.js" />
+        <option value="$PROJECT_DIR$/app/server/views/signup.hbs" />
+        <option value="$PROJECT_DIR$/app/server/views/reset.hbs" />
+        <option value="$PROJECT_DIR$/app/server/views/partials/account.hbs" />
+        <option value="$PROJECT_DIR$/app/server/views/login.hbs" />
+        <option value="$PROJECT_DIR$/app/server/modules/account-manager.js" />
+        <option value="$PROJECT_DIR$/app/server/routes.js" />
+        <option value="$PROJECT_DIR$/app/server/models/User.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-7" />
-    <option name="width" value="1296" />
+    <option name="x" value="953" />
+    <option name="width" value="974" />
     <option name="height" value="1047" />
   </component>
   <component name="ProjectView">
@@ -95,7 +176,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -103,16 +183,58 @@
               <item name="gpt site" type="b2602c69:ProjectViewProjectNode" />
               <item name="gpt site" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="gpt site" type="b2602c69:ProjectViewProjectNode" />
+              <item name="gpt site" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="gpt site" type="b2602c69:ProjectViewProjectNode" />
+              <item name="gpt site" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="gpt site" type="b2602c69:ProjectViewProjectNode" />
+              <item name="gpt site" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="models" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="gpt site" type="b2602c69:ProjectViewProjectNode" />
+              <item name="gpt site" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="modules" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="gpt site" type="b2602c69:ProjectViewProjectNode" />
+              <item name="gpt site" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="gpt site" type="b2602c69:ProjectViewProjectNode" />
+              <item name="gpt site" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="partials" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
+    <property name="javascript.nodejs.core.library.configured.version" value="10.15.3" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -120,6 +242,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\dsipal\Desktop\code\gpt site\app\server\views\partials\modals" />
       <recent name="C:\Users\dsipal\Desktop\code\gpt site\app\server\views\partials" />
     </key>
   </component>
@@ -159,7 +282,9 @@
       <workItem from="1559418214477" duration="1191000" />
       <workItem from="1559419877908" duration="1086000" />
       <workItem from="1559421506217" duration="1928000" />
-      <workItem from="1559431166724" duration="1099000" />
+      <workItem from="1559431166724" duration="3265000" />
+      <workItem from="1559457295030" duration="1392000" />
+      <workItem from="1559509066433" duration="6731000" />
     </task>
     <task id="LOCAL-00001" summary="working on the session updating">
       <created>1559366479794</created>
@@ -189,11 +314,18 @@
       <option name="project" value="LOCAL" />
       <updated>1559431697491</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="handlebars translation of template files">
+      <created>1559432381188</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1559432381188</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20273000" />
+    <option name="totallyTimeSpent" value="30562000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -215,7 +347,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32995495" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32998884" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4256837" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.42474917" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -235,7 +367,8 @@
     <MESSAGE value="working on the session updating" />
     <MESSAGE value="moving frequently updated data from session to mongo" />
     <MESSAGE value="moving to handlebars" />
-    <option name="LAST_COMMIT_MESSAGE" value="moving to handlebars" />
+    <MESSAGE value="handlebars translation of template files" />
+    <option name="LAST_COMMIT_MESSAGE" value="handlebars translation of template files" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/app/server/modules/country-list.js">
@@ -243,22 +376,12 @@
         <state relative-caret-position="-360" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/viewsold/home.pug">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/viewsold/404.pug">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/viewsold/home.pug" />
+    <entry file="file://$PROJECT_DIR$/app/server/viewsold/404.pug" />
     <entry file="file://$PROJECT_DIR$/app/public/js/views/login.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/viewsold/login.pug">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="4" column="26" selection-start-line="4" selection-start-column="26" selection-end-line="4" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/viewsold/login.pug" />
     <entry file="file://$PROJECT_DIR$/app/public/js/form-validators/loginValidator.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
@@ -266,45 +389,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/views/layout.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="24">
-          <caret line="1" column="12" selection-start-line="1" selection-start-column="12" selection-end-line="1" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/viewsold/layout.pug">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="5" column="35" selection-start-line="5" selection-start-column="35" selection-end-line="5" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/viewsold/account.pug">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="744">
-          <caret line="31" selection-start-line="31" selection-end-line="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/routes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="211" column="76" selection-start-line="211" selection-start-column="76" selection-end-line="211" selection-end-column="76" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/views/layout.ejs" />
+    <entry file="file://$PROJECT_DIR$/app/server/viewsold/layout.pug" />
+    <entry file="file://$PROJECT_DIR$/app/server/viewsold/account.pug" />
     <entry file="file://C:/node_modules/handlebars-layouts/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="275">
           <caret line="224" selection-start-line="224" selection-end-line="224" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/modules/account-manager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="816">
-          <caret line="34" selection-start-line="34" selection-end-line="34" />
         </state>
       </provider>
     </entry>
@@ -319,62 +410,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="10" column="18" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/views/layouts/layout.hbs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="20" column="7" lean-forward="true" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/views/404.hbs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="102" selection-start-column="102" selection-end-column="102" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/views/account.hbs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="451">
-          <caret line="37" column="86" selection-start-line="37" selection-start-column="86" selection-end-line="37" selection-end-column="86" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/views/login.hbs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="12" column="11" lean-forward="true" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/views/offers.hbs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="53" lean-forward="true" selection-start-column="53" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/views/print.hbs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="10" column="16" lean-forward="true" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/views/reset.hbs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="3" column="61" selection-start-line="3" selection-start-column="61" selection-end-line="3" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/views/signup.hbs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="3" column="46" lean-forward="true" selection-start-line="3" selection-start-column="46" selection-end-line="3" selection-end-column="46" />
         </state>
       </provider>
     </entry>
@@ -404,17 +439,94 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/views/home.hbs">
+    <entry file="file://$PROJECT_DIR$/app/server/views/layouts/main.hbs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        <state relative-caret-position="120">
+          <caret line="5" column="55" selection-start-line="5" selection-start-column="55" selection-end-line="5" selection-end-column="55" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="14" column="55" selection-start-line="14" selection-start-column="55" selection-end-line="14" selection-end-column="55" />
+        <state relative-caret-position="216">
+          <caret line="39" column="106" lean-forward="true" selection-start-line="39" selection-start-column="106" selection-end-line="39" selection-end-column="106" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/views/reset.hbs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/views/print.hbs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="10" column="16" lean-forward="true" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/views/offers.hbs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="53" lean-forward="true" selection-start-column="53" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/views/404.hbs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="43" selection-start-column="43" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/views/signup.hbs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="3" column="22" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/views/login.hbs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="10" column="82" lean-forward="true" selection-start-line="10" selection-start-column="82" selection-end-line="10" selection-end-column="82" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/modules/account-manager.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-28">
+          <caret line="48" column="36" selection-start-line="48" selection-start-column="36" selection-end-line="48" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/routes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="23" column="23" lean-forward="true" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/views/home.hbs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="13" column="21" lean-forward="true" selection-start-line="13" selection-start-column="21" selection-end-line="13" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/views/partials/account.hbs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="30" column="16" lean-forward="true" selection-start-line="30" selection-start-column="16" selection-end-line="30" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/models/User.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
         </state>
       </provider>
     </entry>
