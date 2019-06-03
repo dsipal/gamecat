@@ -2,21 +2,31 @@
 var CT = require('./modules/country-list');
 var AM = require('./modules/account-manager');
 var EM = require('./modules/email-dispatcher');
+const rateLimit = require("express-rate-limit");
 const request = require("request-promise");
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+
+const accountCreateLimiter = rateLimit({
+	windowMs: 60*60*1000 * 24,
+	max: 3,
+	message:
+		"Too many account created on this IP, try again in a day."
+});
 
 module.exports = function(app) {
 
 /*
 	login & logout
 */
+
+
 	app.get('/', function(req, res){
-		// check if the user has an auto login key saved in a cookie //
-		if (req.cookies.login === undefined){
+	// check if the user has an auto login key saved in a cookie //
+		if (req.cookies.login == undefined){
 			res.render('login', { title: 'Hello - Please Login To Your Account' });
 		}	else{
-		// attempt automatic login //
+	// attempt automatic login //
 			AM.validateLoginKey(req.cookies.login, req.ip, function(e, o){
 				if (o){
 					AM.autoLogin(o.user, o.pass, function(o){
@@ -42,19 +52,36 @@ module.exports = function(app) {
 						}
 
 						else{
-								req.session.user = user;
+								req.session.user = o;
 								if (req.body['remember-me'] === 'false'){
 									res.redirect('/home');
 								}	else{
-									AM.generateLoginKey(user.username, req.ip, function(key){
+									AM.generateLoginKey(o.username, req.ip, function(key){
 										res.cookie('login', key, { maxAge: 900000 });
 										res.redirect('/home');
 									});
 								}
 						}
 				}
-		)(req, res);
+		);
 	});
+		// AM.manualLogin(req.body['username'], req.body['password'], function(e, o){
+		// 	if (!o){
+		// 		res.status(400).send(e);
+		// 	}	else{
+		// 		console.log(o);
+		// 		req.session.user = o;
+		// 		if (req.body['remember-me'] === 'false'){
+		// 			res.redirect('/home');
+		// 		}	else{
+		// 			AM.generateLoginKey(o.username, req.ip, function(key){
+		// 				res.cookie('login', key, { maxAge: 900000 });
+		// 				res.redirect('/home');
+		// 			});
+		// 		}
+		// 	}
+		// });
+
 
 	app.post('/logout', function(req, res){
 		res.clearCookie('login');
@@ -109,7 +136,7 @@ module.exports = function(app) {
 		res.render('signup', {  title: 'Signup', countries : CT });
 	});
 
-	app.post('/signup', function(req, res){
+	app.post('/signup', accountCreateLimiter, function(req, res){
 		AM.addNewAccount({
 			ref_by : req.body['ref_by'],
 			name 	: req.body['name'],
@@ -137,7 +164,7 @@ module.exports = function(app) {
 				res.status(400).send(e);
 			}	else{
 				EM.dispatchResetPasswordLink(account, function(e, m){
-					// TODO this callback takes a moment to return, add a loader to give user feedback //
+			// TODO this callback takes a moment to return, add a loader to give user feedback //
 					if (!e){
 						res.status(200).send('ok');
 					}	else{
@@ -163,7 +190,7 @@ module.exports = function(app) {
 	app.post('/reset-password', function(req, res) {
 		let newPass = req.body['pass'];
 		let passKey = req.session.passKey;
-		// destroy the session immediately after retrieving the stored passkey //
+		// destory the session immediately after retrieving the stored passkey //
 		req.session.destroy();
 		AM.updatePassword(passKey, newPass, function(e, o){
 			if (o){
@@ -219,6 +246,7 @@ module.exports = function(app) {
 		res.send(req.query.subid + " was paid " + 10*req.query.payout);
 	});
 
+
 	app.get('/referrals', function(req, res) {
 		if (req.session.user == null) {
 			res.redirect('/');
@@ -226,5 +254,7 @@ module.exports = function(app) {
 
 		}
 	});
+
 	app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });
+
 };

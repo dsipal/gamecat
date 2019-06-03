@@ -17,10 +17,11 @@ EM.dispatchResetPasswordLink = function(account, callback)
 		to           : account.email,
 		subject      : 'Password Reset',
 		text         : 'something went wrong... :(',
-		attachment   : EM.composeEmail(account)
+		attachment   : EM.composeResetEmail(account)
 	}, callback );
 };
-EM.composeEmail = function(o)
+
+EM.composeResetEmail = function(o)
 {
 	let baseurl = process.env.NL_SITE_URL || 'http://localhost:3000';
 	var html = "<html><body>";
@@ -32,3 +33,23 @@ EM.composeEmail = function(o)
 		html += "</body></html>";
 	return [{data:html, alternative:true}];
 };
+
+EM.dispatchActivationLink = function(account, link, callback)
+{
+	EM.server.send({
+		from 					: process.env.NL_EMAIL_FROM,
+		to 						: account.email,
+		subject				: 'Account Activation',
+		text 					: 'err',
+		attachment		: EM.composeActivationEmail(account, link)
+	}, callback );
+};
+
+EM.composeActivationEmail = function(o, l)
+{
+	let baseurl = process.env.NL_SITE_URL || 'http://localhost:3000';
+	var html = "<html><body>";
+		html += "Welcome "+o.name+",<br><br>";
+		html += "Thanks for making an account at WEBSITE! <br><br>"
+		html += "<a href='"+link"'>Click To Activate Your Account</a><br><br>";
+}

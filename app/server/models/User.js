@@ -11,7 +11,8 @@ const user = new mongoose.Schema({
     reg_date: Date,
     points: Number,
     cookie: String,
-    ip: String
+    ip: String,
+    activated: Boolean
 });
 
 const User = mongoose.model('User', user);
