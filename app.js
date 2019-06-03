@@ -6,7 +6,6 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var MongoStore = require('connect-mongo')(session);
-var sass = require('node-sass');
 var sassMiddleware = require('node-sass-middleware');
 
 // create instance of express server //
