@@ -51,5 +51,5 @@ EM.composeActivationEmail = function(o, l)
 	var html = "<html><body>";
 		html += "Welcome "+o.name+",<br><br>";
 		html += "Thanks for making an account at WEBSITE! <br><br>"
-		html += "<a href='"+link"'>Click To Activate Your Account</a><br><br>";
+		html += "<a href='"+link+"'>Click To Activate Your Account</a><br><br>";
 }

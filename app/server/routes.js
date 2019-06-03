@@ -148,7 +148,8 @@ module.exports = function(app) {
 			if (e){
 				res.status(400).send(e);
 			}	else{
-				res.status(200).send('ok');
+				res.redirect('/home');
+				//res.status(200).send('ok');
 			}
 		});
 	});
