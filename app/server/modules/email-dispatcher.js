@@ -20,7 +20,6 @@ EM.dispatchResetPasswordLink = function(account, callback)
 		attachment   : EM.composeEmail(account)
 	}, callback );
 };
-
 EM.composeEmail = function(o)
 {
 	let baseurl = process.env.NL_SITE_URL || 'http://localhost:3000';
