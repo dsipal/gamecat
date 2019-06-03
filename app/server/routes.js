@@ -8,15 +8,15 @@ const LocalStrategy = require('passport-local').Strategy;
 
 module.exports = function(app) {
 
-/*
-	login & logout
-*/
+	/*
+        login & logout
+    */
 	app.get('/', function(req, res){
 		// check if the user has an auto login key saved in a cookie //
 		if (req.cookies.login === undefined){
 			res.render('login', { title: 'Hello - Please Login To Your Account' });
 		}	else{
-		// attempt automatic login //
+			// attempt automatic login //
 			AM.validateLoginKey(req.cookies.login, req.ip, function(e, o){
 				if (o){
 					AM.autoLogin(o.user, o.pass, function(o){
@@ -30,46 +30,42 @@ module.exports = function(app) {
 		}
 	});
 
-	app.post('/', function(req, res){
+	app.post('/',
 		passport.authenticate('local', {
-				failureRedirect: '/'   //'/logout?status=login failed'
-		}, function(err, user, info){
-						if(err){
-								res.status(400).send(err);
-						}
-						if(!user){
-								return res.redirect('/');
-						}
-
-						else{
-								req.session.user = user;
-								if (req.body['remember-me'] === 'false'){
-									res.redirect('/home');
-								}	else{
-									AM.generateLoginKey(user.username, req.ip, function(key){
-										res.cookie('login', key, { maxAge: 900000 });
-										res.redirect('/home');
-									});
-								}
-						}
-				}
-		)(req, res);
+			session: true,
+			failureRedirect: '/'   //'/logout?status=login failed'
+		}), function(req, res){
+			if (req.body['remember-me'] === 'false'){
+				res.redirect('/home');
+			}	else{
+				AM.generateLoginKey(req.user.username, req.ip, function(key){
+					//res.cookie('login', key, { maxAge: 900000 });
+					res.redirect('/home');
+				});
+			}
+		console.log(req.user);
 	});
 
 	app.post('/logout', function(req, res){
 		res.clearCookie('login');
-		req.session.destroy(function(e){ res.status(200).send('ok'); });
+		req.session.destroy(function(e){
+			if(e) {
+				console.log(e);
+			}else {
+				res.status(200).send('ok');
+			}
+		});
 	});
 
-/*
-	control panel
-*/
+	/*
+        control panel
+    */
 
 	app.get('/home', function(req, res) {
-		if (req.session.user == null){
+		if (req._passport.instance._userProperty == null){
 			res.redirect('/');
 		}else{
-			AM.getAccountByID(req.session.user._id).then(function(acc){
+			AM.getAccountByID(req.user._id).then(function(acc){
 				res.render('home', {
 					title : 'Control Panel',
 					countries : CT,
@@ -81,11 +77,11 @@ module.exports = function(app) {
 	});
 
 	app.post('/home', function(req, res){
-		if (req.session.user == null){
+		if (req._passport.instance._userProperty == null){
 			res.redirect('/');
 		}	else{
 			AM.updateAccount({
-				id		: req.session.user._id,
+				id		: req._passport.instance._userProperty,
 				name	: req.body['name'],
 				email	: req.body['email'],
 				pass	: req.body['pass'],
@@ -94,16 +90,15 @@ module.exports = function(app) {
 				if (e){
 					res.status(400).send('error-updating-account');
 				}	else{
-					req.session.user = o.value;
 					res.status(200).send('ok');
 				}
 			});
 		}
 	});
 
-/*
-	new accounts
-*/
+	/*
+        new accounts
+    */
 
 	app.get('/signup', function(req, res) {
 		res.render('signup', {  title: 'Signup', countries : CT });
@@ -126,9 +121,9 @@ module.exports = function(app) {
 		});
 	});
 
-/*
-	password reset
-*/
+	/*
+        password reset
+    */
 
 	app.post('/lost-password', function(req, res){
 		let email = req.body['email'];
@@ -174,9 +169,9 @@ module.exports = function(app) {
 		})
 	});
 
-/*
-	view, delete & reset accounts
-*/
+	/*
+        view, delete & reset accounts
+    */
 
 	app.get('/print', function(req, res) {
 		AM.getAllRecords( function(e, accounts){
@@ -185,7 +180,7 @@ module.exports = function(app) {
 	});
 
 	app.post('/delete', function(req, res){
-		AM.deleteAccount(req.session.user._id, function(e, obj){
+		AM.deleteAccount(req._passport.instance._userProperty, function(e, obj){
 			if (!e){
 				res.clearCookie('login');
 				req.session.destroy(function(e){ res.status(200).send('ok'); });
@@ -202,14 +197,36 @@ module.exports = function(app) {
 	});
 
 	app.get('/offers', async function(req, res){
-		if (req.session.user == null){
+		if (req._passport.instance._userProperty){
 			res.redirect('/');
 		}else{
-			console.log(req.connection.remoteAddress);
+			var api_key = '1296781487';
+			var pub_id = '9359';
 
-			var body = await request.get('https://cpalead.com/dashboard/reports/campaign_json.php?id=634293&format=json&show=10&subid='+req.session.user._id+'&subid2='+req.sessionID, {json: true});
+			var query_strings = {
+				subid: req._passport.session._id,
+				limit: 10,
+				offset: 0,
+				sort_order: 'desc',
+				sort_by: 'epc_network'
+				//ip: req.ip
+			};
 
-			res.render('offers', {offers: body.offers});
+			request({
+				url: 'https://api.adscendmedia.com/v1/publisher/9359/offers.json',
+				qs: query_strings,
+				auth: {
+					'user': pub_id,
+					'pass': api_key
+				}
+			}, function(e, response, body){
+				if(e){
+					console.log(e);
+				} else {
+					console.log(body);
+					//res.render('offers', {offers: body.offers});
+				}
+			});
 		}
 	});
 
