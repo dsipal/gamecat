@@ -22,10 +22,6 @@ app.engine('hbs', exphbs( {
 	partialsDir: __dirname + '/app/server/views/partials/'
 }));
 app.set('view engine', 'hbs');
-// set up view handling //
-app.set('views', __dirname + '/app/server/views');
-app.set('view cache', app.get('env') === 'live');
-app.use(express.static(__dirname + '/app/public'));
 
 // setup SASS compiler middleware //
 app.use(
@@ -36,8 +32,10 @@ app.use(
 	})
 );
 
-
-
+// set up view handling //
+app.set('views', __dirname + '/app/server/views');
+app.set('view cache', app.get('env') === 'live');
+app.use(express.static(__dirname + '/app/public'));
 
 // set up cookie-parser middleware //
 app.use(cookieParser());
@@ -77,7 +75,6 @@ app.use(session({
 require('./app/config/passport')(passport);
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 // set up the router //
 require('./app/server/routes')(app, passport);
