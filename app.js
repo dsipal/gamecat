@@ -20,10 +20,6 @@ app.engine('hbs', exphbs( {
 	partialsDir: __dirname + '/app/server/views/partials/'
 }));
 app.set('view engine', 'hbs');
-// set up view handling //
-app.set('views', __dirname + '/app/server/views');
-app.set('view cache', app.get('env') === 'live');
-app.use(express.static(__dirname + '/app/public'));
 
 // setup SASS compiler middleware //
 app.use(
@@ -33,6 +29,11 @@ app.use(
 		debug: true // obvious
 	})
 );
+
+// set up view handling //
+app.set('views', __dirname + '/app/server/views');
+app.set('view cache', app.get('env') === 'live');
+app.use(express.static(__dirname + '/app/public'));
 
 // set up cookie-parser middleware //
 app.use(cookieParser());

@@ -1,41 +1,48 @@
-<!-- preset form values if we receive a userdata object //-->
-<!-- store the userId on the client side in a hidden input field //-->
-<input type="hidden" value="{{user._id}}" id="userId">
-
-<div id="account-form-container" class="center-vertical">
-    <form method="post" id="account-form" class="card card-body bg-light">
+<div id="account-form-container" class="center-vertical card card-body bg-light">
+    <form method="post" id="account-form">
         <h2></h2>
         <h6 id="sub">Please tell us a little about yourself.</h6>
         <hr>
-        <div class="form-group row"><label class="col-sm-3 col-form-label col-form-label-sm">Name</label>
-            <div class="col-sm-9"><input id="name-tf" type="text" name="name" value="{{user.name}}" class="form-control"></div>
-        </div>
-        <div class="form-group row"><label class="col-sm-3 col-form-label col-form-label-sm">Email</label>
-            <div class="col-sm-9"><input id="email-tf" type="email" name="email" value="{{user.email}}" class="form-control"></div>
-        </div>
-        <div class="form-group row margin-zero"><label class="col-sm-3 col-form-label col-form-label-sm">Location</label>
-            <div class="col-sm-9"><select id="country-list" name="country" class="custom-select">
-                {{#each countries as |item|}}
-                <option>{{item.name}}</option>
-                {{/each}}
-            </select></div>
-        </div>
-        <hr>
-        <div id="points-row" class="form-group row"><label class="col-sm-3 col-form-label col-form-label-sm">Points</label>
-            <div class="col-sm-9"><input id="points" type="text" name="points" value="{{user.points}}" class="form-control disabled"></div>
-        </div>
-        <div class="form-group row"><label class="col-sm-3 col-form-label col-form-label-sm">Referred By</label>
-            <div class="col-sm-9"><input id="ref_by" type="text" name="ref_by" value="{{user.ref_by}}" class="form-control disabled"></div>
-        </div>
-        <div class="form-group row"><label class="col-sm-3 col-form-label col-form-label-sm">Username</label>
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label col-form-label-sm" for="user-tf">Username</label>
             <div class="col-sm-9"><input id="user-tf" type="text" name="username" value="{{user.username}}" class="form-control disabled"></div>
         </div>
-        <div class="form-group row margin-zero"><label class="col-sm-3 col-form-label col-form-label-sm">Password</label>
-            <div class="col-sm-9"><input id="pass-tf" type="password" name="password" value="{{''}}" class="form-control"></div>
+        <div class="form-group row margin-zero">
+            <label class="col-sm-3 col-form-label col-form-label-sm" for="pass-tf">Password</label>
+            <div class="col-sm-9"><input id="pass-tf" type="password" name="password" value="" class="form-control"></div>
         </div>
         <hr>
-        <div class="form-buttons"><button type="button" id="account-form-btn1" class="btn btn-outline-dark"></button><button type="submit" id="account-form-btn2" class="btn btn-primary"></button></div>
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label col-form-label-sm" for="name-tf">Name</label>
+            <div class="col-sm-9"><input id="name-tf" type="text" name="name" value="{{user.name}}" class="form-control"></div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label col-form-label-sm" for="email-tf">Email</label>
+            <div class="col-sm-9"><input id="email-tf" type="email" name="email" value="{{user.email}}" class="form-control"></div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label col-form-label-sm" for="country-list">Location</label>
+            <div class="col-sm-9">
+                <select id="country-list" name="country" class="custom-select">
+                    {{#each countries as |item|}}
+                        <option>{{item.name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+        <hr>
     </form>
+    {{#if user.ref_by}}
+        <div class="form-group row">
+            <div class="col-sm-3 col-form-label col-form-label-sm" for="ref_by">Referred By</div>
+            <div class="col-sm-9">{{user.ref_by}}</div>
+        </div>
+    {{/if}}
+
+    <div class="form-buttons">
+        <button type="button" id="account-form-btn1" class="btn btn-outline-dark" form="account-form"></button>
+        <button type="submit" id="account-form-btn2" class="btn btn-primary" form="account-form"></button>
+    </div>
 </div>
 <!-- display form errors in a custom modal window //-->
 {{>"modals/form-errors"}}
