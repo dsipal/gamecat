@@ -10,7 +10,7 @@ var sassMiddleware = require('node-sass-middleware');
 var passport = require('passport')
 	,	LocalStrategy = require('passport-local').Strategy;
 
-// create instance of express server //
+// create instance of express server test //
 var app = express();
 app.set('port', process.env.PORT || 8080);
 
