@@ -26,7 +26,7 @@ EM.composeEmail = function(o)
 	let baseurl = process.env.NL_SITE_URL || 'http://localhost:3000';
 	var html = "<html><body>";
 		html += "Hi "+o.name+",<br><br>";
-		html += "Your username is <b>"+o.user+"</b><br><br>";
+		html += "Your username is <b>"+o.userSchema+"</b><br><br>";
 		html += "<a href='"+baseurl+'/reset-password?key='+o.passKey+"'>Click here to reset your password</a><br><br>";
 		html += "Cheers,<br>";
 		html += "<a href='https://braitsch.io'>braitsch</a><br><br>";
