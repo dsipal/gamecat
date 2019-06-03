@@ -6,7 +6,7 @@ $(document).ready(function(){
 
 	$('#account-form').ajaxForm({
 		beforeSubmit : function(formData, jqForm, options){
-			if (av.validateForm() == false){
+			if (av.validateForm() === false){
 				return false;
 			} 	else{
 			// push the disabled username field onto the form data array //

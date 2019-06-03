@@ -3,13 +3,14 @@ var CT = require('./modules/country-list');
 var AM = require('./modules/account-manager');
 var EM = require('./modules/email-dispatcher');
 const request = require("request-promise");
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
 module.exports = function(app) {
 
 /*
 	login & logout
 */
-
 	app.get('/', function(req, res){
 		// check if the user has an auto login key saved in a cookie //
 		if (req.cookies.login === undefined){
@@ -30,22 +31,29 @@ module.exports = function(app) {
 	});
 
 	app.post('/', function(req, res){
-		AM.manualLogin(req.body['username'], req.body['password'], function(e, o){
-			if (!o){
-				res.status(400).send(e);
-			}	else{
-				console.log(o);
-				req.session.user = o;
-				if (req.body['remember-me'] === 'false'){
-					res.redirect('/home');
-				}	else{
-					AM.generateLoginKey(o.username, req.ip, function(key){
-						res.cookie('login', key, { maxAge: 900000 });
-						res.redirect('/home');
-					});
+		passport.authenticate('local', {
+				failureRedirect: '/'   //'/logout?status=login failed'
+		}, function(err, user, info){
+						if(err){
+								res.status(400).send(err);
+						}
+						if(!user){
+								return res.redirect('/');
+						}
+
+						else{
+								req.session.user = user;
+								if (req.body['remember-me'] === 'false'){
+									res.redirect('/home');
+								}	else{
+									AM.generateLoginKey(user.username, req.ip, function(key){
+										res.cookie('login', key, { maxAge: 900000 });
+										res.redirect('/home');
+									});
+								}
+						}
 				}
-			}
-		});
+		)(req, res);
 	});
 
 	app.post('/logout', function(req, res){
@@ -211,7 +219,6 @@ module.exports = function(app) {
 		res.send(req.query.subid + " was paid " + 10*req.query.payout);
 	});
 
-
 	app.get('/referrals', function(req, res) {
 		if (req.session.user == null) {
 			res.redirect('/');
@@ -219,7 +226,5 @@ module.exports = function(app) {
 
 		}
 	});
-
 	app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });
-
 };
