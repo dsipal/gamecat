@@ -7,17 +7,6 @@ const LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
 
 var db;
-// MongoClient.connect(process.env.DB_URL, { useNewUrlParser: true }, function(e, client) {
-// 	if (e){
-// 		console.log(e);
-// 	}	else{
-// 		db = client.db(process.env.DB_NAME);
-// 		accounts = db.collection('accounts');
-// 		// index fields 'user' & 'email' for faster new account validation //
-// 		accounts.createIndex({user: 1, email: 1});
-// 		console.log('mongo :: connected to database :: "'+process.env.DB_NAME+'"');
-// 	}
-// });
 
 mongoose.connect(process.env.DB_URL,{
 	useNewUrlParser: true,
@@ -239,7 +228,7 @@ var saltAndHash = function(pass, callback)
 	callback(salt + md5(pass + salt));
 };
 
-var validatePassword = function(plainPass, hashedPass, callback)
+exports.validatePassword = function(plainPass, hashedPass, callback)
 {
 	console.log(plainPass, hashedPass);
 	var salt = hashedPass.substr(0, 10);
