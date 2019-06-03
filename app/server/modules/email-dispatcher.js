@@ -19,7 +19,7 @@ EM.dispatchResetPasswordLink = function(account, callback)
 		text         : 'something went wrong... :(',
 		attachment   : EM.composeEmail(account)
 	}, callback );
-}
+};
 
 EM.composeEmail = function(o)
 {
@@ -32,4 +32,4 @@ EM.composeEmail = function(o)
 		html += "<a href='https://braitsch.io'>braitsch</a><br><br>";
 		html += "</body></html>";
 	return [{data:html, alternative:true}];
-}
+};

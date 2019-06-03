@@ -11,11 +11,11 @@ module.exports = function(app) {
 */
 
 	app.get('/', function(req, res){
-	// check if the user has an auto login key saved in a cookie //
-		if (req.cookies.login == undefined){
+		// check if the user has an auto login key saved in a cookie //
+		if (req.cookies.login === undefined){
 			res.render('login', { title: 'Hello - Please Login To Your Account' });
 		}	else{
-	// attempt automatic login //
+		// attempt automatic login //
 			AM.validateLoginKey(req.cookies.login, req.ip, function(e, o){
 				if (o){
 					AM.autoLogin(o.user, o.pass, function(o){
@@ -129,7 +129,7 @@ module.exports = function(app) {
 				res.status(400).send(e);
 			}	else{
 				EM.dispatchResetPasswordLink(account, function(e, m){
-			// TODO this callback takes a moment to return, add a loader to give user feedback //
+					// TODO this callback takes a moment to return, add a loader to give user feedback //
 					if (!e){
 						res.status(200).send('ok');
 					}	else{
@@ -155,7 +155,7 @@ module.exports = function(app) {
 	app.post('/reset-password', function(req, res) {
 		let newPass = req.body['pass'];
 		let passKey = req.session.passKey;
-		// destory the session immediately after retrieving the stored passkey //
+		// destroy the session immediately after retrieving the stored passkey //
 		req.session.destroy();
 		AM.updatePassword(passKey, newPass, function(e, o){
 			if (o){
