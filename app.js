@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var MongoStore = require('connect-mongo')(session);
 var sassMiddleware = require('node-sass-middleware');
+var passport = require('passport')
+	,	LocalStrategy = require('passport-local').Strategy;
 
 // create instance of express server //
 var app = express();
@@ -33,6 +35,9 @@ app.use(
 		debug: true // obvious
 	})
 );
+
+
+require('./app/config/passport')(passport);
 
 // set up cookie-parser middleware //
 app.use(cookieParser());
@@ -70,8 +75,12 @@ app.use(session({
 	})
 );
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 // set up the router //
-require('./app/server/routes')(app);
+require('./app/server/routes')(app, passport);
 
 // create server //
 http.createServer(app).listen(app.get('port'), function(){

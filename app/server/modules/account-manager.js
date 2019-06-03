@@ -2,6 +2,8 @@ const crypto = require('crypto');
 const moment = require('moment');
 const MongoClient = require('mongodb').MongoClient;
 const User = require('../models/User');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
 
 var db;

@@ -10,7 +10,7 @@ $(document).ready(function(){
 				return false;
 			} 	else{
 			// push the disabled username field onto the form data array //
-				formData.push({name:'userSchema.js', value:$('#user-tf').val()})
+				formData.push({name:'user', value:$('#user-tf').val()})
 				return true;
 			}
 		},
