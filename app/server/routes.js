@@ -62,7 +62,7 @@ module.exports = function(app) {
     */
 
 	app.get('/home', function(req, res) {
-		if (req._passport.instance._userProperty == null){
+		if (!req.isAuthenticated()){
 			res.redirect('/');
 		}else{
 			AM.getAccountByID(req.user._id).then(function(acc){
@@ -77,7 +77,7 @@ module.exports = function(app) {
 	});
 
 	app.post('/home', function(req, res){
-		if (req._passport.instance._userProperty == null){
+		if (!req.isAuthenticated()){
 			res.redirect('/');
 		}	else{
 			AM.updateAccount({
@@ -197,7 +197,7 @@ module.exports = function(app) {
 	});
 
 	app.get('/offers', async function(req, res){
-		if (req._passport.instance._userProperty){
+		if (!req.isAuthenticated()){
 			res.redirect('/');
 		}else{
 			var api_key = '1296781487';
@@ -237,7 +237,7 @@ module.exports = function(app) {
 	});
 
 	app.get('/referrals', function(req, res) {
-		if (req.session.user == null) {
+		if (!req.isAuthenticated()) {
 			res.redirect('/');
 		} else {
 
