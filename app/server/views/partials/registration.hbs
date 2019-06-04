@@ -1,0 +1,47 @@
+<div id="account-form-container" class="center-vertical card card-body bg-light">
+    <form method="post" id="account-form">
+        <h2></h2>
+        <h6 id="sub">Please tell us a little about yourself.</h6>
+        <hr>
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label col-form-label-sm" for="user-tf">Username</label>
+            <div class="col-sm-9"><input id="user-tf" type="text" name="username" value="" class="form-control disabled"></div>
+        </div>
+        <div class="form-group row margin-zero">
+            <label class="col-sm-3 col-form-label col-form-label-sm" for="pass-tf">Password</label>
+            <div class="col-sm-9"><input id="pass-tf" type="password" name="password" value="" class="form-control"></div>
+        </div>
+        <hr>
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label col-form-label-sm" for="name-tf">Name</label>
+            <div class="col-sm-9"><input id="name-tf" type="text" name="name" value="" class="form-control"></div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label col-form-label-sm" for="email-tf">Email</label>
+            <div class="col-sm-9"><input id="email-tf" type="email" name="email" value="" class="form-control"></div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label col-form-label-sm" for="country-list">Location</label>
+            <div class="col-sm-9">
+                <select id="country-list" name="country" class="custom-select">
+                    {{#each countries as |item|}}
+                        <option>{{item.name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+        <hr>
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label col-form-label-sm" for="ref_by">Referrer</label>
+            <div class="col-sm-9"><input id="ref_by" type="text" name="ref_by" value="" class="form-control"></div>
+        </div>
+    </form>
+
+
+    <div class="form-buttons">
+        <button type="button" id="account-form-btn1" class="btn btn-outline-dark" form="account-form"></button>
+        <button type="submit" id="account-form-btn2" class="btn btn-primary" form="account-form"></button>
+    </div>
+</div>
+<!-- display form errors in a custom modal window //-->
+{{>"modals/form-errors"}}

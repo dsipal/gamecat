@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
 
-	document.getElementById('points-row').style.display = "none";
+//	document.getElementById('points-row').style.display = "none";
 
 	var av = new AccountValidator();
 	var sc = new SignupController();
@@ -11,14 +11,14 @@ $(document).ready(function(){
 			return av.validateForm();
 		},
 		success	: function(responseText, status, xhr, $form){
-			if (status == 'success') $('.modal-alert').modal('show');
+			if (status === 'success') $('.modal-alert').modal('show');
 		},
 		error : function(e){
-			if (e.responseText == 'email-taken'){
+			if (e.responseText === 'email-taken'){
 				av.showInvalidEmail();
-			}	else if (e.responseText == 'username-taken'){
+			}	else if (e.responseText === 'username-taken'){
 				av.showInvalidUserName();
-			}  	else if (e.responseText == 'invalid-refferal'){
+			}  	else if (e.responseText === 'invalid-refferal'){
 				av.showInvalidReffName();
 			}  	else if (e.responseText === 'disposable-email') {
 				av.showDispoEmail();

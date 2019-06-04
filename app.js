@@ -38,7 +38,7 @@ app.set('view cache', app.get('env') === 'live');
 app.use(express.static(__dirname + '/app/public'));
 
 // set up cookie-parser middleware //
-app.use(cookieParser());
+app.use(cookieParser('faeb4453e5d14fe6f6d04637f78077c76c73d1b4'));
 
 // set up body-parser middleware //
 app.use(bodyParser.json());
@@ -63,13 +63,12 @@ if (app.get('env') === 'live'){
 // setup express-sessions //
 app.use(session({
 		secret: 'faeb4453e5d14fe6f6d04637f78077c76c73d1b4',
-		proxy: false,
-		resave: false,
+		resave: true,
 		saveUninitialized: false,
 		store: new MongoStore({
 			url: process.env.DB_URL,
 			touchAfter: 3600
-		})
+		}),
 	})
 );
 require('./app/config/passport')(passport);
