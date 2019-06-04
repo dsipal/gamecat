@@ -102,7 +102,8 @@ module.exports = function(app) {
     */
 
 	app.get('/signup', function(req, res) {
-		res.render('signup', {  title: 'Signup', countries : CT });
+		var ref_by = req.query.ref_by;
+		res.render('signup', {  title: 'Signup', countries : CT, ref_by: ref_by });
 	});
 
 	app.post('/signup', function(req, res){
@@ -241,7 +242,8 @@ module.exports = function(app) {
 		if (!req.isAuthenticated()) {
 			res.redirect('/');
 		} else {
-
+			var ref_link = req.protocol + '://' + req.headers.host + '/signup?ref_by=' + req.user.username;
+			res.render('referrals', {ref_link: ref_link, referrals: req.user.referrals});
 		}
 	});
 	app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });

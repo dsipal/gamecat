@@ -101,8 +101,8 @@ exports.addPoints = function(subid, amount,sid){
     console.log(subid,amount);
 
     User.findOneAndUpdate(
-        {'_id': getObjectId(subid)},
-        {$inc: {'points':amount}},
+        {_id: getObjectId(subid)},
+        {$inc: {points:amount}},
         {
             returnNewDocument: true
         });
@@ -124,7 +124,6 @@ exports.addNewAccount = function(newData, callback)
                         if (!o && !(newData.ref_by === "")){
                             callback('invalid-referral');
                         } else{
-                            percolateReferrals(newData.username, newData.ref_by);
                             saltAndHash(newData.password, function(hash){
 
                                 newData.password = hash;
@@ -133,6 +132,9 @@ exports.addNewAccount = function(newData, callback)
                                 newData.reg_date = new Date();
                                 newData.points = 0;
                                 User.create(newData, callback);
+
+                                // add referral to person who referred user //
+                                percolateReferrals(newData.username, newData.ref_by);
                             })
                         }
                     });
@@ -143,7 +145,11 @@ exports.addNewAccount = function(newData, callback)
 };
 
 percolateReferrals = function(username, ref_by) {
-    User.findOneAndUpdate({username:ref_by}, {$push: {referrals:username}});
+    User.updateOne({username:ref_by},
+        {'$push': {referrals:username}},
+        function(err, raw){
+            if(err) console.log(err);
+        });
 };
 
 exports.updateAccount = function(newData, callback)
