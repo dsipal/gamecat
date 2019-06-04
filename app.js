@@ -54,6 +54,8 @@ if (app.get('env') === 'live'){
 	process.env.DB_NAME = process.env.DB_NAME || 'heroku_f9fjvqkf';
 	process.env.DB_URL =  process.env.MONGODB_URI;
 } else {
+	console.log(app.get('env'));
+	console.log(app.get('env') === 'development');
 	// development server settings //
 	process.env.DB_HOST = process.env.DB_HOST || 'localhost';
 	process.env.DB_PORT = process.env.DB_PORT || 27017;

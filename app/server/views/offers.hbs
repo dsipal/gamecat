@@ -1,1 +1,10 @@
-<ul>{{#each offers as |val|}}<a href="{{val.click_url}}" class="offerlink">{{val.name}}</a>{{/each}}</ul>
+<ul>
+    {{#each offers as |offer|}}
+        <li>
+            <img src="{{offer.creative_url}}"  alt="{{offer.name}}">
+            <a href="{{offer.click_url}}" class="offerlink">{{offer.name}}</a>
+            <p>{{offer.description}}</p>
+            <p>{{offer.currency_count}} Points</p>
+        </li>
+    {{/each}}
+</ul>

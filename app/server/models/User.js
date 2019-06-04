@@ -7,7 +7,9 @@ const user = new mongoose.Schema({
     name: String,
     email: String,
     country: String,
-    referrals: Array,
+    referrals: [{
+        type: String
+    }],
     ref_by: String,
     reg_date: Date,
     points: Number,
