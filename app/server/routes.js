@@ -5,6 +5,7 @@ var EM = require('./modules/email-dispatcher');
 const request = require("request-promise");
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+var qs = require('querystring');
 
 module.exports = function(app) {
 
@@ -204,12 +205,12 @@ module.exports = function(app) {
 			var pub_id = '9359';
 
 			var query_strings = {
-				subid: req._passport.session._id,
-				limit: 10,
-				offset: 0,
+				subid1: req.user._id.toString(),
+				per_page: 10,
+				page: 1,
 				sort_order: 'desc',
-				sort_by: 'epc_network'
-				//ip: req.ip
+				sort_by: 'epc_network',
+				ip: req.ip
 			};
 
 			request({
@@ -223,8 +224,8 @@ module.exports = function(app) {
 				if(e){
 					console.log(e);
 				} else {
-					console.log(body);
-					//res.render('offers', {offers: body.offers});
+					var json = JSON.parse(body);
+					res.render('offers', {offers: json.offers});
 				}
 			});
 		}
