@@ -97,7 +97,7 @@ exports.validatePasswordKey = function(passKey, ipAddress, callback)
 	record insertion, update & deletion methods
 */
 
-exports.addPoints = function(subid, amount,sid){
+exports.addPoints = function(subid, amount){
     console.log(subid,amount);
 
     User.findOneAndUpdate(

@@ -202,20 +202,23 @@ module.exports = function(app) {
 		if (!req.isAuthenticated()){
 			res.redirect('/');
 		}else{
-			var api_key = '1296781487';
+			var api_key = 'JlD8HGBVzQ7cBWpTEwwcd0zDgmLe9YecLPdf33vWviFLAQKsvTLj4aielhxT';
 			var pub_id = '9359';
+			var ad_wall_id = '16028';
+
+			var limit = 10;
+			var offset = req.query.page * limit || 0;
 
 			var query_strings = {
 				subid1: req.user._id.toString(),
-				per_page: 10,
-				page: 1,
-				sort_order: 'desc',
-				sort_by: 'epc_network',
+				limit: limit,
+				offset: offset,
+				sort_by: 'popularity',
 				ip: req.ip
 			};
 
 			request({
-				url: 'https://api.adscendmedia.com/v1/publisher/9359/offers.json',
+				url: 'http://adscendmedia.com/adwall/api/publisher/9359/profile/16028/offers.json',
 				qs: query_strings,
 				auth: {
 					'user': pub_id,
@@ -233,9 +236,9 @@ module.exports = function(app) {
 	});
 
 	app.get('/postback', async function(req, res){
-		AM.addPoints(req.query.subid, req.query.payout*10,req.query.subid2);
+		AM.addPoints(req.query.subid1, req.query.payout*10);
 
-		res.send(req.query.subid + " was paid " + 10*req.query.payout);
+		res.send(req.query.subid1 + " was paid " + 10 * req.query.payout);
 	});
 
 	app.get('/referrals', function(req, res) {
