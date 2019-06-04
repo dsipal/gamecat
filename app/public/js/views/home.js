@@ -26,6 +26,8 @@ $(document).ready(function(){
 				av.showInvalidReffName();
 			} 	else if (e.responseText === 'disposable-email') {
 				av.showDispoEmail();
+			} 	else if (e.responseText === 'same-user-pass') {
+				av.showSamePass();
 			}
 		}
 	});
