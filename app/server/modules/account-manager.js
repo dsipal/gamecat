@@ -5,6 +5,7 @@ const User = require('../models/User');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
+const emchecker = require('./email-checker.js');
 
 var db;
 
@@ -123,17 +124,21 @@ exports.addNewAccount = function(newData, callback)
 					User.findOne({username:newData.ref_by}, function(e, o) {
 						if (!o && !(newData.ref_by === "")){
 							callback('invalid-referral');
-						} else{
-							percolateReferrals(newData.username, newData.ref_by);
-							saltAndHash(newData.password, function(hash){
+						} 	else{
+								if(emchecker.checkBannedEmails(newData.email)) {
+									percolateReferrals(newData.username, newData.ref_by);
+									saltAndHash(newData.password, function (hash) {
 
-								newData.password = hash;
-								newData.referrals = [];
-								// append date stamp when record was created //
-								newData.reg_date = new Date();
-								newData.points = 0;
-								User.create(newData, callback);
-							})
+										newData.password = hash;
+										newData.referrals = [];
+										// append date stamp when record was created //
+										newData.reg_date = new Date();
+										newData.points = 0;
+										User.create(newData, callback);
+									})
+								} else {
+									callback('disposable-email');
+								}
 						}
 					});
 				}

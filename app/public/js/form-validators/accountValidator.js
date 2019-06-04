@@ -61,6 +61,11 @@ AccountValidator.prototype.showInvalidReffName = function()
 	this.showErrors(['This refferal is not valid.']);
 }
 
+AccountValidator.prototype.showDispoEmail = function(){
+	this.controlGroups[1].addClass('error');
+	this.showErrors(['This email is from a disposable email provider'])
+}
+
 AccountValidator.prototype.validateForm = function()
 {
 	var e = [];
