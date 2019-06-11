@@ -2,6 +2,7 @@
 var CT = require('./modules/country-list');
 var AM = require('./modules/account-manager');
 var EM = require('./modules/email-dispatcher');
+const User = require('./models/User');
 const request = require("request-promise");
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -14,9 +15,9 @@ module.exports = function(app) {
     */
 	app.get('/', function(req, res){
 		// check if the user has an auto login key saved in a cookie //
-		if (req.cookies.login === undefined){
+		if (req.cookies.login === undefined || !req.isAuthenticated()){
 			res.render('login', { title: 'Hello - Please Login To Your Account' });
-		}	else{
+		} else {
 			// attempt automatic login //
 			AM.validateLoginKey(req.cookies.login, req.ip, function(e, o){
 				if (o){
@@ -24,7 +25,7 @@ module.exports = function(app) {
 						req.session.user = o;
 						res.redirect('/home');
 					});
-				}	else{
+				} else {
 					res.render('login', { title: 'Hello - Please Login To Your Account' });
 				}
 			});
@@ -38,9 +39,9 @@ module.exports = function(app) {
 		}), function(req, res){
 			if (req.body['remember-me'] === 'false'){
 				res.redirect('/home');
-			}	else{
+			} else {
 				AM.generateLoginKey(req.user.username, req.ip, function(key){
-					//res.cookie('login', key, { maxAge: 900000 });
+					res.cookie('login', key, { maxAge: 900000 });
 					res.redirect('/home');
 				});
 			}
@@ -52,7 +53,7 @@ module.exports = function(app) {
 		req.session.destroy(function(e){
 			if(e) {
 				console.log(e);
-			}else {
+			} else {
 				res.status(200).send('ok');
 			}
 		});
@@ -65,12 +66,12 @@ module.exports = function(app) {
 	app.get('/home', function(req, res) {
 		if (!req.isAuthenticated()){
 			res.redirect('/');
-		}else{
+		} else {
 			AM.getAccountByID(req.user._id).then(function(acc){
 				res.render('home', {
-					title : 'Control Panel',
-					countries : CT,
-					udata : acc
+					title: 'Control Panel',
+					countries: CT,
+					udata: acc
 				});
 			});
 
@@ -80,20 +81,35 @@ module.exports = function(app) {
 	app.post('/home', function(req, res){
 		if (!req.isAuthenticated()){
 			res.redirect('/');
-		}	else{
-			AM.updateAccount({
-				id		: req._passport.instance._userProperty,
-				name	: req.body['name'],
-				email	: req.body['email'],
-				pass	: req.body['pass'],
-				country	: req.body['country']
+		} else {
+			// AM.updateAccount({
+			// 	id: req._passport.instance._userProperty,
+			// 	name: req.body['name'],
+			// 	email: req.body['email'],
+			// 	pass: req.body['pass'],
+			// 	country: req.body['country']
+			// }, function(e, o){
+			// 	if (e){
+			// 		res.status(400).send('error-updating-account');
+			// 	}	else{
+			// 		res.status(200).send('ok');
+			// 	}
+			// });
+
+			console.log('pass in form ' + req.body['pass']);
+			req.user.updateAccount({
+					id: req._passport.instance._userProperty,
+					name: req.body['name'],
+					email: req.body['email'],
+					country: req.body['country'],
+					password: req.body['password'],
 			}, function(e, o){
-				if (e){
+				if(e){
 					res.status(400).send('error-updating-account');
-				}	else{
+				} else {
 					res.status(200).send('ok');
 				}
-			});
+			})
 		}
 	});
 
@@ -107,20 +123,37 @@ module.exports = function(app) {
 	});
 
 	app.post('/signup', function(req, res){
-		AM.addNewAccount({
-			ref_by : req.body['ref_by'],
-			name 	: req.body['name'],
-			email 	: req.body['email'],
-			username 	: req.body['username'],
-			password	: req.body['password'],
-			country : req.body['country']
-		}, function(e){
-			if (e){
+		// AM.addNewAccount({
+		// 	ref_by: req.body['ref_by'],
+		// 	name: req.body['name'],
+		// 	email: req.body['email'],
+		// 	username: req.body['username'],
+		// 	password: req.body['password'],
+		// 	country: req.body['country']
+		// }, function(e){
+		// 	if (e){
+		// 		res.status(400).send(e);
+		// 	} else {
+		// 		res.status(200).send('ok');
+		// 	}
+		// });
+
+		User.addNewAccount({
+				ref_by: req.body['ref_by'],
+				name: req.body['name'],
+				email: req.body['email'],
+				username: req.body['username'],
+				password: req.body['password'],
+				country: req.body['country']
+		}, function(e, o) {
+			if(e){
 				res.status(400).send(e);
-			}	else{
+			} else {
+				o.percolateReferrals();
 				res.status(200).send('ok');
 			}
 		});
+
 	});
 
 	/*
@@ -132,7 +165,7 @@ module.exports = function(app) {
 		AM.generatePasswordKey(email, req.ip, function(e, account){
 			if (e){
 				res.status(400).send(e);
-			}	else{
+			} else {
 				EM.dispatchResetPasswordLink(account, function(e, m){
 					// TODO this callback takes a moment to return, add a loader to give user feedback //
 					if (!e){
@@ -150,7 +183,7 @@ module.exports = function(app) {
 		AM.validatePasswordKey(req.query['key'], req.ip, function(e, o){
 			if (e || o == null){
 				res.redirect('/');
-			} else{
+			} else {
 				req.session.passKey = req.query['key'];
 				res.render('reset', { title : 'Reset Password' });
 			}
@@ -165,7 +198,7 @@ module.exports = function(app) {
 		AM.updatePassword(passKey, newPass, function(e, o){
 			if (o){
 				res.status(200).send('ok');
-			}	else{
+			} else {
 				res.status(400).send('unable to update password');
 			}
 		})
@@ -186,7 +219,7 @@ module.exports = function(app) {
 			if (!e){
 				res.clearCookie('login');
 				req.session.destroy(function(e){ res.status(200).send('ok'); });
-			}	else{
+			} else {
 				res.status(400).send('record not found');
 			}
 		});
@@ -201,7 +234,7 @@ module.exports = function(app) {
 	app.get('/offers', async function(req, res){
 		if (!req.isAuthenticated()){
 			res.redirect('/');
-		}else{
+		} else {
 			var api_key = 'JlD8HGBVzQ7cBWpTEwwcd0zDgmLe9YecLPdf33vWviFLAQKsvTLj4aielhxT';
 			var pub_id = '9359';
 			var ad_wall_id = '16028';
@@ -249,5 +282,6 @@ module.exports = function(app) {
 			res.render('referrals', {ref_link: ref_link, referrals: req.user.referrals});
 		}
 	});
+
 	app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });
 };

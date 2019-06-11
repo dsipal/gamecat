@@ -1,10 +1,13 @@
-<ul>
+<ul class="row offer-list">
     {{#each offers as |offer|}}
-        <li>
-            <img src="{{offer.creative_url}}"  alt="{{offer.name}}">
-            <a href="{{offer.click_url}}" class="offerlink">{{offer.name}}</a>
-            <p>{{offer.description}}</p>
-            <p>{{offer.currency_count}} Points</p>
+        <li class="col-md-3 offer-item justify-content-center">
+            <div class="offer-container">
+                <img src="{{offer.creative_url}}"  alt="{{offer.name}}" class="row offer-image">
+                <a href="{{offer.click_url}}" class="row offer-link">{{offer.name}}</a>
+                <p class="offer-reward">{{offer.currency_count}} Points</p>
+                <p class="offer-description">{{offer.description}}</p>
+            </div>
+
         </li>
     {{/each}}
 </ul>
