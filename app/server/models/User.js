@@ -15,7 +15,8 @@ const user = new mongoose.Schema({
     points: Number,
     cookie: String,
     ip: String,
-    rank: String
+    rank: String,
+    token: String
 });
 
 user.methods.validatePassword = function(plainPass, hashedPass){
