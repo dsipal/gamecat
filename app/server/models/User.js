@@ -18,7 +18,26 @@ const user = new mongoose.Schema({
     },
     {collection: 'Users'});
 
-// login functions //
+    // class/static functions //
+
+user.statics.getAllRecords = function(callback){
+    User.find().toArray(
+        function(e, res) {
+            if (e) callback(e);
+            else callback(null, res)
+        });
+};
+
+user.statics.deleteAllAccounts = function(){
+    User.deleteMany({});
+};
+
+user.statics.getByID = function(){
+    return User.findOne({_id: getObjectId(id)});
+};
+
+    // login functions //
+
 //takes plaintext password, returns plainPass == hashedPass
 user.methods.validatePassword = function(plainPass){
     console.log(this.password);
@@ -28,8 +47,7 @@ user.methods.validatePassword = function(plainPass){
     return validHash === this.password;
 };
 
-
-// registration functions //
+    // registration functions //
 
 //takes in registration form data, callback is handled in routes.
 //ensures that username & email are unique, and that referrer exists.
@@ -79,7 +97,8 @@ user.methods.percolateReferrals = function () {
         });
 };
 
-// update account functions //
+    // update account functions //
+
 //used by postback, called in routes, adds points to user
 user.methods.addPoints = function(amount){
     this.points += amount;
@@ -108,7 +127,13 @@ user.methods.updateAccount = function(data, callback){
 
 };
 
-// helper functions //
+user.methods.deleteAccount = function(){
+    this.delete();
+};
+
+
+    // helper functions //
+
 var md5 = function(str) {
     return crypto.createHash('md5').update(str).digest('hex');
 };
@@ -128,6 +153,11 @@ var saltAndHash = function(pass, callback)
 {
     var salt = generateSalt();
     callback(salt + md5(pass + salt));
+};
+
+var getObjectId = function(id)
+{
+    return new require('mongodb').ObjectID(id);
 };
 
 const User = mongoose.model('User', user);
