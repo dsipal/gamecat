@@ -1,0 +1,49 @@
+#login {
+  width: 380px;
+  .btn {
+    float: left;
+    width: 48%;
+    font-size: 0.8rem;
+  }
+  .btn-btm {
+    padding: 0;
+  }
+  .btn-left {
+    margin-right: 4%;
+  }
+  #btn_sign_in {
+    color: white;
+  }
+  #btn_remember {
+    background: white;
+    border: 1px solid #ced4da;
+  }
+  #btn_remember:hover {
+    background: #F8F9FA;
+  }
+  h6, label {
+    font-size: 0.8rem;
+  }
+  h6, label, #btn_remember {
+    color: #808080;
+    text-shadow: -1px 1px 0 #fff;
+  }
+  .fa {
+    padding-right: 10px;
+  }
+  hr {
+    clear: left;
+  }
+  .btm-links {
+    font-size: 0.8rem;
+    margin: 2px 0 0 0;
+    #forgot-password {
+      float: left;
+      margin-left: 16px;
+    }
+    #create-account {
+      float: right;
+      margin-right: 20px;
+    }
+  }
+}

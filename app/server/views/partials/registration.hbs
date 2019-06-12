@@ -5,25 +5,30 @@
         <hr>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label col-form-label-sm" for="user-tf">Username</label>
-            <div class="col-sm-9"><input id="user-tf" type="text" name="username" value="" class="form-control disabled"></div>
+            <div class="col-sm-9"><input id="user-tf" type="text" name="username" value="" class="form-control disabled" required></div>
         </div>
+        <hr>
         <div class="form-group row margin-zero">
             <label class="col-sm-3 col-form-label col-form-label-sm" for="pass-tf">Password</label>
-            <div class="col-sm-9"><input id="pass-tf" type="password" name="password" value="" class="form-control"></div>
+            <div class="col-sm-9"><input id="pass-tf" type="password" name="password" value="" class="form-control" minlength="6" pattern="\d" required></div>
+        </div>
+        <div class="form-group row margin-zero">
+            <label class="col-sm-3 col-form-label col-form-label-sm" for="pass-tf">Verify</label>
+            <div class="col-sm-9"><input id="pass-tf" type="password" name="password-verify" value="" class="form-control" minlength="6" pattern="\d" required></div>
         </div>
         <hr>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label col-form-label-sm" for="name-tf">Name</label>
-            <div class="col-sm-9"><input id="name-tf" type="text" name="name" value="" class="form-control"></div>
+            <div class="col-sm-9"><input id="name-tf" type="text" name="name" value="" class="form-control" required></div>
         </div>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label col-form-label-sm" for="email-tf">Email</label>
-            <div class="col-sm-9"><input id="email-tf" type="email" name="email" value="" class="form-control"></div>
+            <div class="col-sm-9"><input id="email-tf" type="email" name="email" value="" class="form-control" required></div>
         </div>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label col-form-label-sm" for="country-list">Location</label>
             <div class="col-sm-9">
-                <select id="country-list" name="country" class="custom-select">
+                <select id="country-list" name="country" class="custom-select" required>
                     {{#each countries as |item|}}
                         <option>{{item.name}}</option>
                     {{/each}}
@@ -35,6 +40,11 @@
             <label class="col-sm-3 col-form-label col-form-label-sm" for="ref_by">Referrer</label>
             <div class="col-sm-9"><input id="ref_by" type="text" name="ref_by" value="{{ref_by}}" class="form-control"></div>
         </div>
+        <hr>
+        <label class="col-sm-11 col-form-label col-form-label-sm" for="email-optin">Opt-in to receive exclusive offers</label>
+        <input type="checkbox" value="email-optin" checked>
+        <label class="col-sm-11 col-form-label col-form-label-sm" for="email-optin">I agree to the terms and conditions</label>
+        <input type="checkbox" value="email-optin" required>
     </form>
 
 

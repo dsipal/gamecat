@@ -14,9 +14,13 @@ module.exports = function(app) {
         login & logout
     */
 	app.get('/', function(req, res){
+        var style = "<link rel='stylesheet' href='/css/login.css'>";
 		// check if the user has an auto login key saved in a cookie //
 		if (req.cookies.login === undefined || !req.isAuthenticated()){
-			res.render('login', { title: 'Hello - Please Login To Your Account' });
+			res.render('login', {
+			    title: 'Hello - Please Login To Your Account',
+                style: style
+			});
 		} else {
 			// attempt automatic login //
 			AM.validateLoginKey(req.cookies.login, req.ip, function(e, o){
@@ -26,7 +30,11 @@ module.exports = function(app) {
 						res.redirect('/home');
 					});
 				} else {
-					res.render('login', { title: 'Hello - Please Login To Your Account' });
+
+					res.render('login', {
+					    title: 'Hello - Please Login To Your Account',
+                        style: style
+					});
 				}
 			});
 		}
@@ -72,11 +80,12 @@ module.exports = function(app) {
 		// 		udata: acc
 		// 	});
 		// });
-
+        var style = "<link rel='stylesheet' href='/css/account.css'>";
 		res.render('home', {
 			title: 'Control Panel',
 			countries: CT,
-			udata: req.user
+			udata: req.user,
+            style: style
 		});
 
 	});
@@ -104,7 +113,13 @@ module.exports = function(app) {
 
 	app.get('/signup', function(req, res) {
 		var ref_by = req.query.ref_by;
-		res.render('signup', {  title: 'Signup', countries : CT, ref_by: ref_by });
+		var style = "<link rel='stylesheet' href='/css/account.css'>";
+		res.render('signup', {
+		    title: 'Signup',
+            countries : CT,
+            ref_by: ref_by,
+            style: style
+		});
 	});
 
 	app.post('/signup', function(req, res){
@@ -193,6 +208,7 @@ module.exports = function(app) {
 	});
 
 	app.get('/offers', ensureAuthenticated(), async function(req, res){
+        var style = "<link rel='stylesheet' href='/css/offer-page.css'>";
 
 		var api_key = 'JlD8HGBVzQ7cBWpTEwwcd0zDgmLe9YecLPdf33vWviFLAQKsvTLj4aielhxT';
 		var pub_id = '9359';
@@ -221,7 +237,10 @@ module.exports = function(app) {
 				console.log(e);
 			} else {
 				var json = JSON.parse(body);
-				res.render('offers', {offers: json.offers});
+				res.render('offers', {
+				    offers: json.offers,
+                    style: style
+				});
 			}
 		});
 	});
