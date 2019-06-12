@@ -2,6 +2,7 @@
 var CT = require('./modules/country-list');
 var AM = require('./modules/account-manager');
 var EM = require('./modules/email-dispatcher');
+const User = require('./models/User');
 const rateLimit = require("express-rate-limit");
 const request = require("request-promise");
 const passport = require('passport');
@@ -22,9 +23,9 @@ module.exports = function(app) {
     */
 	app.get('/', function(req, res){
 		// check if the user has an auto login key saved in a cookie //
-		if (req.cookies.login === undefined){
+		if (req.cookies.login === undefined || !req.isAuthenticated()){
 			res.render('login', { title: 'Hello - Please Login To Your Account' });
-		}	else{
+		} else {
 			// attempt automatic login //
 			AM.validateLoginKey(req.cookies.login, req.ip, function(e, o){
 				if (o){
@@ -32,7 +33,7 @@ module.exports = function(app) {
 						req.session.user = o;
 						res.redirect('/home');
 					});
-				}	else{
+				} else {
 					res.render('login', { title: 'Hello - Please Login To Your Account' });
 				}
 			});
@@ -46,21 +47,21 @@ module.exports = function(app) {
 		}), function(req, res){
 			if (req.body['remember-me'] === 'false'){
 				res.redirect('/home');
-			}	else{
+			} else {
 				AM.generateLoginKey(req.user.username, req.ip, function(key){
-					//res.cookie('login', key, { maxAge: 900000 });
+					res.cookie('login', key, { maxAge: 900000 });
 					res.redirect('/home');
 				});
 			}
-		console.log(req.user);
-	});
+			console.log(req.user);
+		});
 
-	app.post('/logout', function(req, res){
+	app.post('/logout', ensureAuthenticated(), function(req, res){
 		res.clearCookie('login');
 		req.session.destroy(function(e){
 			if(e) {
 				console.log(e);
-			}else {
+			} else {
 				res.status(200).send('ok');
 			}
 		});
@@ -70,40 +71,39 @@ module.exports = function(app) {
         control panel
     */
 
-	app.get('/home', function(req, res) {
-		if (!req.isAuthenticated()){
-			res.redirect('/');
-		}else{
-			AM.getAccountByID(req.user._id).then(function(acc){
-				res.render('home', {
-					title : 'Control Panel',
-					countries : CT,
-					udata : acc
-				});
-			});
+	app.get('/home', ensureAuthenticated(), function(req, res) {
 
-		}
+		// AM.getAccountByID(req.user._id).then(function(acc){
+		// 	res.render('home', {
+		// 		title: 'Control Panel',
+		// 		countries: CT,
+		// 		udata: acc
+		// 	});
+		// });
+
+		res.render('home', {
+			title: 'Control Panel',
+			countries: CT,
+			udata: req.user
+		});
+
 	});
 
-	app.post('/home', function(req, res){
-		if (!req.isAuthenticated()){
-			res.redirect('/');
-		}	else{
-			AM.updateAccount({
-				id		: req._passport.instance._userProperty,
-				name	: req.body['name'],
-				email	: req.body['email'],
-				pass	: req.body['pass'],
-				country	: req.body['country']
-			}, function(e, o){
-				if (e){
-					res.status(400).send('error-updating-account');
-				}	else{
-		//			req.session.user = o.value;
-					res.status(200).send('ok');
-				}
-			});
-		}
+	app.post('/home', ensureAuthenticated(), function(req, res){
+
+		req.user.updateAccount({
+			id: req._passport.instance._userProperty,
+			name: req.body['name'],
+			email: req.body['email'],
+			country: req.body['country'],
+			password: req.body['password'],
+		}, function(e, o){
+			if(e){
+				res.status(400).send('error-updating-account');
+			} else {
+				res.status(200).send('ok');
+			}
+		})
 	});
 
 	/*
@@ -116,21 +116,23 @@ module.exports = function(app) {
 	});
 
 	app.post('/signup', accountCreateLimiter, function(req, res){
-		AM.addNewAccount({
-			ref_by : req.body['ref_by'],
-			name 	: req.body['name'],
-			email 	: req.body['email'],
-			username 	: req.body['username'],
-			password	: req.body['password'],
-			country : req.body['country']
-		}, function(e){
-			if (e){
+		User.addNewAccount({
+			ref_by:     req.body['ref_by'],
+			name:       req.body['name'],
+			email:      req.body['email'],
+			username:   req.body['username'],
+			password:   req.body['password'],
+			country:    req.body['country']
+		}, function(e, o) {
+			if(e){
 				res.status(400).send(e);
-			}	else{
-				res.redirect('/home');
-				//res.status(200).send('ok');
+			} else {
+				o.percolateReferrals();
+                //res.redirect('/home');
+				res.status(200).send('ok');
 			}
 		});
+
 	});
 
 	/*
@@ -142,7 +144,7 @@ module.exports = function(app) {
 		AM.generatePasswordKey(email, req.ip, function(e, account){
 			if (e){
 				res.status(400).send(e);
-			}	else{
+			} else {
 				EM.dispatchResetPasswordLink(account, function(e, m){
 					// TODO this callback takes a moment to return, add a loader to give user feedback //
 					if (!e){
@@ -160,7 +162,7 @@ module.exports = function(app) {
 		AM.validatePasswordKey(req.query['key'], req.ip, function(e, o){
 			if (e || o == null){
 				res.redirect('/');
-			} else{
+			} else {
 				req.session.passKey = req.query['key'];
 				res.render('reset', { title : 'Reset Password' });
 			}
@@ -175,7 +177,7 @@ module.exports = function(app) {
 		AM.updatePassword(passKey, newPass, function(e, o){
 			if (o){
 				res.status(200).send('ok');
-			}	else{
+			} else {
 				res.status(400).send('unable to update password');
 			}
 		})
@@ -185,64 +187,52 @@ module.exports = function(app) {
         view, delete & reset accounts
     */
 
-	app.get('/print', function(req, res) {
-		AM.getAllRecords( function(e, accounts){
-			res.render('print', { title : 'Account List', accts : accounts });
-		})
+	app.post('/delete', function(req, res){
+		// AM.deleteAccount(req._passport.instance._userProperty, function(e, obj){
+		// 	if (!e){
+		// 		res.clearCookie('login');
+		// 		req.session.destroy(function(e){ res.status(200).send('ok'); });
+		// 	} else {
+		// 		res.status(400).send('record not found');
+		// 	}
+		// });
+
+		req.user.deleteAccount();
+		res.clearCookie('login');
 	});
 
-	app.post('/delete', function(req, res){
-		AM.deleteAccount(req._passport.instance._userProperty, function(e, obj){
-			if (!e){
-				res.clearCookie('login');
-				req.session.destroy(function(e){ res.status(200).send('ok'); });
-			}	else{
-				res.status(400).send('record not found');
+	app.get('/offers', ensureAuthenticated(), async function(req, res){
+
+		var api_key = 'JlD8HGBVzQ7cBWpTEwwcd0zDgmLe9YecLPdf33vWviFLAQKsvTLj4aielhxT';
+		var pub_id = '9359';
+		var ad_wall_id = '16028';
+
+		var limit = 10;
+		var offset = req.query.page * limit || 0;
+
+		var query_strings = {
+			subid1: req.user._id.toString(),
+			limit: limit,
+			offset: offset,
+			sort_by: 'popularity',
+			ip: req.ip
+		};
+
+		request({
+			url: 'http://adscendmedia.com/adwall/api/publisher/9359/profile/16028/offers.json',
+			qs: query_strings,
+			auth: {
+				'user': pub_id,
+				'pass': api_key
+			}
+		}, function(e, response, body){
+			if(e){
+				console.log(e);
+			} else {
+				var json = JSON.parse(body);
+				res.render('offers', {offers: json.offers});
 			}
 		});
-	});
-
-	app.get('/reset', function(req, res) {
-		AM.deleteAllAccounts(function(){
-			res.redirect('/print');
-		});
-	});
-
-	app.get('/offers', async function(req, res){
-		if (!req.isAuthenticated()){
-			res.redirect('/');
-		}else{
-			var api_key = 'JlD8HGBVzQ7cBWpTEwwcd0zDgmLe9YecLPdf33vWviFLAQKsvTLj4aielhxT';
-			var pub_id = '9359';
-			var ad_wall_id = '16028';
-
-			var limit = 10;
-			var offset = req.query.page * limit || 0;
-
-			var query_strings = {
-				subid1: req.user._id.toString(),
-				limit: limit,
-				offset: offset,
-				sort_by: 'popularity',
-				ip: req.ip
-			};
-
-			request({
-				url: 'http://adscendmedia.com/adwall/api/publisher/9359/profile/16028/offers.json',
-				qs: query_strings,
-				auth: {
-					'user': pub_id,
-					'pass': api_key
-				}
-			}, function(e, response, body){
-				if(e){
-					console.log(e);
-				} else {
-					var json = JSON.parse(body);
-					res.render('offers', {offers: json.offers});
-				}
-			});
-		}
 	});
 
 	app.get('/postback', async function(req, res){
@@ -251,13 +241,37 @@ module.exports = function(app) {
 		res.send(req.query.subid1 + " was paid " + 10 * req.query.payout);
 	});
 
-	app.get('/referrals', function(req, res) {
-		if (!req.isAuthenticated()) {
-			res.redirect('/');
-		} else {
-			var ref_link = req.protocol + '://' + req.headers.host + '/signup?ref_by=' + req.user.username;
-			res.render('referrals', {ref_link: ref_link, referrals: req.user.referrals});
-		}
+	app.get('/referrals', ensureAuthenticated(), function(req, res) {
+		var ref_link = req.protocol + '://' + req.headers.host + '/signup?ref_by=' + req.user.username;
+		res.render('referrals', {ref_link: ref_link, referrals: req.user.referrals});
+
 	});
+
 	app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });
+
+	app.get('/verify', function(req, res){
+        User.findOne({username:req.query.name}, function(e, o) {
+            if(e) {
+                console.log('Problem With Verification' + req.query.name + '   ' + req.query.id);
+            } else{
+                o.confirmAccount(req.query.id, function(success){
+                    if(success){
+                        res.redirect('/');
+                    } else {
+                        res.redirect('/signip');
+                    }
+                });
+            }
+        })
+    })
 };
+
+function ensureAuthenticated(){
+	return function(req, res, next){
+		if(!req.isAuthenticated || !req.isAuthenticated()){
+			res.status(401).send('not-authenticated')
+		} else {
+			next()
+		}
+	}
+}

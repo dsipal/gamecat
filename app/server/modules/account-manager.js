@@ -136,10 +136,13 @@ exports.addNewAccount = function(newData, callback)
                                             // append date stamp when record was created //
                                             newData.reg_date = new Date();
                                             newData.points = 0;
-                                            User.create(newData, callback);
-
-                                            // add referral to person who referred user //
-                                            percolateReferrals(newData.username, newData.ref_by);
+                                            User.create(newData, function(e,o){
+                                                if(e) {
+                                                    callback(e, null);
+                                                } else {
+                                                    callback(null, o);
+                                                }
+                                            });
                                         })
                                     }
 								} else {

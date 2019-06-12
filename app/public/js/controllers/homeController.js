@@ -43,7 +43,7 @@ function HomeController()
 				console.log(jqXHR.responseText+' :: '+jqXHR.statusText);
 			}
 		});
-	}
+	};
 
 	this.showLockedAlert = function(msg){
 		$('.modal-alert').modal({ show : false, keyboard : false, backdrop : 'static' });
@@ -62,4 +62,4 @@ HomeController.prototype.onUpdateSuccess = function()
 	$('.modal-alert .modal-body p').html('Your account has been updated.');
 	$('.modal-alert').modal('show');
 	$('.modal-alert button').off('click');
-}
+};

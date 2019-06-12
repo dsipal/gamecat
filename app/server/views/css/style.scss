@@ -40,6 +40,10 @@ label, h6  {
 }
 
 
+.row{
+  margin: 0;
+}
+
 /*
 	login window
 */
@@ -159,9 +163,33 @@ label, h6  {
   transform: translate(-50%, -50%);
 }
 
-.offerlink  {
-  display: block;
-  padding: 10px;
+
+
+.offer-list{
+  list-style: none;
+}
+.offer-container{
+  padding: 0 25px 0 25px;
+  margin: 30px 0 30px 0;
+}
+.offer-item {
+  justify-content: center;
+}
+.offer-image{
+  margin: 0 auto 15px auto;
+  width: 45%;
+}
+.offer-link {
+  justify-content: center;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+}
+.offer-reward {
+  text-align: center;
+}
+.offer-description{
+  text-align: center;
 }
 
 .nav-point-balance {
