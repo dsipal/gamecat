@@ -10,7 +10,7 @@ $(document).ready(function(){
     var offer_list = $('.offer-list');
     var pagination = $('.pagination');
 
-    var url = "http://adscendmedia.com/adwall/api/publisher/9359/profile/16028/offers.json";
+    var url = "https://adscendmedia.com/adwall/api/publisher/9359/profile/16028/offers.json";
     var query_strings = $.param({
         subid1: offer_list.attr('data-subid1'),
         limit: limit,
