@@ -22,12 +22,10 @@ module.exports = function(app) {
         login & logout
     */
 	app.get('/', function(req, res){
-        var style = "<link rel='stylesheet' href='/css/login.css'>";
 		// check if the user has an auto login key saved in a cookie //
 		if (req.cookies.login === undefined || !req.isAuthenticated()){
 			res.render('login', {
-			    title: 'Hello - Please Login To Your Account',
-                style: style
+			    title: 'Hello - Please Login To Your Account'
 			});
 		} else {
 			// attempt automatic login //
@@ -41,7 +39,6 @@ module.exports = function(app) {
 
 					res.render('login', {
 					    title: 'Hello - Please Login To Your Account',
-                        style: style
 					});
 				}
 			});
@@ -80,7 +77,6 @@ module.exports = function(app) {
     */
 
 	app.get('/home', ensureAuthenticated(), function(req, res) {
-
 		// AM.getAccountByID(req.user._id).then(function(acc){
 		// 	res.render('home', {
 		// 		title: 'Control Panel',
@@ -88,12 +84,10 @@ module.exports = function(app) {
 		// 		udata: acc
 		// 	});
 		// });
-        var style = "<link rel='stylesheet' href='/css/account.css'>";
 		res.render('home', {
 			title: 'Control Panel',
 			countries: CT,
-			udata: req.user,
-            style: style
+			udata: req.user
 		});
 
 	});
@@ -121,12 +115,10 @@ module.exports = function(app) {
 
 	app.get('/signup', function(req, res) {
 		var ref_by = req.query.ref_by;
-		var style = "<link rel='stylesheet' href='/css/account.css'>";
 		res.render('signup', {
 		    title: 'Signup',
             countries : CT,
-            ref_by: ref_by,
-            style: style
+            ref_by: ref_by
 		});
 	});
 
@@ -217,44 +209,9 @@ module.exports = function(app) {
 	});
 
 	app.get('/offers', ensureAuthenticated(), async function(req, res){
-        var style = "<link rel='stylesheet' href='/css/offer-page.css'>";
-
-		var api_key = 'JlD8HGBVzQ7cBWpTEwwcd0zDgmLe9YecLPdf33vWviFLAQKsvTLj4aielhxT';
-		var pub_id = '9359';
-		var ad_wall_id = '16028';
-
-		var limit = 10;
-		var offset = req.query.page * limit || 0;
-
-		var query_strings = {
-			subid1: req.user._id.toString(),
-			limit: limit,
-			offset: offset,
-			sort_by: 'payout',
-			ip: req.ip
-		};
-
-		request({
-			url: 'http://adscendmedia.com/adwall/api/publisher/9359/profile/16028/offers.json',
-			qs: query_strings,
-			headers: {
-				'User-Agent': req.headers['user-agent']
-			},
-			auth: {
-				'user': pub_id,
-				'pass': api_key
-			}
-		}, function(e, response, body){
-			if(e){
-				console.log(e);
-			} else {
-				var json = JSON.parse(body);
-				res.render('offers', {
-				    offers: json.offers,
-                    style: style
-				});
-			}
-		});
+		res.render('offers', {
+			subid1: req.user._id
+		})
 	});
 
 	app.get('/postback', async function(req, res){

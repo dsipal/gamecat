@@ -21,7 +21,14 @@ app.engine('hbs', exphbs( {
     extname: 'hbs',
     defaultView: 'default',
     layoutsDir: __dirname + '/app/server/views/layouts/',
-    partialsDir: __dirname + '/app/server/views/partials/'
+    partialsDir: __dirname + '/app/server/views/partials/',
+    helpers: {
+        section: function(name, options){
+            if(!this._sections) this._sections = {};
+            this._sections[name] = options.fn(this);
+            return null;
+        }
+    }
 }));
 app.set('view engine', 'hbs');
 

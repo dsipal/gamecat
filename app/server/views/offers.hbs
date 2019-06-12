@@ -1,12 +1,22 @@
-<ul class="row offer-list">
-    {{#each offers as |offer|}}
-        <li class="col-md-3 offer-item justify-content-center">
-            <div class="offer-container">
-                <img src="{{offer.creative_url}}"  alt="{{offer.name}}" class="row offer-image">
-                <a href="{{offer.click_url}}" class="row offer-link">{{offer.name}}</a>
-                <p class="offer-reward">{{offer.currency_count}} Points</p>
-                <p class="offer-description">{{offer.description}}</p>
-            </div>
-        </li>
-    {{/each}}
+{{#section 'head'}}<link rel="stylesheet" href="/css/offer-page.css">{{/section}}
+
+<ul class="row offer-list" data-subid1="{{subid1}}">
+
 </ul>
+<div class="row pagination">
+    <a href="#">&laquo;</a>
+
+    <div class="pagination-numbers">
+
+    </div>
+
+<!--    <a id="page-0" href="?page=0">1</a>-->
+<!--    <a id="page-1" href="?page=1">2</a>-->
+<!--    <a id="page-2" href="?page=2">3</a>-->
+<!--    <a id="page-3" href="?page=3">4</a>-->
+<!--    <a id="page-4" href="?page=4">5</a>-->
+<!--    <a id="page-5" href="?page=5">6</a>-->
+
+    <a href="#">&raquo;</a>
+</div>
+<script src="/js/views/offers.js"></script>
