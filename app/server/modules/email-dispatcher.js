@@ -10,7 +10,7 @@ const list = mailgun.lists('mylist@mycompany.com');
 
 exports.dispatchConfirm = function(email, token, name) {
 
-    const html = "Confirmation Link: " + `<a href="http://localhost:8080/verify?id="` + token + '?name=' + name + '"> Click Here </a>';
+    const html = "Confirmation Link: " + `<a href="http://localhost:8080/verify?id=` + token + '?name=' + name + '"> Click Here </a>';
     const data = {
         from: "Excited User <me@samples.mailgun.org>",
         to: email,
@@ -24,14 +24,30 @@ exports.dispatchConfirm = function(email, token, name) {
 };
 
 exports.joinMailingList = function(email, name) {
+
     let data = {
         address:    email,
         name:       name
-    }
+    };
 
     list.members.create(data, function(err, data){
         console.log('New Member On Mail List:');
         console.log(data);
+    });
+};
+
+exports.dispatchPasswordReset = function(email, token, name){
+
+    const html = 'Password Reset Link: ' + '<a href="http://localhost:8080/verify?id=' + token + '?name=' + name + '"> Click Here </a>';
+    const data = {
+        from: "Password Manager <me@sampes.mailgun.org>",
+        to: email,
+        subject: 'Password Reset',
+        html: html
+    };
+
+    mailgun.messages().send(data, function(err, bod){
+        console.log(bod);
     });
 };
 
