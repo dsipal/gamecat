@@ -230,13 +230,16 @@ module.exports = function(app) {
 			subid1: req.user._id.toString(),
 			limit: limit,
 			offset: offset,
-			sort_by: 'popularity',
+			sort_by: 'payout',
 			ip: req.ip
 		};
 
 		request({
 			url: 'http://adscendmedia.com/adwall/api/publisher/9359/profile/16028/offers.json',
 			qs: query_strings,
+			headers: {
+				'User-Agent': req.headers['user-agent']
+			},
 			auth: {
 				'user': pub_id,
 				'pass': api_key

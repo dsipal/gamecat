@@ -25,6 +25,7 @@ function watch() {
 exports.watch = watch;
 exports.style = style;
 
-var build = gulp.parallel(style, watch);
+var build = gulp.parallel(style);
+var gwatch = gulp.parallel(style, watch);
 gulp.task('build', build);
-gulp.task('default', build);
+gulp.task('default', gwatch);
