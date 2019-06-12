@@ -25,15 +25,6 @@ app.engine('hbs', exphbs( {
 }));
 app.set('view engine', 'hbs');
 
-// setup SASS compiler middleware //
-app.use(
-    sassMiddleware({
-        src: __dirname + '/app/server/views/', //where the sass files are
-        dest: __dirname + '/app/public/', //where css should go
-        debug: true // obvious
-    })
-);
-
 // set up view handling //
 app.set('views', __dirname + '/app/server/views');
 app.set('view cache', app.get('env') === 'live');
