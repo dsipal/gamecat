@@ -1,11 +1,11 @@
 $(document).ready(function(){
     const page_max = 15;
     const disp_pages = 5;
-    var page = Math.abs(parseInt(getUrlParameter('page'))) || 0;
+    var page = Math.abs(parseInt(getUrlParameter('page'))) || 1;
     console.log(page);
 
     var limit = 8;
-    var offset = limit * page;
+    var offset = limit * (page-1);
 
     var offer_list = $('.offer-list');
     var pagination = $('.pagination');
@@ -41,16 +41,16 @@ $(document).ready(function(){
 
 
 var makePagination = function(page, page_max){
-    page = page+1;
+    //page = page;
     var pages_right, pages_left;
     if(page === 14 || page === 15) pages_left = 4; else pages_left = 2;
-    if(page === 0 || page === 1) pages_right = 4; else pages_right = 2;
+    if(page === 1 || page === 2) pages_right = 4; else pages_right = 2;
     var first_page = Math.max(1, page-pages_left);
     var last_page = Math.min(page_max, page+pages_right);
     console.log(first_page,page,last_page);
 
     for(i = first_page; i <= last_page; i++){
-        var element = `<a id="page-`+i+`" href="?page=`+(i-1)+`">`+i+`</a>`;
+        var element = `<a id="page-`+i+`" href="?page=`+i+`">`+i+`</a>`;
         $('.pagination-numbers').append(element);
     }
     $('#page-'+page).addClass('active');
