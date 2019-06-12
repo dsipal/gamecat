@@ -60,7 +60,7 @@ user.statics.addNewAccount = function(newData, callback){
     User.findOne({username:newData.username}, function(e, o) {
         if (o){
             callback('username-taken', null);
-        }  {
+        } else {
             User.findOne({email:newData.email}, function(e, o) {
                 if (o){
                     callback('email-taken', null);

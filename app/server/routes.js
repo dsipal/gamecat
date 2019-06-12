@@ -277,7 +277,7 @@ module.exports = function(app) {
                     if(success){
                         res.redirect('/');
                     } else {
-                        res.redirect('/signip');
+                        res.redirect('/signup');
                     }
                 });
             }
