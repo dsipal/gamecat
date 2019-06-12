@@ -1,4 +1,4 @@
-    // imports //
+// imports //
 var http = require('http');
 var express = require('express');
 var exphbs = require('express-handlebars');
@@ -6,15 +6,14 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var MongoStore = require('connect-mongo')(session);
-//var sassMiddleware = require('node-sass-middleware');
 var passport = require('passport')
     ,	LocalStrategy = require('passport-local').Strategy;
 
-    // create instance of express server //
+// create instance of express server //
 var app = express();
 app.set('port', process.env.PORT || 8080);
 
-    // setup handlebars templating //
+// setup handlebars templating //
 app.engine('hbs', exphbs( {
     extname: 'hbs',
     defaultView: 'default',
@@ -23,19 +22,19 @@ app.engine('hbs', exphbs( {
 }));
 app.set('view engine', 'hbs');
 
-    // set up view handling //
+// set up view handling //
 app.set('views', __dirname + '/app/server/views');
 app.set('view cache', app.get('env') === 'live');
 app.use(express.static(__dirname + '/app/public'));
 
-    // set up cookie-parser middleware //
+// set up cookie-parser middleware //
 app.use(cookieParser('faeb4453e5d14fe6f6d04637f78077c76c73d1b4'));
 
-    // set up body-parser middleware //
+// set up body-parser middleware //
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-    // build mongo database connection url //
+// build mongo database connection url //
 if (app.get('env') === 'live'){
     // production server settings //
     process.env.DB_HOST = process.env.MONGODB_URI;
@@ -53,7 +52,7 @@ if (app.get('env') === 'live'){
     app.locals.pretty = true; // output pretty HTML
 }
 
-    // setup express-sessions //
+// setup express-sessions //
 app.use(session({
         secret: 'faeb4453e5d14fe6f6d04637f78077c76c73d1b4',
         resave: true,
@@ -68,10 +67,10 @@ require('./app/config/passport')(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
-    // set up the router //
+// set up the router //
 require('./app/server/routes')(app, passport);
 
-    // create server //
+// create server //
 http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));
 });
