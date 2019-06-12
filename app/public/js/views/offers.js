@@ -1,6 +1,5 @@
 $(document).ready(function(){
     const page_max = 15;
-    const disp_pages = 5;
     var page = Math.abs(parseInt(getUrlParameter('page'))) || 1;
     console.log(page);
 
@@ -17,7 +16,6 @@ $(document).ready(function(){
         offset: offset,
         sort_by: 'payout'
     });
-
 
 
     $.getJSON(url+'?'+query_strings).done(function(data){
