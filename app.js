@@ -6,11 +6,14 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var MongoStore = require('connect-mongo')(session);
+var sassMiddleware = require('node-sass-middleware');
+var helmet = require('helmet');
 var passport = require('passport')
     ,	LocalStrategy = require('passport-local').Strategy;
 
 // create instance of express server //
 var app = express();
+app.use(helmet());
 app.set('port', process.env.PORT || 8080);
 
 // setup handlebars templating //

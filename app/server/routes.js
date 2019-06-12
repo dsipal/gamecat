@@ -3,10 +3,18 @@ var CT = require('./modules/country-list');
 var AM = require('./modules/account-manager');
 var EM = require('./modules/email-dispatcher');
 const User = require('./models/User');
+const rateLimit = require("express-rate-limit");
 const request = require("request-promise");
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 var qs = require('querystring');
+
+const accountCreateLimiter = rateLimit({
+	windowMs: 60*60*1000 * 24,
+	max: 3,
+	message:
+		"Too many account created on this IP, try again in a day."
+});
 
 module.exports = function(app) {
 
@@ -122,19 +130,20 @@ module.exports = function(app) {
 		});
 	});
 
-	app.post('/signup', function(req, res){
+	app.post('/signup', accountCreateLimiter, function(req, res){
 		User.addNewAccount({
-			ref_by: req.body['ref_by'],
-			name: req.body['name'],
-			email: req.body['email'],
-			username: req.body['username'],
-			password: req.body['password'],
-			country: req.body['country']
+			ref_by:     req.body['ref_by'],
+			name:       req.body['name'],
+			email:      req.body['email'],
+			username:   req.body['username'],
+			password:   req.body['password'],
+			country:    req.body['country']
 		}, function(e, o) {
 			if(e){
 				res.status(400).send(e);
 			} else {
 				o.percolateReferrals();
+                //res.redirect('/home');
 				res.status(200).send('ok');
 			}
 		});
@@ -258,6 +267,22 @@ module.exports = function(app) {
 	});
 
 	app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });
+
+	app.get('/verify', function(req, res){
+        User.findOne({username:req.query.name}, function(e, o) {
+            if(e) {
+                console.log('Problem With Verification' + req.query.name + '   ' + req.query.id);
+            } else{
+                o.confirmAccount(req.query.id, function(success){
+                    if(success){
+                        res.redirect('/');
+                    } else {
+                        res.redirect('/signup');
+                    }
+                });
+            }
+        })
+    })
 };
 
 function ensureAuthenticated(){

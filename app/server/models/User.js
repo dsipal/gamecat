@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const crypto = require('crypto');
+const emchecker = require('../modules/email-checker.js');
+const emdisp = require('../modules/email-dispatcher');
 
 const user = new mongoose.Schema({
         username: String,
@@ -14,7 +16,10 @@ const user = new mongoose.Schema({
         reg_date: Date,
         points: Number,
         cookie: String,
-        ip: String
+        ip: String,
+        rank: String,
+        token: String,
+        mailing: Boolean
     },
     {collection: 'Users'});
 
@@ -55,7 +60,7 @@ user.statics.addNewAccount = function(newData, callback){
     User.findOne({username:newData.username}, function(e, o) {
         if (o){
             callback('username-taken', null);
-        }  {
+        } else {
             User.findOne({email:newData.email}, function(e, o) {
                 if (o){
                     callback('email-taken', null);
@@ -64,22 +69,36 @@ user.statics.addNewAccount = function(newData, callback){
                     User.findOne({username:newData.ref_by}, function(e, o) {
                         if (!o && !(newData.ref_by === "")){
                             callback('invalid-referral', null);
-                        } else {
-                            saltAndHash(newData.password, function(hash){
+                        } else{
+                            if(emchecker.checkBannedEmails(newData.email)) {
+                                if (newData.username === newData.password){
+                                    callback('same-user-pass');
+                                } else {
+                                    saltAndHash(newData.password, function (hash) {
 
-                                newData.password = hash;
-                                newData.referrals = [];
-                                // append date stamp when record was created //
-                                newData.reg_date = new Date();
-                                newData.points = 0;
-                                User.create(newData, function(e,o){
-                                    if(e) {
-                                        callback(e, null);
-                                    } else {
-                                        callback(null, o);
-                                    }
-                                });
-                            });
+                                        newData.password = hash;
+                                        newData.referrals = [];
+                                        // append date stamp when record was created //
+                                        newData.reg_date = new Date();
+                                        newData.points = 0;
+                                        newData.rank = 'new';
+                                        newData.mailing = true;
+                                        newData.token = crypto.randomBytes(20).toString('hex');
+
+                                        emdisp.dispatchConfirm(newData.email, newData.token, newData.username);
+
+                                        User.create(newData, function(e,o){
+                                            if(e) {
+                                                callback(e, null);
+                                            } else {
+                                                callback(null, o);
+                                            }
+                                        });
+                                    })
+                                }
+                            } else {
+                                callback('disposable-email');
+                            }
                         }
                     });
                 }
@@ -132,6 +151,19 @@ user.methods.deleteAccount = function(){
 };
 
 
+//Checking if the token from URL matches token stored in user data, if yes, activate account
+user.methods.confirmAccount = function(idToken, callback){
+    if(this.token === idToken){
+        this.rank = 'activated';
+        this.save();
+        if(this.mailing){
+            emdisp.joinMailingList(this.email, this.name);
+        }
+        callback(true);
+    } else {
+        callback(false);
+    }
+};
     // helper functions //
 
 var md5 = function(str) {

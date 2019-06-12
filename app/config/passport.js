@@ -29,11 +29,17 @@ module.exports = function(passport) {
                 return done(null, false, { message: 'Incorrect Username'});
             }
 
+            if(user.activated === false){
+                console.log('can not use new user');
+                return done('user not activated yet, please use your activation email', false);
+            }
+
             if(user.validatePassword(password, user.password)){
                 return done(null, user);
             }else{
                 return done(err);
             }
+
 
         });
     }));

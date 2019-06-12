@@ -5,6 +5,7 @@ const User = require('../models/User');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
+const emchecker = require('./email-checker.js');
 
 var db;
 
@@ -111,37 +112,48 @@ exports.addPoints = function(subid, amount){
 
 exports.addNewAccount = function(newData, callback)
 {
-    User.findOne({username:newData.username}, function(e, o) {
-        if (o){
-            callback('username-taken');
-        }	else{
-            User.findOne({email:newData.email}, function(e, o) {
-                if (o){
-                    callback('email-taken');
-                }	else{
-                    console.log(newData.ref_by);
-                    User.findOne({username:newData.ref_by}, function(e, o) {
-                        if (!o && !(newData.ref_by === "")){
-                            callback('invalid-referral');
-                        } else{
-                            saltAndHash(newData.password, function(hash){
+	User.findOne({username:newData.username}, function(e, o) {
+		if (o){
+			callback('username-taken');
+		}	else{
+			User.findOne({email:newData.email}, function(e, o) {
+				if (o){
+					callback('email-taken');
+				}	else{
+					console.log(newData.ref_by);
+					User.findOne({username:newData.ref_by}, function(e, o) {
+						if (!o && !(newData.ref_by === "")){
+							callback('invalid-referral');
+						} 	else{
+								if(emchecker.checkBannedEmails(newData.email)) {
+								    if (newData.username === newData.password){
+								        callback('same-user-pass');
+                                    } else {
+                                        saltAndHash(newData.password, function (hash) {
 
-                                newData.password = hash;
-                                newData.referrals = [];
-                                // append date stamp when record was created //
-                                newData.reg_date = new Date();
-                                newData.points = 0;
-                                User.create(newData, callback);
-
-                                // add referral to person who referred user //
-                                percolateReferrals(newData.username, newData.ref_by);
-                            })
-                        }
-                    });
-                }
-            });
-        }
-    });
+                                            newData.password = hash;
+                                            newData.referrals = [];
+                                            // append date stamp when record was created //
+                                            newData.reg_date = new Date();
+                                            newData.points = 0;
+                                            User.create(newData, function(e,o){
+                                                if(e) {
+                                                    callback(e, null);
+                                                } else {
+                                                    callback(null, o);
+                                                }
+                                            });
+                                        })
+                                    }
+								} else {
+									callback('disposable-email');
+								}
+						}
+					});
+				}
+			});
+		}
+	});
 };
 
 percolateReferrals = function(username, ref_by) {

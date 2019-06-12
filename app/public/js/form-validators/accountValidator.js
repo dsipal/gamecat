@@ -58,8 +58,21 @@ AccountValidator.prototype.showInvalidUserName = function()
 AccountValidator.prototype.showInvalidReffName = function()
 {
     this.controlGroups[3].addClass('error');
-    this.showErrors(['This refferal is not valid.']);
+    this.showErrors(['This referral is not valid.']);
 };
+
+AccountValidator.prototype.showDispoEmail = function()
+{
+	this.controlGroups[1].addClass('error');
+	this.showErrors(['This email is from a disposable email provider'])
+};
+
+AccountValidator.prototype.showSamePass = function()
+{
+    this.controlGroups[3].addClass('error');
+    this.showErrors(['Please use a password that does not match your username']);
+};
+
 
 AccountValidator.prototype.validateForm = function()
 {
