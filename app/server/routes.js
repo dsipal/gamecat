@@ -116,7 +116,7 @@ module.exports = function(app) {
 		});
 	});
 
-	app.post('/signup', accountCreateLimiter, function(req, res){
+	app.post('/signup', function(req, res){
 		console.log(req.body);
 
 		User.addNewAccount({

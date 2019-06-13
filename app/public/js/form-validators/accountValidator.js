@@ -1,5 +1,6 @@
 //TODO work in new account form into validation, ensure it keeps up to standards
 //TODO add check to ensure user has selected a country
+//TODO ensure that every field is checked both on client and server.
 function AccountValidator()
 {
 // build array maps of the form inputs & control groups //
@@ -24,42 +25,51 @@ function AccountValidator()
     {
         return s.length >= 3;
     };
-    this.validatePassword = function(password, passwordV, callback)
+    this.validatePassword = function(callback)
     {
-        var regex = new RegExp(`\\S*(\\S*([a-zA-Z]\\S*[0-9])|([0-9]\\S*[a-zA-Z]))\\S*`);
+        const password = this.fields.password.val();
+        const passwordV = this.fields.passwordV.val();
+        const username = this.fields.username.val();
+        let regex = new RegExp(`\\S*(\\S*([a-zA-Z]\\S*[0-9])|([0-9]\\S*[a-zA-Z]))\\S*`);
 
         if(password.length >= 6){
-            if(password === passwordV){
-                if(regex.test(password)){
-                    callback(null);
+            if(username !== password){
+                if(password === passwordV){
+                    if(regex.test(password)){
+                        callback(null);
+                    } else {
+                        callback('Please ensure your password contains letters and numbers.');
+                    }
                 } else {
-                    callback('Please ensure your password contains letters and numbers.')
+                    callback('Your passwords are not the same.');
                 }
             } else {
-                callback('Your passwords are not the same!')
+                callback('Please do not use your username as your password.');
             }
-            callback(null);
         } else {
-            callback('Please ensure your password is at least 6 characters long.')
+            callback('Please ensure your password is at least 6 characters long.');
         }
-
     };
 
-    this.validateEmail = function(e)
+    this.validateEmail = function()
     {
         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(e);
+        return re.test(this.fields.email.val());
+    };
+
+    this.validateCountry = function(){
+        return this.fields.country !== " ";
     };
 
     this.showErrors = function(a)
     {
-        $('.modal-form-errors .modal-body p').text('Please correct the following problems :');
-        var ul = $('.modal-form-errors .modal-body ul');
+        console.log(a);
+        $('.modal-form-errors .modal-body p').text('Please correct the following problems: ');
+        let ul = $('.modal-form-errors .modal-body ul');
         ul.empty();
-        for (var i=0; i < a.length; i++) ul.append('<li>'+a[i]+'</li>');
+        for (let key in a) ul.append('<li>'+a[key]+'</li>');
         this.alert.modal('show');
     }
-
 }
 
 AccountValidator.prototype.showInvalidEmail = function()
@@ -86,18 +96,10 @@ AccountValidator.prototype.showDispoEmail = function()
 	this.showErrors(['This email is from a disposable email provider.'])
 };
 
-AccountValidator.prototype.showSamePass = function()
-{
-    this.fields.password.addClass('error');
-    this.fields.passwordV.addClass('error');
-    this.showErrors(['Please use a password that does not match your username.']);
-};
-
-
 AccountValidator.prototype.validateForm = function()
 {
-    var e = [];
-    for (var elem in this.fields) elem.removeClass('error');
+    let e = [];
+    for (let key in this.fields){ this.fields[key].removeClass('error');}
     if (!this.validateName(this.fields.name.val())) {
         this.fields.name.addClass('error');
         e.push('Please enter your name.');
@@ -110,8 +112,12 @@ AccountValidator.prototype.validateForm = function()
         this.fields.name.addClass('error');
         e.push('Please choose a username.');
     }
+    if(!this.validateCountry(this.fields.country.val())){
+        this.fields.country.addClass('error');
+        e.push('Please select a country.');
+    }
 
-    this.validatePassword(this.fields.password.val(), this.fields.passwordV.val(), function(err){
+    this.validatePassword(function(err){
         if(err){
             e.push(err);
         }

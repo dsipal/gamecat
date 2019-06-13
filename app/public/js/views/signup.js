@@ -1,8 +1,5 @@
 
 $(document).ready(function(){
-
-//	document.getElementById('points-row').style.display = "none";
-
 	var av = new AccountValidator();
 	var sc = new SignupController();
 
@@ -22,8 +19,6 @@ $(document).ready(function(){
 				av.showInvalidRefName();
 			}  	else if (e.responseText === 'disposable-email') {
 				av.showDispoEmail();
-			} 	else if (e.responseText === 'same-user-pass') {
-				av.showSamePass();
 			}
 		}
 	});
