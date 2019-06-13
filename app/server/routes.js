@@ -107,7 +107,6 @@ module.exports = function(app) {
 	/*
         new accounts
     */
-	//TODO work in all new form fields
 	app.get('/signup', function(req, res) {
 		var ref_by = req.query.ref_by;
 		res.render('signup', {
@@ -118,14 +117,17 @@ module.exports = function(app) {
 	});
 
 	app.post('/signup', accountCreateLimiter, function(req, res){
+		console.log(req.body);
 
 		User.addNewAccount({
-			ref_by:     req.body['ref_by'],
-			name:       req.body['name'],
-			email:      req.body['email'],
 			username:   req.body['username'],
 			password:   req.body['password'],
-			country:    req.body['country']
+			name:       req.body['name'],
+			email:      req.body['email'],
+			country:    req.body['country'],
+			ref_by:     req.body['ref_by'],
+			email_optin: req.body['email-optin'] === "optin-true"
+
 		}, function(e, o) {
 			if(e){
 				res.status(400).send(e);

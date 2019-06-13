@@ -4,8 +4,8 @@ function AccountValidator()
 {
 // build array maps of the form inputs & control groups //
 
-    this.formFields = [$('#name-tf'), $('#email-tf'), $('#user-tf'), $('#pass-tf'), $('#reffedby')];
-    this.controlGroups = [$('#name-cg'), $('#email-cg'), $('#user-cg'), $('#pass-cg'), $('reff-cg')];
+    this.formFields = [$('#name-tf'), $('#email-tf'), $('#user-tf'), $('#pass-tf'), $('#country-list'), $('#ref_by'), $('#email-optin'), $('#terms-conditions')];
+    this.controlGroups = [$('#name-cg'), $('#email-cg'), $('#user-cg'), $('#pass-cg'), $('#reff-cg')];
 
 // bind the form-error modal window to this controller to display any errors //
 
@@ -16,7 +16,6 @@ function AccountValidator()
     {
         return s.length >= 3;
     };
-
     this.validatePassword = function(s)
     {
         // if user is logged in and hasn't changed their password, return ok

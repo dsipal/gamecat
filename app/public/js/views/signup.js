@@ -18,7 +18,7 @@ $(document).ready(function(){
 				av.showInvalidEmail();
 			}	else if (e.responseText === 'username-taken'){
 				av.showInvalidUserName();
-			}  	else if (e.responseText === 'invalid-refferal'){
+			}  	else if (e.responseText === 'invalid-referral'){
 				av.showInvalidReffName();
 			}  	else if (e.responseText === 'disposable-email') {
 				av.showDispoEmail();
