@@ -4,9 +4,17 @@ function AccountValidator()
 {
 // build array maps of the form inputs & control groups //
 
-    this.formFields = [$('#name-tf'), $('#email-tf'), $('#user-tf'), $('#pass-tf'), $('#reffedby')];
-    this.controlGroups = [$('#name-cg'), $('#email-cg'), $('#user-cg'), $('#pass-cg'), $('reff-cg')];
-
+    this.fields = {
+        username: $('#user-tf'),
+        password: $('#pass-tf'),
+        passwordV: $('#pass-verify-tf'),
+        name: $('#name-tf'),
+        email: $('#email-tf'),
+        country: $('#country-list'),
+        referrer: $('#ref_by'),
+        email_optin: $('#email-optin'),
+        terms_conditions: $('#terms-conditions')
+    };
 // bind the form-error modal window to this controller to display any errors //
 
     this.alert = $('.modal-form-errors');
@@ -16,15 +24,25 @@ function AccountValidator()
     {
         return s.length >= 3;
     };
-
-    this.validatePassword = function(s)
+    this.validatePassword = function(password, passwordV, callback)
     {
-        // if user is logged in and hasn't changed their password, return ok
-        if ($('#userId').val() && s===''){
-            return true;
-        }	else{
-            return s.length >= 6;
+        var regex = new RegExp(`\\S*(\\S*([a-zA-Z]\\S*[0-9])|([0-9]\\S*[a-zA-Z]))\\S*`);
+
+        if(password.length >= 6){
+            if(password === passwordV){
+                if(regex.test(password)){
+                    callback(null);
+                } else {
+                    callback('Please ensure your password contains letters and numbers.')
+                }
+            } else {
+                callback('Your passwords are not the same!')
+            }
+            callback(null);
+        } else {
+            callback('Please ensure your password is at least 6 characters long.')
         }
+
     };
 
     this.validateEmail = function(e)
@@ -46,53 +64,58 @@ function AccountValidator()
 
 AccountValidator.prototype.showInvalidEmail = function()
 {
-    this.controlGroups[1].addClass('error');
+    this.fields.email.addClass('error');
     this.showErrors(['That email address is already in use.']);
 };
 
 AccountValidator.prototype.showInvalidUserName = function()
 {
-    this.controlGroups[2].addClass('error');
+    this.fields.username.addClass('error');
     this.showErrors(['That username is already in use.']);
 };
 
-AccountValidator.prototype.showInvalidReffName = function()
+AccountValidator.prototype.showInvalidRefName = function()
 {
-    this.controlGroups[3].addClass('error');
+    this.fields.referrer.addClass('error');
     this.showErrors(['This referral is not valid.']);
 };
 
 AccountValidator.prototype.showDispoEmail = function()
 {
-	this.controlGroups[1].addClass('error');
-	this.showErrors(['This email is from a disposable email provider'])
+	this.fields.email.addClass('error');
+	this.showErrors(['This email is from a disposable email provider.'])
 };
 
 AccountValidator.prototype.showSamePass = function()
 {
-    this.controlGroups[3].addClass('error');
-    this.showErrors(['Please use a password that does not match your username']);
+    this.fields.password.addClass('error');
+    this.fields.passwordV.addClass('error');
+    this.showErrors(['Please use a password that does not match your username.']);
 };
 
 
 AccountValidator.prototype.validateForm = function()
 {
     var e = [];
-    for (var i=0; i < this.controlGroups.length; i++) this.controlGroups[i].removeClass('error');
-    if (this.validateName(this.formFields[0].val()) == false) {
-        this.controlGroups[0].addClass('error'); e.push('Please Enter Your Name');
+    for (var elem in this.fields) elem.removeClass('error');
+    if (!this.validateName(this.fields.name.val())) {
+        this.fields.name.addClass('error');
+        e.push('Please enter your name.');
     }
-    if (this.validateEmail(this.formFields[1].val()) == false) {
-        this.controlGroups[1].addClass('error'); e.push('Please Enter A Valid Email');
+    if (!this.validateEmail(this.fields.email.val())) {
+        this.fields.email.addClass('error');
+        e.push('Please enter a valid email.');
     }
-    if (this.validateName(this.formFields[2].val()) == false) {
-        this.controlGroups[2].addClass('error');
-        e.push('Please Choose A Username');
+    if (!this.validateName(this.fields.username.val())) {
+        this.fields.name.addClass('error');
+        e.push('Please choose a username.');
     }
-    if (this.validatePassword(this.formFields[3].val()) == false) {
-        this.controlGroups[3].addClass('error');
-        e.push('Password Should Be At Least 6 Characters');
-    }
+
+    this.validatePassword(this.fields.password.val(), this.fields.passwordV.val(), function(err){
+        if(err){
+            e.push(err);
+        }
+    });
     if (e.length) this.showErrors(e);
     return e.length === 0;
 };

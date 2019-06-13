@@ -3,7 +3,7 @@ const domain = 'sandboxf2ab2d4c9c19447ba48159645025e909.mailgun.org';
 
 const mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 
-//TODO set up mailing list
+//TODO set up email_optin list
 const list = mailgun.lists('mylist@mycompany.com');
 
 exports.dispatchConfirm = function(email, token, name) {

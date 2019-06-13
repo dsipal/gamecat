@@ -19,7 +19,7 @@ const user = new mongoose.Schema({
         ip: String,
         rank: String,
         token: String,
-        mailing: Boolean
+        email_optin: Boolean
     },
     {collection: 'Users'});
 
@@ -191,7 +191,7 @@ user.methods.confirmAccount = function(idToken, callback){
     if(this.token === idToken){
         this.rank = 'activated';
         this.save();
-        if(this.mailing){
+        if(this.email_optin){
             emdisp.joinMailingList(this.email, this.name);
         }
         callback(true);

@@ -1,3 +1,4 @@
+<!--TODO clean up html here, remove unnecessary divs-->
 <div id="account-form-container" class="center-vertical card card-body bg-light">
     <form method="post" id="account-form">
         <h2></h2>
@@ -10,11 +11,11 @@
         <hr>
         <div class="form-group row margin-zero">
             <label class="col-sm-3 col-form-label col-form-label-sm" for="pass-tf">Password</label>
-            <div class="col-sm-9"><input id="pass-tf" type="password" name="password" value="" class="form-control" minlength="6" pattern="\d" required></div>
+            <div class="col-sm-9"><input id="pass-tf" type="password" name="password" value="" class="form-control" minlength="6" required></div>
         </div>
         <div class="form-group row margin-zero">
             <label class="col-sm-3 col-form-label col-form-label-sm" for="pass-tf">Verify</label>
-            <div class="col-sm-9"><input id="pass-tf" type="password" name="password-verify" value="" class="form-control" minlength="6" pattern="\d" required></div>
+            <div class="col-sm-9"><input id="pass-verify-tf" type="password" name="password-verify" value="" class="form-control" minlength="6" required></div>
         </div>
         <hr>
         <div class="form-group row">
@@ -42,9 +43,9 @@
         </div>
         <hr>
         <label class="col-sm-11 col-form-label col-form-label-sm" for="email-optin">Opt-in to receive exclusive offers</label>
-        <input type="checkbox" value="email-optin" checked>
+        <input id="email-optin" type="checkbox" value="optin-true" name="email-optin" checked>
         <label class="col-sm-11 col-form-label col-form-label-sm" for="email-optin">I agree to the terms and conditions</label>
-        <input type="checkbox" value="email-optin" required>
+        <input id="terms-conditions" type="checkbox" value="tc-true" name="terms-conditions" required>
     </form>
 
 
