@@ -220,8 +220,9 @@ module.exports = function(app) {
 	});
 
 	app.get('/postback', async function(req, res){
-		//TODO add ip restrictions to postback, ensure that it works correctly with Adscend
-		AM.addPoints(req.query.subid1, req.query.payout*10);
+		//TODO *added ip restrictions to postback*, ensure that it works correctly with Adscend
+
+		User.getByID().addPoints(req.query.payout*10);
 
 		res.send(req.query.subid1 + " was paid " + 10 * req.query.payout);
 	});
@@ -257,12 +258,14 @@ module.exports = function(app) {
 };
 
 function ensureAuthenticated(){
-	//TODO add check to see if user has verified email
+	//TODO add check to see if user has verified email && add correct error response
 	return function(req, res, next){
 		if(!req.isAuthenticated || !req.isAuthenticated()){
-			res.status(401).send('not-authenticated')
+			res.status(401).send('not-authenticated');
+		} else if(req.user.rank === 'new'){
+			res.status(401).send('not-authenticated');
 		} else {
-			next()
+			next();
 		}
 	}
 }

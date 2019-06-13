@@ -31,6 +31,24 @@ app.engine('hbs', exphbs( {
 }));
 app.set('view engine', 'hbs');
 
+
+    //TODO use below expression to limit ips that access /postback
+// app.use('/postback', function(req, res, next) {
+//     // filtering here, calls `res` method to stop progress or calls `next` to proceed
+//     let ip = req.ip ||
+//         req.headers['x-forwarded-for'] ||
+//         req.connection.remoteAddress ||
+//         req.socket.remoteAddress ||
+//         req.connection.socket.remoteAddress;
+//
+//     // The IP from the CPA site
+//     if (ip === '0.0.0.0') {
+//         next();
+//     } else {
+//         res.end();
+//     }
+// });
+
 // set up view handling //
 app.set('views', __dirname + '/app/server/views');
 app.set('view cache', app.get('env') === 'live');
