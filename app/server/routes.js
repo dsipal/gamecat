@@ -11,10 +11,24 @@ const LocalStrategy = require('passport-local').Strategy;
 var qs = require('querystring');
 
 const accountCreateLimiter = rateLimit({
-	windowMs: 60*60*1000 * 24,
+	windowMs: 60*60*1000 * 24, 		//3 Registrations per One Day
 	max: 3,
 	message:
 		"Too many account created on this IP, try again in a day."
+});
+
+const genericLimiter = rateLimit({
+	windowMs: 	1000, 				//2 Get/Posts per One Second
+	max:		2,
+	message:
+		"Too many refreshes per second, calm down."
+});
+
+const passwordResetLimiter = rateLimit({
+	windowMs:	60*60*1000,			//2 Pass Resets per One Hour
+	max: 2,
+	message:
+		"Please wait a short while before attempting to reset your password again"
 });
 
 module.exports = function(app) {
@@ -30,10 +44,10 @@ module.exports = function(app) {
 			});
 		} else {
 			// attempt automatic login //
-			//TODO remove call to AM
-			AM.validateLoginKey(req.cookies.login, req.ip, function(e, o){
+			//TODO *removed call to AM for autoLogin and validateLoginKey*
+			User.validateLoginKey(req.cookies.login, req.ip, function(e, o){
 				if (o){
-					AM.autoLogin(o.user, o.pass, function(o){
+					User.autoLogin(o.user, o.pass, function(o){
 						req.session.user = o;
 						res.redirect('/home');
 					});
@@ -55,8 +69,8 @@ module.exports = function(app) {
 			if (req.body['remember-me'] === 'false'){
 				res.redirect('/home');
 			} else {
-				//TODO remove call to AM- move function to User.js
-				AM.generateLoginKey(req.user.username, req.ip, function(key){
+				//TODO *removed call to AM- moved function to User.js *
+				User.generateLoginKey(req.user.username, req.ip, function(key){
 					res.cookie('login', key, { maxAge: 900000 });
 					res.redirect('/home');
 				});

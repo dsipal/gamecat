@@ -1,0 +1,35 @@
+#login {
+  width: 380px; }
+  #login .btn {
+    float: left;
+    width: 48%;
+    font-size: 0.8rem; }
+  #login .btn-btm {
+    padding: 0; }
+  #login .btn-left {
+    margin-right: 4%; }
+  #login #btn_sign_in {
+    color: white; }
+  #login #btn_remember {
+    background: white;
+    border: 1px solid #ced4da; }
+  #login #btn_remember:hover {
+    background: #F8F9FA; }
+  #login h6, #login label {
+    font-size: 0.8rem; }
+  #login h6, #login label, #login #btn_remember {
+    color: #808080;
+    text-shadow: -1px 1px 0 #fff; }
+  #login .fa {
+    padding-right: 10px; }
+  #login hr {
+    clear: left; }
+  #login .btm-links {
+    font-size: 0.8rem;
+    margin: 2px 0 0 0; }
+    #login .btm-links #forgot-password {
+      float: left;
+      margin-left: 16px; }
+    #login .btm-links #create-account {
+      float: right;
+      margin-right: 20px; }

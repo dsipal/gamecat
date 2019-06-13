@@ -1,0 +1,20 @@
+.modal .modal-dialog {
+  width: 480px; }
+
+.modal .form-group {
+  margin-bottom: 0px; }
+
+.modal .alert {
+  margin-top: 10px;
+  margin-bottom: 0;
+  padding: 8px 15px 8px 15px; }
+
+.modal .alert-dismissable, .modal .close {
+  right: -4px; }
+
+.modal p {
+  margin: 0;
+  padding: 0; }
+
+.modal .modal-footer button {
+  width: 80px; }

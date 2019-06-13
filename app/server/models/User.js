@@ -23,6 +23,9 @@ const user = new mongoose.Schema({
     },
     {collection: 'Users'});
 
+const guid = function(){return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {var r = Math.random()*16|0,v=c=='x'?r:r&0x3|0x8;return v.toString(16);});}
+
+
 // class/static functions //
 
 user.statics.getAllRecords = function(callback){
@@ -39,6 +42,17 @@ user.statics.deleteAllAccounts = function(){
 
 user.statics.getByID = function(){
     return User.findOne({_id: getObjectId(id)});
+};
+
+user.methods.generateLoginKey = function(username, ipAddress, callback)
+{
+    let cookie = guid();
+    User.findOneAndUpdate({username:username}, {$set:{
+            ip : ipAddress,
+            cookie : cookie
+        }}, {returnOriginal : false}, function(e, o){
+        callback(cookie);
+    });
 };
 
 // login functions //
@@ -105,6 +119,25 @@ user.statics.addNewAccount = function(newData, callback){
                     });
                 }
             });
+        }
+    });
+};
+
+//Moved from AM
+user.methods.validateLoginKey = function(cookie, ipAddress, callback)
+{
+// ensure the cookie maps to the user's last recorded ip address //
+    User.findOne({cookie:cookie, ip:ipAddress}, callback);
+};
+
+//Also from AM
+user.methods.autoLogin = function(user, pass, callback)
+{
+    User.findOne({user:user}, function(e, o) {
+        if (o){
+            o.pass === pass ? callback(o) : callback(null);
+        }	else{
+            callback(null);
         }
     });
 };
