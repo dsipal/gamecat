@@ -1,4 +1,5 @@
-
+//TODO work in new account form into validation, ensure it keeps up to standards
+//TODO add check to ensure user has selected a country
 function AccountValidator()
 {
 // build array maps of the form inputs & control groups //

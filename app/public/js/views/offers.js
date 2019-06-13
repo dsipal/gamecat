@@ -1,3 +1,4 @@
+//TODO instead of loading new page, have offers/pagination load all into one page
 $(document).ready(function(){
     const page_max = 15;
     var page = Math.abs(parseInt(getUrlParameter('page'))) || 1;

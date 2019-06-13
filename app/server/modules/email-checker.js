@@ -13,4 +13,4 @@ exports.checkBannedEmails = function(email) {
     } else {
         return true;
     }
-}
+};

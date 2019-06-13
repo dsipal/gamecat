@@ -1,4 +1,5 @@
 'use strict';
+//TODO add removing of comments, console.log, minify js/css, optimize images, etc into gulpfile.js
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 sass.compiler = require('node-sass');

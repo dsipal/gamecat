@@ -9,6 +9,8 @@ const emchecker = require('./email-checker.js');
 
 var db;
 
+//TODO remove account-manager.js completely, move necessary functions to User.js or elsewhere
+
 mongoose.connect(process.env.DB_URL,{
     useNewUrlParser: true,
     useFindAndModify: false
@@ -18,7 +20,7 @@ mongoose.connect(process.env.DB_URL,{
     console.log(e);
 });
 
-
+//TODO move GUID to User.js
 const guid = function(){return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {var r = Math.random()*16|0,v=c=='x'?r:r&0x3|0x8;return v.toString(16);});}
 
 /*

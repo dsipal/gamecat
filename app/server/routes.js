@@ -1,3 +1,4 @@
+//TODO split up routes into separate more managable files/endpoints
 
 var CT = require('./modules/country-list');
 var AM = require('./modules/account-manager');
@@ -29,6 +30,7 @@ module.exports = function(app) {
 			});
 		} else {
 			// attempt automatic login //
+			//TODO remove call to AM
 			AM.validateLoginKey(req.cookies.login, req.ip, function(e, o){
 				if (o){
 					AM.autoLogin(o.user, o.pass, function(o){
@@ -53,6 +55,7 @@ module.exports = function(app) {
 			if (req.body['remember-me'] === 'false'){
 				res.redirect('/home');
 			} else {
+				//TODO remove call to AM- move function to User.js
 				AM.generateLoginKey(req.user.username, req.ip, function(key){
 					res.cookie('login', key, { maxAge: 900000 });
 					res.redirect('/home');
@@ -75,15 +78,8 @@ module.exports = function(app) {
 	/*
         control panel
     */
-
+	//TODO move updating account to different page, add balance, other details
 	app.get('/home', ensureAuthenticated(), function(req, res) {
-		// AM.getAccountByID(req.user._id).then(function(acc){
-		// 	res.render('home', {
-		// 		title: 'Control Panel',
-		// 		countries: CT,
-		// 		udata: acc
-		// 	});
-		// });
 		res.render('home', {
 			title: 'Control Panel',
 			countries: CT,
@@ -93,7 +89,6 @@ module.exports = function(app) {
 	});
 
 	app.post('/home', ensureAuthenticated(), function(req, res){
-
 		req.user.updateAccount({
 			id: req._passport.instance._userProperty,
 			name: req.body['name'],
@@ -112,7 +107,7 @@ module.exports = function(app) {
 	/*
         new accounts
     */
-
+	//TODO work in all new form fields
 	app.get('/signup', function(req, res) {
 		var ref_by = req.query.ref_by;
 		res.render('signup', {
@@ -123,6 +118,7 @@ module.exports = function(app) {
 	});
 
 	app.post('/signup', accountCreateLimiter, function(req, res){
+
 		User.addNewAccount({
 			ref_by:     req.body['ref_by'],
 			name:       req.body['name'],
@@ -146,6 +142,7 @@ module.exports = function(app) {
         password reset
     */
 
+	//TODO ensure password reset works, add rate limit, remove AM call
 	app.post('/lost-password', function(req, res){
 		let email = req.body['email'];
 		AM.generatePasswordKey(email, req.ip, function(e, account){
@@ -177,6 +174,7 @@ module.exports = function(app) {
 	});
 
 	app.post('/reset-password', function(req, res) {
+		// TODO work password reset in with mailgun, remove account manager
 		let newPass = req.body['pass'];
 		let passKey = req.session.passKey;
 		// destroy the session immediately after retrieving the stored passkey //
@@ -195,57 +193,57 @@ module.exports = function(app) {
     */
 
 	app.post('/delete', function(req, res){
-		// AM.deleteAccount(req._passport.instance._userProperty, function(e, obj){
-		// 	if (!e){
-		// 		res.clearCookie('login');
-		// 		req.session.destroy(function(e){ res.status(200).send('ok'); });
-		// 	} else {
-		// 		res.status(400).send('record not found');
-		// 	}
-		// });
-
+		//TODO ensure that deleting a user works correctly
 		req.user.deleteAccount();
 		res.clearCookie('login');
 	});
 
 	app.get('/offers', ensureAuthenticated(), async function(req, res){
+		//TODO get offer page working on single page, add different tabs for different types of offers
 		res.render('offers', {
 			subid1: req.user._id
 		})
 	});
 
 	app.get('/postback', async function(req, res){
+		//TODO add ip restrictions to postback, ensure that it works correctly with Adscend
 		AM.addPoints(req.query.subid1, req.query.payout*10);
 
 		res.send(req.query.subid1 + " was paid " + 10 * req.query.payout);
 	});
 
 	app.get('/referrals', ensureAuthenticated(), function(req, res) {
+		//TODO possibly add multi-tiered referrals
 		var ref_link = req.protocol + '://' + req.headers.host + '/signup?ref_by=' + req.user.username;
 		res.render('referrals', {ref_link: ref_link, referrals: req.user.referrals});
 
 	});
 
+	app.get('/verify', function(req, res){
+		//TODO ensure that verification through email works, limit pages that user can access without verification
+		User.findOne({username:req.query.name}, function(e, o) {
+			if(e) {
+				console.log('Problem With Verification' + req.query.name + '   ' + req.query.id);
+			} else{
+				o.confirmAccount(req.query.id, function(success){
+					if(success){
+						res.redirect('/');
+					} else {
+						res.redirect('/signup');
+					}
+				});
+			}
+		})
+	});
+
+	//TODO design custom 404 page
 	app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });
 
-	app.get('/verify', function(req, res){
-        User.findOne({username:req.query.name}, function(e, o) {
-            if(e) {
-                console.log('Problem With Verification' + req.query.name + '   ' + req.query.id);
-            } else{
-                o.confirmAccount(req.query.id, function(success){
-                    if(success){
-                        res.redirect('/');
-                    } else {
-                        res.redirect('/signup');
-                    }
-                });
-            }
-        })
-    })
+
 };
 
 function ensureAuthenticated(){
+	//TODO add check to see if user has verified email
 	return function(req, res, next){
 		if(!req.isAuthenticated || !req.isAuthenticated()){
 			res.status(401).send('not-authenticated')
