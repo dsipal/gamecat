@@ -19,7 +19,7 @@ $(document).ready(function(){
 			}	else if (e.responseText === 'username-taken'){
 				av.showInvalidUserName();
 			}  	else if (e.responseText === 'invalid-referral'){
-				av.showInvalidReffName();
+				av.showInvalidRefName();
 			}  	else if (e.responseText === 'disposable-email') {
 				av.showDispoEmail();
 			} 	else if (e.responseText === 'same-user-pass') {
