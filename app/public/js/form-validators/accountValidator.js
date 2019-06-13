@@ -1,6 +1,6 @@
-//TODO work in new account form into validation, ensure it keeps up to standards
-//TODO add check to ensure user has selected a country
 //TODO ensure that every field is checked both on client and server.
+//TODO check referrer the same as usernames, add regex to each username/name input to ensure its clean
+//TODO check that terms+conditions has been checked
 function AccountValidator()
 {
 // build array maps of the form inputs & control groups //
