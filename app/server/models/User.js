@@ -45,6 +45,7 @@ user.statics.getAllRecords = function(callback){
 
 user.statics.deleteAllAccounts = function(){
     User.deleteMany({});
+    console.log('deleted accounts');
 };
 
 user.statics.getByID = function(){
@@ -233,6 +234,23 @@ user.methods.updateToken = function(){
     this.save();
     return toke;
 };
+
+user.methods.resetPassword = function(newPass, resetToken, callback){
+    if(this.token === resetToken){
+        //Temp storing password to maintain scopes
+        let temp = newPass;
+        saltAndHash(newPass, function(hash){
+           temp = hash;
+        });
+        this.password = temp;
+        this.updateToken();
+        callback(true);
+    } else {
+        callback(false);
+    }
+};
+
+
 user.methods.updatePassword = function(passKey, newPass, callback)
 {
     saltAndHash(newPass, function(hash){
@@ -246,43 +264,45 @@ user.methods.updatePassword = function(passKey, newPass, callback)
         }
     });
 };
-user.methods.generatePasswordKey = function(email, ipAddress, callback)
-{
-    try{
-        this.ipAddress = ipAddress;
-        this.passKey = guid();
-        this.cookie = '';
-        this.save();
-        callback(null,this);
-    }catch (e) {
-        callback(e, null);
-    }
 
-
-    // let passKey = guid();
-    // User.findOneAndUpdate({email:email}, {$set:{
-    //         ip : ipAddress,
-    //         passKey : passKey
-    //     }, $unset:{cookie:''}}, {returnOriginal : false}, function(e, o){
-    //     if (o.value != null){
-    //         callback(null, o.value);
-    //     }	else{
-    //         callback(e || 'account not found');
-    //     }
-    // });
-};
-user.methods.validatePasswordKey = function(passKey, ipAddress, callback)
-{
-    console.log(passkey, ipAddress);
-
-    if(this.passKey === passKey && this.ipAddress === ipAddress){
-        callback(null, this);
-    }else{
-        callback('invalid-user', null);
-    }
-    // ensure the passKey maps to the user's last recorded ip address
-    // User.findOne({passKey:passKey, ip:ipAddress}, callback);
-};
+    //TODO Review if this code needs to be kept, was part of the original password reset system
+// user.methods.generatePasswordKey = function(email, ipAddress, callback)
+// {
+//     try{
+//         this.ipAddress = ipAddress;
+//         this.passKey = guid();
+//         this.cookie = '';
+//         this.save();
+//         callback(null,this);
+//     }catch (e) {
+//         callback(e, null);
+//     }
+//
+//
+//     // let passKey = guid();
+//     // User.findOneAndUpdate({email:email}, {$set:{
+//     //         ip : ipAddress,
+//     //         passKey : passKey
+//     //     }, $unset:{cookie:''}}, {returnOriginal : false}, function(e, o){
+//     //     if (o.value != null){
+//     //         callback(null, o.value);
+//     //     }	else{
+//     //         callback(e || 'account not found');
+//     //     }
+//     // });
+// };
+// user.methods.validatePasswordKey = function(passKey, ipAddress, callback)
+// {
+//     console.log(passkey, ipAddress);
+//
+//     if(this.passKey === passKey && this.ipAddress === ipAddress){
+//         callback(null, this);
+//     }else{
+//         callback('invalid-user', null);
+//     }
+//     // ensure the passKey maps to the user's last recorded ip address
+//     // User.findOne({passKey:passKey, ip:ipAddress}, callback);
+// };
 
 // helper functions //
 
