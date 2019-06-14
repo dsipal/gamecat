@@ -74,34 +74,56 @@ user.methods.validatePassword = function(plainPass){
 
 // registration functions //
 user.statics.validateNewAccount = function(newData, callback){
-    User.findOne({username:newData.username}, function(e, o) {
-        if (o){
-            callback('username-taken', null);
-        } else {
-            User.findOne({email:newData.email}, function(e, o) {
-                if (o){
-                    callback('email-taken', null);
-                } else {
-                    console.log(newData.ref_by);
-                    User.findOne({username:newData.ref_by}, function(e, o) {
-                        if (!o && !(newData.ref_by === "")){
-                            callback('invalid-referral', null);
-                        } else{
-                            if(!emchecker.isBanned(newData.email)) {
-                                callback('disposable-email');
-                            } else {
-                                if (newData.username === newData.password){
-                                    callback('same-user-pass');
+    console.log(newData);
+
+    //TODO optimize these regexes to have min length as well.
+    let userRegex = new RegExp(`^(?!.*__.*)(?!.*\\.\\..*)[a-z0-9_.]+$`);
+    let passRegex = new RegExp(`\\S*(\\S*([a-zA-Z]\\S*[0-9])|([0-9]\\S*[a-zA-Z]))\\S*`);
+
+    if(!newData.terms_conditions){
+        callback('terms-not-accepted');
+    }else{
+        if(!userRegex.test(newData.username)){
+            callback('invalid-username');
+        }else{
+            if(!passRegex.test(newData.password) || newData.password.length < 6 ){
+                callback('invalid-password', null);
+            }else{
+                if(newData.password !== newData.passwordV){
+                    callback('password-not-verified', null);
+                }else{
+                    User.findOne({username:newData.username}, function(e, o) {
+                        if (o){
+                            callback('username-taken', null);
+                        } else {
+                            User.findOne({email:newData.email}, function(e, o) {
+                                if (o){
+                                    callback('email-taken', null);
                                 } else {
-                                    User.addNewAccount(newData, callback);
+                                    console.log(newData.ref_by);
+                                    User.findOne({username:newData.ref_by}, function(e, o) {
+                                        if (!o && !(newData.ref_by === "")){
+                                            callback('invalid-referral', null);
+                                        } else{
+                                            if(!emchecker.isBanned(newData.email)) {
+                                                callback('disposable-email');
+                                            } else {
+                                                if (newData.username === newData.password){
+                                                    callback('same-user-pass');
+                                                } else {
+                                                    User.addNewAccount(newData, callback);
+                                                }
+                                            }
+                                        }
+                                    });
                                 }
-                            }
+                            });
                         }
                     });
                 }
-            });
+            }
         }
-    });
+    }
 };
 //TODO clean addNewAccount, move verification into different function
 //takes in registration form data, callback is handled in routes.
@@ -114,7 +136,6 @@ user.statics.addNewAccount = function(newData, callback){
         newData.reg_date = new Date();
         newData.points = 0;
         newData.rank = 'new';
-        newData.mailing = true;
         newData.token = crypto.randomBytes(20).toString('hex');
 
         emdisp.dispatchConfirm(newData.email, newData.token, newData.username);

@@ -6,16 +6,16 @@
         <hr>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label col-form-label-sm" for="user-tf">Username</label>
-            <div class="col-sm-9"><input id="user-tf" type="text" name="username" value="" class="form-control disabled" required></div>
+            <div class="col-sm-9"><input id="user-tf" type="text" name="username" value="" class="form-control disabled" pattern="^(?!.*__.*)(?!.*\.\..*)[a-z0-9_.]+$" required></div>
         </div>
         <hr>
         <div class="form-group row margin-zero">
             <label class="col-sm-3 col-form-label col-form-label-sm" for="pass-tf">Password</label>
-            <div class="col-sm-9"><input id="pass-tf" type="password" name="password" value="" class="form-control" minlength="6" required></div>
+            <div class="col-sm-9"><input id="pass-tf" type="password" name="password" value="" class="form-control" minlength="6" pattern="\S*(\S*([a-zA-Z]\S*[0-9])|([0-9]\S*[a-zA-Z]))\S*" required></div>
         </div>
         <div class="form-group row margin-zero">
             <label class="col-sm-3 col-form-label col-form-label-sm" for="pass-tf">Verify</label>
-            <div class="col-sm-9"><input id="pass-verify-tf" type="password" name="password-verify" value="" class="form-control" minlength="6" required></div>
+            <div class="col-sm-9"><input id="pass-verify-tf" type="password" name="password_verify" value="" class="form-control" minlength="6" pattern="\S*(\S*([a-zA-Z]\S*[0-9])|([0-9]\S*[a-zA-Z]))\S*" required></div>
         </div>
         <hr>
         <div class="form-group row">
@@ -42,10 +42,10 @@
             <div class="col-sm-9"><input id="ref_by" type="text" name="ref_by" value="{{ref_by}}" class="form-control"></div>
         </div>
         <hr>
-        <label class="col-sm-11 col-form-label col-form-label-sm" for="email-optin">Opt-in to receive exclusive offers</label>
-        <input id="email-optin" type="checkbox" value="optin-true" name="email-optin" checked>
-        <label class="col-sm-11 col-form-label col-form-label-sm" for="email-optin">I agree to the terms and conditions</label>
-        <input id="terms-conditions" type="checkbox" value="tc-true" name="terms-conditions" required>
+        <label class="col-sm-11 col-form-label col-form-label-sm" for="email_optin">Opt-in to receive exclusive offers</label>
+        <input id="email_optin" type="checkbox" value="optin_true" name="email_optin" checked>
+        <label class="col-sm-11 col-form-label col-form-label-sm" for="terms_conditions">I agree to the terms and conditions</label>
+        <input id="terms_conditions" type="checkbox" value="tc_true" name="terms_conditions" required>
     </form>
 
 
