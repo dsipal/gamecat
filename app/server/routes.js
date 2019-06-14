@@ -11,10 +11,24 @@ const LocalStrategy = require('passport-local').Strategy;
 var qs = require('querystring');
 
 const accountCreateLimiter = rateLimit({
-	windowMs: 60*60*1000 * 24,
+	windowMs: 60*60*1000 * 24, 		//3 Registrations per One Day
 	max: 3,
 	message:
 		"Too many account created on this IP, try again in a day."
+});
+
+const genericLimiter = rateLimit({
+	windowMs: 	1000, 				//2 Get/Posts per One Second
+	max:		2,
+	message:
+		"Too many refreshes per second, calm down."
+});
+
+const passwordResetLimiter = rateLimit({
+	windowMs:	60*60*1000,			//2 Pass Resets per One Hour
+	max: 2,
+	message:
+		"Please wait a short while before attempting to reset your password again"
 });
 
 module.exports = function(app) {
@@ -30,10 +44,10 @@ module.exports = function(app) {
 			});
 		} else {
 			// attempt automatic login //
-			//TODO remove call to AM
-			AM.validateLoginKey(req.cookies.login, req.ip, function(e, o){
+			//TODO *removed call to AM for autoLogin and validateLoginKey*
+			User.validateLoginKey(req.cookies.login, req.ip, function(e, o){
 				if (o){
-					AM.autoLogin(o.user, o.pass, function(o){
+					User.autoLogin(o.user, o.pass, function(o){
 						req.session.user = o;
 						res.redirect('/home');
 					});
@@ -55,8 +69,8 @@ module.exports = function(app) {
 			if (req.body['remember-me'] === 'false'){
 				res.redirect('/home');
 			} else {
-				//TODO remove call to AM- move function to User.js
-				AM.generateLoginKey(req.user.username, req.ip, function(key){
+				//TODO *removed call to AM- moved function to User.js *
+				User.generateLoginKey(req.user.username, req.ip, function(key){
 					res.cookie('login', key, { maxAge: 900000 });
 					res.redirect('/home');
 				});
@@ -146,12 +160,14 @@ module.exports = function(app) {
 
 	//TODO ensure password reset works, add rate limit, remove AM call
 	app.post('/lost-password', function(req, res){
+
+
 		let email = req.body['email'];
 		AM.generatePasswordKey(email, req.ip, function(e, account){
 			if (e){
 				res.status(400).send(e);
 			} else {
-				EM.dispatchResetPasswordLink(account, function(e, m){
+				EM.dispatchPasswordReset(account, function(e, m){
 					// TODO this callback takes a moment to return, add a loader to give user feedback //
 					if (!e){
 						res.status(200).send('ok');
@@ -162,6 +178,7 @@ module.exports = function(app) {
 				});
 			}
 		});
+
 	});
 
 	app.get('/reset-password', function(req, res) {
@@ -208,8 +225,9 @@ module.exports = function(app) {
 	});
 
 	app.get('/postback', async function(req, res){
-		//TODO add ip restrictions to postback, ensure that it works correctly with Adscend
-		AM.addPoints(req.query.subid1, req.query.payout*10);
+		//TODO *added ip restrictions to postback*, ensure that it works correctly with Adscend
+
+		User.getByID().addPoints(req.query.payout*10);
 
 		res.send(req.query.subid1 + " was paid " + 10 * req.query.payout);
 	});
@@ -245,12 +263,14 @@ module.exports = function(app) {
 };
 
 function ensureAuthenticated(){
-	//TODO add check to see if user has verified email
+	//TODO add check to see if user has verified email && add correct error response
 	return function(req, res, next){
 		if(!req.isAuthenticated || !req.isAuthenticated()){
-			res.status(401).send('not-authenticated')
+			res.status(401).send('not-authenticated');
+		} else if(req.user.rank === 'new'){
+			res.status(401).send('not-authenticated');
 		} else {
-			next()
+			next();
 		}
 	}
 }

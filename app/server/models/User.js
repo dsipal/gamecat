@@ -30,6 +30,9 @@ const user = new mongoose.Schema({
     },
     {collection: 'Users'});
 
+const guid = function(){return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {var r = Math.random()*16|0,v=c=='x'?r:r&0x3|0x8;return v.toString(16);});}
+
+
 // class/static functions //
 
 user.statics.getAllRecords = function(callback){
@@ -46,6 +49,17 @@ user.statics.deleteAllAccounts = function(){
 
 user.statics.getByID = function(){
     return User.findOne({_id: getObjectId(id)});
+};
+
+user.methods.generateLoginKey = function(username, ipAddress, callback)
+{
+    let cookie = guid();
+    User.findOneAndUpdate({username:username}, {$set:{
+            ip : ipAddress,
+            cookie : cookie
+        }}, {returnOriginal : false}, function(e, o){
+        callback(cookie);
+    });
 };
 
 // login functions //
@@ -116,6 +130,25 @@ user.statics.addNewAccount = function(newData, callback){
     });
 };
 
+//Moved from AM
+user.methods.validateLoginKey = function(cookie, ipAddress, callback)
+{
+// ensure the cookie maps to the user's last recorded ip address //
+    User.findOne({cookie:cookie, ip:ipAddress}, callback);
+};
+
+//Also from AM
+user.methods.autoLogin = function(user, pass, callback)
+{
+    User.findOne({user:user}, function(e, o) {
+        if (o){
+            o.pass === pass ? callback(o) : callback(null);
+        }	else{
+            callback(null);
+        }
+    });
+};
+
 //used at end of registration, adds new user to referrer's list
 user.methods.percolateReferrals = function () {
     User.updateOne({username:this.ref_by},
@@ -173,7 +206,13 @@ user.methods.confirmAccount = function(idToken, callback){
         callback(false);
     }
 };
-// helper functions //
+
+user.methods.updateToken = function(){
+    const toke = crypto.randomBytes(20).toString('hex');
+    user.token = toke;
+    return toke;
+};
+    // helper functions //
 
 var md5 = function(str) {
     return crypto.createHash('md5').update(str).digest('hex');
