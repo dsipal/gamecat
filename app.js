@@ -1,5 +1,4 @@
 // imports //
-var mongoose = require('mongoose');
 var http = require('http');
 var express = require('express');
 var exphbs = require('express-handlebars');
