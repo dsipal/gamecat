@@ -47,7 +47,6 @@ module.exports = function(app) {
 			User.validateLoginKey(req.cookies.login, req.ip, function(e, o){
 				if (o){
 					User.autoLogin(o.user, o.pass, function(o){
-						req.session.user = o;
 						res.redirect('/home');
 					});
 				} else {

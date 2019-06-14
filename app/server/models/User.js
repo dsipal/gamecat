@@ -130,14 +130,14 @@ user.statics.addNewAccount = function(newData, callback){
 };
 
 //Moved from AM
-user.methods.validateLoginKey = function(cookie, ipAddress, callback)
+user.statics.validateLoginKey = function(cookie, ipAddress, callback)
 {
 // ensure the cookie maps to the user's last recorded ip address //
     User.findOne({cookie:cookie, ip:ipAddress}, callback);
 };
 
 //Also from AM
-user.methods.autoLogin = function(user, pass, callback)
+user.statics.autoLogin = function(user, pass, callback)
 {
     User.findOne({user:user}, function(e, o) {
         if (o){
