@@ -52,9 +52,7 @@ module.exports = function(app) {
 					});
 				} else {
 
-					res.render('login', {
-					    title: 'Hello - Please Login To Your Account',
-					});
+					res.render('login');
 				}
 			});
 		}

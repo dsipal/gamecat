@@ -51,7 +51,7 @@ user.statics.getByID = function(){
     return User.findOne({_id: getObjectId(id)});
 };
 
-user.methods.generateLoginKey = function(username, ipAddress, callback)
+user.statics.generateLoginKey = function(username, ipAddress, callback)
 {
     let cookie = guid();
     User.findOneAndUpdate({username:username}, {$set:{
