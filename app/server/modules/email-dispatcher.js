@@ -1,3 +1,4 @@
+//TODO set these in env vars for security.
 const api_key = '5deaec470757fa366ff8755054a08005-16ffd509-d3df6418';
 const domain = 'sandboxf2ab2d4c9c19447ba48159645025e909.mailgun.org';
 

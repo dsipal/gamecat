@@ -27,7 +27,7 @@ const passwordResetLimiter = rateLimit({
 	windowMs:	60*60*1000,			//2 Pass Resets per One Hour
 	max: 2,
 	message:
-		"Please wait a short while before attempting to reset your password again"
+		"Please wait before attempting to reset your password again."
 });
 
 module.exports = function(app) {
@@ -74,7 +74,6 @@ module.exports = function(app) {
 					res.redirect('/home');
 				});
 			}
-			console.log(req.user);
 		});
 
 	app.post('/logout', ensureAuthenticated(), function(req, res){
@@ -267,7 +266,7 @@ function ensureAuthenticated(){
 		if(!req.isAuthenticated || !req.isAuthenticated()){
 			res.status(401).send('not-authenticated');
 		} else if(req.user.rank === 'new'){
-			res.status(401).send('not-authenticated');
+			res.status(401).send('not-verified');
 		} else {
 			next();
 		}

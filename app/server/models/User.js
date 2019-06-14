@@ -67,10 +67,8 @@ user.methods.generateLoginKey = function(username, ipAddress, callback)
 //TODO possibly figure out how to auth without sending plaintext pass
 //takes plaintext password, returns plainPass == hashedPass
 user.methods.validatePassword = function(plainPass){
-    console.log(this.password);
     var salt = this.password.substr(0, 10);
     var validHash = salt + md5(plainPass + salt);
-    console.log(validHash);
     return validHash === this.password;
 };
 
