@@ -24,14 +24,12 @@ module.exports = function(passport) {
             if (err){
                 return done(err, false);
             }
-
             if (!user){
-                return done(null, false, { message: 'Incorrect Username'});
+                return done('not-authenticated', null);
             }
 
             if(user.rank === 'new'){
-                console.log('can not use new user');
-                return done('user not activated yet, please use your activation email', false);
+                return done('not-verified', false);
             }
 
             if(user.validatePassword(password, user.password)){
@@ -39,8 +37,6 @@ module.exports = function(passport) {
             }else{
                 return done(err);
             }
-
-
         });
     }));
 

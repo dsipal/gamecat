@@ -51,7 +51,7 @@ user.statics.getByID = function(){
     return User.findOne({_id: getObjectId(id)});
 };
 
-user.methods.generateLoginKey = function(username, ipAddress, callback)
+user.statics.generateLoginKey = function(username, ipAddress, callback)
 {
     let cookie = guid();
     User.findOneAndUpdate({username:username}, {$set:{
@@ -67,10 +67,8 @@ user.methods.generateLoginKey = function(username, ipAddress, callback)
 //TODO possibly figure out how to auth without sending plaintext pass
 //takes plaintext password, returns plainPass == hashedPass
 user.methods.validatePassword = function(plainPass){
-    console.log(this.password);
     var salt = this.password.substr(0, 10);
     var validHash = salt + md5(plainPass + salt);
-    console.log(validHash);
     return validHash === this.password;
 };
 

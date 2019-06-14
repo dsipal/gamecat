@@ -10,6 +10,7 @@ var MongoStore = require('connect-mongo')(session);
 var helmet = require('helmet');
 var passport = require('passport')
     ,	LocalStrategy = require('passport-local').Strategy;
+var mongoose = require('mongoose');
 
 // create instance of express server //
 var app = express();
@@ -63,6 +64,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // build mongo database connection url //
+console.log(app.get('env'));
 if (app.get('env') === 'live'){
     // production server settings //
     process.env.DB_HOST = process.env.MONGODB_URI;
@@ -70,8 +72,7 @@ if (app.get('env') === 'live'){
     process.env.DB_NAME = process.env.DB_NAME || 'heroku_f9fjvqkf';
     process.env.DB_URL =  process.env.MONGODB_URI;
 } else {
-    console.log(app.get('env'));
-    console.log(app.get('env') === 'development');
+
     // development server settings //
     process.env.DB_HOST = process.env.DB_HOST || 'localhost';
     process.env.DB_PORT = process.env.DB_PORT || 27017;
