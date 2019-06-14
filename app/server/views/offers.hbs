@@ -1,12 +1,16 @@
-<ul class="row offer-list">
-    {{#each offers as |offer|}}
-        <li class="col-md-3 offer-item justify-content-center">
-            <div class="offer-container">
-                <img src="{{offer.creative_url}}"  alt="{{offer.name}}" class="row offer-image">
-                <a href="{{offer.click_url}}" class="row offer-link">{{offer.name}}</a>
-                <p class="offer-reward">{{offer.currency_count}} Points</p>
-                <p class="offer-description">{{offer.description}}</p>
-            </div>
-        </li>
-    {{/each}}
+{{#section 'head'}}<link rel="stylesheet" href="/css/offer-page.css">{{/section}}
+
+<ul class="row offer-list" data-subid1="{{subid1}}">
+
 </ul>
+<!--TODO make pagination work completely, have it load all on same page instead of over multiple.-->
+<div class="row pagination">
+    <a href="#">&laquo;</a>
+
+    <div class="pagination-numbers">
+
+    </div>
+
+    <a href="#">&raquo;</a>
+</div>
+<script src="/js/views/offers.js"></script>

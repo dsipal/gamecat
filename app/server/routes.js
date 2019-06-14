@@ -1,3 +1,4 @@
+//TODO split up routes into separate more managable files/endpoints
 
 var CT = require('./modules/country-list');
 var AM = require('./modules/account-manager');
@@ -10,10 +11,24 @@ const LocalStrategy = require('passport-local').Strategy;
 var qs = require('querystring');
 
 const accountCreateLimiter = rateLimit({
-	windowMs: 60*60*1000 * 24,
+	windowMs: 60*60*1000 * 24, 		//3 Registrations per One Day
 	max: 3,
 	message:
 		"Too many account created on this IP, try again in a day."
+});
+
+const genericLimiter = rateLimit({
+	windowMs: 	1000, 				//2 Get/Posts per One Second
+	max:		2,
+	message:
+		"Too many refreshes per second, calm down."
+});
+
+const passwordResetLimiter = rateLimit({
+	windowMs:	60*60*1000,			//2 Pass Resets per One Hour
+	max: 2,
+	message:
+		"Please wait a short while before attempting to reset your password again"
 });
 
 module.exports = function(app) {
@@ -22,18 +37,17 @@ module.exports = function(app) {
         login & logout
     */
 	app.get('/', function(req, res){
-        var style = "<link rel='stylesheet' href='/css/login.css'>";
 		// check if the user has an auto login key saved in a cookie //
 		if (req.cookies.login === undefined || !req.isAuthenticated()){
 			res.render('login', {
-			    title: 'Hello - Please Login To Your Account',
-                style: style
+			    title: 'Hello - Please Login To Your Account'
 			});
 		} else {
 			// attempt automatic login //
-			AM.validateLoginKey(req.cookies.login, req.ip, function(e, o){
+			//TODO *removed call to AM for autoLogin and validateLoginKey*
+			User.validateLoginKey(req.cookies.login, req.ip, function(e, o){
 				if (o){
-					AM.autoLogin(o.user, o.pass, function(o){
+					User.autoLogin(o.user, o.pass, function(o){
 						req.session.user = o;
 						res.redirect('/home');
 					});
@@ -41,7 +55,6 @@ module.exports = function(app) {
 
 					res.render('login', {
 					    title: 'Hello - Please Login To Your Account',
-                        style: style
 					});
 				}
 			});
@@ -56,7 +69,8 @@ module.exports = function(app) {
 			if (req.body['remember-me'] === 'false'){
 				res.redirect('/home');
 			} else {
-				AM.generateLoginKey(req.user.username, req.ip, function(key){
+				//TODO *removed call to AM- moved function to User.js *
+				User.generateLoginKey(req.user.username, req.ip, function(key){
 					res.cookie('login', key, { maxAge: 900000 });
 					res.redirect('/home');
 				});
@@ -78,28 +92,17 @@ module.exports = function(app) {
 	/*
         control panel
     */
-
+	//TODO move updating account to different page, add balance, other details
 	app.get('/home', ensureAuthenticated(), function(req, res) {
-
-		// AM.getAccountByID(req.user._id).then(function(acc){
-		// 	res.render('home', {
-		// 		title: 'Control Panel',
-		// 		countries: CT,
-		// 		udata: acc
-		// 	});
-		// });
-        var style = "<link rel='stylesheet' href='/css/account.css'>";
 		res.render('home', {
 			title: 'Control Panel',
 			countries: CT,
-			udata: req.user,
-            style: style
+			udata: req.user
 		});
 
 	});
 
 	app.post('/home', ensureAuthenticated(), function(req, res){
-
 		req.user.updateAccount({
 			id: req._passport.instance._userProperty,
 			name: req.body['name'],
@@ -118,19 +121,18 @@ module.exports = function(app) {
 	/*
         new accounts
     */
-
+	//TODO work in all new form fields
 	app.get('/signup', function(req, res) {
 		var ref_by = req.query.ref_by;
-		var style = "<link rel='stylesheet' href='/css/account.css'>";
 		res.render('signup', {
 		    title: 'Signup',
             countries : CT,
-            ref_by: ref_by,
-            style: style
+            ref_by: ref_by
 		});
 	});
 
 	app.post('/signup', accountCreateLimiter, function(req, res){
+
 		User.addNewAccount({
 			ref_by:     req.body['ref_by'],
 			name:       req.body['name'],
@@ -154,6 +156,7 @@ module.exports = function(app) {
         password reset
     */
 
+	//TODO ensure password reset works, add rate limit, remove AM call
 	app.post('/lost-password', function(req, res){
 
 
@@ -188,6 +191,7 @@ module.exports = function(app) {
 	});
 
 	app.post('/reset-password', function(req, res) {
+		// TODO work password reset in with mailgun, remove account manager
 		let newPass = req.body['pass'];
 		let passKey = req.session.passKey;
 		// destroy the session immediately after retrieving the stored passkey //
@@ -206,94 +210,65 @@ module.exports = function(app) {
     */
 
 	app.post('/delete', function(req, res){
-		// AM.deleteAccount(req._passport.instance._userProperty, function(e, obj){
-		// 	if (!e){
-		// 		res.clearCookie('login');
-		// 		req.session.destroy(function(e){ res.status(200).send('ok'); });
-		// 	} else {
-		// 		res.status(400).send('record not found');
-		// 	}
-		// });
-
+		//TODO ensure that deleting a user works correctly
 		req.user.deleteAccount();
 		res.clearCookie('login');
 	});
 
 	app.get('/offers', ensureAuthenticated(), async function(req, res){
-        var style = "<link rel='stylesheet' href='/css/offer-page.css'>";
-
-		var api_key = 'JlD8HGBVzQ7cBWpTEwwcd0zDgmLe9YecLPdf33vWviFLAQKsvTLj4aielhxT';
-		var pub_id = '9359';
-		var ad_wall_id = '16028';
-
-		var limit = 10;
-		var offset = req.query.page * limit || 0;
-
-		var query_strings = {
-			subid1: req.user._id.toString(),
-			limit: limit,
-			offset: offset,
-			sort_by: 'popularity',
-			ip: req.ip
-		};
-
-		request({
-			url: 'http://adscendmedia.com/adwall/api/publisher/9359/profile/16028/offers.json',
-			qs: query_strings,
-			auth: {
-				'user': pub_id,
-				'pass': api_key
-			}
-		}, function(e, response, body){
-			if(e){
-				console.log(e);
-			} else {
-				var json = JSON.parse(body);
-				res.render('offers', {
-				    offers: json.offers,
-                    style: style
-				});
-			}
-		});
+		//TODO get offer page working on single page, add different tabs for different types of offers
+		res.render('offers', {
+			subid1: req.user._id
+		})
 	});
 
 	app.get('/postback', async function(req, res){
-		AM.addPoints(req.query.subid1, req.query.payout*10);
+		//TODO *added ip restrictions to postback*, ensure that it works correctly with Adscend
+
+		User.getByID().addPoints(req.query.payout*10);
 
 		res.send(req.query.subid1 + " was paid " + 10 * req.query.payout);
 	});
 
 	app.get('/referrals', ensureAuthenticated(), function(req, res) {
+		//TODO possibly add multi-tiered referrals
 		var ref_link = req.protocol + '://' + req.headers.host + '/signup?ref_by=' + req.user.username;
 		res.render('referrals', {ref_link: ref_link, referrals: req.user.referrals});
 
 	});
 
+	app.get('/verify', function(req, res){
+		//TODO ensure that verification through email works, limit pages that user can access without verification
+		User.findOne({username:req.query.name}, function(e, o) {
+			if(e) {
+				console.log('Problem With Verification' + req.query.name + '   ' + req.query.id);
+			} else{
+				o.confirmAccount(req.query.id, function(success){
+					if(success){
+						res.redirect('/');
+					} else {
+						res.redirect('/signup');
+					}
+				});
+			}
+		})
+	});
+
+	//TODO design custom 404 page
 	app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });
 
-	app.get('/verify', function(req, res){
-        User.findOne({username:req.query.name}, function(e, o) {
-            if(e) {
-                console.log('Problem With Verification' + req.query.name + '   ' + req.query.id);
-            } else{
-                o.confirmAccount(req.query.id, function(success){
-                    if(success){
-                        res.redirect('/');
-                    } else {
-                        res.redirect('/signup');
-                    }
-                });
-            }
-        })
-    })
+
 };
 
 function ensureAuthenticated(){
+	//TODO add check to see if user has verified email && add correct error response
 	return function(req, res, next){
 		if(!req.isAuthenticated || !req.isAuthenticated()){
-			res.status(401).send('not-authenticated')
+			res.status(401).send('not-authenticated');
+		} else if(req.user.rank === 'new'){
+			res.status(401).send('not-authenticated');
 		} else {
-			next()
+			next();
 		}
 	}
 }

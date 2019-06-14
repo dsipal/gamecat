@@ -1,4 +1,4 @@
-
+//TODO find better way to store this, possibly add a package for it?
 module.exports = [
     {short:"  " , name:"Please select a country"},
     {short:"AF" , name:"Afghanistan"},
@@ -180,12 +180,12 @@ module.exports = [
     {short:"RO" , name:"Romania"},
     {short:"RU" , name:"Russian Federation"},
     {short:"RW" , name:"Rwanda"},
-    {short:"KN" , name:"Saint Kitts and Nevis"}, 
+    {short:"KN" , name:"Saint Kitts and Nevis"},
     {short:"LC" , name:"Saint LUCIA"},
     {short:"VC" , name:"Saint Vincent and the Grenadines"},
     {short:"WS" , name:"Samoa"},
     {short:"SM" , name:"San Marino"},
-    {short:"ST" , name:"Sao Tome and Principe"}, 
+    {short:"ST" , name:"Sao Tome and Principe"},
     {short:"SA" , name:"Saudi Arabia"},
     {short:"SN" , name:"Senegal"},
     {short:"SC" , name:"Seychelles"},
@@ -241,4 +241,4 @@ module.exports = [
     {short:"YU" , name:"Yugoslavia"},
     {short:"ZM" , name:"Zambia"},
     {short:"ZW" , name:"Zimbabwe"}
-]
+];

@@ -30,7 +30,7 @@ $(document).ready(function(){
 	$('#name-tf').focus();
 
 // customize the account signup form //
-
+//TODO move this into the template, remove from here
 	$('#account-form h2').text('Signup');
 	$('#account-form #sub').text('Please tell us a little about yourself');
 	$('#account-form-btn1').html('Cancel');

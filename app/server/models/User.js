@@ -23,7 +23,10 @@ const user = new mongoose.Schema({
     },
     {collection: 'Users'});
 
-    // class/static functions //
+const guid = function(){return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {var r = Math.random()*16|0,v=c=='x'?r:r&0x3|0x8;return v.toString(16);});}
+
+
+// class/static functions //
 
 user.statics.getAllRecords = function(callback){
     User.find().toArray(
@@ -41,8 +44,20 @@ user.statics.getByID = function(){
     return User.findOne({_id: getObjectId(id)});
 };
 
-    // login functions //
+user.methods.generateLoginKey = function(username, ipAddress, callback)
+{
+    let cookie = guid();
+    User.findOneAndUpdate({username:username}, {$set:{
+            ip : ipAddress,
+            cookie : cookie
+        }}, {returnOriginal : false}, function(e, o){
+        callback(cookie);
+    });
+};
 
+// login functions //
+
+//TODO possibly figure out how to auth without sending plaintext pass
 //takes plaintext password, returns plainPass == hashedPass
 user.methods.validatePassword = function(plainPass){
     console.log(this.password);
@@ -52,8 +67,9 @@ user.methods.validatePassword = function(plainPass){
     return validHash === this.password;
 };
 
-    // registration functions //
+// registration functions //
 
+//TODO clean addNewAccount, move verification into different function
 //takes in registration form data, callback is handled in routes.
 //ensures that username & email are unique, and that referrer exists.
 user.statics.addNewAccount = function(newData, callback){
@@ -107,6 +123,25 @@ user.statics.addNewAccount = function(newData, callback){
     });
 };
 
+//Moved from AM
+user.methods.validateLoginKey = function(cookie, ipAddress, callback)
+{
+// ensure the cookie maps to the user's last recorded ip address //
+    User.findOne({cookie:cookie, ip:ipAddress}, callback);
+};
+
+//Also from AM
+user.methods.autoLogin = function(user, pass, callback)
+{
+    User.findOne({user:user}, function(e, o) {
+        if (o){
+            o.pass === pass ? callback(o) : callback(null);
+        }	else{
+            callback(null);
+        }
+    });
+};
+
 //used at end of registration, adds new user to referrer's list
 user.methods.percolateReferrals = function () {
     User.updateOne({username:this.ref_by},
@@ -116,7 +151,7 @@ user.methods.percolateReferrals = function () {
         });
 };
 
-    // update account functions //
+// update account functions //
 
 //used by postback, called in routes, adds points to user
 user.methods.addPoints = function(amount){

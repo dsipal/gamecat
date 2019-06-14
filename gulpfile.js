@@ -1,4 +1,5 @@
 'use strict';
+//TODO add removing of comments, console.log, minify js/css, optimize images, etc into gulpfile.js
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 sass.compiler = require('node-sass');
@@ -25,6 +26,7 @@ function watch() {
 exports.watch = watch;
 exports.style = style;
 
-var build = gulp.parallel(style, watch);
+var build = gulp.parallel(style);
+var gwatch = gulp.parallel(style, watch);
 gulp.task('build', build);
-gulp.task('default', build);
+gulp.task('default', gwatch);
