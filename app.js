@@ -1,4 +1,5 @@
 // imports //
+var mongoose = require('mongoose');
 var http = require('http');
 var express = require('express');
 var exphbs = require('express-handlebars');
@@ -78,6 +79,15 @@ if (app.get('env') === 'live'){
     process.env.DB_URL = 'mongodb://'+process.env.DB_HOST+':'+process.env.DB_PORT+'/'+process.env.DB_NAME;
     app.locals.pretty = true; // output pretty HTML
 }
+
+mongoose.connect(process.env.DB_URL,{
+    useNewUrlParser: true,
+    useFindAndModify: false
+}).then(function(o){
+    db = o;
+}).catch(function(e){
+    console.log(e);
+});
 
 // setup express-sessions //
 app.use(session({
