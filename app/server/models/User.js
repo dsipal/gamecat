@@ -3,11 +3,18 @@ const crypto = require('crypto');
 const emchecker = require('../modules/email-checker.js');
 const emdisp = require('../modules/email-dispatcher');
 
+//TODO add validators in here, then handle the errors elsewhere.
 const user = new mongoose.Schema({
-        username: String,
+        username: {
+            type: String,
+            unique: true
+        },
         password: String,
         name: String,
-        email: String,
+        email: {
+            type: String,
+            unique: true
+        },
         country: String,
         referrals: [{
             type: String

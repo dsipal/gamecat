@@ -1,10 +1,7 @@
 //TODO ensure that every field is checked both on client and server.
 //TODO check referrer the same as usernames, add regex to each username/name input to ensure its clean
-//TODO check that terms+conditions has been checked
 function AccountValidator()
 {
-// build array maps of the form inputs & control groups //
-
     this.fields = {
         username: $('#user-tf'),
         password: $('#pass-tf'),
@@ -16,7 +13,6 @@ function AccountValidator()
         email_optin: $('#email-optin'),
         terms_conditions: $('#terms-conditions')
     };
-// bind the form-error modal window to this controller to display any errors //
 
     this.alert = $('.modal-form-errors');
     this.alert.modal({ show : false, keyboard : true, backdrop : true});
@@ -25,11 +21,8 @@ function AccountValidator()
     {
         return s.length >= 3;
     };
-    this.validatePassword = function(callback)
+    this.validatePassword = function(password, passwordV, username, callback)
     {
-        const password = this.fields.password.val();
-        const passwordV = this.fields.passwordV.val();
-        const username = this.fields.username.val();
         let regex = new RegExp(`\\S*(\\S*([a-zA-Z]\\S*[0-9])|([0-9]\\S*[a-zA-Z]))\\S*`);
 
         if(password.length >= 6){
@@ -59,6 +52,9 @@ function AccountValidator()
 
     this.validateCountry = function(){
         return this.fields.country !== " ";
+    };
+    this.validateTermsConditions = function(){
+        return this.fields.terms_conditions !== null;
     };
 
     this.showErrors = function(a)
@@ -116,8 +112,15 @@ AccountValidator.prototype.validateForm = function()
         this.fields.country.addClass('error');
         e.push('Please select a country.');
     }
+    if(!this.validateTermsConditions(this.fields.terms_conditions.val())){
+        this.fields.terms_conditions.addClass('error');
+        e.push('You must accept our terms and conditions.')
+    }
 
-    this.validatePassword(function(err){
+    this.validatePassword(
+        this.fields.password.val(),
+        this.fields.passwordV.val(),
+        this.fields.username.val(), function(err){
         if(err){
             e.push(err);
         }
