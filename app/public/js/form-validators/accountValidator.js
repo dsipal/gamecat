@@ -17,6 +17,11 @@ function AccountValidator()
     this.alert = $('.modal-form-errors');
     this.alert.modal({ show : false, keyboard : true, backdrop : true});
 
+    this.validateUsername = function(s){
+        let regex = new RegExp(`^(?!.*__.*)(?!.*\\.\\..*)[a-z0-9_.]+$`);
+        return regex.test(s);
+    };
+
     this.validateName = function(s)
     {
         return s.length >= 3;
@@ -96,6 +101,10 @@ AccountValidator.prototype.validateForm = function()
 {
     let e = [];
     for (let key in this.fields){ this.fields[key].removeClass('error');}
+    if(!this.validateUsername(this.fields.username.val())){
+        this.fields.username.addClass('error');
+        e.push('Please enter a valid username.')
+    }
     if (!this.validateName(this.fields.name.val())) {
         this.fields.name.addClass('error');
         e.push('Please enter your name.');

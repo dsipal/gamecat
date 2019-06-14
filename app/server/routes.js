@@ -126,18 +126,19 @@ module.exports = function(app) {
 	});
 
 	app.post('/signup', function(req, res){
-		console.log(req.body);
-
 		User.validateNewAccount({
 			username:   req.body['username'],
 			password:   req.body['password'],
+			passwordV: req.body['password_verify'],
 			name:       req.body['name'],
 			email:      req.body['email'],
 			country:    req.body['country'],
 			ref_by:     req.body['ref_by'],
-			email_optin: req.body['email-optin'] === "optin-true"
+			email_optin: req.body['email_optin'] !== null,
+			terms_conditions: req.body['terms_conditions'] !== null
 
 		}, function(e, o) {
+			console.log(e, o);
 			if(e){
 				res.status(400).send(e);
 			} else {
