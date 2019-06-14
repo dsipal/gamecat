@@ -1,6 +1,5 @@
 //TODO clean up code in passport.js, capitalization and wording of text shown to user.
 var LocalStrategy = require('passport-local').Strategy;
-var AM = require('../server/modules/account-manager');
 var mongoose = require('mongoose');
 var User = require('../server/models/User');
 
