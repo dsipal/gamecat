@@ -164,6 +164,12 @@ user.methods.confirmAccount = function(idToken, callback){
         callback(false);
     }
 };
+
+user.methods.updateToken = function(){
+    const toke = crypto.randomBytes(20).toString('hex');
+    user.token = toke;
+    return toke;
+};
     // helper functions //
 
 var md5 = function(str) {

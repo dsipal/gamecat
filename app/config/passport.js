@@ -29,7 +29,7 @@ module.exports = function(passport) {
                 return done(null, false, { message: 'Incorrect Username'});
             }
 
-            if(user.activated === false){
+            if(user.rank === 'new'){
                 console.log('can not use new user');
                 return done('user not activated yet, please use your activation email', false);
             }

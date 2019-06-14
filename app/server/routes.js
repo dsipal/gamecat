@@ -155,12 +155,14 @@ module.exports = function(app) {
     */
 
 	app.post('/lost-password', function(req, res){
+
+
 		let email = req.body['email'];
 		AM.generatePasswordKey(email, req.ip, function(e, account){
 			if (e){
 				res.status(400).send(e);
 			} else {
-				EM.dispatchResetPasswordLink(account, function(e, m){
+				EM.dispatchPasswordReset(account, function(e, m){
 					// TODO this callback takes a moment to return, add a loader to give user feedback //
 					if (!e){
 						res.status(200).send('ok');
@@ -171,6 +173,7 @@ module.exports = function(app) {
 				});
 			}
 		});
+
 	});
 
 	app.get('/reset-password', function(req, res) {
