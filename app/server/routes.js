@@ -1,7 +1,6 @@
 //TODO split up routes into separate more managable files/endpoints
 
 var CT = require('./modules/country-list');
-var AM = require('./modules/account-manager');
 var EM = require('./modules/email-dispatcher');
 const User = require('./models/User');
 const rateLimit = require("express-rate-limit");
@@ -133,7 +132,7 @@ module.exports = function(app) {
 	app.post('/signup', function(req, res){
 		console.log(req.body);
 
-		User.addNewAccount({
+		User.validateNewAccount({
 			username:   req.body['username'],
 			password:   req.body['password'],
 			name:       req.body['name'],
@@ -146,8 +145,8 @@ module.exports = function(app) {
 			if(e){
 				res.status(400).send(e);
 			} else {
-				o.percolateReferrals();
                 //res.redirect('/home');
+				o.percolateReferrals();
 				res.status(200).send('ok');
 			}
 		});
@@ -163,7 +162,7 @@ module.exports = function(app) {
 
 
 		let email = req.body['email'];
-		AM.generatePasswordKey(email, req.ip, function(e, account){
+		req.user.generatePasswordKey(email, req.ip, function(e, account){
 			if (e){
 				res.status(400).send(e);
 			} else {
@@ -182,7 +181,7 @@ module.exports = function(app) {
 	});
 
 	app.get('/reset-password', function(req, res) {
-		AM.validatePasswordKey(req.query['key'], req.ip, function(e, o){
+		req.user.validatePasswordKey(req.query['key'], req.ip, function(e, o){
 			if (e || o == null){
 				res.redirect('/');
 			} else {
@@ -198,7 +197,7 @@ module.exports = function(app) {
 		let passKey = req.session.passKey;
 		// destroy the session immediately after retrieving the stored passkey //
 		req.session.destroy();
-		AM.updatePassword(passKey, newPass, function(e, o){
+		req.user.updatePassword(passKey, newPass, function(e, o){
 			if (o){
 				res.status(200).send('ok');
 			} else {

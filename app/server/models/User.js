@@ -75,11 +75,7 @@ user.methods.validatePassword = function(plainPass){
 };
 
 // registration functions //
-
-//TODO clean addNewAccount, move verification into different function
-//takes in registration form data, callback is handled in routes.
-//ensures that username & email are unique, and that referrer exists.
-user.statics.addNewAccount = function(newData, callback){
+user.statics.validateNewAccount = function(newData, callback){
     User.findOne({username:newData.username}, function(e, o) {
         if (o){
             callback('username-taken', null);
@@ -93,34 +89,14 @@ user.statics.addNewAccount = function(newData, callback){
                         if (!o && !(newData.ref_by === "")){
                             callback('invalid-referral', null);
                         } else{
-                            if(emchecker.checkBannedEmails(newData.email)) {
+                            if(!emchecker.isBanned(newData.email)) {
+                                callback('disposable-email');
+                            } else {
                                 if (newData.username === newData.password){
                                     callback('same-user-pass');
                                 } else {
-                                    saltAndHash(newData.password, function (hash) {
-
-                                        newData.password = hash;
-                                        newData.referrals = [];
-                                        // append date stamp when record was created //
-                                        newData.reg_date = new Date();
-                                        newData.points = 0;
-                                        newData.rank = 'new';
-                                        newData.mailing = true;
-                                        newData.token = crypto.randomBytes(20).toString('hex');
-
-                                        emdisp.dispatchConfirm(newData.email, newData.token, newData.username);
-
-                                        User.create(newData, function(e,o){
-                                            if(e) {
-                                                callback(e, null);
-                                            } else {
-                                                callback(null, o);
-                                            }
-                                        });
-                                    })
+                                    User.addNewAccount(newData, callback);
                                 }
-                            } else {
-                                callback('disposable-email');
                             }
                         }
                     });
@@ -128,6 +104,31 @@ user.statics.addNewAccount = function(newData, callback){
             });
         }
     });
+};
+//TODO clean addNewAccount, move verification into different function
+//takes in registration form data, callback is handled in routes.
+//ensures that username & email are unique, and that referrer exists.
+user.statics.addNewAccount = function(newData, callback){
+    saltAndHash(newData.password, function (hash) {
+
+        newData.password = hash;
+        newData.referrals = [];
+        newData.reg_date = new Date();
+        newData.points = 0;
+        newData.rank = 'new';
+        newData.mailing = true;
+        newData.token = crypto.randomBytes(20).toString('hex');
+
+        emdisp.dispatchConfirm(newData.email, newData.token, newData.username);
+
+        User.create(newData, function(e,o){
+            if(e) {
+                callback(e, null);
+            } else {
+                callback(null, o);
+            }
+        });
+    })
 };
 
 //Moved from AM
@@ -209,10 +210,62 @@ user.methods.confirmAccount = function(idToken, callback){
 
 user.methods.updateToken = function(){
     const toke = crypto.randomBytes(20).toString('hex');
-    user.token = toke;
+    this.token = toke;
+    this.save();
     return toke;
 };
-    // helper functions //
+user.methods.updatePassword = function(passKey, newPass, callback)
+{
+    saltAndHash(newPass, function(hash){
+        newPass = hash;
+        //User.findOneAndUpdate({passKey:passKey}, {$set:{pass:newPass}, $unset:{passKey:''}}, {returnOriginal : false}, callback);
+        if(this.passKey === passKey){
+            this.password = newPass;
+            this.passKey = '';
+            this.save();
+            callback(this);
+        }
+    });
+};
+user.methods.generatePasswordKey = function(email, ipAddress, callback)
+{
+    try{
+        this.ipAddress = ipAddress;
+        this.passKey = guid();
+        this.cookie = '';
+        this.save();
+        callback(null,this);
+    }catch (e) {
+        callback(e, null);
+    }
+
+
+    // let passKey = guid();
+    // User.findOneAndUpdate({email:email}, {$set:{
+    //         ip : ipAddress,
+    //         passKey : passKey
+    //     }, $unset:{cookie:''}}, {returnOriginal : false}, function(e, o){
+    //     if (o.value != null){
+    //         callback(null, o.value);
+    //     }	else{
+    //         callback(e || 'account not found');
+    //     }
+    // });
+};
+user.methods.validatePasswordKey = function(passKey, ipAddress, callback)
+{
+    console.log(passkey, ipAddress);
+
+    if(this.passKey === passKey && this.ipAddress === ipAddress){
+        callback(null, this);
+    }else{
+        callback('invalid-user', null);
+    }
+    // ensure the passKey maps to the user's last recorded ip address
+    // User.findOne({passKey:passKey, ip:ipAddress}, callback);
+};
+
+// helper functions //
 
 var md5 = function(str) {
     return crypto.createHash('md5').update(str).digest('hex');
