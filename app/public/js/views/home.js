@@ -6,10 +6,11 @@ $(document).ready(function(){
 
 	$('#account-form').ajaxForm({
 		beforeSubmit : function(formData, jqForm, options){
-			if (av.validateForm() === false){
+			if (!av.validateForm()){
 				return false;
-			} 	else{
+			} else {
 			// push the disabled username field onto the form data array //
+				//TODO remove this after working out a separate page for updating account info from user home/account info.
 				formData.push({name:'user', value:$('#user-tf').val()});
 				return true;
 			}
@@ -22,12 +23,10 @@ $(document).ready(function(){
 				av.showInvalidEmail();
 			}	else if (e.responseText === 'username-taken'){
 				av.showInvalidUserName();
-			} 	else if (e.responseText === 'invalid-refferal'){
+			} 	else if (e.responseText === 'invalid-referral'){
 				av.showInvalidRefName();
 			} 	else if (e.responseText === 'disposable-email') {
 				av.showDispoEmail();
-			} 	else if (e.responseText === 'same-user-pass') {
-				av.showSamePass();
 			}
 		}
 	});

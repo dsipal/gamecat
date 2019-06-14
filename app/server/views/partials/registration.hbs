@@ -31,7 +31,7 @@
             <div class="col-sm-9">
                 <select id="country-list" name="country" class="custom-select" required>
                     {{#each countries as |item|}}
-                        <option>{{item.name}}</option>
+                        <option value="{{item.short}}">{{item.name}}</option>
                     {{/each}}
                 </select>
             </div>
@@ -50,7 +50,7 @@
 
 
     <div class="form-buttons">
-        <button type="button" id="account-form-btn1" class="btn btn-outline-dark" form="account-form"></button>
+        <button type="button" id="account-form-btn1" class="btn btn-outline-dark"></button>
         <button type="submit" id="account-form-btn2" class="btn btn-primary" form="account-form"></button>
     </div>
 </div>
