@@ -35,9 +35,9 @@ exports.joinMailingList = function(email, name) {
     });
 };
 
-exports.dispatchPasswordReset = function(email, token, name){
+exports.dispatchPasswordReset = function(email, token, name, callback){
 
-    const html = 'Password Reset Link: ' + '<a href="http://localhost:8080/verify?id=' + token + '?name=' + name + '"> Click Here </a>';
+    const html = 'Password Reset Link: ' + '<a href="http://localhost:8080/reset?id=' + token + '&name=' + name + '"> Click Here </a>';
     const data = {
         from: "Password Manager <me@sampes.mailgun.org>",
         to: email,
@@ -46,6 +46,11 @@ exports.dispatchPasswordReset = function(email, token, name){
     };
 
     mailgun.messages().send(data, function(err, bod){
-        console.log(bod);
+        if(err){
+            callback(err);
+        } else {
+            callback(false);
+            console.log(bod);
+        }
     });
 };

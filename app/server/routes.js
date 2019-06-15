@@ -157,51 +157,115 @@ module.exports = function(app) {
 	//TODO ensure password reset works, add rate limit, remove AM call
 	app.post('/lost-password', function(req, res){
 
-
-		let email = req.body['email'];
-		req.user.generatePasswordKey(email, req.ip, function(e, account){
-			if (e){
-				res.status(400).send(e);
-			} else {
-				EM.dispatchPasswordReset(account, function(e, m){
-					// TODO this callback takes a moment to return, add a loader to give user feedback //
-					if (!e){
-						res.status(200).send('ok');
-					}	else{
-						for (k in e) console.log('ERROR : ', k, e[k]);
-						res.status(400).send('unable to dispatch password reset');
+		let resetEmail = req.body['email'];
+		User.findOne({email:resetEmail}, function(e, o) {
+			if(e) {
+				console.log('Problem With Reset' + req.query.name + '   ' + req.query.id);
+			} else if(!o){
+				res.status(400).send('Reset email not sent, invalid email');
+			} else{
+				EM.dispatchPasswordReset(resetEmail, o.updateToken(), o.username, function(err){
+					if(!err){
+						res.redirect('/');
+					} else {
+						res.redirect('/');
+						res.status(400).send('Error in dispatching email');
+						console.log(err);
 					}
 				});
+
+				// o.resetPassword(req.query.id, function(success){
+				// 	if(success){
+				// 		res.redirect('/');
+				// 	} else {
+				// 		res.redirect('/signup');
+				// 	}
+				// });
+			}
+		});
+
+
+		// req.user.generatePasswordKey(email, req.ip, function(e, account){
+		// 	if (e){
+		// 		res.status(400).send(e);
+		// 	} else {
+		// 		EM.dispatchPasswordReset(account, function(e, m){
+		// 			// TODO this callback takes a moment to return, add a loader to give user feedback //
+		// 			if (!e){
+		// 				res.status(200).send('ok');
+		// 			}	else{
+		// 				for (k in e) console.log('ERROR : ', k, e[k]);
+		// 				res.status(400).send('unable to dispatch password reset');
+		// 			}
+		// 		});
+		// 	}
+		// });
+
+	});
+
+	app.get('/reset', function(req, res) {
+		console.log('Reset attempt by: ' + req.query.name + ' TOKEN: ' + req.query.id);
+		User.findOne({username:req.query.name}, function(e, o){
+			if(e || !o){
+				res.redirect('/');
+			} else{
+				if(o.token === req.query.id){
+					console.log('Valid Token');
+					req.session.token = o.token;
+					res.render('reset', { title : 'Reset Password' });
+				} else{
+					res.status(400).send('Invalid Reset Token');
+				}
 			}
 		});
 
 	});
 
-	app.get('/reset-password', function(req, res) {
-		req.user.validatePasswordKey(req.query['key'], req.ip, function(e, o){
-			if (e || o == null){
-				res.redirect('/');
-			} else {
-				req.session.passKey = req.query['key'];
-				res.render('reset', { title : 'Reset Password' });
+	app.post('/reset', function(req, res) {
+		let newPass = req.body['pass'];
+		let newToken = req.session.token;
+		req.session.destroy();
+		User.findOne({token:newToken}, function(e, o){
+			if(o){
+				o.resetPassword(newPass, newToken,function(success){
+					if(success){
+						console.log('Password Reset Complete for: ' + o.username);
+						res.redirect('/');
+					} else{
+						console.log('Password Reset Failed');
+					}
+				});
+			} else{
+				console.log('Password Reset User Not Found');
 			}
-		})
+		});
 	});
 
-	app.post('/reset-password', function(req, res) {
-		// TODO work password reset in with mailgun, remove account manager
-		let newPass = req.body['pass'];
-		let passKey = req.session.passKey;
-		// destroy the session immediately after retrieving the stored passkey //
-		req.session.destroy();
-		req.user.updatePassword(passKey, newPass, function(e, o){
-			if (o){
-				res.status(200).send('ok');
-			} else {
-				res.status(400).send('unable to update password');
-			}
-		})
-	});
+	// app.get('/reset-password', function(req, res) {
+	// 	req.user.validatePasswordKey(req.query['key'], req.ip, function(e, o){
+	// 		if (e || o == null){
+	// 			res.redirect('/');
+	// 		} else {
+	// 			req.session.passKey = req.query['key'];
+	// 			res.render('reset', { title : 'Reset Password' });
+	// 		}
+	// 	})
+	// });
+	//
+	// app.post('/reset-password', function(req, res) {
+	// 	// TODO work password reset in with mailgun, remove account manager
+	// 	let newPass = req.body['pass'];
+	// 	let passKey = req.session.passKey;
+	// 	// destroy the session immediately after retrieving the stored passkey //
+	// 	req.session.destroy();
+	// 	req.user.updatePassword(passKey, newPass, function(e, o){
+	// 		if (o){
+	// 			res.status(200).send('ok');
+	// 		} else {
+	// 			res.status(400).send('unable to update password');
+	// 		}
+	// 	})
+	// });
 
 	/*
         view, delete & reset accounts
