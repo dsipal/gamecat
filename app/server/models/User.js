@@ -139,8 +139,8 @@ user.statics.addNewAccount = function(newData, callback){
         newData.rank = 'new';
         newData.token = crypto.randomBytes(20).toString('hex');
 
-        emdisp.dispatchConfirm(newData.email, newData.token, newData.username);
 
+        emdisp.dispatchConfirm(newData.email, newData.token, newData.username);
         User.create(newData, function(e,o){
             if(e) {
                 callback(e, null);
