@@ -3,6 +3,7 @@
 var CT = require('./modules/country-list');
 var EM = require('./modules/email-dispatcher');
 const User = require('./models/User');
+const Prize = require('./models/Prize');
 const rateLimit = require("express-rate-limit");
 const request = require("request-promise");
 const passport = require('passport');
@@ -39,7 +40,7 @@ module.exports = function(app) {
 		// check if the user has an auto login key saved in a cookie //
 		if (req.cookies.login === undefined || !req.isAuthenticated()){
 			res.render('login', {
-			    title: 'Hello - Please Login To Your Account'
+				title: 'Hello - Please Login To Your Account'
 			});
 		} else {
 			// attempt automatic login //
@@ -113,15 +114,56 @@ module.exports = function(app) {
 		})
 	});
 
+	app.get('/store', ensureAuthenticated(),function(req,res){
+		// Prize.create({
+		// 	name: 'test',
+		// 	image_path: '/img/vbucks.png',
+		// 	description: 'test test test',
+		// 	cost: 100,
+		// 	categories: ['test', 'test2'],
+		// 	tags: ['notatest'],
+		// }, function(e,o){
+		// 	if(e){
+		// 		console.log(e);
+		// 	} else {
+		// 		o.save();
+		// 	}
+		//
+		// });
+
+		Prize.find().exec(function(err, prizes){
+			if(err){
+				console.log(err)
+			} else {
+				res.render('store',{
+					prizes: prizes
+				});
+			}
+		})
+	});
+
+	app.get('/store/buy', ensureAuthenticated(),function(req,res){
+		let id = req.query.id;
+		Prize.findOne({'_id': id}).exec(function(err, prize){
+			req.user.purchasePrize(prize, function(order, user){
+				if(order){
+					console.log('purchase successful');
+				} else {
+					console.log('failure purchasing');
+				}
+			})
+		})
+	});
+
 	/*
         new accounts
     */
 	app.get('/signup', function(req, res) {
 		var ref_by = req.query.ref_by;
 		res.render('signup', {
-		    title: 'Signup',
-            countries : CT,
-            ref_by: ref_by
+			title: 'Signup',
+			countries : CT,
+			ref_by: ref_by
 		});
 	});
 
@@ -142,7 +184,7 @@ module.exports = function(app) {
 			if(e){
 				res.status(400).send(e);
 			} else {
-                //res.redirect('/home');
+				//res.redirect('/home');
 				o.percolateReferrals();
 				res.status(200).send('ok');
 			}
@@ -173,34 +215,8 @@ module.exports = function(app) {
 						console.log(err);
 					}
 				});
-
-				// o.resetPassword(req.query.id, function(success){
-				// 	if(success){
-				// 		res.redirect('/');
-				// 	} else {
-				// 		res.redirect('/signup');
-				// 	}
-				// });
 			}
 		});
-
-
-		// req.user.generatePasswordKey(email, req.ip, function(e, account){
-		// 	if (e){
-		// 		res.status(400).send(e);
-		// 	} else {
-		// 		EM.dispatchPasswordReset(account, function(e, m){
-		// 			// TODO this callback takes a moment to return, add a loader to give user feedback //
-		// 			if (!e){
-		// 				res.status(200).send('ok');
-		// 			}	else{
-		// 				for (k in e) console.log('ERROR : ', k, e[k]);
-		// 				res.status(400).send('unable to dispatch password reset');
-		// 			}
-		// 		});
-		// 	}
-		// });
-
 	});
 
 	app.get('/reset', function(req, res) {
@@ -208,7 +224,7 @@ module.exports = function(app) {
 		User.findOne({username:req.query.name}, function(e, o){
 			if(e || !o){
 				res.redirect('/');
-			} else{
+			} else {
 				if(o.token === req.query.id){
 					console.log('Valid Token');
 					req.session.token = o.token;
@@ -240,32 +256,6 @@ module.exports = function(app) {
 			}
 		});
 	});
-
-	// app.get('/reset-password', function(req, res) {
-	// 	req.user.validatePasswordKey(req.query['key'], req.ip, function(e, o){
-	// 		if (e || o == null){
-	// 			res.redirect('/');
-	// 		} else {
-	// 			req.session.passKey = req.query['key'];
-	// 			res.render('reset', { title : 'Reset Password' });
-	// 		}
-	// 	})
-	// });
-	//
-	// app.post('/reset-password', function(req, res) {
-	// 	// TODO work password reset in with mailgun, remove account manager
-	// 	let newPass = req.body['pass'];
-	// 	let passKey = req.session.passKey;
-	// 	// destroy the session immediately after retrieving the stored passkey //
-	// 	req.session.destroy();
-	// 	req.user.updatePassword(passKey, newPass, function(e, o){
-	// 		if (o){
-	// 			res.status(200).send('ok');
-	// 		} else {
-	// 			res.status(400).send('unable to update password');
-	// 		}
-	// 	})
-	// });
 
 	/*
         view, delete & reset accounts

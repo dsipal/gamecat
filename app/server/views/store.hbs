@@ -1,1 +1,13 @@
 <!--TODO add store page-->
+<div class="row">
+    {{#each prizes}}
+        <div class="col-sm-3">
+            <img src="{{this.image_path}}">
+            <h2>{{this.name}}</h2>
+            <h3>{{this.cost}}</h3>
+            <p>{{this.description}}</p>
+            <a class="btn btn-primary" href="/store/buy?id={{this._id}}">Purchase</a>
+        </div>
+    {{/each}}
+
+</div>
