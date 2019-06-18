@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 const emchecker = require('../modules/email-checker.js');
 const emdisp = require('../modules/email-dispatcher');
+const Prize = require('./Prize');
+const Order = require('./Order');
 
 //TODO add validators in here, then handle the errors elsewhere.
 const user = new mongoose.Schema({
@@ -15,18 +17,20 @@ const user = new mongoose.Schema({
             type: String,
             unique: true
         },
+        orders: [{type: mongoose.Schema.ObjectId, ref: 'Orders'}],
+        awarded_prizes: [{type: mongoose.Schema.ObjectId, ref: 'Prizes'}],
         country: String,
         referrals: [{
             type: String
         }],
-        ref_by: String,
+        ref_by: String, // need to update this and all related functions to use [{type: mongoose.Schema.ObjectId, ref: 'Users'}],
         reg_date: Date,
         points: Number,
         cookie: String,
         ip: String,
         rank: String,
         token: String,
-        email_optin: Boolean
+        email_optin: Boolean,
     },
     {collection: 'Users'});
 
@@ -68,8 +72,10 @@ user.statics.generateLoginKey = function(username, ipAddress, callback)
 //TODO possibly figure out how to auth without sending plaintext pass
 //takes plaintext password, returns plainPass == hashedPass
 user.methods.validatePassword = function(plainPass){
+    console.log(plainPass);
     var salt = this.password.substr(0, 10);
     var validHash = salt + md5(plainPass + salt);
+    console.log(validHash, this.password);
     return validHash === this.password;
 };
 
@@ -213,7 +219,6 @@ user.methods.deleteAccount = function(){
     this.delete();
 };
 
-
 //Checking if the token from URL matches token stored in user data, if yes, activate account
 user.methods.confirmAccount = function(idToken, callback){
     if(this.token === idToken){
@@ -240,7 +245,7 @@ user.methods.resetPassword = function(newPass, resetToken, callback){
         //Temp storing password to maintain scopes
         let temp = '';
         saltAndHash(newPass, function(hash){
-           temp = hash;
+            temp = hash;
         });
         this.password = temp;
         this.updateToken();
@@ -250,12 +255,10 @@ user.methods.resetPassword = function(newPass, resetToken, callback){
     }
 };
 
-
 user.methods.updatePassword = function(passKey, newPass, callback)
 {
     saltAndHash(newPass, function(hash){
         newPass = hash;
-        //User.findOneAndUpdate({passKey:passKey}, {$set:{pass:newPass}, $unset:{passKey:''}}, {returnOriginal : false}, callback);
         if(this.passKey === passKey){
             this.password = newPass;
             this.passKey = '';
@@ -265,54 +268,41 @@ user.methods.updatePassword = function(passKey, newPass, callback)
     });
 };
 
-    //TODO Review if this code needs to be kept, was part of the original password reset system
-// user.methods.generatePasswordKey = function(email, ipAddress, callback)
-// {
-//     try{
-//         this.ipAddress = ipAddress;
-//         this.passKey = guid();
-//         this.cookie = '';
-//         this.save();
-//         callback(null,this);
-//     }catch (e) {
-//         callback(e, null);
-//     }
-//
-//
-//     // let passKey = guid();
-//     // User.findOneAndUpdate({email:email}, {$set:{
-//     //         ip : ipAddress,
-//     //         passKey : passKey
-//     //     }, $unset:{cookie:''}}, {returnOriginal : false}, function(e, o){
-//     //     if (o.value != null){
-//     //         callback(null, o.value);
-//     //     }	else{
-//     //         callback(e || 'account not found');
-//     //     }
-//     // });
-// };
-// user.methods.validatePasswordKey = function(passKey, ipAddress, callback)
-// {
-//     console.log(passkey, ipAddress);
-//
-//     if(this.passKey === passKey && this.ipAddress === ipAddress){
-//         callback(null, this);
-//     }else{
-//         callback('invalid-user', null);
-//     }
-//     // ensure the passKey maps to the user's last recorded ip address
-//     // User.findOne({passKey:passKey, ip:ipAddress}, callback);
-// };
+// store functions //
+
+user.methods.purchasePrize = function(prize, callback){
+    let user = this;
+    if(this.points >= prize.cost){
+        console.log(this.points, prize.cost);
+        this.points -= prize.cost;
+        Order.collection.insertOne({
+            prize: prize,
+            user: this,
+            status: 'Pending',
+            order_date: new Date(),
+        }).then(function(order){
+            user.orders.push(order.insertedId);
+            user.save(function(err){
+                console.log(err);
+            });
+            callback(order.ops[0], user);
+        });
+
+    } else {
+        callback(null, this)
+    }
+};
+
 
 // helper functions //
 
-var md5 = function(str) {
+const md5 = function(str) {
     return crypto.createHash('md5').update(str).digest('hex');
 };
 
-var generateSalt = function()
+const generateSalt = function()
 {
-    var set = '0123456789abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ'; // should be stored in env variable.
+    var set = '0123456789abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ';
     var salt = '';
     for (var i = 0; i < 10; i++) {
         var p = Math.floor(Math.random() * set.length);
@@ -321,16 +311,18 @@ var generateSalt = function()
     return salt;
 };
 
-var saltAndHash = function(pass, callback)
+const saltAndHash = function(pass, callback)
 {
     var salt = generateSalt();
     callback(salt + md5(pass + salt));
 };
 
-var getObjectId = function(id)
+const getObjectId = function(id)
 {
     return new require('mongodb').ObjectID(id);
 };
+
+
 
 const User = mongoose.model('User', user);
 module.exports = User;

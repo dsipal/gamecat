@@ -1,1 +1,17 @@
 <!--TODO add store page-->
+<div class="row">
+    {{#each prizes}}
+        <div class="col-sm-3">
+            <img src="{{this.image_path}}">
+            <h2>{{this.name}}</h2>
+            <h3>{{this.cost}}</h3>
+            <p>{{this.description}}</p>
+            <form>
+                <input type="hidden" id="product" name="product" value="{{this._id}}">
+                <button class="btn btn-primary" type="submit" formaction="/shop/buy" formmethod="post">Purchase</button>
+            </form>
+<!--            <a class="btn btn-primary" href="/store/buy?id={{this._id}}">Purchase</a>-->
+        </div>
+    {{/each}}
+
+</div>
