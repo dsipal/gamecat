@@ -72,8 +72,10 @@ user.statics.generateLoginKey = function(username, ipAddress, callback)
 //TODO possibly figure out how to auth without sending plaintext pass
 //takes plaintext password, returns plainPass == hashedPass
 user.methods.validatePassword = function(plainPass){
+    console.log(plainPass);
     var salt = this.password.substr(0, 10);
     var validHash = salt + md5(plainPass + salt);
+    console.log(validHash, this.password);
     return validHash === this.password;
 };
 
@@ -269,18 +271,23 @@ user.methods.updatePassword = function(passKey, newPass, callback)
 // store functions //
 
 user.methods.purchasePrize = function(prize, callback){
+    let user = this;
     if(this.points >= prize.cost){
         console.log(this.points, prize.cost);
         this.points -= prize.cost;
-        let newOrder = Order.create({
+        Order.collection.insertOne({
             prize: prize,
             user: this,
             status: 'Pending',
             order_date: new Date(),
+        }).then(function(order){
+            user.orders.push(order.insertedId);
+            user.save(function(err){
+                console.log(err);
+            });
+            callback(order.ops[0], user);
         });
-        this.orders.push(newOrder._id);
-        this.save();
-        callback(newOrder, this);
+
     } else {
         callback(null, this)
     }
@@ -289,11 +296,11 @@ user.methods.purchasePrize = function(prize, callback){
 
 // helper functions //
 
-var md5 = function(str) {
+const md5 = function(str) {
     return crypto.createHash('md5').update(str).digest('hex');
 };
 
-var generateSalt = function()
+const generateSalt = function()
 {
     var set = '0123456789abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ';
     var salt = '';
@@ -304,16 +311,18 @@ var generateSalt = function()
     return salt;
 };
 
-var saltAndHash = function(pass, callback)
+const saltAndHash = function(pass, callback)
 {
     var salt = generateSalt();
     callback(salt + md5(pass + salt));
 };
 
-var getObjectId = function(id)
+const getObjectId = function(id)
 {
     return new require('mongodb').ObjectID(id);
 };
+
+
 
 const User = mongoose.model('User', user);
 module.exports = User;

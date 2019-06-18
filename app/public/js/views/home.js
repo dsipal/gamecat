@@ -11,7 +11,7 @@ $(document).ready(function(){
 			} else {
 			// push the disabled username field onto the form data array //
 				//TODO remove this after working out a separate page for updating account info from user home/account info.
-				formData.push({name:'user', value:$('#user-tf').val()});
+				formData.push({name:'account.js', value:$('#user-tf').val()});
 				return true;
 			}
 		},

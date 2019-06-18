@@ -6,7 +6,11 @@
             <h2>{{this.name}}</h2>
             <h3>{{this.cost}}</h3>
             <p>{{this.description}}</p>
-            <a class="btn btn-primary" href="/store/buy?id={{this._id}}">Purchase</a>
+            <form>
+                <input type="hidden" id="product" name="product" value="{{this._id}}">
+                <button class="btn btn-primary" type="submit" formaction="/shop/buy" formmethod="post">Purchase</button>
+            </form>
+<!--            <a class="btn btn-primary" href="/store/buy?id={{this._id}}">Purchase</a>-->
         </div>
     {{/each}}
 
