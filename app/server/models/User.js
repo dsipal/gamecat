@@ -238,7 +238,7 @@ user.methods.updateToken = function(){
 user.methods.resetPassword = function(newPass, resetToken, callback){
     if(this.token === resetToken){
         //Temp storing password to maintain scopes
-        let temp = newPass;
+        let temp = '';
         saltAndHash(newPass, function(hash){
            temp = hash;
         });
