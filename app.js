@@ -11,10 +11,21 @@ var passport = require('passport')
     ,	LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
 
+
+
+
 // create instance of express server //
 var app = express();
 app.use(helmet());
 app.set('port', process.env.PORT || 8080);
+
+
+
+// route files //
+const index = require('./app/server/routes/index.js');
+const account = require('./app/server/routes/account');
+const shop = require('./app/server/routes/shop');
+const offers = require('./app/server/routes/offers');
 
 // setup handlebars templating //
 app.engine('hbs', exphbs( {
@@ -33,7 +44,7 @@ app.engine('hbs', exphbs( {
 app.set('view engine', 'hbs');
 
 
-    //TODO use below expression to limit ips that access /postback
+//TODO use below expression to limit ips that access /postback
 // app.use('/postback', function(req, res, next) {
 //     // filtering here, calls `res` method to stop progress or calls `next` to proceed
 //     let ip = req.ip ||
@@ -105,9 +116,16 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // set up the router //
-require('./app/server/routes')(app, passport);
+//require('./app/server/routes')(app, passport);
+
+app.use('/', index);
+app.use('/account', account);
+app.use('/shop', shop);
+app.use('/offers', offers);
 
 // create server //
 http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));
 });
+
+

@@ -11,316 +11,329 @@ const LocalStrategy = require('passport-local').Strategy;
 var qs = require('querystring');
 
 const accountCreateLimiter = rateLimit({
-	windowMs: 60*60*1000 * 24, 		//3 Registrations per One Day
-	max: 3,
-	message:
-		"Too many account created on this IP, try again in a day."
+    windowMs: 60*60*1000 * 24, 		//3 Registrations per One Day
+    max: 3,
+    message:
+        "Too many account created on this IP, try again in a day."
 });
 
 const genericLimiter = rateLimit({
-	windowMs: 	1000, 				//2 Get/Posts per One Second
-	max:		2,
-	message:
-		"Too many refreshes per second, calm down."
+    windowMs: 	1000, 				//2 Get/Posts per One Second
+    max:		2,
+    message:
+        "Too many refreshes per second, calm down."
 });
 
 const passwordResetLimiter = rateLimit({
-	windowMs:	60*60*1000,			//2 Pass Resets per One Hour
-	max: 2,
-	message:
-		"Please wait before attempting to reset your password again."
+    windowMs:	60*60*1000,			//2 Pass Resets per One Hour
+    max: 2,
+    message:
+        "Please wait before attempting to reset your password again."
 });
 
 module.exports = function(app) {
 
-	/*
+    /*
         login & logout
     */
-	app.get('/', function(req, res){
-		// check if the user has an auto login key saved in a cookie //
-		if (req.cookies.login === undefined || !req.isAuthenticated()){
-			res.render('login', {
-				title: 'Hello - Please Login To Your Account'
-			});
-		} else {
-			// attempt automatic login //
-			//TODO *removed call to AM for autoLogin and validateLoginKey*
-			User.validateLoginKey(req.cookies.login, req.ip, function(e, o){
-				if (o){
-					User.autoLogin(o.user, o.pass, function(o){
-						res.redirect('/home');
-					});
-				} else {
+    app.get('/', function(req, res){
+        // check if the user has an auto login key saved in a cookie //
+        if (req.cookies.login === undefined || !req.isAuthenticated()){
+            res.render('login', {
+                title: 'Hello - Please Login To Your Account'
+            });
+        } else {
+            // attempt automatic login //
+            //TODO *removed call to AM for autoLogin and validateLoginKey*
+            User.validateLoginKey(req.cookies.login, req.ip, function(e, o){
+                if (o){
+                    User.autoLogin(o.account, o.pass, function(o){
+                        res.redirect('/home');
+                    });
+                } else {
 
-					res.render('login');
-				}
-			});
-		}
-	});
+                    res.render('login');
+                }
+            });
+        }
+    });
 
-	app.post('/',
-		passport.authenticate('local', {
-			session: true,
-			failureRedirect: '/'   //'/logout?status=login failed'
-		}), function(req, res){
-			if (req.body['remember-me'] === 'false'){
-				res.redirect('/home');
-			} else {
-				//TODO *removed call to AM- moved function to User.js *
-				User.generateLoginKey(req.user.username, req.ip, function(key){
-					res.cookie('login', key, { maxAge: 900000 });
-					res.redirect('/home');
-				});
-			}
-		});
+    app.post('/',
+        passport.authenticate('local', {
+            session: true,
+            failureRedirect: '/'   //'/logout?status=login failed'
+        }), function(req, res){
+            if (req.body['remember-me'] === 'false'){
+                res.redirect('/home');
+            } else {
+                //TODO *removed call to AM- moved function to User.js *
+                User.generateLoginKey(req.user.username, req.ip, function(key){
+                    res.cookie('login', key, { maxAge: 900000 });
+                    res.redirect('/home');
+                });
+            }
+        });
 
-	app.post('/logout', ensureAuthenticated(), function(req, res){
-		res.clearCookie('login');
-		req.session.destroy(function(e){
-			if(e) {
-				console.log(e);
-			} else {
-				res.status(200).send('ok');
-			}
-		});
-	});
+    app.post('/logout', ensureAuthenticated(), function(req, res){
+        res.clearCookie('login');
+        req.session.destroy(function(e){
+            if(e) {
+                console.log(e);
+            } else {
+                res.status(200).send('ok');
+            }
+        });
+    });
 
-	/*
+    /*
         control panel
     */
-	//TODO move updating account to different page, add balance, other details
-	app.get('/home', ensureAuthenticated(), function(req, res) {
-		res.render('home', {
-			title: 'Control Panel',
-			countries: CT,
-			udata: req.user
-		});
+    //TODO move updating account to different page, add balance, other details
+    app.get('/home', ensureAuthenticated(), function(req, res) {
+        res.render('home', {
+            title: 'Control Panel',
+            countries: CT,
+            udata: req.user
+        });
 
-	});
+    });
 
-	app.post('/home', ensureAuthenticated(), function(req, res){
-		req.user.updateAccount({
-			id: req._passport.instance._userProperty,
-			name: req.body['name'],
-			email: req.body['email'],
-			country: req.body['country'],
-			password: req.body['password'],
-		}, function(e, o){
-			if(e){
-				res.status(400).send('error-updating-account');
-			} else {
-				res.status(200).send('ok');
-			}
-		})
-	});
+    app.post('/home', ensureAuthenticated(), function(req, res){
+        req.user.updateAccount({
+            id: req._passport.instance._userProperty,
+            name: req.body['name'],
+            email: req.body['email'],
+            country: req.body['country'],
+            password: req.body['password'],
+        }, function(e, o){
+            if(e){
+                res.status(400).send('error-updating-account');
+            } else {
+                res.status(200).send('ok');
+            }
+        })
+    });
 
-	app.get('/store', ensureAuthenticated(),function(req,res){
-		// Prize.create({
-		// 	name: 'test',
-		// 	image_path: '/img/vbucks.png',
-		// 	description: 'test test test',
-		// 	cost: 100,
-		// 	categories: ['test', 'test2'],
-		// 	tags: ['notatest'],
-		// }, function(e,o){
-		// 	if(e){
-		// 		console.log(e);
-		// 	} else {
-		// 		o.save();
-		// 	}
-		//
-		// });
+    app.get('/store', ensureAuthenticated(),function(req,res){
+        // Prize.create({
+        // 	name: 'test',
+        // 	image_path: '/img/vbucks.png',
+        // 	description: 'test test test',
+        // 	cost: 100,
+        // 	categories: ['test', 'test2'],
+        // 	tags: ['notatest'],
+        // }, function(e,o){
+        // 	if(e){
+        // 		console.log(e);
+        // 	} else {
+        // 		o.save();
+        // 	}
+        //
+        // });
 
-		Prize.find().exec(function(err, prizes){
-			if(err){
-				console.log(err)
-			} else {
-				res.render('store',{
-					prizes: prizes
-				});
-			}
-		})
-	});
+        Prize.find().exec(function(err, prizes){
+            if(err){
+                console.log(err)
+            } else {
+                res.render('store',{
+                    prizes: prizes
+                });
+            }
+        })
+    });
 
-	app.get('/store/buy', ensureAuthenticated(),function(req,res){
-		let id = req.query.id;
-		Prize.findOne({'_id': id}).exec(function(err, prize){
-			req.user.purchasePrize(prize, function(order, user){
-				if(order){
-					console.log('purchase successful');
-				} else {
-					console.log('failure purchasing');
-				}
-			})
-		})
-	});
+    app.get('/store/buy', ensureAuthenticated(),function(req,res){
+        let id = req.query.id;
+        Prize.findOne({'_id': id}).exec(function(err, prize){
+            req.user.purchasePrize(prize, function(order, user){
+                if(order){
+                    console.log('purchase successful');
+                } else {
+                    console.log('failure purchasing');
+                }
+            })
+        })
+    });
 
-	/*
+    /*
         new accounts
     */
-	app.get('/signup', function(req, res) {
-		var ref_by = req.query.ref_by;
-		res.render('signup', {
-			title: 'Signup',
-			countries : CT,
-			ref_by: ref_by
-		});
-	});
+    app.get('/signup', function(req, res) {
+        let ref_by = req.query.ref_by;
+        res.render('signup', {
+            title: 'Signup',
+            countries : CT,
+            ref_by: ref_by
+        });
+    });
 
-	app.post('/signup', function(req, res){
-		User.validateNewAccount({
-			username:   req.body['username'],
-			password:   req.body['password'],
-			passwordV: req.body['password_verify'],
-			name:       req.body['name'],
-			email:      req.body['email'],
-			country:    req.body['country'],
-			ref_by:     req.body['ref_by'],
-			email_optin: req.body['email_optin'] !== null,
-			terms_conditions: req.body['terms_conditions'] !== null
+    app.post('/signup', function(req, res){
+        User.validateNewAccount({
+            username:   req.body['username'],
+            password:   req.body['password'],
+            passwordV: req.body['password_verify'],
+            name:       req.body['name'],
+            email:      req.body['email'],
+            country:    req.body['country'],
+            ref_by:     req.body['ref_by'],
+            email_optin: req.body['email_optin'] !== null,
+            terms_conditions: req.body['terms_conditions'] !== null
 
-		}, function(e, o) {
-			console.log(e, o);
-			if(e){
-				res.status(400).send(e);
-			} else {
-				//res.redirect('/home');
-				o.percolateReferrals();
-				res.status(200).send('ok');
-			}
-		});
+        }, function(e, o) {
+            console.log(e, o);
+            if(e){
+                res.status(400).send(e);
+            } else {
+                //res.redirect('/home');
+                o.percolateReferrals();
+                res.status(200).send('ok');
+            }
+        });
 
-	});
+    });
 
-	/*
+    /*
         password reset
     */
 
-	//TODO ensure password reset works, add rate limit, remove AM call
-	app.post('/lost-password', function(req, res){
+    //TODO ensure password reset works, add rate limit, remove AM call
+    app.post('/lost-password', function(req, res){
 
-		let resetEmail = req.body['email'];
-		User.findOne({email:resetEmail}, function(e, o) {
-			if(e) {
-				console.log('Problem With Reset' + req.query.name + '   ' + req.query.id);
-			} else if(!o){
-				res.status(400).send('Reset email not sent, invalid email');
-			} else{
-				EM.dispatchPasswordReset(resetEmail, o.updateToken(), o.username, function(err){
-					if(!err){
-						res.redirect('/');
-					} else {
-						res.redirect('/');
-						res.status(400).send('Error in dispatching email');
-						console.log(err);
-					}
-				});
-			}
-		});
-	});
+        let resetEmail = req.body['email'];
+        User.findOne({email:resetEmail}, function(e, o) {
+            if(e) {
+                console.log('Problem With Reset' + req.query.name + '   ' + req.query.id);
+            } else if(!o){
+                res.status(400).send('Reset email not sent, invalid email');
+            } else{
+                EM.dispatchPasswordReset(resetEmail, o.updateToken(), o.username, function(err){
+                    if(!err){
+                        res.redirect('/');
+                    } else {
+                        res.redirect('/');
+                        res.status(400).send('Error in dispatching email');
+                        console.log(err);
+                    }
+                });
+            }
+        });
+    });
 
-	app.get('/reset', function(req, res) {
-		console.log('Reset attempt by: ' + req.query.name + ' TOKEN: ' + req.query.id);
-		User.findOne({username:req.query.name}, function(e, o){
-			if(e || !o){
-				res.redirect('/');
-			} else {
-				if(o.token === req.query.id){
-					console.log('Valid Token');
-					req.session.token = o.token;
-					res.render('reset', { title : 'Reset Password' });
-				} else{
-					res.status(400).send('Invalid Reset Token');
-				}
-			}
-		});
+    app.get('/reset', function(req, res) {
+        console.log('Reset attempt by: ' + req.query.name + ' TOKEN: ' + req.query.id);
+        User.findOne({username:req.query.name}, function(e, o){
+            if(e || !o){
+                res.redirect('/');
+            } else {
+                if(o.token === req.query.id){
+                    console.log('Valid Token');
+                    req.session.token = o.token;
+                    res.render('reset', { title : 'Reset Password' });
+                } else{
+                    res.status(400).send('Invalid Reset Token');
+                }
+            }
+        });
 
-	});
+    });
 
-	app.post('/reset', function(req, res) {
-		let newPass = req.body['pass'];
-		let newToken = req.session.token;
-		req.session.destroy();
-		User.findOne({token:newToken}, function(e, o){
-			if(o){
-				o.resetPassword(newPass, newToken,function(success){
-					if(success){
-						console.log('Password Reset Complete for: ' + o.username);
-						res.redirect('/');
-					} else{
-						console.log('Password Reset Failed');
-					}
-				});
-			} else{
-				console.log('Password Reset User Not Found');
-			}
-		});
-	});
+    app.post('/reset', function(req, res) {
+        let newPass = req.body['pass'];
+        let newToken = req.session.token;
+        req.session.destroy();
+        User.findOne({token:newToken}, function(e, o){
+            if(o){
+                o.resetPassword(newPass, newToken,function(success){
+                    if(success){
+                        console.log('Password Reset Complete for: ' + o.username);
+                        res.redirect('/');
+                    } else{
+                        console.log('Password Reset Failed');
+                    }
+                });
+            } else{
+                console.log('Password Reset User Not Found');
+            }
+        });
+    });
 
-	/*
+    /*
         view, delete & reset accounts
     */
 
-	app.post('/delete', function(req, res){
-		//TODO ensure that deleting a user works correctly
-		req.user.deleteAccount();
-		res.clearCookie('login');
-	});
+    app.post('/delete', function(req, res){
+        //TODO ensure that deleting a user works correctly
+        req.user.deleteAccount();
+        res.clearCookie('login');
+    });
 
-	app.get('/offers', ensureAuthenticated(), async function(req, res){
-		//TODO get offer page working on single page, add different tabs for different types of offers
-		res.render('offers', {
-			subid1: req.user._id
-		})
-	});
+    app.get('/offers', ensureAuthenticated(), async function(req, res){
+        //TODO get offer page working on single page, add different tabs for different types of offers
+        res.render('offers', {
+            subid1: req.user._id
+        })
+    });
 
-	app.get('/postback', async function(req, res){
-		//TODO *added ip restrictions to postback*, ensure that it works correctly with Adscend
+    app.get('/postback', async function(req, res){
+        //TODO *added ip restrictions to postback*, ensure that it works correctly with Adscend
 
-		User.getByID().addPoints(req.query.payout*10);
+        User.getByID().addPoints(req.query.payout*10);
 
-		res.send(req.query.subid1 + " was paid " + 10 * req.query.payout);
-	});
+        res.send(req.query.subid1 + " was paid " + 10 * req.query.payout);
+    });
 
-	app.get('/referrals', ensureAuthenticated(), function(req, res) {
-		//TODO possibly add multi-tiered referrals
-		var ref_link = req.protocol + '://' + req.headers.host + '/signup?ref_by=' + req.user.username;
-		res.render('referrals', {ref_link: ref_link, referrals: req.user.referrals});
+    app.get('/referrals', ensureAuthenticated(), function(req, res) {
+        //TODO possibly add multi-tiered referrals
+        var ref_link = req.protocol + '://' + req.headers.host + '/signup?ref_by=' + req.user.username;
+        res.render('referrals', {ref_link: ref_link, referrals: req.user.referrals});
 
-	});
+    });
 
-	app.get('/verify', function(req, res){
-		//TODO ensure that verification through email works, limit pages that user can access without verification
-		User.findOne({username:req.query.name}, function(e, o) {
-			if(e) {
-				console.log('Problem With Verification' + req.query.name + '   ' + req.query.id);
-			} else{
-				o.confirmAccount(req.query.id, function(success){
-					if(success){
-						res.redirect('/');
-					} else {
-						res.redirect('/signup');
-					}
-				});
-			}
-		})
-	});
+    app.get('/verify', function(req, res){
+        //TODO ensure that verification through email works, limit pages that user can access without verification
+        User.findOne({username:req.query.name}, function(e, o) {
+            if(e) {
+                console.log('Problem With Verification' + req.query.name + '   ' + req.query.id);
+            } else{
+                o.confirmAccount(req.query.id, function(success){
+                    if(success){
+                        res.redirect('/');
+                    } else {
+                        res.redirect('/signup');
+                    }
+                });
+            }
+        })
+    });
 
-	//TODO design custom 404 page
-	app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });
+
+    app.get('/leaderboard', function(req, res){
+        User.find().sort([['points', -1]]).limit(10).exec(function(err,users){
+            console.log(users);
+            if(err){
+                console.log(err);
+            } else {
+                res.render('leaderboards', {users: users});
+            }
+
+        })
+    });
+
+    //TODO design custom 404 page
+    app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });
 
 
 };
 
 function ensureAuthenticated(){
-	//TODO add check to see if user has verified email && add correct error response
-	return function(req, res, next){
-		if(!req.isAuthenticated || !req.isAuthenticated()){
-			res.status(401).send('not-authenticated');
-		} else if(req.user.rank === 'new'){
-			res.status(401).send('not-verified');
-		} else {
-			next();
-		}
-	}
+    //TODO add check to see if user has verified email && add correct error response
+    return function(req, res, next){
+        if(!req.isAuthenticated || !req.isAuthenticated()){
+            res.status(401).send('not-authenticated');
+        } else if(req.user.rank === 'new'){
+            res.status(401).send('not-verified');
+        } else {
+            next();
+        }
+    }
 }
