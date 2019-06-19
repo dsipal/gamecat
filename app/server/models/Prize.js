@@ -13,7 +13,7 @@ const prize = new mongoose.Schema({
 //static functions
 
 prize.statics.getAll = function(callback){
-    
+
     Prize.find().exec(function(err, prizes){
         callback(err, prizes);
     })

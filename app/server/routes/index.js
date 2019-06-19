@@ -6,6 +6,7 @@ const passport = require('passport');
 const express = require('express');
 let router = express.Router();
 const authLimiter = require('../modules/authLimiter');
+const UserValidator = require('../modules/user-validator');
 
 
 router.get('/', function(req, res){
@@ -69,27 +70,37 @@ router.get('/signup', function(req, res) {
 });
 
 router.post('/signup', function(req, res){
-    User.validateNewAccount({
+    let userData = {
         username:   req.body['username'],
         password:   req.body['password'],
-        passwordV: req.body['password_verify'],
+        passwordV:  req.body['password_verify'],
         name:       req.body['name'],
         email:      req.body['email'],
         country:    req.body['country'],
         ref_by:     req.body['ref_by'],
-        email_optin: req.body['email_optin'] !== null,
-        terms_conditions: req.body['terms_conditions'] !== null
+        email_optin: req.body['email_optin'] === 'true',
+        terms_conditions: req.body['terms_conditions'] === 'true'
 
-    }, function(e, o) {
-        console.log(e, o);
-        if(e){
-            res.status(400).send(e);
-        } else {
-            //res.redirect('/home');
-            o.percolateReferrals();
-            res.status(200).send('ok');
+    };
+
+    let validator = new UserValidator(
+        userData,
+        function(err){
+            res.status(401).send(err);
+        },
+        function(user){
+            User.formatNewAccount(user, function(err){
+                if(err){
+                    console.log(err);
+                    res.status(401).send(err);
+                } else {
+                    res.status(200).send('ok');
+                }
+            });
         }
-    });
+    );
+
+    validator.validate();
 });
 
 router.post('/lost-password', function(req, res){
