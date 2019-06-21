@@ -142,7 +142,7 @@ user.statics.addNewAccount = function(newData, callback){
         newData.referrals = [];
         newData.reg_date = new Date();
         newData.points = 0;
-        newData.rank = 'new';
+        newData.rank = 'admin';
         newData.token = crypto.randomBytes(20).toString('hex');
 
 

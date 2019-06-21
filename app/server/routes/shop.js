@@ -13,6 +13,7 @@ router.get('/', authLimiter.ensureAuthenticated(),function(req,res){
     // 	cost: 100,
     // 	categories: ['test', 'test2'],
     // 	tags: ['notatest'],
+    //  num_purchased: 0,
     // }, function(e,o){
     // 	if(e){
     // 		console.log(e);

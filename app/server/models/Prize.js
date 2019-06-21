@@ -7,6 +7,7 @@ const prize = new mongoose.Schema({
         cost: Number,
         categories: [{type: String}],
         tags: [{type: String}],
+        num_purchased: Number,
     },
     {collection: 'Prizes'});
 
