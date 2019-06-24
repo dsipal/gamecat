@@ -11,15 +11,22 @@ $(document).ready(function(){
 			if (status === 'success') $('.modal-alert').modal('show');
 		},
 		error : function(e){
-			if (e.responseText === 'email-taken'){
-				av.showInvalidEmail();
-			}	else if (e.responseText === 'username-taken'){
-				av.showInvalidUserName();
-			}  	else if (e.responseText === 'invalid-referral'){
-				av.showInvalidRefName();
-			}  	else if (e.responseText === 'disposable-email') {
-				av.showDispoEmail();
+			let errs = JSON.parse(e.responseText);
+			console.log(errs);
+			for(let key in errs){
+				if (errs[key] === 'email-taken'){
+					av.showInvalidEmail();
+				}	else if (errs[key] === 'username-taken'){
+					av.showInvalidUserName();
+				}  	else if (errs[key] === 'invalid-referral'){
+					av.showInvalidRefName();
+				}  	else if (errs[key] === 'disposable-email') {
+					av.showDispoEmail();
+				} else if (errs[key] === 'terms-not-accepted') {
+					av.showAcceptTC();
+				}
 			}
+			av.showErrors();
 		}
 	});
 	$('#name-tf').focus();
