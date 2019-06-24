@@ -2,6 +2,7 @@ const CT = require('../modules/country-list');
 const EM = require('../modules/email-dispatcher');
 const User = require('../models/User');
 const Prize = require('../models/Prize');
+const Order = require('../models/Order');
 const rateLimit = require("express-rate-limit");
 const passport = require('passport');
 const express = require('express');
@@ -44,8 +45,28 @@ router.post('/prizes', function(req, res){
 
 });
 
-router.get('/cashouts', authLimiter.ensureAuthenticated(), function(req, res){
+router.get('/cashouts/pending', authLimiter.ensureAuthenticated(), function(req, res){
+    Order.find({ status: 'pending'}).exec(function(err, prizes){
+        if(err){
+            console.log(err)
+        } else {
+            res.render('prizelist',{
+                prizes: prizes
+            });
+        }
+    });
+});
 
+router.get('/cashouts/complete', authLimiter.ensureAuthenticated(), function(req, res){
+    Order.find({ status: 'complete'}).exec(function(err, prizes){
+        if(err){
+            console.log(err)
+        } else {
+            res.render('completelist',{
+                prizes: prizes
+            });
+        }
+    });
 });
 
 module.exports = router;
