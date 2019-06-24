@@ -32,8 +32,16 @@ router.post('/delete', function(req, res){
     res.clearCookie('login');
 });
 
-router.get('/referrals', authLimiter.ensureAuthenticated(), function(req, res) {
-    //TODO possibly add multi-tiered referrals
+router.get('/referrals', authLimiter.ensureAuthenticated(), async function(req, res) {
+    let orders = await User.findOne({username: req.user.username})
+        .populate({
+            path: 'orders',
+            populate: {
+                path: 'prize user'
+            }
+    });
+    console.log(orders.orders[0]);
+        //TODO possibly add multi-tiered referrals
     var ref_link = req.protocol + '://' + req.headers.host + '/signup?ref_by=' + req.user.username;
     res.render('referrals', {ref_link: ref_link, referrals: req.user.referrals});
 

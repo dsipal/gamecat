@@ -13,14 +13,12 @@ const user = new mongoose.Schema({
             unique: true
         },
         password: String,
-        name: String,
         email: {
             type: String,
             unique: true
         },
         orders: [{type: mongoose.Schema.ObjectId, ref: 'Order'}],
         awarded_prizes: [{type: mongoose.Schema.ObjectId, ref: 'Prize'}],
-        country: String,
         referrals: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
         ref_by: {type: mongoose.Schema.ObjectId, ref: 'User'},
         reg_date: Date,
@@ -32,7 +30,8 @@ const user = new mongoose.Schema({
         token: String,
         email_optin: Boolean,
     },
-    {collection: 'Users'});
+    {collection: 'Users'}
+    );
 
 
 
@@ -81,8 +80,6 @@ user.methods.validatePassword = function(plainPass){
 // registration functions //
 user.statics.validateNewAccount = function(newData, onFail, callback){
     const validator = new UserValidator(newData);
-
-
 };
 
 //TODO clean addNewAccount, move verification into different function
@@ -110,7 +107,6 @@ user.statics.formatNewAccount = function(newData, callback){
             }
         });
     } else {
-        newData.ref_by = undefined;
         User.addNewAccount(newData, callback);
     }
 };
@@ -121,16 +117,19 @@ user.statics.addNewAccount  = function(newData, callback){
             callback(e, null);
         } else {
             emdisp.dispatchConfirm(newData.email, newData.token, newData.username);
-            o.percolateReferrals().then(function(err, o){
-                console.log(err, o);
-                if(err){
-                    callback(err, null);
-                } else {
-                    callback(null, o);
-                }
 
-            });
-
+            if(newData.ref_by !== null){
+                o.percolateReferrals().then(function(err, o){
+                    console.log(err, o);
+                    if(err){
+                        callback(err, null);
+                    } else {
+                        callback(null, o);
+                    }
+                });
+            }else{
+                callback(null, o);
+            }
         }
     });
 };
@@ -157,10 +156,12 @@ user.statics.autoLogin = function(user, pass, callback)
 //used at end of registration, adds new user to referrer's list
 user.methods.percolateReferrals = async function () {
     let refID = this._id;
-    User.findOne({_id: this.ref_by}).exec(function(err, user){
-        user.referrals.push(refID);
-        user.save();
-    })
+    if(this.ref_by !== null){
+        User.findOne({_id: this.ref_by}).exec(function(err, user){
+            user.referrals.push(refID);
+            user.save();
+        })
+    }
 };
 
 // update account functions //
@@ -251,7 +252,6 @@ user.methods.updatePassword = function(passKey, newPass, callback)
 user.methods.purchasePrize = function(prize, callback){
     let user = this;
     if(this.points >= prize.cost){
-        console.log(this.points, prize.cost);
         this.points -= prize.cost;
         Order.collection.insertOne({
             prize: prize._id,

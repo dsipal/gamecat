@@ -1,9 +1,15 @@
-{{#section 'head'}}<link rel="stylesheet" href="/css/account.css">{{/section}}
+{{#section 'head'}}
+    <link rel="stylesheet" href="/css/account.css">
+{{/section}}
 
+{{#section 'body_scripts'}}
+    <script src="/js/views/signup.js"></script>
+    <script src="/js/controllers/signupController.js"></script>
+    <script src="/js/form-validators/accountValidator.js"></script>
+{{/section}}
 
-{{>"registration" ref_by=ref_by}}
+<div id="account-form-container" class="center-vertical card card-body bg-light">
+    {{>"registration" ref_by=ref_by}}
+</div>
 {{>"modals/alert"}}
 
-<script src="/js/views/signup.js"></script>
-<script src="/js/controllers/signupController.js"></script>
-<script src="/js/form-validators/accountValidator.js"></script>

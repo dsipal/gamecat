@@ -1,1 +1,40 @@
-<!--TODO make index page separate from login page.-->
+{{#section 'head'}}
+    <link rel="stylesheet" href="/css/index.css">
+{{/section}}
+
+{{#section 'body_scripts'}}
+    <script src="/js/views/signup.js"></script>
+    <script src="/js/controllers/signupController.js"></script>
+    <script src="/js/form-validators/accountValidator.js"></script>
+{{/section}}
+
+{{>navigation}}
+<div class="container">
+    <div class="jumbotron">
+        <h1 class="display-4">
+            Welcome to Gamecat.
+        </h1>
+    </div>
+        <div class="row index-info">
+            <p class="index-desc">
+                Want the hottest games, steam skins, and gear? Gamecat provides you with the opportunity to complete simple
+                quests in exchange for gift cards.
+            </p>
+        </div>
+    <div class="row info-bar">
+        <div class="col-sm-7">
+            <div class="row banner-info" id="complete-quests">
+                <h2>Complete quests</h2>
+            </div>
+            <div class="row banner-info" id="epic-loot">
+                <h2>Earn epic loot</h2>
+            </div>
+            <div class="row banner-info" id="play-for-keeps">
+                <h2>Play for keeps</h2>
+            </div>
+        </div>
+        <div class="col-sm-5 signup-index">
+            {{>registration}}
+        </div>
+    </div>
+</div>

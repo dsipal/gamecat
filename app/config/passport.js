@@ -1,7 +1,6 @@
 //TODO clean up code in passport.js, capitalization and wording of text shown to user.
-var LocalStrategy = require('passport-local').Strategy;
-var mongoose = require('mongoose');
-var User = require('../server/models/User');
+const LocalStrategy = require('passport-local').Strategy;
+const User = require('../server/models/User');
 
 module.exports = function(passport) {
 
@@ -40,6 +39,5 @@ module.exports = function(passport) {
             }
         });
     }));
-
 
 };

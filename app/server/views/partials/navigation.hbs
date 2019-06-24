@@ -1,16 +1,25 @@
-<nav class="navbar navbar-expand navbar-light bg-light">
+<nav class="navbar navbar-expand">
     <div class="nav-item">
-        <div class="navbar-brand">VBuxx</div>
+        <div class="navbar-brand">Gamecat</div>
     </div>
     <div class="navbar-nav ml-auto">
-        <div class="nav-item">
-            <a href="/offers">Offers</a>
-        </div>
-        <div class="nav-item nav-point-balance">
-            {{user.points}}
-        </div>
-        <div class="nav-item">
-            <button id="btn-logout" class="btn navbar-btn btn-outline-dark">Sign Out</button>
-        </div>
+
+
+        {{#if user}}
+            <div class="nav-item">
+                <a href="/offers">Offers</a>
+            </div>
+            <div class="nav-item nav-point-balance">
+                {{user.points}}
+            </div>
+            <div class="nav-item">
+                <button id="btn-logout" class="btn navbar-btn btn-outline-dark">Sign Out</button>
+            </div>
+        {{else}}
+            <div class="nav-item">
+                <a href="/login" id="btn-login" class="btn navbar-btn btn-outline-light">Sign In</a>
+            </div>
+        {{/if}}
+
     </div>
 </nav>

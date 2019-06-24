@@ -1,3 +1,20 @@
+nav {
+  height: 50px;
+  background-color: #212121 !important; }
+
+.navbar-brand {
+  color: white; }
+
+.nav-item {
+  padding: 20px;
+  font-weight: 600;
+  font-size: 1.25rem; }
+  .nav-item a {
+    color: white;
+    text-decoration: none; }
+  .nav-item a:hover {
+    color: #c6a1fc; }
+
 .nav-point-balance {
   padding-top: .3125rem;
   padding-bottom: .3125rem;

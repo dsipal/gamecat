@@ -1,58 +1,56 @@
 <!--TODO clean up html here, remove unnecessary divs-->
-<div id="account-form-container" class="center-vertical card card-body bg-light">
-    <form method="post" id="account-form">
-        <h2></h2>
+
+<form action="/signup" method="post" id="account-form">
+    <div class="header-reg">
+        <h2>Signup</h2>
         <h6 id="sub">Please tell us a little about yourself.</h6>
-        <hr>
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label col-form-label-sm" for="user-tf">Username</label>
-            <div class="col-sm-9"><input id="user-tf" type="text" name="username" value="" class="form-control disabled" pattern="^(?!.*__.*)(?!.*\.\..*)[a-z0-9_.]+$" required></div>
+    </div>
+    <hr>
+    <div class="form-group row">
+
+        <div class="col-sm-12">
+            <label for="user-tf">Username</label>
+            <input id="user-tf" type="text" name="username" value="" class="form-control disabled" pattern="^(?!.*__.*)(?!.*\.\..*)[a-z0-9_.]+$" required>
         </div>
-        <hr>
-        <div class="form-group row margin-zero">
-            <label class="col-sm-3 col-form-label col-form-label-sm" for="pass-tf">Password</label>
-            <div class="col-sm-9"><input id="pass-tf" type="password" name="password" value="" class="form-control" minlength="6" pattern="\S*(\S*([a-zA-Z]\S*[0-9])|([0-9]\S*[a-zA-Z]))\S*" required></div>
+    </div>
+    <hr>
+    <div class="form-group row margin-zero">
+        <div class="col-sm-6">
+            <label for="pass-tf">Password</label>
+            <input id="pass-tf" type="password" name="password" value="" class="form-control" minlength="6" pattern="\S*(\S*([a-zA-Z]\S*[0-9])|([0-9]\S*[a-zA-Z]))\S*" required>
         </div>
-        <div class="form-group row margin-zero">
-            <label class="col-sm-3 col-form-label col-form-label-sm" for="pass-tf">Verify</label>
-            <div class="col-sm-9"><input id="pass-verify-tf" type="password" name="password_verify" value="" class="form-control" minlength="6" pattern="\S*(\S*([a-zA-Z]\S*[0-9])|([0-9]\S*[a-zA-Z]))\S*" required></div>
+        <div class="col-sm-6">
+            <label for="pass-tf">Verify</label>
+            <input id="pass-verify-tf" type="password" name="password_verify" value="" class="form-control" minlength="6" pattern="\S*(\S*([a-zA-Z]\S*[0-9])|([0-9]\S*[a-zA-Z]))\S*" required>
         </div>
-        <hr>
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label col-form-label-sm" for="name-tf">Name</label>
-            <div class="col-sm-9"><input id="name-tf" type="text" name="name" value="" class="form-control" required></div>
+
+    </div>
+    <hr>
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <label for="email-tf">Email</label>
+            <input id="email-tf" type="email" name="email" value="" class="form-control" required>
         </div>
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label col-form-label-sm" for="email-tf">Email</label>
-            <div class="col-sm-9"><input id="email-tf" type="email" name="email" value="" class="form-control" required></div>
+    </div>
+    <hr>
+    <div class="form-group row">
+
+        <div class="col-sm-12">
+            <label for="ref_by">Referrer</label>
+            <input id="ref_by" type="text" name="ref_by" value="{{ref_by}}" class="form-control">
         </div>
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label col-form-label-sm" for="country-list">Location</label>
-            <div class="col-sm-9">
-                <select id="country-list" name="country" class="custom-select" required>
-                    {{#each countries as |item|}}
-                        <option value="{{item.short}}">{{item.name}}</option>
-                    {{/each}}
-                </select>
-            </div>
-        </div>
-        <hr>
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label col-form-label-sm" for="ref_by">Referrer</label>
-            <div class="col-sm-9"><input id="ref_by" type="text" name="ref_by" value="{{ref_by}}" class="form-control"></div>
-        </div>
-        <hr>
+    </div>
+    <hr>
+    <div class="row">
         <label class="col-sm-11 col-form-label col-form-label-sm" for="email_optin">Opt-in to receive exclusive offers</label>
-        <input id="email_optin" type="checkbox" value="true" name="email_optin" checked>
+        <input id="email_optin" type="checkbox" value="true" name="email_optin">
         <label class="col-sm-11 col-form-label col-form-label-sm" for="terms_conditions">I agree to the terms and conditions</label>
         <input id="terms_conditions" type="checkbox" value="true" name="terms_conditions" required>
-    </form>
-
-
-    <div class="form-buttons">
-        <button type="button" id="account-form-btn1" class="btn btn-outline-dark"></button>
-        <button type="submit" id="account-form-btn2" class="btn btn-primary" form="account-form"></button>
     </div>
-</div>
+    <div class="row form-buttons">
+        <button type="submit" id="account-form-btn2" class="btn btn-primary" form="account-form">Submit</button>
+    </div>
+</form>
+
 <!-- display form errors in a custom modal window //-->
 {{>"modals/form-errors"}}

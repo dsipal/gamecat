@@ -24,8 +24,7 @@ function AccountValidator()
         return regex.test(s);
     };
 
-    this.validateName = function(s)
-    {
+    this.validateName = function(s){
         return s.length >= 3;
     };
     this.validatePassword = function(password, passwordV, username, callback)
@@ -110,17 +109,9 @@ AccountValidator.prototype.validateForm = function()
         this.fields.username.addClass('error');
         this.errs.push('Please enter a valid username.')
     }
-    if (!this.validateName(this.fields.name.val())) {
-        this.fields.name.addClass('error');
-        this.errs.push('Please enter your name.');
-    }
     if (!this.validateEmail(this.fields.email.val())) {
         this.fields.email.addClass('error');
         this.errs.push('Please enter a valid email.');
-    }
-    if (!this.validateName(this.fields.username.val())) {
-        this.fields.name.addClass('error');
-        this.errs.push('Please choose a username.');
     }
     if(!this.validateCountry(this.fields.country.val())){
         this.fields.country.addClass('error');

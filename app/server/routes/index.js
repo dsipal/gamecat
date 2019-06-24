@@ -10,6 +10,10 @@ const UserValidator = require('../modules/user-validator');
 
 
 router.get('/', function(req, res){
+    res.render('index');
+});
+
+router.get('/login', function(req, res){
     // check if the user has an auto login key saved in a cookie //
     if (req.cookies.login === undefined || !req.isAuthenticated()){
         res.render('login', {
@@ -31,7 +35,7 @@ router.get('/', function(req, res){
     }
 });
 
-router.post('/',
+router.post('/login',
     passport.authenticate('local', {
         session: true,
         failureRedirect: '/'   //'/logout?status=login failed'
@@ -74,9 +78,7 @@ router.post('/signup', function(req, res){
         username:   req.body['username'],
         password:   req.body['password'],
         passwordV:  req.body['password_verify'],
-        name:       req.body['name'],
         email:      req.body['email'],
-        country:    req.body['country'],
         ref_by:     req.body['ref_by'],
         email_optin: req.body['email_optin'] === 'true',
         terms_conditions: req.body['terms_conditions'] === 'true'

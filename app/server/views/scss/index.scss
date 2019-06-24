@@ -1,0 +1,92 @@
+@import 'base';
+.container{
+  overflow: hidden;
+  padding: 0;
+  background-color: $base-color;
+}
+.jumbotron{
+  background-image: url('/img/jumbotron.webp');
+  min-height: 50vh;
+  margin-bottom: 0;
+}
+
+.display-4{
+  color: white;
+  background-color: rgba(0,0,0,0.4);
+  text-align: center;
+}
+
+.index-info{
+  background-color: $dialogue-background;
+  margin-bottom: 20px;
+  .index-desc{
+    text-align: center;
+    min-height: 60px;
+    font-size: 18px;
+    padding: 10px;
+    box-sizing: border-box;
+    color: white;
+  }
+}
+
+.info-bar {
+  margin-left: -15px;
+  margin-top: -20px;
+  .banner-info{
+    padding: 30px;
+    box-sizing: border-box;
+    min-height: 215px;
+    h2{
+      margin-top: 50px;
+    }
+  }
+
+  #complete-quests{
+    background-color: $accent-purple;
+  }
+  #epic-loot{
+    background-color: $accent-green;
+    justify-content: right;
+  }
+  #play-for-keeps{
+    background-color: $accent-yellow;
+  }
+}
+
+form{
+  box-sizing: border-box;
+  padding: 15px;
+  .header-reg{
+    padding-top: 15px;
+  }
+  h2{
+    color: $accent-orange;
+  }
+  h6{
+    text-shadow: none;
+  }
+  label{
+    color: white;
+    text-shadow: none;
+  }
+  .form-buttons{
+    margin-top: 10px;
+    justify-content: right;
+  }
+  .form-control{
+    background-color: $dialogue-background;
+    color: white;
+  }
+}
+
+
+
+#login{
+  position: fixed;
+  width: 25vw;
+  height: 33vw;
+  z-index: 4;
+  form{
+    background-color: $base-color;
+  }
+}

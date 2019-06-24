@@ -1,3 +1,27 @@
+@import 'base';
+nav {
+  height: 50px;
+  background-color: $base-color !important;
+}
+
+.navbar-brand {
+  color: white;
+}
+
+.nav-item {
+  padding: 20px;
+  font-weight: 600;
+  font-size: 1.25rem;
+  a {
+    color: white;
+    text-decoration: none;
+  }
+  a:hover{
+    color: $accent-purple;
+  }
+
+}
+
 .nav-point-balance {
   padding-top: .3125rem;
   padding-bottom: .3125rem;
