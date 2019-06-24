@@ -26,6 +26,7 @@ const index = require('./app/server/routes/index.js');
 const account = require('./app/server/routes/account');
 const shop = require('./app/server/routes/shop');
 const offers = require('./app/server/routes/offers');
+const admin = require('./app/server/routes/admin.js');
 
 // setup handlebars templating //
 app.engine('hbs', exphbs( {
@@ -44,7 +45,7 @@ app.engine('hbs', exphbs( {
 app.set('view engine', 'hbs');
 
 
-//TODO use below expression to limit ips that access /postback
+// TODO use below expression to limit ips that access /postback and /admin
 // app.use('/postback', function(req, res, next) {
 //     // filtering here, calls `res` method to stop progress or calls `next` to proceed
 //     let ip = req.ip ||
@@ -60,6 +61,23 @@ app.set('view engine', 'hbs');
 //         res.end();
 //     }
 // });
+
+// app.use('/admin/*', function(req, res, next) {
+//     // filtering here, calls `res` method to stop progress or calls `next` to proceed
+//     let ip = req.ip ||
+//         req.headers['x-forwarded-for'] ||
+//         req.connection.remoteAddress ||
+//         req.socket.remoteAddress ||
+//         req.connection.socket.remoteAddress;
+//
+//     // Our IPs
+//     if (ip === '0.0.0.0') {
+//         next();
+//     } else {
+//         res.end();
+//     }
+// });
+
 
 // set up view handling //
 app.set('views', __dirname + '/app/server/views');
@@ -122,6 +140,7 @@ app.use('/', index);
 app.use('/account', account);
 app.use('/shop', shop);
 app.use('/offers', offers);
+app.use('/admin', admin);
 
 // create server //
 http.createServer(app).listen(app.get('port'), function(){
