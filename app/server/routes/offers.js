@@ -8,7 +8,8 @@ const router = express.Router();
 router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     //TODO get offer page working on single page, add different tabs for different types of offers
     res.render('offers', {
-        subid1: req.user._id
+        subid1: req.user._id,
+        udata: req.user
     })
 });
 

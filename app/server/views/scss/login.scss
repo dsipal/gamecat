@@ -1,9 +1,11 @@
+@import "base";
 #login {
   width: 380px;
   .btn {
     float: left;
     width: 48%;
     font-size: 0.8rem;
+    font-weight: 700;
   }
   .btn-btm {
     padding: 0;
@@ -15,18 +17,18 @@
     color: white;
   }
   #btn_remember {
-    background: white;
+    background: $accent-cyan;
     border: 1px solid #ced4da;
+    color: white;
   }
   #btn_remember:hover {
-    background: #F8F9FA;
+    background: $accent-cyan-darker;
   }
   h6, label {
     font-size: 0.8rem;
   }
-  h6, label, #btn_remember {
-    color: #808080;
-    text-shadow: -1px 1px 0 #fff;
+  h6, label{
+    color: white;
   }
   .fa {
     padding-right: 10px;

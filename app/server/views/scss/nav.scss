@@ -4,28 +4,30 @@ nav {
   background-color: $base-color !important;
 }
 
-.navbar-brand {
-  color: white;
-}
+
 
 .nav-item {
-  padding: 20px;
-  font-weight: 600;
+  padding-top: .3125rem;
+  padding-bottom: .3125rem;
+  margin-right: 1rem;
+  font-weight: 500;
   font-size: 1.25rem;
+  display: inline-block;
   a {
+    padding-top: .3125rem;
+    padding-bottom: .3125rem;
     color: white;
     text-decoration: none;
+    display: inline-block;
+    line-height: inherit;
   }
   a:hover{
-    color: $accent-purple;
+    color: $accent-orange;
   }
 
 }
 
-.nav-point-balance {
-  padding-top: .3125rem;
-  padding-bottom: .3125rem;
-  font-size: 20px;
-  min-width: 48px;
-  margin-right: 48px;
+.navbar-brand {
+  color: white;
+  font-weight: 600;
 }

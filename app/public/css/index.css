@@ -1,0 +1,68 @@
+.container {
+  overflow: hidden;
+  padding: 0;
+  background-color: #212121; }
+
+.jumbotron {
+  background-image: url("/img/jumbotron.webp");
+  min-height: 50vh;
+  margin-bottom: 0; }
+
+.display-4 {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.4);
+  text-align: center; }
+
+.index-info {
+  background-color: #767D92;
+  margin-bottom: 20px; }
+  .index-info .index-desc {
+    text-align: center;
+    min-height: 60px;
+    font-size: 18px;
+    padding: 10px;
+    box-sizing: border-box;
+    color: white; }
+
+.info-bar {
+  margin-left: -15px;
+  margin-top: -20px; }
+  .info-bar .banner-info {
+    padding: 30px;
+    box-sizing: border-box;
+    min-height: 215px; }
+    .info-bar .banner-info h2 {
+      margin-top: 50px;
+      font-size: calc(1.2em + 1vw); }
+    .info-bar .banner-info img {
+      max-width: 100%;
+      max-height: 175px;
+      line-height: 100%; }
+  .info-bar #complete-quests {
+    background-color: #495057; }
+  .info-bar #epic-loot {
+    background-color: #26aeda;
+    justify-content: right; }
+    .info-bar #epic-loot > h2 {
+      text-align: right; }
+  .info-bar #play-for-keeps {
+    background-color: #495057;
+    justify-content: center; }
+    .info-bar #play-for-keeps > h2 {
+      font-size: 48px;
+      color: #c6a1fc; }
+
+#login {
+  position: fixed;
+  width: 25vw;
+  height: 33vw;
+  z-index: 4; }
+  #login form {
+    background-color: #212121; }
+
+.graphic-panel {
+  padding: 0; }
+
+.signup-index {
+  padding: 0;
+  background-color: #272727; }

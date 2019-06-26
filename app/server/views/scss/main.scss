@@ -22,6 +22,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
+  color: white;
 }
 
 h2 {
@@ -35,15 +36,59 @@ hr {
   border-bottom: 1px solid rgb(255, 255, 255);
 }
 
+p {
+}
+
 ul {
   margin: 4px 0 0 0;
 }
 
-label, h6  {
-  color: #808080;
-  font-size: 13px;
-  font-weight: normal;
-  text-shadow: -1px 1px 0 #fff;
+
+
+
+input{
+  background-color: $dialogue-background;
+
+}
+
+.card{
+  background-color: $base-color;
+}
+
+form{
+  box-sizing: border-box;
+  padding: 15px;
+
+  .header-reg{
+    padding-top: 15px;
+  }
+  h2{
+    color: $accent-cyan;
+  }
+  label, h6  {
+    color: white;
+    text-shadow: none;
+    font-size: 13px;
+    font-weight: normal;
+  }
+  .form-buttons{
+    margin-top: 10px;
+    justify-content: right;
+  }
+
+}
+
+.form-control{
+  background-color: $dialogue-background;
+  color: white;
+  &:focus{
+    background-color: $dialogue-background;
+    color: white;
+  }
+  &:active{
+    background-color: $dialogue-background;
+    color: white;
+  }
 }
 
 .center-vertical {

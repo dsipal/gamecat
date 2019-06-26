@@ -8,7 +8,6 @@
     <script src="/js/form-validators/accountValidator.js"></script>
 {{/section}}
 
-{{>navigation}}
 <div class="container">
     <div class="jumbotron">
         <h1 class="display-4">
@@ -22,15 +21,22 @@
             </p>
         </div>
     <div class="row info-bar">
-        <div class="col-sm-7">
+        <div class="col-sm-7 graphic-panel">
             <div class="row banner-info" id="complete-quests">
-                <h2>Complete quests</h2>
+                <h2 class="col-sm-8">Finish quests</h2>
+                <div class="col-sm-4">
+                    <img class="float-right" src="/img/quest.png">
+                </div>
+
             </div>
             <div class="row banner-info" id="epic-loot">
-                <h2>Earn epic loot</h2>
+                <div class="col-sm-4">
+                    <img class="float-left" src="/img/treasure.png">
+                </div>
+                <h2 class="col-sm-8">Earn epic loot</h2>
             </div>
             <div class="row banner-info" id="play-for-keeps">
-                <h2>Play for keeps</h2>
+                <h2>Play for keeps.</h2>
             </div>
         </div>
         <div class="col-sm-5 signup-index">

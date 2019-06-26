@@ -1,6 +1,9 @@
 <nav class="navbar navbar-expand">
     <div class="nav-item">
-        <div class="navbar-brand">Gamecat</div>
+        <a href="/">
+            <div class="navbar-brand">Gamecat</div>
+        </a>
+
     </div>
     <div class="navbar-nav ml-auto">
 
@@ -10,13 +13,16 @@
                 <a href="/offers">Offers</a>
             </div>
             <div class="nav-item nav-point-balance">
-                {{user.points}}
+                <a href="/shop">{{user.points}} Points</a>
             </div>
             <div class="nav-item">
-                <button id="btn-logout" class="btn navbar-btn btn-outline-dark">Sign Out</button>
+                <a href="/account">Account</a>
+            </div>
+            <div class="nav-item">
+                <button id="btn-logout" class="btn navbar-btn btn-outline-light">Sign Out</button>
             </div>
         {{else}}
-            <div class="nav-item">
+            <div class="nav-item signin-btn">
                 <a href="/login" id="btn-login" class="btn navbar-btn btn-outline-light">Sign In</a>
             </div>
         {{/if}}

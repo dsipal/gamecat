@@ -3,7 +3,8 @@
   #login .btn {
     float: left;
     width: 48%;
-    font-size: 0.8rem; }
+    font-size: 0.8rem;
+    font-weight: 700; }
   #login .btn-btm {
     padding: 0; }
   #login .btn-left {
@@ -11,15 +12,15 @@
   #login #btn_sign_in {
     color: white; }
   #login #btn_remember {
-    background: white;
-    border: 1px solid #ced4da; }
+    background: #26aeda;
+    border: 1px solid #ced4da;
+    color: white; }
   #login #btn_remember:hover {
-    background: #F8F9FA; }
+    background: #389bda; }
   #login h6, #login label {
     font-size: 0.8rem; }
-  #login h6, #login label, #login #btn_remember {
-    color: #808080;
-    text-shadow: -1px 1px 0 #fff; }
+  #login h6, #login label {
+    color: white; }
   #login .fa {
     padding-right: 10px; }
   #login hr {
