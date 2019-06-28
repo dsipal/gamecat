@@ -15,7 +15,7 @@ router.get('/', authLimiter.ensureAuthenticated(), function(req, res){
 });
 
 router.get('/users', authLimiter.ensureAuthenticated(), function(req, res){
-    User.find().exec(function(err, users){
+    User.find({rank:'activated'}).exec(function(err, users){
         if(err){
             console.log(err)
         } else {
@@ -27,14 +27,32 @@ router.get('/users', authLimiter.ensureAuthenticated(), function(req, res){
 });
 
 router.get('/users/banlist', authLimiter.ensureAuthenticated(), function(req, res){
+    User.find({rank:'banned'}).exec( function(err, busers){
+       if(err){
+           console.log(err);
+       } else {
+           res.render('banlist', {
+                users: busers
+           });
+       }
+    });
+});
 
+router.post('/users/unban', authLimiter.ensureAuthenticated(), function(req, res){
+    let banID = req.body['unbanneduser'];
+
+    User.findOne({username:banID}).exec( function(e, o) {
+        if(e){
+            console.log(e);
+        } else {
+            o.unbanAccount();
+        }
+    });
+    res.redirect('/admin/users');
 });
 
 router.post('/users/ban', authLimiter.ensureAuthenticated(), function (req, res) {
     let banID = req.body['banneduser'];
-
-    // let toBan = User.getUser(banID);
-    // toBan.banAccount();
 
     User.findOne({username:banID}).exec( function(e, o) {
         if(e){
@@ -67,7 +85,7 @@ router.get('/cashouts/pending', authLimiter.ensureAuthenticated(), function(req,
         if(err){
             console.log(err)
         } else {
-            res.render('prizelist',{
+            res.render('pendinglist',{
                 prizes: prizes
             });
         }

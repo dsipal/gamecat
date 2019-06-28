@@ -214,6 +214,12 @@ user.methods.banAccount = function(){
     this.save();
 };
 
+user.methods.unbanAccount = function(){
+    this.rank = 'activated';
+    console.log(this);
+    this.save();
+};
+
 //Checking if the token from URL matches token stored in user data, if yes, activate account
 user.methods.confirmAccount = function(idToken, callback){
     if(this.token === idToken){
