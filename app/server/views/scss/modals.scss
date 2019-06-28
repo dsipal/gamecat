@@ -1,6 +1,11 @@
+@import "base";
 .modal {
   .modal-dialog {
     width: 480px;
+
+    .modal-content{
+      background-color: $lighter-base;
+    }
   }
   .form-group {
     margin-bottom: 0px;

@@ -28,7 +28,8 @@ router.get('/', authLimiter.ensureAuthenticated(),function(req,res){
             console.log(err)
         } else {
             res.render('store',{
-                prizes: prizes
+                prizes: prizes,
+                udata: req.user
             });
         }
     })
