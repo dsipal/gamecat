@@ -54,6 +54,16 @@ user.statics.getByID = function(){
     return User.findOne({_id: getObjectId(id)});
 };
 
+user.statics.getUser = function(uname){
+    User.findOne({username: uname}).exec(function(err, obj){
+        if(err){
+            console.log(err);
+        } else {
+            return obj;
+        }
+    });
+};
+
 user.statics.generateLoginKey = function(username, ipAddress, callback)
 {
     let cookie = guid();
@@ -196,6 +206,12 @@ user.methods.updateAccount = function(data, callback){
 
 user.methods.deleteAccount = function(){
     this.delete();
+};
+
+user.methods.banAccount = function(){
+    this.rank = 'banned';
+    console.log(this);
+    this.save();
 };
 
 //Checking if the token from URL matches token stored in user data, if yes, activate account

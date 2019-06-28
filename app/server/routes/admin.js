@@ -3,6 +3,7 @@ const EM = require('../modules/email-dispatcher');
 const User = require('../models/User');
 const Prize = require('../models/Prize');
 const Order = require('../models/Order');
+const mongoose = require('mongoose');
 const rateLimit = require("express-rate-limit");
 const passport = require('passport');
 const express = require('express');
@@ -27,6 +28,22 @@ router.get('/users', authLimiter.ensureAuthenticated(), function(req, res){
 
 router.get('/users/banlist', authLimiter.ensureAuthenticated(), function(req, res){
 
+});
+
+router.post('/users/ban', authLimiter.ensureAuthenticated(), function (req, res) {
+    let banID = req.body['banneduser'];
+
+    // let toBan = User.getUser(banID);
+    // toBan.banAccount();
+
+    User.findOne({username:banID}).exec( function(e, o) {
+        if(e){
+            console.log(e);
+        } else {
+            o.banAccount();
+        }
+    });
+    res.redirect('/admin/users');
 });
 
 router.get('/prizes', authLimiter.ensureAuthenticated(), function(req, res){
