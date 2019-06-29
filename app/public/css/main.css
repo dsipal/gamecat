@@ -22,6 +22,7 @@
   width: 80px; }
 
 nav {
+  z-index: 6;
   background-color: #212121 !important;
   box-shadow: 0 3px 5px 0 #323232; }
 
@@ -33,20 +34,26 @@ nav {
   font-weight: 600; }
 
 #logout-button {
+  margin-left: 30px;
   width: 30px; }
 
 .row {
   margin: 0; }
-
-html {
-  height: 100%; }
 
 body {
   background-color: #505050;
   margin: 0;
   padding: 0;
   height: 100%;
-  color: white; }
+  color: white;
+  min-height: 100vh; }
+
+footer {
+  min-height: 50px;
+  width: 100vw;
+  position: absolute;
+  bottom: 0;
+  background-color: #212121; }
 
 h1 {
   font-weight: 600; }

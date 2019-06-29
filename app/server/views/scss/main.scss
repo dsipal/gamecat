@@ -12,17 +12,21 @@
 .row{
   margin: 0;
 }
-
-html {
-  height: 100%;
-}
-
 body {
   background-color: $body-bg;
   margin: 0;
   padding: 0;
   height: 100%;
   color: white;
+  min-height: 100vh;
+}
+
+footer{
+  min-height: 50px;
+  width: 100vw;
+  position: absolute;
+  bottom: 0;
+  background-color: $base-color;
 }
 h1{
   font-weight: 600;

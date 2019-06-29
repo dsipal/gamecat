@@ -10,7 +10,8 @@ var helmet = require('helmet');
 var passport = require('passport')
     ,	LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
-
+const dotenv = require('dotenv');
+dotenv.config();
 
 
 
@@ -81,35 +82,17 @@ app.set('view engine', 'hbs');
 
 // set up view handling //
 app.set('views', __dirname + '/app/server/views');
-app.set('view cache', app.get('env') === 'live');
+app.set('view cache', process.env.NODE_ENV === 'live');
 app.use(express.static(__dirname + '/app/public'));
 
 // set up cookie-parser middleware //
-app.use(cookieParser('faeb4453e5d14fe6f6d04637f78077c76c73d1b4'));
+app.use(cookieParser(process.env.COOKIEPARSER_SECRET));
 
 // set up body-parser middleware //
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// build mongo database connection url //
-console.log(app.get('env'));
-if (app.get('env') === 'live'){
-    // production server settings //
-    process.env.DB_HOST = process.env.MONGODB_URI;
-    process.env.DB_PORT = process.env.DB_PORT || 63996;
-    process.env.DB_NAME = process.env.DB_NAME || 'heroku_f9fjvqkf';
-    process.env.DB_URL =  process.env.MONGODB_URI;
-} else {
-
-    // development server settings //
-    process.env.DB_HOST = process.env.DB_HOST || 'localhost';
-    process.env.DB_PORT = process.env.DB_PORT || 27017;
-    process.env.DB_NAME = process.env.DB_NAME || 'node-login';
-    process.env.DB_URL = 'mongodb://'+process.env.DB_HOST+':'+process.env.DB_PORT+'/'+process.env.DB_NAME;
-    app.locals.pretty = true; // output pretty HTML
-}
-
-mongoose.connect(process.env.DB_URL,{
+mongoose.connect(process.env.MONGODB_URI,{
     useNewUrlParser: true,
     useFindAndModify: false
 }).then(function(o){
@@ -120,11 +103,11 @@ mongoose.connect(process.env.DB_URL,{
 
 // setup express-sessions //
 app.use(session({
-        secret: 'faeb4453e5d14fe6f6d04637f78077c76c73d1b4',
+        secret: process.env.COOKIEPARSER_SECRET,
         resave: true,
         saveUninitialized: false,
         store: new MongoStore({
-            url: process.env.DB_URL,
+            url: process.env.MONGODB_URI,
             touchAfter: 3600
         }),
     })
@@ -143,8 +126,8 @@ app.use('/offers', offers);
 app.use('/admin', admin);
 
 // create server //
-http.createServer(app).listen(app.get('port'), function(){
-    console.log('Express server listening on port ' + app.get('port'));
+http.createServer(app).listen(process.env.PORT, function(){
+    console.log('Express server listening on port ' + process.env.PORT);
 });
 
 

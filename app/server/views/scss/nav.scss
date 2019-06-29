@@ -1,5 +1,6 @@
 @import 'base';
 nav {
+  z-index: 6;
   background-color: $base-color !important;
   box-shadow: 0 3px 5px 0 rgb(50, 50, 50);
 }
@@ -13,5 +14,6 @@ nav {
 }
 
 #logout-button{
+  margin-left: 30px;
   width: 30px;
 }
