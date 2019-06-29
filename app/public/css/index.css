@@ -6,7 +6,12 @@
 .jumbotron {
   background-image: url("/img/jumbotron.webp");
   min-height: 50vh;
-  margin-bottom: 0; }
+  margin-bottom: 0;
+  border-radius: 0;
+  padding: 20vh 8vh 20vh 8vh;
+  -webkit-box-shadow: 0px 5px 15px 2px #323232;
+  -moz-box-shadow: 0px 5px 15px 2px #323232;
+  box-shadow: 0px 5px 15px 2px #323232; }
 
 .display-4 {
   color: white;
@@ -15,7 +20,7 @@
 
 .index-info {
   background-color: #767D92;
-  margin-bottom: 20px; }
+  margin-bottom: 0; }
   .index-info .index-desc {
     text-align: center;
     min-height: 60px;
@@ -25,32 +30,43 @@
     color: white; }
 
 .info-bar {
-  margin-left: -15px;
-  margin-top: -20px; }
+  margin-left: 0;
+  margin-top: 0; }
   .info-bar .banner-info {
     padding: 30px;
     box-sizing: border-box;
     min-height: 215px; }
-    .info-bar .banner-info h2 {
+    @media screen and (max-width: 767px) {
+      .info-bar .banner-info > .col-md-4 {
+        text-align: center !important; } }
+    .info-bar .banner-info h1 {
       margin-top: 50px;
-      font-size: calc(1.2em + 1vw); }
+      font-size: calc(1.4em + 1vw); }
+      @media screen and (max-width: 767px) {
+        .info-bar .banner-info h1 {
+          text-align: center !important; } }
     .info-bar .banner-info img {
       max-width: 100%;
       max-height: 175px;
       line-height: 100%; }
+      @media screen and (max-width: 991px) {
+        .info-bar .banner-info img {
+          margin-top: 25px; } }
+      @media screen and (max-width: 767px) {
+        .info-bar .banner-info img {
+          float: none; } }
   .info-bar #complete-quests {
     background-color: #495057; }
   .info-bar #epic-loot {
-    background-color: #26aeda;
-    justify-content: right; }
-    .info-bar #epic-loot > h2 {
+    background-color: #26aeda; }
+    .info-bar #epic-loot > h1 {
       text-align: right; }
   .info-bar #play-for-keeps {
     background-color: #495057;
     justify-content: center; }
-    .info-bar #play-for-keeps > h2 {
+    .info-bar #play-for-keeps > h1 {
       font-size: 48px;
-      color: #c6a1fc; }
+      color: #f3685c; }
 
 #login {
   position: fixed;
@@ -65,4 +81,4 @@
 
 .signup-index {
   padding: 0;
-  background-color: #272727; }
+  background-color: #353535; }

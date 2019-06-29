@@ -24,6 +24,9 @@ body {
   height: 100%;
   color: white;
 }
+h1{
+  font-weight: 600;
+}
 
 h2 {
   margin: 0 0 6px 0;
@@ -63,7 +66,7 @@ form{
     padding-top: 15px;
   }
   h2{
-    color: $accent-cyan;
+    color: $accent-gold;
   }
   label, h6  {
     color: white;
@@ -97,4 +100,13 @@ form{
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+}
+
+.container {
+  -webkit-box-shadow: 0px 0px 15px 2px rgba(50,50,50,1);
+  -moz-box-shadow: 0px 0px 15px 2px rgba(50,50,50,1);
+  box-shadow: 0px 0px 15px 2px rgba(50,50,50,1);
+}
+.col-form-label{
+  margin-right: 25px;
 }

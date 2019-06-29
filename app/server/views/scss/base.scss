@@ -1,13 +1,20 @@
 $base-color: #212121;
-$lighter-base: #272727;
-$body-bg: #303030;
+$lighter-base: #353535;
+$body-bg: #505050;
 $dialogue-background: #495057;
 $accent-cyan: #26aeda;
 $accent-cyan-darker: #389bda;
 $accent-purple: #c6a1fc;
-$accent-green: #86bb73;
+$accent-red: #f3685c;
+$accent-green: #4bd827;
 $accent-yellow: #ffff50;
 $accent-orange: #f6a923;
+$accent-gold: #f2ba4a;
 $secondary-purple: #767D92;
 $accent-blue: #3700B3;
 $button-green: #52bb6f;
+
+
+$breakpoint-lg: 1200px;
+$breakpoint-md: 991px;
+$breakpoint-sm: 767px;

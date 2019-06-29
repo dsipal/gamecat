@@ -1,7 +1,7 @@
 .modal .modal-dialog {
   width: 480px; }
   .modal .modal-dialog .modal-content {
-    background-color: #272727; }
+    background-color: #353535; }
 
 .modal .form-group {
   margin-bottom: 0px; }
@@ -23,7 +23,8 @@
 
 nav {
   height: 50px;
-  background-color: #212121 !important; }
+  background-color: #212121 !important;
+  box-shadow: 0 3px 5px 0 #323232; }
 
 .nav-item {
   padding-top: .3125rem;
@@ -53,11 +54,14 @@ html {
   height: 100%; }
 
 body {
-  background-color: #303030;
+  background-color: #505050;
   margin: 0;
   padding: 0;
   height: 100%;
   color: white; }
+
+h1 {
+  font-weight: 600; }
 
 h2 {
   margin: 0 0 6px 0;
@@ -83,7 +87,7 @@ form {
   form .header-reg {
     padding-top: 15px; }
   form h2 {
-    color: #26aeda; }
+    color: #f2ba4a; }
   form label, form h6 {
     color: white;
     text-shadow: none;
@@ -110,3 +114,11 @@ form {
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%); }
+
+.container {
+  -webkit-box-shadow: 0px 0px 15px 2px #323232;
+  -moz-box-shadow: 0px 0px 15px 2px #323232;
+  box-shadow: 0px 0px 15px 2px #323232; }
+
+.col-form-label {
+  margin-right: 25px; }

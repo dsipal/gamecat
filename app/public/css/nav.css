@@ -1,6 +1,7 @@
 nav {
   height: 50px;
-  background-color: #212121 !important; }
+  background-color: #212121 !important;
+  box-shadow: 0 3px 5px 0 #323232; }
 
 .nav-item {
   padding-top: .3125rem;
