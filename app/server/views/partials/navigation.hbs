@@ -1,31 +1,37 @@
-<nav class="navbar navbar-expand">
-    <div class="nav-item">
-        <a href="/">
-            <div class="navbar-brand">Gamecat</div>
-        </a>
-
-    </div>
-    <div class="navbar-nav ml-auto">
+<nav class="navbar navbar-expand-md navbar-dark">
+    <a class="navbar-brand" href="/">
+        Gamecat
+    </a>
 
 
+
+    <ul class="navbar-nav ml-auto">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#togglerContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         {{#if user}}
-            <div class="nav-item">
-                <a href="/offers">Offers</a>
-            </div>
-            <div class="nav-item nav-point-balance">
-                <a href="/shop">{{user.points}} Points</a>
-            </div>
-            <div class="nav-item">
-                <a href="/account">Account</a>
-            </div>
-            <div class="nav-item">
-                <button id="btn-logout" class="btn navbar-btn btn-outline-light">Sign Out</button>
-            </div>
-        {{else}}
-            <div class="nav-item signin-btn">
-                <a href="/login" id="btn-login" class="btn navbar-btn btn-outline-light">Sign In</a>
-            </div>
-        {{/if}}
+            <div class="collapse navbar-collapse" id="togglerContent">
+                <li class="nav-item">
+                    <a class="nav-link" href="/offers">Offers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/shop">{{user.points}} Points</a>
+                </li>
 
-    </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="/account">Account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout" id="btn-logout"><img src="/img/logout.svg" id="logout-button" alt="logout"></a>
+                </li>
+            </div>
+
+
+
+        {{else}}
+            <li class="nav-item">
+                <a class="nav-link" href="/login" id="btn-login">Sign In</a>
+            </li>
+        {{/if}}
+    </ul>
 </nav>

@@ -1,34 +1,17 @@
 @import 'base';
 nav {
-  height: 50px;
   background-color: $base-color !important;
   box-shadow: 0 3px 5px 0 rgb(50, 50, 50);
 }
-
-
-
-.nav-item {
-  padding-top: .3125rem;
-  padding-bottom: .3125rem;
-  margin-right: 1rem;
-  font-weight: 500;
-  font-size: 1.25rem;
-  display: inline-block;
-  a {
-    padding-top: .3125rem;
-    padding-bottom: .3125rem;
-    color: white;
-    text-decoration: none;
-    display: inline-block;
-    line-height: inherit;
-  }
-  a:hover{
-    color: $accent-orange;
-  }
-
+.nav-link{
+  font-size: 18px;
 }
 
 .navbar-brand {
   color: white;
   font-weight: 600;
+}
+
+#logout-button{
+  width: 30px;
 }

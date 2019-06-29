@@ -53,13 +53,13 @@ router.post('/login',
     }
 );
 
-router.post('/logout', authLimiter.ensureAuthenticated(), function(req, res){
+router.get('/logout', authLimiter.ensureAuthenticated(), function(req, res){
     res.clearCookie('login');
     req.session.destroy(function(e){
         if(e) {
             console.log(e);
         } else {
-            res.status(200).send('ok');
+            res.redirect('/');
         }
     });
 });
