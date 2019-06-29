@@ -52,7 +52,7 @@ router.post('/users/unban', authLimiter.ensureAuthenticated(), function(req, res
 });
 
 router.post('/users/ban', authLimiter.ensureAuthenticated(), function (req, res) {
-    let banID = req.body['banneduser'];
+    let banID = req.body['user'];
 
     User.findOne({username:banID}).exec( function(e, o) {
         if(e){
@@ -76,7 +76,11 @@ router.get('/prizes', authLimiter.ensureAuthenticated(), function(req, res){
     });
 });
 
-router.post('/prizes', function(req, res){
+router.get('/prizes/newprize', authLimiter.ensureAuthenticated(), function(req, res){
+    res.render('newprize');
+});
+
+router.post('/prizes/newprize', function(req, res){
 
 });
 
@@ -102,6 +106,19 @@ router.get('/cashouts/complete', authLimiter.ensureAuthenticated(), function(req
             });
         }
     });
+});
+
+router.post('/cashouts/completed', authLimiter.ensureAuthenticated(), function(req, res){
+    let cashID = req.body['cashout'];
+
+    Order.findOne({_id:cashID}).exec( function(e, o) {
+        if(e){
+            console.log(e);
+        } else {
+            o.completeCashout();
+        }
+    });
+    res.redirect('/admin/cashouts/pending');
 });
 
 module.exports = router;
