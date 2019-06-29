@@ -20,7 +20,9 @@ prize.statics.getAll = function(callback){
     })
 };
 
-prize.statics.newPrize = function()
+prize.statics.newPrize = function(){
+
+};
 
 //instance methods
 
