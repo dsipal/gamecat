@@ -1,0 +1,15 @@
+<div class="row">
+    {{#each users}}
+        <div class="col-sm-3">
+            <h2>{{this.prize.name}}</h2>
+            <h3>{{this.user.username}}</h3>
+            <p>{{this.user.email}}</p>
+            <form>
+                <input type="hidden" id="cashout" name="cashout" value="{{this._id}}">
+                <button class="btn btn-primary" type="submit" formaction="/admin/cashouts/completed" formmethod="post">Complete</button>
+            </form>
+            <!--            <a class="btn btn-primary" href="/store/buy?id={{this._id}}">Purchase</a>-->
+        </div>
+    {{/each}}
+
+</div>

@@ -5,8 +5,8 @@
             <h3>{{this.username}}</h3>
             <p>{{this.email}}</p>
             <form>
-                <input type="hidden" id="user" name="user" value="{{this.username}}">
-                <button class="btn btn-primary" type="submit" formaction="/admin/users/ban" formmethod="post">BAN</button>
+                <input type="hidden" id="unbanneduser" name="unbanneduser" value="{{this.username}}">
+                <button class="btn btn-primary" type="submit" formaction="/admin/users/unban" formmethod="post">UNBAN</button>
             </form>
             <!--            <a class="btn btn-primary" href="/store/buy?id={{this._id}}">Purchase</a>-->
         </div>

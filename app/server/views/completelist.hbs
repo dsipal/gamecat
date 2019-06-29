@@ -1,0 +1,11 @@
+<div class="row">
+    {{#each users}}
+        <div class="col-sm-3">
+            <h2>{{this.prize.name}}</h2>
+            <h3>{{this.user.username}}</h3>
+            <p>{{this.user.email}}</p>
+            <!--            <a class="btn btn-primary" href="/store/buy?id={{this._id}}">Purchase</a>-->
+        </div>
+    {{/each}}
+
+</div>
