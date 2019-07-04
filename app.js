@@ -1,16 +1,17 @@
 // imports //
-var http = require('http');
-var express = require('express');
-var exphbs = require('express-handlebars');
-var session = require('express-session');
-var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
-var MongoStore = require('connect-mongo')(session);
-var helmet = require('helmet');
-var passport = require('passport')
+let http = require('http');
+let express = require('express');
+let exphbs = require('express-handlebars');
+let session = require('express-session');
+let bodyParser = require('body-parser');
+let cookieParser = require('cookie-parser');
+let MongoStore = require('connect-mongo')(session);
+let helmet = require('helmet');
+let passport = require('passport')
     ,	LocalStrategy = require('passport-local').Strategy;
-var mongoose = require('mongoose');
+let mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const compression = require('compression');
 dotenv.config();
 
 
@@ -18,6 +19,7 @@ dotenv.config();
 // create instance of express server //
 var app = express();
 app.use(helmet());
+app.use(compression());
 app.set('port', process.env.PORT || 8080);
 
 

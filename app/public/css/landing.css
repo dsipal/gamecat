@@ -5,8 +5,6 @@ header {
   min-height: 25rem;
   width: 100%;
   overflow: hidden;
-  -webkit-box-shadow: 0px 5px 15px 2px #323232;
-  -moz-box-shadow: 0px 5px 15px 2px #323232;
   box-shadow: 0px 5px 15px 2px #323232; }
   header video {
     position: absolute;
@@ -17,8 +15,6 @@ header {
     width: auto;
     height: auto;
     z-index: 0;
-    -ms-transform: translateX(-50%) translateY(-50%);
-    -moz-transform: translateX(-50%) translateY(-50%);
     -webkit-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%); }
   header .overlay {
@@ -35,7 +31,8 @@ header {
     bottom: 0px;
     width: 100vw;
     height: 200px;
-    justify-content: center;
+    -webkit-box-pack: center;
+            justify-content: center;
     z-index: 3;
     display: block;
     text-align: center; }
@@ -61,7 +58,8 @@ header {
         padding: 20px; }
   .container #signup-banner {
     background-color: #212121;
-    justify-content: center;
+    -webkit-box-pack: center;
+            justify-content: center;
     padding: 60px;
     border-radius: 300px 300px 0 0; }
   .container #how-work {
@@ -90,8 +88,6 @@ header {
 
 .banner-info-header {
   background-color: #767D92;
-  -webkit-box-shadow: 0px 5px 15px 2px #323232;
-  -moz-box-shadow: 0px 5px 15px 2px #323232;
   box-shadow: 0px 5px 15px 2px #323232;
   margin-bottom: 0;
   padding: 25px;

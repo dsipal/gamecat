@@ -87,7 +87,8 @@ form {
     font-weight: normal; }
   form .form-buttons {
     margin-top: 10px;
-    justify-content: right; }
+    -webkit-box-pack: right;
+            justify-content: right; }
 
 .form-control {
   background-color: #495057;
@@ -104,12 +105,9 @@ form {
   left: 50%;
   position: absolute;
   -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%); }
 
 .container {
-  -webkit-box-shadow: 0px 0px 15px 2px #323232;
-  -moz-box-shadow: 0px 0px 15px 2px #323232;
   box-shadow: 0px 0px 15px 2px #323232; }
 
 .col-form-label {

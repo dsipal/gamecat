@@ -3,11 +3,13 @@
   min-height: 80%;
   box-sizing: border-box; }
   .offer-list .offer-item {
-    justify-content: center; }
+    -webkit-box-pack: center;
+            justify-content: center; }
     .offer-list .offer-item .offer-image {
       margin: 0 auto 15px auto; }
     .offer-list .offer-item .offer-link {
-      justify-content: center;
+      -webkit-box-pack: center;
+              justify-content: center;
       text-align: center;
       font-size: 16px;
       font-weight: 500; }
@@ -17,13 +19,15 @@
       text-align: center; }
 
 .pagination {
-  justify-content: center;
+  -webkit-box-pack: center;
+          justify-content: center;
   font-size: 1.5rem; }
   .pagination a {
     color: black;
     float: left;
     padding: 8px 16px;
     text-decoration: none;
+    -webkit-transition: background-color .3s;
     transition: background-color .3s; }
     .pagination a:hover:not(.active) {
       background-color: #ddd; }

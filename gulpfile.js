@@ -1,32 +1,96 @@
 'use strict';
-//TODO add removing of comments, console.log, minify js/css, optimize images, etc into gulpfile.js
-var gulp = require('gulp');
-var sass = require('gulp-sass');
+let gulp = require('gulp'),
+    plumber = require('gulp-plumber'),
+    rename = require('gulp-rename');
+let autoprefixer = require('gulp-autoprefixer');
+let uglify = require('gulp-uglify');
+let imagemin = require('gulp-imagemin'),
+    cache = require('gulp-cache');
+let minifycss = require('gulp-clean-css');
+let sass = require('gulp-sass');
+let browserSync = require('browser-sync');
 sass.compiler = require('node-sass');
 
-var paths = {
+const paths = {
     styles: {
         src: 'app/server/views/scss/**/*.scss',
         dest: 'app/public/css'
+    },
+    scripts: {
+        src: 'app/src/js/**/*.js',
+        dest: 'app/public/js'
+    },
+    images: {
+        src: 'app/src/img/**/*',
+        dest: 'app/public/img'
+    },
+    handlebars: {
+        src: 'app/server/views/**/*.hbs'
     }
+
 };
 
-function style() {
+async function style() {
     return gulp
         .src(paths.styles.src)
+        .pipe(plumber({
+            errorHandler: function (error) {
+                console.log(error.message);
+                this.emit('end');
+            }}))
         .pipe(sass())
-        .on("error", sass.logError)
+        .pipe(autoprefixer())
         .pipe(gulp.dest(paths.styles.dest))
+        .pipe(rename({suffix: '.min'}))
+        .pipe(minifycss())
+        .pipe(gulp.dest(paths.styles.dest))
+        .pipe(browserSync.reload({stream:true}))
+
+
 }
 
-function watch() {
-    gulp.watch(paths.styles.src, style);
+async function scripts() {
+    return gulp.src(paths.scripts.src)
+        .pipe(plumber({
+            errorHandler: function (error) {
+                console.log(error.message);
+                this.emit('end');
+            }}))
+        .pipe(gulp.dest(paths.scripts.dest))
+        .pipe(rename({suffix: '.min'}))
+        .pipe(uglify())
+        .pipe(gulp.dest(paths.scripts.dest))
+
 }
 
-exports.watch = watch;
-exports.style = style;
+async function images(){
+    gulp.src(paths.images.src)
+        .pipe(imagemin())
+        .pipe(gulp.dest(paths.images.dest))
 
-var build = gulp.parallel(style);
-var gwatch = gulp.parallel(style, watch);
-gulp.task('build', build);
-gulp.task('default', gwatch);
+}
+gulp.task('scripts', scripts);
+gulp.task('styles', style);
+gulp.task('images', images);
+
+
+gulp.task('browser-sync', function() {
+    browserSync({
+        proxy: 'localhost:8080'
+    });
+});
+
+gulp.task('bs-reload', function () {
+    browserSync.reload();
+});
+
+gulp.task('build', gulp.series(['scripts', 'styles', 'images']));
+
+gulp.task('default', gulp.series(['browser-sync'], function(){
+    gulp.watch([paths.styles.src], gulp.parallel(['styles']));
+    gulp.watch(paths.scripts.src, gulp.parallel(['scripts']));
+    gulp.watch(paths.handlebars.src, gulp.parallel(['bs-reload']));
+}));
+
+exports.build = gulp.task('build');
+exports.default = gulp.task('default');

@@ -12,9 +12,12 @@
   margin-bottom: 0; }
 
 #account-form-container .form-buttons {
+  display: -webkit-box;
   display: flex;
-  align-items: center;
-  justify-content: flex-end; }
+  -webkit-box-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+          justify-content: flex-end; }
 
 #account-form-container .form-buttons > :not(:last-child) {
   margin-right: 0.5rem; }

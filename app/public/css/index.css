@@ -9,8 +9,6 @@
   margin-bottom: 0;
   border-radius: 0;
   padding: 20vh 8vh 20vh 8vh;
-  -webkit-box-shadow: 0px 5px 15px 2px #323232;
-  -moz-box-shadow: 0px 5px 15px 2px #323232;
   box-shadow: 0px 5px 15px 2px #323232; }
 
 .display-4 {
@@ -63,7 +61,8 @@
       text-align: right; }
   .info-bar #play-for-keeps {
     background-color: #495057;
-    justify-content: center; }
+    -webkit-box-pack: center;
+            justify-content: center; }
     .info-bar #play-for-keeps > h1 {
       font-size: 48px;
       color: #f3685c; }
