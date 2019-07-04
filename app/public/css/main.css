@@ -44,15 +44,12 @@ body {
   background-color: #505050;
   margin: 0;
   padding: 0;
-  height: 100%;
-  color: white;
-  min-height: 100vh; }
+  min-height: 100vh;
+  color: white; }
 
 footer {
   min-height: 50px;
   width: 100vw;
-  position: absolute;
-  bottom: 0;
   background-color: #212121; }
 
 h1 {

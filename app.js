@@ -24,6 +24,7 @@ app.set('port', process.env.PORT || 8080);
 
 // route files //
 const index = require('./app/server/routes/index.js');
+const landing = require('./app/server/routes/landing.js');
 const account = require('./app/server/routes/account');
 const shop = require('./app/server/routes/shop');
 const offers = require('./app/server/routes/offers');
@@ -82,7 +83,7 @@ app.set('view engine', 'hbs');
 
 // set up view handling //
 app.set('views', __dirname + '/app/server/views');
-app.set('view cache', process.env.NODE_ENV === 'live');
+//app.set('view cache', process.env.NODE_ENV === 'live');
 app.use(express.static(__dirname + '/app/public'));
 
 // set up cookie-parser middleware //
@@ -119,11 +120,17 @@ app.use(passport.session());
 // set up the router //
 //require('./app/server/routes')(app, passport);
 
-app.use('/', index);
-app.use('/account', account);
-app.use('/shop', shop);
-app.use('/offers', offers);
-app.use('/admin', admin);
+
+if(process.env.NODE_ENV === 'live'){
+    app.use('/', landing);
+} else {
+    app.use('/', index);
+    app.use('/account', account);
+    app.use('/shop', shop);
+    app.use('/offers', offers);
+    app.use('/admin', admin);
+}
+
 
 // create server //
 http.createServer(app).listen(process.env.PORT, function(){
