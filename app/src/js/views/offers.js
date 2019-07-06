@@ -11,25 +11,6 @@ $(document).ready(function(){
     let page = 0;
     let limit = 8;
 
-    // const getQuests = function(){
-    //     const url = 'https://api.eflow.team/v1/affiliates/offersrunnable';
-    //
-    //     $.ajax({
-    //         url: url,
-    //         type: 'GET',
-    //         beforeSend: function (xhr){
-    //             xhr.setRequestHeader('x-eflow-api-key', 'qGFK8wuhRTyzxafhHJIJCQ')
-    //         },
-    //         data: {},
-    //         success: function(res){
-    //             console.log(res);
-    //         },
-    //         error: function(err){
-    //             console.log(err);
-    //         }
-    //     })
-    // };
-
     const loadMore = function(page, limit, offset, offer_list){
         const page_max = 15;
         const url = "https://adscendmedia.com/adwall/api/publisher/9359/profile/16028/offers.json";
@@ -61,8 +42,6 @@ $(document).ready(function(){
             console.log(data);
         });
     };
-
-    getQuests();
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry =>{

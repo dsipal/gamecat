@@ -12,7 +12,7 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     if(ip.substr(0,7) === "::ffff:"){
         ip = ip.substr(7);
     }
-    const geo = geoip.lookup('10.35.249.234');
+    const geo = geoip.lookup(ip);
     console.log(ip, geo);
 
 
