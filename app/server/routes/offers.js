@@ -8,7 +8,7 @@ var geoip = require('geoip-country');
 
 router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
 
-    let ip = req.ip;
+    let ip = req.headers['x-forwarded-for'] || req.ip;
     if(ip.substr(0,7) === "::ffff:"){
         ip = ip.substr(7);
     }
