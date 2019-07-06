@@ -22,6 +22,7 @@
     "express-handlebars": "^3.1.0",
     "express-rate-limit": "5.0.0",
     "express-session": "^1.16.2",
+    "geoip-country": "^3.2.2",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "6.1.0",
     "gulp-cache": "1.1.2",

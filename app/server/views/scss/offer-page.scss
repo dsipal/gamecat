@@ -1,10 +1,29 @@
+.container{
+  padding: 50px 30px 30px;
+}
+.offer-tabs{
+  margin-bottom: 35px;
+  div.col-6{
+    img{
+      max-height: 128px;
+    }
+    h1{
+      display: inline;
+    }
+    padding: 0;
+  }
+}
+
 .offer-list{
   list-style: none;
   min-height: 80%;
   box-sizing: border-box;
+  .col-md-6{
+    padding: 0;
+  }
   .offer-item {
     justify-content: center;
-
+    padding: 35px;
     .offer-image{
       margin: 0 auto 15px auto;
     }
@@ -26,19 +45,3 @@
   }
 }
 
-.pagination {
-  justify-content: center;
-  font-size: 1.5rem;
-  a {
-    color: black;
-    float: left;
-    padding: 8px 16px;
-    text-decoration: none;
-    transition: background-color .3s;
-    &:hover:not(.active) {background-color: #ddd;}
-    .active {
-      background-color: dodgerblue;
-      color: white;
-    }
-  }
-}

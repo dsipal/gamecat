@@ -7,11 +7,21 @@ const express = require('express');
 const authLimiter = require('../modules/authLimiter');
 const router = express.Router();
 
-router.get('/', authLimiter.ensureAuthenticated(), function(req, res) {
+router.get('/', authLimiter.ensureAuthenticated(), async function(req, res) {
+
+    let populated_user = await User.findOne({_id: req.user._id})
+        .populate('ref_by', 'username')
+        .populate('referrals')
+        .populate({
+            path: 'orders',
+            populate: {path: 'prize'}
+        });
+
+
     res.render('home', {
         title: 'Control Panel',
         countries: CT,
-        udata: req.user
+        udata: populated_user
     });
 });
 

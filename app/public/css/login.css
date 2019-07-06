@@ -1,5 +1,13 @@
 #login {
   width: 380px; }
+  #login figure {
+    width: 100%;
+    margin-bottom: 25px; }
+  #login img {
+    display: block;
+    margin: 0 auto;
+    min-height: 64px;
+    max-height: 128px; }
   #login .btn {
     float: left;
     width: 48%;
@@ -10,13 +18,14 @@
   #login .btn-left {
     margin-right: 4%; }
   #login #btn_sign_in {
+    background-color: #8b33bb;
+    outline: none;
+    border: none;
     color: white; }
+    #login #btn_sign_in:hover {
+      background-color: #6d2893; }
   #login #btn_remember {
-    background: #26aeda;
-    border: 1px solid #ced4da;
     color: white; }
-  #login #btn_remember:hover {
-    background: #389bda; }
   #login h6, #login label {
     font-size: 0.8rem; }
   #login h6, #login label {
@@ -26,7 +35,8 @@
   #login hr {
     clear: left; }
   #login .btm-links {
-    font-size: 0.8rem;
+    font-size: .9rem;
+    font-weight: 600;
     margin: 2px 0 0 0; }
     #login .btm-links #forgot-password {
       float: left;

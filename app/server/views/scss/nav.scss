@@ -1,19 +1,33 @@
 @import 'base';
-nav {
-  z-index: 6;
-  background-color: $base-color !important;
-  box-shadow: 0 3px 5px 0 rgb(50, 50, 50);
-}
-.nav-link{
-  font-size: 18px;
+header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+
+  nav {
+    width: 100%;
+    min-height: 63px;
+    z-index: 5;
+    background-color: $base-color !important;
+    box-shadow: 0 3px 5px 0 rgb(50, 50, 50);
+
+    .nav-link{
+      font-size: 18px;
+    }
+
+    .navbar-brand {
+      color: white;
+      font-weight: 600;
+    }
+
+    #logout-button{
+      margin-left: 30px;
+      width: 30px;
+    }
+  }
 }
 
-.navbar-brand {
-  color: white;
-  font-weight: 600;
-}
 
-#logout-button{
-  margin-left: 30px;
-  width: 30px;
-}
+

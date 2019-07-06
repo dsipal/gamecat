@@ -5,26 +5,46 @@
 @mixin raiseText() {
   color: grey;
   text-shadow: -1px 1px 0 white;
-  -moz-text-shadow: -1px 1px 0 white;
-  -webkit-text-shadow: -1px 1px 0 white;
 }
 
 .row{
   margin: 0;
 }
+
 body {
+  min-height: 100%;
   background-color: $body-bg;
   margin: 0;
   padding: 0;
-  min-height: 100vh;
   color: white;
+}
+
+main{
+  margin-top: 63px;
+  min-height: 100vh;
+  position: relative;
 }
 
 footer{
   min-height: 50px;
-  width: 100vw;
+  width: 100%;
   background-color: $base-color;
 }
+
+a{
+  color: $accent-purple;
+  &:hover{
+    text-decoration: none;
+    color: lighten($accent-purple, 20%)
+  }
+  &:visited{
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+
+
 h1{
   font-weight: 600;
 }
@@ -52,7 +72,6 @@ ul {
 
 input{
   background-color: $dialogue-background;
-
 }
 
 .card{
@@ -63,11 +82,33 @@ form{
   box-sizing: border-box;
   padding: 15px;
 
+  .form-group{
+    outline: none !important;
+  }
+  .form-control{
+    outline: none;
+    border: none;
+    background-color: inherit;
+    color: white;
+    border-bottom: 2px solid $accent-purple;
+    &:focus {
+      background-color: $dialogue-background;
+      color: inherit;
+      outline: none !important;
+      border: none !important;
+      border-bottom: 2px solid $accent-purple !important;
+    }
+    &:-webkit-autofill{
+      -webkit-text-fill-color: #fff;
+    }
+    &:disabled, &[readonly]{
+      background-color: $dialogue-background !important;
+    }
+
+  }
+
   .header-reg{
     padding-top: 15px;
-  }
-  h2{
-    color: $accent-gold;
   }
   label, h6  {
     color: white;
@@ -77,23 +118,12 @@ form{
   }
   .form-buttons{
     margin-top: 10px;
-    justify-content: right;
+    justify-content: center;
   }
 
 }
 
-.form-control{
-  background-color: $dialogue-background;
-  color: white;
-  &:focus{
-    background-color: $dialogue-background;
-    color: white;
-  }
-  &:active{
-    background-color: $dialogue-background;
-    color: white;
-  }
-}
+
 
 .center-vertical {
   top: 50%;  left: 50%;
@@ -104,6 +134,10 @@ form{
 }
 
 .container {
+  background-color: $base-color;
+
+  padding-bottom: 25px;
+  margin-bottom: 50px;
   -webkit-box-shadow: 0px 0px 15px 2px rgba(50,50,50,1);
   -moz-box-shadow: 0px 0px 15px 2px rgba(50,50,50,1);
   box-shadow: 0px 0px 15px 2px rgba(50,50,50,1);}

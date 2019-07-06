@@ -1,15 +1,20 @@
-nav {
-  z-index: 6;
-  background-color: #212121 !important;
-  box-shadow: 0 3px 5px 0 #323232; }
-
-.nav-link {
-  font-size: 18px; }
-
-.navbar-brand {
-  color: white;
-  font-weight: 600; }
-
-#logout-button {
-  margin-left: 30px;
-  width: 30px; }
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100; }
+  header nav {
+    width: 100%;
+    min-height: 63px;
+    z-index: 5;
+    background-color: #212121 !important;
+    box-shadow: 0 3px 5px 0 #323232; }
+    header nav .nav-link {
+      font-size: 18px; }
+    header nav .navbar-brand {
+      color: white;
+      font-weight: 600; }
+    header nav #logout-button {
+      margin-left: 30px;
+      width: 30px; }

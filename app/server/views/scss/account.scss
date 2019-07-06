@@ -1,24 +1,9 @@
-#account-form-container {
-  label {
-    text-align: right;
-    margin-top: 2px;
-  }
-  input, select {
-    font-size: 0.875rem;
-  }
-  .col-sm-9 {
-    padding-left: 0;
-  }
-  .margin-zero {
-    margin-bottom: 0;
-  }
-  .form-buttons {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-  }
-  .form-buttons>:not(:last-child) {
+.container{
+  padding: 30px;
+}
 
-    margin-right: 0.5rem;
-  }
+.img-thumbnail{
+  background-color: inherit;
+  max-height: 100px;
+  border: none;
 }

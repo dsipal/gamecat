@@ -1,12 +1,12 @@
-header {
+.hero {
   position: relative;
   background-color: black;
-  height: 95vh;
+  height: 45vh;
   min-height: 25rem;
   width: 100%;
   overflow: hidden;
   box-shadow: 0px 5px 15px 2px #323232; }
-  header video {
+  .hero video {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -17,7 +17,7 @@ header {
     z-index: 0;
     -webkit-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%); }
-  header .overlay {
+  .hero .overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -26,54 +26,53 @@ header {
     background-color: #353535;
     opacity: 0.3;
     z-index: 1; }
-  header #tagline {
+  .hero #tagline {
     position: absolute;
     bottom: 0px;
-    width: 100vw;
+    width: 100%;
     height: 200px;
     -webkit-box-pack: center;
             justify-content: center;
     z-index: 3;
     display: block;
     text-align: center; }
-    header #tagline h3 {
+    .hero #tagline h3 {
       color: #fff; }
 
-.container {
+.container #top-banner-group {
+  background-color: #8b33bb;
+  margin-left: -15px;
+  margin-right: -15px; }
+
+.container #top-info {
+  padding: 25px; }
+  .container #top-info .landing-description {
+    margin-top: 40px; }
+    .container #top-info .landing-description h1 {
+      text-align: center; }
+    .container #top-info .landing-description p {
+      font-size: 18px;
+      padding: 20px; }
+
+.container #signup-banner {
   background-color: #212121;
-  padding-bottom: 25px;
-  margin-bottom: 50px; }
-  .container #top-banner-group {
-    background-color: #8b33bb;
-    margin-left: -15px;
-    margin-right: -15px; }
-  .container #top-info {
-    padding: 25px; }
-    .container #top-info .landing-description {
-      margin-top: 40px; }
-      .container #top-info .landing-description h1 {
-        text-align: center; }
-      .container #top-info .landing-description p {
-        font-size: 18px;
-        padding: 20px; }
-  .container #signup-banner {
-    background-color: #212121;
-    -webkit-box-pack: center;
-            justify-content: center;
-    padding: 60px;
-    border-radius: 300px 300px 0 0; }
-  .container #how-work {
-    margin-left: -15px;
-    margin-right: -15px; }
-    .container #how-work #complete-quests {
-      padding: 20px;
-      background-color: #389bda; }
-    .container #how-work #tell-friends {
-      padding: 20px;
-      background-color: #353535; }
-    .container #how-work #get-loot {
-      padding: 20px;
-      background-color: #495057; }
+  -webkit-box-pack: center;
+          justify-content: center;
+  padding: 60px;
+  border-radius: 300px 300px 0 0; }
+
+.container #how-work {
+  margin-left: -15px;
+  margin-right: -15px; }
+  .container #how-work #complete-quests {
+    padding: 20px;
+    background-color: #389bda; }
+  .container #how-work #tell-friends {
+    padding: 20px;
+    background-color: #353535; }
+  .container #how-work #get-loot {
+    padding: 20px;
+    background-color: #495057; }
 
 #rewards {
   margin-left: -15px;

@@ -2,11 +2,20 @@ const User = require('../models/User');
 const authLimiter = require('../modules/authLimiter');
 const express = require('express');
 const router = express.Router();
+var geoip = require('geoip-country');
 
 
 
 router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
-    //TODO get offer page working on single page, add different tabs for different types of offers
+
+    let ip = req.ip;
+    if(ip.substr(0,7) === "::ffff:"){
+        ip = ip.substr(7);
+    }
+    const geo = geoip.lookup('10.35.249.234');
+    console.log(ip, geo);
+
+
     res.render('offers', {
         subid1: req.user._id,
         udata: req.user

@@ -1,13 +1,27 @@
 {{#section 'head'}}<link rel="stylesheet" href="/css/offer-page.css">{{/section}}
 
-<ul class="row offer-list" data-subid1="{{subid1}}">
+<section class="container">
+    <div class="row offer-tabs">
 
-</ul>
-<!--TODO make pagination work completely, have it load all on same page instead of over multiple.-->
-<div class="row pagination">
-    <a href="#">&laquo;</a>
-    <div class="pagination-numbers">
+        <div class="col-6 text-center">
+            <a class="active-tab" id="quests" href="#">
+                <img class="img-fluid" src="/img/quest.svg" />
+                <h1>Quests</h1>
+            </a>
+        </div>
+
+        <div class="col-6 text-center">
+            <a id="surveys" href="#">
+                <img class="img-fluid" src="/img/survey.svg" />
+                <h1>Surveys</h1>
+            </a>
+        </div>
     </div>
-    <a href="#">&raquo;</a>
-</div>
+
+    <ul class="row offer-list" data-subid1="{{subid1}}">
+
+    </ul>
+    <div id="infinite-trigger"></div>
+</section>
+
 <script src="/js/views/offers.js"></script>

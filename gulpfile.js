@@ -25,7 +25,7 @@ const paths = {
         dest: 'app/public/img'
     },
     handlebars: {
-        src: 'app/server/views/**/*.hbs'
+        src: 'app/server/views/**/*'
     }
 
 };
@@ -74,23 +74,26 @@ gulp.task('styles', style);
 gulp.task('images', images);
 
 
-gulp.task('browser-sync', function() {
+gulp.task('browser-sync', async function() {
     browserSync({
         proxy: 'localhost:8080'
     });
 });
 
-gulp.task('bs-reload', function () {
+gulp.task('bs-reload', async function () {
     browserSync.reload();
 });
 
 gulp.task('build', gulp.series(['scripts', 'styles', 'images']));
 
-gulp.task('default', gulp.series(['browser-sync'], function(){
-    gulp.watch([paths.styles.src], gulp.parallel(['styles']));
-    gulp.watch(paths.scripts.src, gulp.parallel(['scripts']));
-    gulp.watch(paths.handlebars.src, gulp.parallel(['bs-reload']));
-}));
+gulp.task('default', function(){
+    browserSync({
+        proxy: 'localhost:8080'
+    });
+    gulp.watch(paths.styles.src).on('change', gulp.series(['styles', 'bs-reload']));
+    gulp.watch(paths.scripts.src).on('change', gulp.series(['scripts', 'bs-reload']));
+    gulp.watch([paths.handlebars.src]).on('change',  gulp.parallel(['bs-reload']));
+});
 
 exports.build = gulp.task('build');
 exports.default = gulp.task('default');
