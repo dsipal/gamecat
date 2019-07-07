@@ -28,17 +28,17 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
 
     request(pg_options).then(function(res){
         let offers = [];
-        if(!err && res.statusCode == 200){
-            let data = JSON.parse(body);
-            for(let offer in data){
-                for( country in offer.relationship.ruleset.countries){
-                    if(country_code === country){
-                        offers.push(offer);
-                    }
+
+        let data = JSON.parse(body);
+        for(let offer in data){
+            for( country in offer.relationship.ruleset.countries){
+                if(country_code === country){
+                    offers.push(offer);
                 }
             }
-            console.log(offers);
         }
+        console.log(offers);
+
     }).catch(function(err){
         console.log(err);
     });
