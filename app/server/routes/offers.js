@@ -37,7 +37,7 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
                 }
             }
         }
-        console.log(offers);
+        console.log(offers[0]);
 
     }).catch(function(err){
         console.log(err);
