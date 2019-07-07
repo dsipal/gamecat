@@ -30,7 +30,6 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
         let offers = [];
 
         let data = JSON.parse(res);
-        console.log(data);
         for(let offer in data.offers){
             for( country in offer.relationship.ruleset.countries){
                 if(country_code === country.country_code){
