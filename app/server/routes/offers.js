@@ -30,14 +30,16 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
         let offers = [];
 
         let data = JSON.parse(res);
-        for(let offer in data.offers){
-            for( country in offer.relationship.ruleset.countries){
-                if(country_code === country.country_code){
-                    offers.push(offer);
-                }
-            }
-        }
-        console.log(offers[0]);
+        console.log(data.offers.relationship);
+        console.log(country_code);
+        // for(let offer in data.offers){
+        //     for( country in offer.relationship.ruleset.countries){
+        //         if(country_code === country.country_code){
+        //             offers.push(offer);
+        //         }
+        //     }
+        // }
+        // console.log(offers[0]);
 
     }).catch(function(err){
         console.log(err);
