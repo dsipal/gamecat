@@ -1,0 +1,33 @@
+{{#section 'head'}}<link rel="stylesheet" href="/css/offer-page.css">{{/section}}
+
+<section class="container">
+    <div class="row offer-tabs">
+
+        <div class="col-6 text-center">
+            <a class="active-tab" id="quests" href="#">
+                <img class="img-fluid" src="/img/quest.svg" />
+                <h1>Quests</h1>
+            </a>
+        </div>
+
+        <div class="col-6 text-center">
+            <a id="surveys" href="#">
+                <img class="img-fluid" src="/img/survey.svg" />
+                <h1>Surveys</h1>
+            </a>
+        </div>
+    </div>
+
+    <ul class="row offer-list" data-subid1="{{subid1}}">
+        {{#each offers}}
+            <li class="col-md-6 justify-content-center"><div class="offer-item">
+                <img src="{{this.thumbnail_url}}"  alt="{{this.name}}" class="row offer-image">
+                <a href="`{{this.tracking_url}}`" class="row offer-link">{{this.name}}</a>
+                <p class="offer-reward"> Points</p>
+                <p class="offer-description">Start playing the game, win 5 matches, and check back for your prize!</p>
+            </div></li>
+        {{/each}}
+    </ul>
+
+    <div id="infinite-trigger"></div>
+</section>

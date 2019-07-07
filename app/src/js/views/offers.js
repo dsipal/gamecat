@@ -33,7 +33,7 @@ $(document).ready(function(){
                     <a href="`+offer.click_url+`" class="row offer-link">`+offer.name+`</a>
                     <p class="offer-reward">`+offer.currency_count+` Points</p>
                     <p class="offer-description">`+offer.description+`</p>
-                </li></div>`;
+                </div></li>`;
                     offer_list.append(element);
                 });
             }
@@ -47,7 +47,7 @@ $(document).ready(function(){
         entries.forEach(entry =>{
             console.log(entry.intersectionRatio);
             if(entry.intersectionRatio > 0){
-                let offset = limit * (page-1);
+                let offset = limit * page;
                 console.log('viewable!');
                 loadMore(page, limit, offset, offer_list);
                 page += 1;

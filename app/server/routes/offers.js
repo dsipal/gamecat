@@ -8,11 +8,12 @@ const request = require('request-promise');
 
 
 router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
+    // let ip = req.headers['x-forwarded-for'] || req.ip;
+    // if(ip.substr(0,7) === "::ffff:"){
+    //     ip = ip.substr(7);
+    // }
 
-    let ip = req.headers['x-forwarded-for'] || req.ip;
-    if(ip.substr(0,7) === "::ffff:"){
-        ip = ip.substr(7);
-    }
+    let ip = "71.217.190.131";
     const geo = geoip.lookup(ip);
     let country_code;
     if(geo !== null){
@@ -26,31 +27,36 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
         }
     };
 
-    request(pg_options).then(function(res){
-        let offers = [];
-
+    let pg_offers = await request(pg_options).then(function(res){
         let data = JSON.parse(res);
-        console.log(data.offers[0]);
-        console.log(data.offers[0].relationship);
-        // for(let offer in data.offers){
-        //     for( country in offer.relationship.ruleset.countries){
-        //         if(country_code === country.country_code){
-        //             offers.push(offer);
-        //         }
-        //     }
-        // }
-        // console.log(offers[0]);
-
+        let offers = [];
+        data.offers.forEach(function(offer, key){
+            offer.relationship.ruleset.countries.forEach(function(country, key){
+                if(country_code === country.country_code){
+                    offers.push(offer);
+                }
+            });
+        });
+        return offers;
     }).catch(function(err){
         console.log(err);
+        return null;
     });
 
+    res.render('quests', {
+        subid1: req.user._id,
+        udata: req.user,
+        offers: pg_offers
+    });
+});
 
+router.get('/surveys', authLimiter.ensureAuthenticated(), async function(req, res){
     res.render('offers', {
         subid1: req.user._id,
-        udata: req.user
-    })
+        udata: req.user,
+    });
 });
+
 
 router.get('/postback', async function(req, res){
     //TODO *added ip restrictions to postback*, ensure that it works correctly with Adscend

@@ -11,25 +11,6 @@ $(document).ready(function(){
     let page = 0;
     let limit = 8;
 
-    const getQuests = function(){
-        const url = 'https://api.eflow.team/v1/affiliates/offersrunnable';
-
-        $.ajax({
-            url: url,
-            type: 'GET',
-            beforeSend: function (xhr){
-                xhr.setRequestHeader('x-eflow-api-key', 'qGFK8wuhRTyzxafhHJIJCQ')
-            },
-            data: {},
-            success: function(res){
-                console.log(res);
-            },
-            error: function(err){
-                console.log(err);
-            }
-        })
-    };
-
     const loadMore = function(page, limit, offset, offer_list){
         const page_max = 15;
         const url = "https://adscendmedia.com/adwall/api/publisher/9359/profile/16028/offers.json";
@@ -52,7 +33,7 @@ $(document).ready(function(){
                     <a href="`+offer.click_url+`" class="row offer-link">`+offer.name+`</a>
                     <p class="offer-reward">`+offer.currency_count+` Points</p>
                     <p class="offer-description">`+offer.description+`</p>
-                </li></div>`;
+                </div></li>`;
                     offer_list.append(element);
                 });
             }
@@ -62,13 +43,11 @@ $(document).ready(function(){
         });
     };
 
-    getQuests();
-
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry =>{
             console.log(entry.intersectionRatio);
             if(entry.intersectionRatio > 0){
-                let offset = limit * (page-1);
+                let offset = limit * page;
                 console.log('viewable!');
                 loadMore(page, limit, offset, offer_list);
                 page += 1;
