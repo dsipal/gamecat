@@ -29,7 +29,7 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     request(pg_options).then(function(res){
         let offers = [];
 
-        let data = JSON.parse(body);
+        let data = JSON.parse(res);
         for(let offer in data){
             for( country in offer.relationship.ruleset.countries){
                 if(country_code === country){
