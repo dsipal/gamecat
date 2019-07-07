@@ -85,7 +85,7 @@ app.set('view engine', 'hbs');
 
 // set up view handling //
 app.set('views', __dirname + '/app/server/views');
-//app.set('view cache', process.env.NODE_ENV === 'live');
+app.set('view cache', process.env.NODE_ENV === 'live');
 app.use(express.static(__dirname + '/app/public'));
 
 // set up cookie-parser middleware //

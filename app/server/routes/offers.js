@@ -2,7 +2,8 @@ const User = require('../models/User');
 const authLimiter = require('../modules/authLimiter');
 const express = require('express');
 const router = express.Router();
-var geoip = require('geoip-country');
+const geoip = require('geoip-country');
+const request = require('request-promise');
 
 
 
@@ -13,7 +14,34 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
         ip = ip.substr(7);
     }
     const geo = geoip.lookup(ip);
-    console.log(ip, geo);
+    let country_code;
+    if(geo !== null){
+        country_code = geo.country;
+    }
+
+    const pg_options = {
+        uri: 'https://api.eflow.team/v1/affiliates/offersrunnable',
+        headers: {
+            'x-eflow-api-key': process.env.PWNGAMES_KEY
+        }
+    };
+
+    request(pg_options).then(function(res){
+        let offers = [];
+        if(!err && res.statusCode == 200){
+            let data = JSON.parse(body);
+            for(let offer in data){
+                for( country in offer.relationship.ruleset.countries){
+                    if(country_code === country){
+                        offers.push(offer);
+                    }
+                }
+            }
+            console.log(offers);
+        }
+    }).catch(function(err){
+        console.log(err);
+    });
 
 
     res.render('offers', {
