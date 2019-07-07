@@ -30,6 +30,7 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
         let offers = [];
 
         let data = JSON.parse(res);
+        console.log(data.offers);
         console.log(data.offers.relationship);
         console.log(country_code);
         // for(let offer in data.offers){
