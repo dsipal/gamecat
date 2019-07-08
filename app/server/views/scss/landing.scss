@@ -33,6 +33,12 @@
     background-color: $lighter-base;
     opacity: 0.3;
     z-index: 1;
+    text-align: center;
+    .mascot-img{
+      height: 90%;
+      position: center;
+      margin-top: 30px;
+    }
   }
 
   #tagline{

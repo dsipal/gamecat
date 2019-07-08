@@ -7,9 +7,9 @@
     <script src="/js/controllers/signupController.js"></script>
     <script src="/js/form-validators/accountValidator.js"></script>
 {{/section}}
+<section class="container">
+        {{>"registration" ref_by=ref_by}}
+</section>
 
-<div id="account-form-container" class="center-vertical card card-body">
-    {{>"registration" ref_by=ref_by}}
-</div>
 {{>"modals/alert"}}
 

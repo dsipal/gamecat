@@ -25,7 +25,12 @@
     width: 100%;
     background-color: #353535;
     opacity: 0.3;
-    z-index: 1; }
+    z-index: 1;
+    text-align: center; }
+    .hero .overlay .mascot-img {
+      height: 90%;
+      position: center;
+      margin-top: 30px; }
   .hero #tagline {
     position: absolute;
     bottom: 0px;

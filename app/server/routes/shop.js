@@ -6,23 +6,6 @@ const authLimiter = require('../modules/authLimiter');
 
 
 router.get('/', authLimiter.ensureAuthenticated(),function(req,res){
-    // Prize.create({
-    // 	name: 'test',
-    // 	image_path: '/img/vbucks.png',
-    // 	description: 'test test test',
-    // 	cost: 100,
-    // 	categories: ['test', 'test2'],
-    // 	tags: ['notatest'],
-    //  num_purchased: 0,
-    // }, function(e,o){
-    // 	if(e){
-    // 		console.log(e);
-    // 	} else {
-    // 		o.save();
-    // 	}
-    //
-    // });
-
     Prize.find().exec(function(err, prizes){
         if(err){
             console.log(err)
@@ -44,9 +27,11 @@ router.post('/buy', authLimiter.ensureAuthenticated(),function(req,res){
         } else {
             req.user.purchasePrize(prize, function(order, user){
                 if(order){
-                    console.log('purchase successful');
+                    res.redirect('/shop');
                 } else {
-                    console.log('failure purchasing');
+                    console.log('failure purchasing for ', user);
+                    res.redirect('/shop');
+
                 }
             })
         }

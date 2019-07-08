@@ -86,14 +86,11 @@ gulp.task('bs-reload', async function () {
 
 gulp.task('build', gulp.series(['scripts', 'styles', 'images']));
 
-gulp.task('default', function(){
-    browserSync({
-        proxy: 'localhost:8080'
-    });
+gulp.task('default', gulp.series(['build', 'browser-sync'], function(){
     gulp.watch(paths.styles.src).on('change', gulp.series(['styles', 'bs-reload']));
     gulp.watch(paths.scripts.src).on('change', gulp.series(['scripts', 'bs-reload']));
     gulp.watch([paths.handlebars.src]).on('change',  gulp.parallel(['bs-reload']));
-});
+}));
 
 exports.build = gulp.task('build');
 exports.default = gulp.task('default');

@@ -65,11 +65,12 @@ router.get('/logout', authLimiter.ensureAuthenticated(), function(req, res){
 });
 
 router.get('/signup', function(req, res) {
-    let ref_by = req.query.ref_by;
     res.render('signup', {
         title: 'Signup',
         countries : CT,
-        ref_by: ref_by
+        ref_by: req.query.ref_by,
+        email: req.query.email,
+        agree: req.query.agree
     });
 });
 
