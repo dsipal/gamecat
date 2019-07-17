@@ -3,37 +3,62 @@
         <a class="navbar-brand" href="/">
             Gamecat
         </a>
-
-
-
         <ul class="navbar-nav ml-auto">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#togglerContent" aria-controls="togglerContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            {{#if user}}
-                <div class="collapse navbar-collapse" id="togglerContent">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/offers">Offers</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/shop">{{user.points}} Points</a>
-                    </li>
+
+            <div class="collapse navbar-collapse" id="togglerContent">
+                {{#if user}}
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/account">Account</a>
+                        <a class="nav-link" href="/shop">
+                            <img src="/img/nav/shop.svg" alt="Shop"> Shop
+                        </a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="earn-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="/img/nav/earn.svg" alt="Earn"> Earn
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="earn-dropdown">
+                            <a class="dropdown-item" href="/offers">Quests</a>
+                            <a class="dropdown-item" href="/offers/surveys">Surveys</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="account-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="/img/nav/signup.svg" alt="Sign Up"> Account
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="account-dropdown">
+                            <span class="dropdown-item">
+                                Balance: {{user.points}} <img src="/img/crystal.svg" alt="crystals" class="crystal-ico" />
+                            </span>
+                            <a class="dropdown-item" href="/account">Account Information</a>
+                        </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/logout" id="btn-logout"><img src="/img/logout.svg" id="logout-button" alt="logout"></a>
+                        <a class="nav-link" href="/logout" id="btn-logout"><img src="/img/nav/signout.svg" id="logout-button" alt="Log Out"> Log Out</a>
                     </li>
-                </div>
-
-
-
-            {{else}}
-                <li class="nav-item">
-                    <a class="nav-link" href="/login" id="btn-login">Sign In</a>
-                </li>
-            {{/if}}
+                {{else}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">
+                            <img src="/img/nav/about.svg" alt="About"> About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/signup">
+                            <img src="/img/nav/signup.svg" alt="Sign Up"> Sign Up
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">
+                            <img src="/img/nav/signin.svg" id="login-button" alt="Log In"> Log In
+                        </a>
+                    </li>
+                {{/if}}
+            </div>
         </ul>
     </nav>
 </header>

@@ -7,7 +7,6 @@ $(document).ready(function(){
         threshold: 1.0
     };
 
-    let tab = $('.active')[0];
     let page = 0;
     let limit = 8;
 
@@ -28,12 +27,28 @@ $(document).ready(function(){
                 observer.disconnect();
             } else {
                 $.each(data.offers, function(key, offer){
-                    var element = `<li class="col-md-6 justify-content-center"><div class="offer-item">
-                    <img src="`+offer.creative_url+`"  alt="`+offer.name+`" class="row offer-image">
-                    <a href="`+offer.click_url+`" class="row offer-link">`+offer.name+`</a>
-                    <p class="offer-reward">`+offer.currency_count+` Points</p>
-                    <p class="offer-description">`+offer.description+`</p>
-                </div></li>`;
+                    var element = `
+                    <li class="col-md-4 justify-content-center">
+                        <div class="offer-item">
+                             <a href="\`+offer.click_url+\`" class="row offer-link">
+                                <img src="`+offer.creative_url+`"  alt="`+offer.name+`" class="row offer-image">
+                             </a>
+                             <p class="offer-reward">`
+                                        +offer.currency_count+` 
+                                        <img class="crystal-ico" src="/img/crystal.svg" alt="crystals"/>
+                             </p>
+                             
+                             <div class="offer-info">
+                                <a href="\`+offer.click_url+\`" class="row offer-link">
+                                    <span>`+offer.name+`</span>
+                                </a>
+                                <p class="offer-description">`+offer.description+`</p>
+                             </div>
+                             
+                            
+                        </div>
+                    </li>
+                    `;
                     offer_list.append(element);
                 });
             }

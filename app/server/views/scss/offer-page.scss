@@ -1,6 +1,5 @@
-.container{
-  padding: 50px 30px 30px;
-}
+@import 'base';
+
 .offer-tabs{
   margin-bottom: 35px;
   div.col-6{
@@ -18,30 +17,58 @@
   list-style: none;
   min-height: 80%;
   box-sizing: border-box;
+  padding: 0;
+
   .col-md-6{
     padding: 0;
   }
   .offer-item {
     justify-content: center;
-    padding: 35px;
-    .offer-image{
-      margin: 0 auto 15px auto;
-    }
+    border: 3px solid $dialogue-background;
+    border-radius: 7px;
+    margin: 35px;
 
     .offer-link {
       justify-content: center;
       text-align: center;
       font-size: 16px;
       font-weight: 500;
+      color: white;
+      &:hover{
+        color: $accent-yellow;
+      }
     }
-
+    .offer-image{
+      object-fit: cover;
+      object-position: 50% 50%;
+      max-height: 200px;
+      width: 100%;
+    }
     .offer-reward {
+      width: 100%;
       text-align: center;
+      background-color: $accent-purple;
+      margin-bottom: 0;
+    }
+    .offer-info{
+      background-color: $lighter-base;
+      padding: 10px;
+      width: 100%;
+      .offer-description{
+        @media(hover: hover){
+          //display: none;
+          height: 100%;
+          width: 100%;
+        }
+        padding: 10px;
+        text-align: center;
+        font-size: 14px;
+        margin: 0;
+      }
     }
 
-    .offer-description{
-      text-align: center;
-    }
+
+
   }
 }
 

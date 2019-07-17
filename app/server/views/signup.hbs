@@ -8,7 +8,14 @@
     <script src="/js/form-validators/accountValidator.js"></script>
 {{/section}}
 <section class="container">
-        {{>"registration" ref_by=ref_by}}
+    <div class="container-header">
+        <div class="row">
+            <img class="col-12 img-fluid" src="/img/mascot.svg">
+            <h1 class="col-12 text-center">Sign Up</h1>
+        </div>
+    </div>
+
+    {{>"registration" ref_by=ref_by}}
 </section>
 
 {{>"modals/alert"}}

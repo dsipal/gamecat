@@ -1,10 +1,10 @@
 @import 'base';
 header{
-  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 100;
+  border-bottom: 3px solid $accent-purple;
 
   nav {
     width: 100%;
@@ -12,6 +12,20 @@ header{
     z-index: 5;
     background-color: $base-color !important;
     box-shadow: 0 3px 5px 0 rgb(50, 50, 50);
+    .nav-item{
+      margin-left: 25px;
+      img{
+        height: 21px;
+        margin-right: 5px;
+        position: relative;
+        bottom: 2px;
+      }
+      &:hover{
+        img{
+          filter: drop-shadow(0px 0px 3px rgba(255,255,255,0.3));
+        }
+      }
+    }
 
     .nav-link{
       font-size: 18px;
@@ -20,11 +34,6 @@ header{
     .navbar-brand {
       color: white;
       font-weight: 600;
-    }
-
-    #logout-button{
-      margin-left: 30px;
-      width: 30px;
     }
   }
 }

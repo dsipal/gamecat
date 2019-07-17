@@ -4,36 +4,29 @@
 {{/section}}
 
 <section class="container">
-    <div class="row offer-tabs">
-
-        <div class="col-6 text-center">
-            <a class="active-tab" id="quests" href="#">
-                <img class="img-fluid" src="/img/quest.svg" />
-                <h1>Quests</h1>
-            </a>
-        </div>
-
-        <div class="col-6 text-center">
-            <a id="surveys" href="#">
-                <img class="img-fluid" src="/img/survey.svg" />
-                <h1>Surveys</h1>
-            </a>
+    <div class="container-header">
+        <div class="row">
+            <img class="col-12 img-fluid" src="/img/layout/questpage.svg">
+            <h1 class="col-12 text-center">Quests</h1>
         </div>
     </div>
 
     <ul class="row offer-list" data-subid1="{{subid1}}">
         {{#each offers}}
-            <li class="col-md-6 justify-content-center"><div class="offer-item">
-                <a href="{{this.tracking_url}}" class="row offer-link">
-                    <div class="thumbnail">
-                        <span>{{this.name}}</span>
+            <li class="col-md-6 justify-content-center">
+                <div class="offer-item">
+                    <a href="{{this.tracking_url}}" class="row offer-link">
                         <img src="{{this.thumbnail_url}}"  alt="{{this.name}}" class="row offer-image">
-                    </div>
-
-                </a>
-                <p class="offer-reward"> Points</p>
-                <p class="offer-description">{{this.description}}</p>
-            </div></li>
+                    </a>
+                        <p class="offer-reward"> <img class="crystal-ico" src="/img/crystal.svg" alt="crystals"/></p>
+                        <div class="offer-info">
+                            <a href="{{this.tracking_url}}" class="row offer-link">
+                                <span>{{this.name}}</span>
+                            </a>
+                            <p class="offer-description">{{this.description}}</p>
+                        </div>
+                </div>
+            </li>
         {{/each}}
     </ul>
 

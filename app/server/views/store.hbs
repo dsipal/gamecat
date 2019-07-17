@@ -1,17 +1,29 @@
-<!--TODO add store page-->
+{{#section 'head'}}
+    <link rel="stylesheet" href="/css/store.css">
+{{/section}}
 <div class="row">
-    {{#each prizes}}
-        <div class="col-sm-3">
-            <img src="{{this.image_path}}">
-            <h2>{{this.name}}</h2>
-            <h3>{{this.cost}}</h3>
-            <p>{{this.description}}</p>
-            <form>
-                <input type="hidden" id="product" name="product" value="{{this._id}}">
-                <button class="btn btn-primary" type="submit" formaction="/shop/buy" formmethod="post">Purchase</button>
-            </form>
-<!--            <a class="btn btn-primary" href="/store/buy?id={{this._id}}">Purchase</a>-->
+    <section class="container">
+        <div class="container-header">
+            <div class="row">
+                <img class="col-12 img-fluid" src="/img/layout/shoppage.svg">
+                <h1 class="col-12 text-center">Shop</h1>
+            </div>
         </div>
-    {{/each}}
 
+        <div class="row">
+            {{#each prizes}}
+                <div class="col-md-6 product">
+                    <img src="{{this.image_path}}" alt="{{this.name}}" class="img-fluid product-img">
+                    <h2>{{this.name}}</h2>
+                    <h4>{{this.cost}} <img src="/img/crystal.svg" alt="crystals" class="crystal-ico" /></h4>
+                    <p>{{this.description}}</p>
+                    <form>
+                        <input type="hidden" id="product" name="product" value="{{this._id}}">
+                        <button class="btn btn-primary" type="submit" formaction="/shop/buy" formmethod="post">Purchase</button>
+                    </form>
+                    <!--            <a class="btn btn-primary" href="/store/buy?id={{this._id}}">Purchase</a>-->
+                </div>
+            {{/each}}
+        </div>
+    </section>
 </div>

@@ -16,9 +16,7 @@ router.get('/', function(req, res){
 router.get('/login', function(req, res){
     // check if the user has an auto login key saved in a cookie //
     if (req.cookies.login === undefined || !req.isAuthenticated()){
-        res.render('login', {
-            title: 'Hello - Please Login To Your Account'
-        });
+        res.render('login');
     } else {
         // attempt automatic login //
         //TODO *removed call to AM for autoLogin and validateLoginKey*
@@ -102,12 +100,10 @@ router.post('/signup', function(req, res){
             });
         }
     );
-
     validator.validate();
 });
 
 router.post('/lost-password', function(req, res){
-
     let resetEmail = req.body['email'];
     User.findOne({email:resetEmail}, function(e, o) {
         if(e) {
@@ -164,6 +160,10 @@ router.post('/reset', function(req, res) {
             console.log('Password Reset User Not Found');
         }
     });
+});
+
+router.get('/privacypolicy', function(req,res){
+    res.render('privacypolicy');
 });
 
 module.exports = router;

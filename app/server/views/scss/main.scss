@@ -1,6 +1,7 @@
 @import 'base';
 @import 'modals';
 @import 'nav';
+@import 'footer';
 
 @mixin raiseText() {
   color: grey;
@@ -20,22 +21,15 @@ body {
 }
 
 main{
-  margin-top: 63px;
   min-height: 100vh;
   position: relative;
-}
-
-footer{
-  min-height: 50px;
-  width: 100%;
-  background-color: $base-color;
 }
 
 a{
   color: $accent-purple;
   &:hover{
     text-decoration: none;
-    color: lighten($accent-purple, 20%)
+    color: lighten($accent-purple, 20%);
   }
   &:visited{
     color: inherit;
@@ -123,6 +117,9 @@ form{
 
 }
 
+.table-dark{
+  background-color: inherit !important;
+}
 
 
 .center-vertical {
@@ -135,12 +132,40 @@ form{
 
 .container {
   background-color: $base-color;
-
   padding-bottom: 25px;
   margin-bottom: 50px;
   -webkit-box-shadow: 0px 0px 15px 2px rgba(50,50,50,1);
   -moz-box-shadow: 0px 0px 15px 2px rgba(50,50,50,1);
-  box-shadow: 0px 0px 15px 2px rgba(50,50,50,1);}
+  box-shadow: 0px 0px 15px 2px rgba(50,50,50,1);
+  .container-header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 280px;
+    margin-left: -15px;
+    margin-right: -15px;
+    background-color: inherit;
+    background-image: url("/img/textures/cubes.png");
+    border-bottom: 7px solid $secondary-purple;
+    box-shadow: 0 3px 5px 0 rgb(50, 50, 50);
+    img{
+      max-height: 178px;
+    }
+    .row{
+      background-color: $container-header-bg;
+    }
+
+  }
+
+}
 .col-form-label{
   margin-right: 25px;
+}
+
+.crystal-ico{
+  height: 16px;
+  width: auto;
+  display: inline-block;
+  position: relative;
+  bottom: 1px;
 }

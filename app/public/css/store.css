@@ -1,0 +1,7 @@
+.product {
+  -webkit-box-pack: center;
+          justify-content: center;
+  text-align: center; }
+
+.product-img {
+  max-height: 256px; }

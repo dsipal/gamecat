@@ -53,12 +53,16 @@ async function getOffers(country_code, subid){
     let descriptions = [];
     let names = [];
 
+    //get games from the mongo db collection where there is a country code match
     let games = await Game.find({'offer_ids': {$elemMatch: {'country_codes': country_code}}});
 
+
     games.forEach((offer) => {
+        //get the offerid that matches the country code
         const match = offer.offer_ids.find((offer_id) => {
             return offer_id.country_codes.indexOf(country_code) > -1;
         });
+        //add offer id and info to list of offers to show
         offer_ids.push(match.offer_id);
         descriptions.push(offer.description);
         names.push(offer.name);
@@ -66,6 +70,7 @@ async function getOffers(country_code, subid){
 
     let promises = [];
 
+    //pull the tracking url from pwngames api
     offer_ids.forEach(offer_id => {
         const endpoint = `/offers/${offer_id}`;
         promises.push(request({
