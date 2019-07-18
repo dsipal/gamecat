@@ -9,11 +9,11 @@ const Game = require('../models/Game');
 
 
 router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
-    // // let ip = req.headers['x-forwarded-for'] || req.ip;
-    // // if(ip.substr(0,7) === "::ffff:"){
-    // //     ip = ip.substr(7);
-    // // }
-    //
+    let ip = req.headers['x-forwarded-for'] || req.ip;
+    if(ip.substr(0,7) === "::ffff:"){
+        ip = ip.substr(7);
+    }
+
     // let ip = "71.217.168.79";
 
     const geo = geoip.lookup(ip);
