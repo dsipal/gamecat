@@ -23,8 +23,6 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     }
     const offers = await getOffers(country_code, req.user._id);
 
-    console.log(offers);
-
     res.render('quests', {
         subid1: req.user._id,
         udata: req.user,
@@ -41,10 +39,14 @@ router.get('/surveys', authLimiter.ensureAuthenticated(), async function(req, re
 
 
 router.get('/postback', async function(req, res){
-    let subid = req.query.subid1;
+    console.log(req.query.subid1);
+    console.log(typeof(req.query.subid1));
+
+
+    let subid = require('mongodb').ObjectId(req.query.subid1);
     let payout = parseInt(req.query.payout);
 
-    let user = User.findOne({_id: require('mongodb').ObjectId(subid)});
+    let user = User.findOne({_id: subid});
     user.addPoints(payout);
     res.send(req.query.subid1 + " was paid " + 10 * req.query.payout);
 });
