@@ -6,7 +6,8 @@ const game = new mongoose.Schema({
         offer_ids: [{
             country_codes: [{type: String}],
             offer_id: String
-        }]
+        }],
+        payout: {type: Number}
     },
     {collection: 'Games'});
 
