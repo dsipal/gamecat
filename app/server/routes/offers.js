@@ -39,15 +39,10 @@ router.get('/surveys', authLimiter.ensureAuthenticated(), async function(req, re
 
 
 router.get('/postback', async function(req, res){
-    console.log(req.query.subid1);
-    console.log(typeof(req.query.subid1));
-
-
     let subid = require('mongodb').ObjectId(req.query.subid1);
     let payout = parseInt(req.query.payout);
 
-    let user = User.findOne({_id: subid});
-    user.addPoints(payout);
+    User.findOne({_id: subid}).addPoints(payout);
     res.send(req.query.subid1 + " was paid " + 10 * req.query.payout);
 });
 
