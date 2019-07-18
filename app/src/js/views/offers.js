@@ -39,7 +39,7 @@ $(document).ready(function(){
                              </p>
                              
                              <div class="offer-info">
-                                <a href="\`+offer.click_url+\`" class="row offer-link">
+                                <a href="`+offer.click_url+`" class="row offer-link">
                                     <span>`+offer.name+`</span>
                                 </a>
                                 <p class="offer-description">`+offer.description+`</p>
