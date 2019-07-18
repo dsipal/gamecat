@@ -42,17 +42,19 @@ router.get('/postback', async function(req, res){
     let subid = require('mongodb').ObjectId(req.query.subid1);
     let payout = parseInt(req.query.payout);
 
-    User.findOne({_id: subid}).addPoints(payout);
-    res.send(req.query.subid1 + " was paid " + 10 * req.query.payout);
+    let user = await User.findOne({_id: subid});
+    user.addPoints(payout);
+
+    res.send(req.query.subid1 + " was paid " + req.query.payout);
 });
 
 router.get('/pwnpostback', async function(req, res){
-    let subid = req.query.subid1;
+    let subid = require('mongodb').ObjectId(req.query.subid1);
     let payout = parseInt(req.query.payout) * 60;
 
-    let user = User.findOne({_id: require('mongodb').ObjectId(subid)});
+    let user = await User.findOne({_id: subid});
     user.addPoints(payout);
-    res.send(req.query.subid1 + " was paid " + 10 * req.query.payout);
+    res.send(req.query.subid1 + " was paid " + req.query.payout);
 });
 
 

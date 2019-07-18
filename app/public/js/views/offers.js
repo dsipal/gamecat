@@ -30,7 +30,7 @@ $(document).ready(function(){
                     var element = `
                     <li class="col-md-4 justify-content-center">
                         <div class="offer-item">
-                             <a href="\`+offer.click_url+\`" class="row offer-link">
+                             <a href="`+offer.click_url+`" class="row offer-link">
                                 <img src="`+offer.creative_url+`"  alt="`+offer.name+`" class="row offer-image">
                              </a>
                              <p class="offer-reward">`
@@ -39,7 +39,7 @@ $(document).ready(function(){
                              </p>
                              
                              <div class="offer-info">
-                                <a href="\`+offer.click_url+\`" class="row offer-link">
+                                <a href="`+offer.click_url+`" class="row offer-link">
                                     <span>`+offer.name+`</span>
                                 </a>
                                 <p class="offer-description">`+offer.description+`</p>
