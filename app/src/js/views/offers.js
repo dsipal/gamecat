@@ -18,7 +18,7 @@ $(document).ready(function(){
             subid1: offer_list.attr('data-subid1'),
             limit: limit,
             offset: offset,
-            sort_by: 'payout'
+            sort_by: 'popularity'
         });
 
         $.getJSON(url+'?'+query_strings).done(function(data){

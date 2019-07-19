@@ -62,15 +62,6 @@ function AccountValidator()
     this.validateTermsConditions = function(){
         return this.fields.terms_conditions !== null;
     };
-
-    this.showErrors = function()
-    {
-        $('.modal-form-errors .modal-body p').text('Please correct the following problems: ');
-        let ul = $('.modal-form-errors .modal-body ul');
-        ul.empty();
-        for (let key in this.errs) ul.append('<li>'+this.errs[key]+'</li>');
-        this.alert.modal('show');
-    }
 }
 
 AccountValidator.prototype.showInvalidEmail = function()
@@ -132,4 +123,16 @@ AccountValidator.prototype.validateForm = function()
     });
     if (this.errs.length) this.showErrors();
     return this.errs.length === 0;
+};
+
+AccountValidator.prototype.showErrors = function()
+{
+    console.log(this.errs);
+    $('.modal-form-errors .modal-body p').text('Please correct the following problems: ');
+    let ul = $('.modal-form-errors .modal-body ul');
+    console.log(ul);
+    ul.empty();
+    for (let key in this.errs) ul.append('<li>'+this.errs[key]+'</li>');
+    this.alert.modal('show');
+    this.errs = [];
 };

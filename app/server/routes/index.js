@@ -16,11 +16,17 @@ router.get('/', function(req, res){
 router.get('/login', function(req, res){
     // check if the user has an auto login key saved in a cookie //
     if (req.cookies.login === undefined || !req.isAuthenticated()){
-        res.render('login');
+        res.render('login', {
+            layout: 'minimal'
+        });
     } else {
         // attempt automatic login //
         //TODO *removed call to AM for autoLogin and validateLoginKey*
-        User.validateLoginKey(req.cookies.login, req.ip, function(e, o){
+        let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+        if(ip.substr(0,7) === "::ffff:"){
+            ip = ip.substr(7);
+        }
+        User.validateLoginKey(req.cookies.login, ip, function(e, o){
             if (o){
                 User.autoLogin(o.user, o.pass, function(o){
                     res.redirect('/account');
@@ -64,6 +70,7 @@ router.get('/logout', authLimiter.ensureAuthenticated(), function(req, res){
 
 router.get('/signup', function(req, res) {
     res.render('signup', {
+        layout: 'minimal',
         title: 'Signup',
         countries : CT,
         ref_by: req.query.ref_by,
@@ -93,6 +100,7 @@ router.post('/signup', function(req, res){
             User.formatNewAccount(user, function(err){
                 if(err){
                     console.log(err);
+                    console.log(err.errors);
                     res.status(401).send(err);
                 } else {
                     res.status(200).send('ok');
@@ -165,6 +173,15 @@ router.post('/reset', function(req, res) {
 router.get('/privacypolicy', function(req,res){
     res.render('privacypolicy');
 });
+
+router.get('/tos', function(req, res){
+    res.render('tos');
+});
+
+router.get('/about', function(req, res){
+    res.render('about');
+});
+
 
 module.exports = router;
 

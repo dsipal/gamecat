@@ -1,0 +1,8 @@
+@import 'base';
+
+.container {
+  width: 40vw;
+  @media screen and (max-width: $breakpoint-md){
+    width: 100vw;
+  }
+}

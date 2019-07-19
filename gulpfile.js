@@ -3,7 +3,7 @@ let gulp = require('gulp'),
     plumber = require('gulp-plumber'),
     rename = require('gulp-rename');
 let autoprefixer = require('gulp-autoprefixer');
-let uglify = require('gulp-uglify');
+let uglify = require('gulp-uglify-es').default;
 let imagemin = require('gulp-imagemin'),
     cache = require('gulp-cache');
 let minifycss = require('gulp-clean-css');
@@ -59,6 +59,7 @@ async function scripts() {
         .pipe(gulp.dest(paths.scripts.dest))
         .pipe(rename({suffix: '.min'}))
         .pipe(uglify())
+        .on('error', function (err) { console.log(err.toString()); })
         .pipe(gulp.dest(paths.scripts.dest))
 
 }
@@ -76,7 +77,9 @@ gulp.task('images', images);
 
 gulp.task('browser-sync', async function() {
     browserSync({
-        proxy: 'localhost:8080'
+        proxy: 'localhost:8080',
+        reloadDelay: 500,
+        reloadDebounce: 2000
     });
 });
 

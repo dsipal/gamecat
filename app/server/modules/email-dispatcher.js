@@ -5,16 +5,22 @@ const domain = process.env.MG_DOMAIN;
 const mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 
 //TODO set up email_optin list
-const list = mailgun.lists('testing@sandboxf2ab2d4c9c19447ba48159645025e909.mailgun.org');
+const promolist = mailgun.lists('promotions@mg.gamecat.co');
+const sitelist = mailgun.lists('sitenews@mg.gamecat.co');
+const emailAcc = "Gamecat <admin@gamecat.co>";
 
 exports.dispatchConfirm = function(email, token, name) {
-
-    const html = "Confirmation Link: " + `<a href="http://localhost:8080/verify?id=` + token + '&name=' + name + '"> Click Here </a>';
+    console.log(name, token);
+    console.log(typeof(name));
+    console.log(typeof(token));
     const data = {
-        from: "Excited User <me@samples.mailgun.org>",
+        from: emailAcc,
         to: email,
         subject: 'Account Confirmation',
-        html: html
+        template: 'newuser',
+        "v:token": token,
+        "v:username": name,
+        "o:tag": ['confirmation']
     };
 
     mailgun.messages().send(data, function(err, bod){
@@ -22,27 +28,15 @@ exports.dispatchConfirm = function(email, token, name) {
     });
 };
 
-exports.joinMailingList = function(email, name) {
-
-    let data = {
-        address:    email,
-        name:       name
-    };
-
-    list.members().create(data, function(err, data){
-        console.log('New Member On Mail List:');
-        console.log(data);
-    });
-};
-
 exports.dispatchPasswordReset = function(email, token, name, callback){
-
-    const html = 'Password Reset Link: ' + '<a href="http://localhost:8080/reset?id=' + token + '&name=' + name + '"> Click Here </a>';
     const data = {
-        from: "Password Manager <me@sampes.mailgun.org>",
+        from: emailAcc,
         to: email,
         subject: 'Password Reset',
-        html: html
+        template: 'passwordreset',
+        "v:token": token,
+        "v:username": name,
+        "o:tag": ['passwordreset']
     };
 
     mailgun.messages().send(data, function(err, bod){
@@ -54,3 +48,24 @@ exports.dispatchPasswordReset = function(email, token, name, callback){
         }
     });
 };
+
+exports.joinMailingList = function(email, name,optin) {
+
+    let data = {
+        address:    email,
+        name:       name
+    };
+
+    sitelist.members().create(data, function(err, data){
+        console.log('New Member On Mail List:');
+        console.log(data);
+    });
+
+    if(optin){
+        promolist.members().create(data, function(err, data){
+            console.log('New Member On Mail List:');
+            console.log(data);
+        });
+    }
+};
+

@@ -133,6 +133,13 @@ if(process.env.NODE_ENV === 'live'){
     app.use('/admin', admin);
 }
 
+app.use(function(req, res, next) {
+    return res.status(404).render('404');
+});
+
+app.use(function(err, req, res, next) {
+    return res.status(500).send({ error: err });
+});
 
 // create server //
 http.createServer(app).listen(process.env.PORT, function(){

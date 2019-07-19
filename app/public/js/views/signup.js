@@ -11,13 +11,18 @@ $(document).ready(function(){
 		},
 		error : function(e){
 			let errs = JSON.parse(e.responseText);
-			console.log(errs);
+			if(errs.errors){
+				for(let error in errs.errors){
+					if(error === "username"){
+						av.showInvalidUserName();
+					}
+					else if(error === 'email'){
+						av.showInvalidEmail();
+					}
+				}
+			}
 			for(let key in errs){
-				if (errs[key] === 'email-taken'){
-					av.showInvalidEmail();
-				}	else if (errs[key] === 'username-taken'){
-					av.showInvalidUserName();
-				}  	else if (errs[key] === 'invalid-referral'){
+				if (errs[key] === 'invalid-referral'){
 					av.showInvalidRefName();
 				}  	else if (errs[key] === 'disposable-email') {
 					av.showDispoEmail();
@@ -28,7 +33,7 @@ $(document).ready(function(){
 			av.showErrors();
 		}
 	});
-	$('#name-tf').focus();
+	// $('#name-tf').focus();
 
 // setup the alert that displays when an account is successfully created //
 

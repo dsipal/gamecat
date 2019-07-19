@@ -9,12 +9,14 @@ const Game = require('../models/Game');
 
 
 router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
-    let ip = req.headers['x-forwarded-for'] || req.ip;
+    let ip = req.headers['x-forwarded-for']
+        || req.connection.remoteAddress
+        || req.socket.remoteAddress
+        || req.connection.socket.remoteAddress;
+
     if(ip.substr(0,7) === "::ffff:"){
         ip = ip.substr(7);
     }
-
-    // let ip = "71.217.168.79";
 
     const geo = geoip.lookup(ip);
     let country_code;
@@ -49,6 +51,9 @@ router.get('/postback', async function(req, res){
 });
 
 router.get('/pwnpostback', async function(req, res){
+    //pwngames ip addresses
+    // 35.196.95.104
+    // 35.196.169.46
     let subid = require('mongodb').ObjectId(req.query.subid1);
     let payout = parseInt(req.query.payout) * 60;
 

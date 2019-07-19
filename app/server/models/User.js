@@ -4,24 +4,33 @@ const emchecker = require('../modules/email-checker.js');
 const emdisp = require('../modules/email-dispatcher');
 const Prize = require('./Prize');
 const Order = require('./Order');
+const uniqueValidator = require('mongoose-unique-validator');
 const UserValidator = require('../modules/user-validator');
 
 //TODO add validators in here, then handle the errors elsewhere.
 const user = new mongoose.Schema({
         username: {
             type: String,
-            unique: true
+            unique: true,
+            required: true
         },
-        password: String,
+        password: {
+            type: String,
+            required: true
+        },
         email: {
             type: String,
-            unique: true
+            unique: true,
+            required: true
         },
         orders: [{type: mongoose.Schema.ObjectId, ref: 'Order'}],
         awarded_prizes: [{type: mongoose.Schema.ObjectId, ref: 'Prize'}],
         referrals: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
         ref_by: {type: mongoose.Schema.ObjectId, ref: 'User'},
-        reg_date: Date,
+        reg_date: {
+            type: Date,
+            required: true
+        },
         points: Number,
         points_earned: Number,
         cookie: String,
@@ -33,7 +42,7 @@ const user = new mongoose.Schema({
     {collection: 'Users'}
     );
 
-
+user.plugin(uniqueValidator);
 
 // class/static functions //
 
@@ -48,10 +57,6 @@ user.statics.getAllRecords = function(callback){
 user.statics.deleteAllAccounts = function(){
     User.deleteMany({});
     console.log('deleted accounts');
-};
-
-user.statics.getByID = function(){
-    return User.findOne({_id: getObjectId(id)});
 };
 
 user.statics.getUser = function(uname){
@@ -225,9 +230,7 @@ user.methods.confirmAccount = function(idToken, callback){
     if(this.token === idToken){
         this.rank = 'activated';
         this.save();
-        if(this.email_optin){
-            emdisp.joinMailingList(this.email, this.name);
-        }
+        emdisp.joinMailingList(this.email, this.name, this.email_optin);
         callback(true);
     } else {
         callback(false);
