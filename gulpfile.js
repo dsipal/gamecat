@@ -79,7 +79,8 @@ gulp.task('browser-sync', async function() {
     browserSync({
         proxy: 'localhost:8080',
         reloadDelay: 500,
-        reloadDebounce: 2000
+        reloadDebounce: 2000,
+        notify: false
     });
 });
 

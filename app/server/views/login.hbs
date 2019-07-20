@@ -1,4 +1,13 @@
-{{#section 'head'}}<link rel="stylesheet" href="/css/login.css">{{/section}}
+{{#section 'head'}}
+    <link rel="stylesheet" href="/css/login.css">
+{{/section}}
+
+{{#section 'body_scripts'}}
+    <script src="/js/views/login.js"></script>
+    <script src="/js/controllers/loginController.js"></script>
+    <script src="/js/form-validators/loginValidator.js"></script>
+    <script src="/js/form-validators/emailValidator.js"></script>
+{{/section}}
 
 <div id="login" class="center-vertical">
     <form method="post" class="card card-body">
@@ -13,10 +22,8 @@
         </div>
     </form>
 </div>
+
 {{>"modals/alert"}}
 {{>"modals/lost-password"}}
 
-<script src="/js/views/login.js"></script>
-<script src="/js/controllers/loginController.js"></script>
-<script src="/js/form-validators/loginValidator.js"></script>
-<script src="/js/form-validators/emailValidator.js"></script>
+

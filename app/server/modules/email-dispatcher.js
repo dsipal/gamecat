@@ -11,8 +11,6 @@ const emailAcc = "Gamecat <admin@gamecat.co>";
 
 exports.dispatchConfirm = function(email, token, name) {
     console.log(name, token);
-    console.log(typeof(name));
-    console.log(typeof(token));
     const data = {
         from: emailAcc,
         to: email,

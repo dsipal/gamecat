@@ -85,10 +85,8 @@ user.statics.generateLoginKey = function(username, ipAddress, callback)
 //TODO possibly figure out how to auth without sending plaintext pass
 //takes plaintext password, returns plainPass == hashedPass
 user.methods.validatePassword = function(plainPass){
-    console.log(plainPass);
     let salt = this.password.substr(0, 10);
     let validHash = salt + md5(plainPass + salt);
-    console.log(validHash, this.password);
     return validHash === this.password;
 };
 
@@ -132,19 +130,20 @@ user.statics.addNewAccount  = function(newData, callback){
             callback(e, null);
         } else {
             emdisp.dispatchConfirm(newData.email, newData.token, newData.username);
+            callback(null,o);
 
-            if(newData.ref_by !== null){
-                o.percolateReferrals().then(function(err, o){
-                    console.log(err, o);
-                    if(err){
-                        callback(err, null);
-                    } else {
-                        callback(null, o);
-                    }
-                });
-            }else{
-                callback(null, o);
-            }
+            // if(newData.ref_by !== null){
+            //     o.percolateReferrals().then(function(err, o){
+            //         console.log(err, o);
+            //         if(err){
+            //             callback(err, null);
+            //         } else {
+            //             callback(null, o);
+            //         }
+            //     });
+            // }else{
+            //     callback(null, o);
+            // }
         }
     });
 };
@@ -169,11 +168,12 @@ user.statics.autoLogin = function(user, pass, callback)
 };
 
 //used at end of registration, adds new user to referrer's list
-user.methods.percolateReferrals = async function () {
+user.methods.percolateReferrals = function () {
     let refID = this._id;
     if(this.ref_by !== null){
         User.findOne({_id: this.ref_by}).exec(function(err, user){
             user.referrals.push(refID);
+            user.points += 100;
             user.save();
         })
     }
@@ -227,10 +227,12 @@ user.methods.unbanAccount = function(){
 
 //Checking if the token from URL matches token stored in user data, if yes, activate account
 user.methods.confirmAccount = function(idToken, callback){
+    console.log(this.token === idToken);
     if(this.token === idToken){
         this.rank = 'activated';
         this.save();
         emdisp.joinMailingList(this.email, this.name, this.email_optin);
+        this.percolateReferrals();
         callback(true);
     } else {
         callback(false);

@@ -1,5 +1,15 @@
-{{#section 'head'}}<link rel="stylesheet" href="/css/account.css">{{/section}}
+{{#section 'head'}}
+    <link rel="stylesheet" href="/css/account.css">
+{{/section}}
 
+{{#section 'body_scripts'}}
+    <script src="/js/views/home.js"></script>
+    <script src="/js/controllers/homeController.js"></script>
+    <script src="/js/form-validators/accountValidator.js"></script>
+{{/section}}
+
+{{>"modals/alert"}}
+{{>"modals/confirm"}}
 
 <section class="container">
     <div class="container-header">
@@ -108,9 +118,3 @@
 </section>
 
 
-{{>"modals/alert"}}
-{{>"modals/confirm"}}
-
-<script src="/js/views/home.js"></script>
-<script src="/js/controllers/homeController.js"></script>
-<script src="/js/form-validators/accountValidator.js"></script>

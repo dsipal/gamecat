@@ -2,6 +2,13 @@
 $(document).ready(function(){
 	var av = new AccountValidator();
 
+	$('#alert-ok').click(function(){
+		console.log('ok clicked');
+		setTimeout(function(){
+			window.location.href = '/'; //redirect with client side js
+		}, 300)
+	});
+
 	$('#account-form').ajaxForm({
 		beforeSubmit : function(formData, jqForm, options){
 			return av.validateForm();

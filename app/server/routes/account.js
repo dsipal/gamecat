@@ -63,9 +63,10 @@ router.get('/verify', function(req, res){
         if(e) {
             console.log('Problem With Verification' + req.query.name + '   ' + req.query.id);
         } else{
+            console.log('verifying');
             o.confirmAccount(req.query.id, function(success){
                 if(success){
-                    res.redirect('/');
+                    res.redirect('/login?verify=success');
                 } else {
                     res.redirect('/signup');
                 }
