@@ -3,7 +3,7 @@ const preUser = require('../models/preUser');
 let router = express.Router();
 
 router.get('/', function(req, res){
-    res.render('landing', {layout: 'minimal'});
+    res.render('index/landing', {layout: 'minimal'});
 });
 
 router.post('/', function(req,res){

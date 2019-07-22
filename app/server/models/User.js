@@ -276,12 +276,13 @@ user.methods.updatePassword = function(passKey, newPass, callback)
 
 // store functions //
 
-user.methods.purchasePrize = function(prize, callback){
+user.methods.purchasePrize = function(prize, option, callback){
     let user = this;
-    if(this.points >= prize.cost){
-        this.points -= prize.cost;
+    if(this.points >= option){
+        this.points -= option;
         Order.collection.insertOne({
             prize: prize._id,
+            option: option,
             user: this._id,
             status: 'Pending',
             order_date: new Date(),

@@ -8,19 +8,18 @@ let router = express.Router();
 const authLimiter = require('../modules/authLimiter');
 const UserValidator = require('../modules/user-validator');
 
-
 router.get('/', function(req, res){
-    res.render('index', {udata: req.user});
+    res.render('index/index', {udata: req.user});
 });
 
 router.get('/login', function(req, res){
     // check if the user has an auto login key saved in a cookie //
     console.log(req.isAuthenticated());
     if(req.isAuthenticated()){
-        res.redirect('/account');
+        res.redirect('account');
     }else{
         if (req.cookies.login === undefined || !req.isAuthenticated()){
-            res.render('login', {
+            res.render('index/login', {
                 layout: 'minimal'
             });
         } else {
@@ -36,7 +35,7 @@ router.get('/login', function(req, res){
                         res.redirect('/account');
                     });
                 } else {
-                    res.render('login',{
+                    res.render('index/login',{
                         layout: 'minimal'
                     });
                 }
@@ -77,7 +76,7 @@ router.get('/logout', authLimiter.ensureAuthenticated(), function(req, res){
 });
 
 router.get('/signup', function(req, res) {
-    res.render('signup', {
+    res.render('index/signup', {
         layout: 'minimal',
         title: 'Signup',
         countries : CT,
@@ -149,7 +148,7 @@ router.get('/reset', function(req, res) {
             if(o.token === req.query.id){
                 console.log('Valid Token');
                 req.session.token = o.token;
-                res.render('reset', { title : 'Reset Password' });
+                res.render('index/reset', { title : 'Reset Password' });
             } else{
                 res.status(400).send('Invalid Reset Token');
             }
@@ -179,15 +178,15 @@ router.post('/reset', function(req, res) {
 });
 
 router.get('/privacypolicy', function(req,res){
-    res.render('privacypolicy');
+    res.render('index/privacypolicy');
 });
 
 router.get('/tos', function(req, res){
-    res.render('tos');
+    res.render('index/tos');
 });
 
 router.get('/about', function(req, res){
-    res.render('about');
+    res.render('index/about');
 });
 
 

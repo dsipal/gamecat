@@ -1,0 +1,28 @@
+{{#section 'head'}}
+    <link rel="stylesheet" href="/css/shop.css">
+{{/section}}
+
+<section class="container">
+    <div class="container-header">
+        <div class="row">
+            <img class="col-12 img-fluid" src="/img/layout/shoppage.svg">
+            <h1 class="col-12 text-center">Shop</h1>
+        </div>
+    </div>
+
+    <div class="row prize-list">
+        {{#each prizes}}
+            <div class="col-md-6 prize">
+                <a href="/shop/{{this._id}}" >
+                    <img src="{{this.image_path}}" alt="{{this.name}}" class="img-fluid prize-img">
+                    <h2 class="prize-name">{{this.name}}</h2>
+                </a>
+                <div class="row prize-info">
+                    <h4 class="prize-price">Starting at {{this.options.[0].point_cost}} <img src="/img/crystal.svg" alt="crystals" class="crystal-ico" /></h4>
+                    <p class="prize-desc">{{this.description}}</p>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</section>
+

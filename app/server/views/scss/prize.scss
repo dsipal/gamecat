@@ -1,0 +1,53 @@
+@import 'base';
+
+.prize{
+  padding: 50px;
+  .prize-img{
+
+  }
+
+  .prize-form{
+    background-color: $secondary-purple;
+    border: none;
+    font-size: 16px;
+    color: white;
+    padding: 10px;
+    min-height: 55px;
+    border-radius: 0;
+    border-top: 5px solid $accent-purple;
+
+    select{
+      border-radius: 10px;
+      background-color: $dialogue-background;
+      color: white;
+      border: none;
+      font-size: 14px;
+      margin-top: 4px;
+      padding: 2px;
+    }
+
+    .point-container{
+      margin-top: 4px;
+    }
+
+    .btn {
+      display: inline;
+      font-size: 14px;
+    }
+  }
+
+  .prize-info{
+    padding: 30px;
+    .prize-name{
+      padding: 10px;
+    }
+    .prize-desc{
+      padding: 10px;
+      background-color: $dialogue-background;
+      border-radius: 0 0 5px 5px;
+    }
+
+  }
+
+
+}

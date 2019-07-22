@@ -4,7 +4,10 @@ const prize = new mongoose.Schema({
         name: String,
         image_path: String,
         description: String,
-        cost: Number,
+        options: [{
+            point_cost: Number,
+            dollar_value: String
+        }],
         categories: [{type: String}],
         tags: [{type: String}],
         num_purchased: Number,

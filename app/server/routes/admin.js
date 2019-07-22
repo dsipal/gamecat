@@ -11,7 +11,7 @@ const authLimiter = require('../modules/authLimiter');
 const router = express.Router();
 
 router.get('/', authLimiter.ensureAuthenticated(), function(req, res){
-    res.render('admin');
+    res.render('admin/index');
 });
 
 router.get('/users', authLimiter.ensureAuthenticated(), function(req, res){
@@ -19,7 +19,7 @@ router.get('/users', authLimiter.ensureAuthenticated(), function(req, res){
         if(err){
             console.log(err)
         } else {
-            res.render('userlist',{
+            res.render('admin/userlist',{
                 users: users
             });
         }
@@ -31,7 +31,7 @@ router.get('/users/banlist', authLimiter.ensureAuthenticated(), function(req, re
        if(err){
            console.log(err);
        } else {
-           res.render('banlist', {
+           res.render('admin/banlist', {
                 users: busers
            });
        }
@@ -39,7 +39,7 @@ router.get('/users/banlist', authLimiter.ensureAuthenticated(), function(req, re
 });
 
 router.post('/users/unban', authLimiter.ensureAuthenticated(), function(req, res){
-    let banID = req.body['unbanneduser'];
+    let banID = req.body['/admin/unbanneduser'];
 
     User.findOne({username:banID}).exec( function(e, o) {
         if(e){
@@ -69,7 +69,7 @@ router.get('/prizes', authLimiter.ensureAuthenticated(), function(req, res){
         if(err){
             console.log(err)
         } else {
-            res.render('prizelist',{
+            res.render('admin/prizelist',{
                 prizes: prizes
             });
         }
@@ -77,7 +77,7 @@ router.get('/prizes', authLimiter.ensureAuthenticated(), function(req, res){
 });
 
 router.get('/prizes/newprize', authLimiter.ensureAuthenticated(), function(req, res){
-    res.render('newprize');
+    res.render('admin/newprize');
 });
 
 router.post('/prizes/newprize', function(req, res){
@@ -89,7 +89,7 @@ router.get('/cashouts/pending', authLimiter.ensureAuthenticated(), function(req,
         if(err){
             console.log(err)
         } else {
-            res.render('pendinglist',{
+            res.render('admin/pendinglist',{
                 prizes: prizes
             });
         }
@@ -101,7 +101,7 @@ router.get('/cashouts/complete', authLimiter.ensureAuthenticated(), function(req
         if(err){
             console.log(err)
         } else {
-            res.render('completelist',{
+            res.render('admin/completelist',{
                 prizes: prizes
             });
         }

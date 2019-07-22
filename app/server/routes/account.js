@@ -18,7 +18,7 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res) {
         });
 
 
-    res.render('home', {
+    res.render('account/accountpage', {
         title: 'Control Panel',
         countries: CT,
         udata: populated_user
@@ -42,20 +42,20 @@ router.post('/delete', function(req, res){
     res.clearCookie('login');
 });
 
-router.get('/referrals', authLimiter.ensureAuthenticated(), async function(req, res) {
-    let orders = await User.findOne({username: req.user.username})
-        .populate({
-            path: 'orders',
-            populate: {
-                path: 'prize user'
-            }
-    });
-    console.log(orders.orders[0]);
-        //TODO possibly add multi-tiered referrals
-    var ref_link = req.protocol + '://' + req.headers.host + '/signup?ref_by=' + req.user.username;
-    res.render('referrals', {ref_link: ref_link, referrals: req.user.referrals});
-
-});
+// router.get('/referrals', authLimiter.ensureAuthenticated(), async function(req, res) {
+//     let orders = await User.findOne({username: req.user.username})
+//         .populate({
+//             path: 'orders',
+//             populate: {
+//                 path: 'prize user'
+//             }
+//     });
+//     console.log(orders.orders[0]);
+//         //TODO possibly add multi-tiered referrals
+//     var ref_link = req.protocol + '://' + req.headers.host + '/signup?ref_by=' + req.user.username;
+//     res.render('referrals', {ref_link: ref_link, referrals: req.user.referrals});
+//
+// });
 
 router.get('/verify', function(req, res){
     //TODO ensure that verification through email works, limit pages that user can access without verification

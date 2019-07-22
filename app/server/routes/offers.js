@@ -25,7 +25,7 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     }
     const offers = await getOffers(country_code, req.user._id);
 
-    res.render('quests', {
+    res.render('offers/quests', {
         subid1: req.user._id,
         udata: req.user,
         offers: offers
@@ -33,7 +33,7 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
 });
 
 router.get('/surveys', authLimiter.ensureAuthenticated(), async function(req, res){
-    res.render('offers', {
+    res.render('offers/offers', {
         subid1: req.user._id,
         udata: req.user,
     });
