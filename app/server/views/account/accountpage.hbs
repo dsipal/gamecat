@@ -3,7 +3,7 @@
 {{/section}}
 
 {{#section 'body_scripts'}}
-    <script src="/js/views/home.js"></script>
+    <script src="/js/views/account.js"></script>
     <script src="/js/controllers/homeController.js"></script>
     <script src="/js/form-validators/accountValidator.js"></script>
 {{/section}}
@@ -22,17 +22,22 @@
         <tr>
             <th scope="row">Username</th>
             <td>{{udata.username}}</td>
-            <td><a href="#">Edit</a></td>
+            <td></td>
         </tr>
         <tr>
             <th scope="row">Email</th>
             <td>{{udata.email}}</td>
-            <td><a href="#">Edit</a></td>
+            <td>
+
+            </td>
         </tr>
         <tr>
             <th scope="row">Password</th>
-            <td><input class="form-control" type="password" value="password" readonly></td>
-            <td><a href="#">Edit</a></td>
+            <td><input class="form-control" type="password" value="password" disabled></td>
+            <td>
+
+            </td>
+
         </tr>
         <tr>
             <th scope="row">Points</th>
@@ -56,7 +61,7 @@
         <tr>
             <th scope="row">Receive exclusive offers by email</th>
             <td>
-                <input type="checkbox" {{#if udata.email_optin}}checked{{/if}}>
+                <input id="subscribe" type="checkbox" {{#if udata.email_optin}}checked{{/if}}>
             </td>
             <td></td>
         </tr>

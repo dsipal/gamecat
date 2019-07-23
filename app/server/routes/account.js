@@ -1,6 +1,7 @@
 const CT = require('../modules/country-list');
 const EM = require('../modules/email-dispatcher');
 const User = require('../models/User');
+let UserValidator = require('../modules/user-validator');
 const rateLimit = require("express-rate-limit");
 const passport = require('passport');
 const express = require('express');
@@ -24,6 +25,36 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res) {
         udata: populated_user
     });
 });
+
+// router.post('/change/password', function(req, res){
+//     let pass = req.params('password');
+//     let passRegex = new RegExp(`\\S*(\\S*([a-zA-Z]\\S*[0-9])|([0-9]\\S*[a-zA-Z]))\\S*`);
+//
+//     if(passRegex.test(pass)){
+//
+//     }
+//
+//
+// });
+//
+// router.post('/change/email', function(req, res){
+//
+// });
+
+router.post('/subscribe', authLimiter.ensureAuthenticated(), function(req, res){
+    try{
+
+        req.user.email_optin = !req.user.email_optin;
+        req.user.save();
+
+        res.sendStatus(200);
+    } catch(err) {
+        res.sendStatus(300);
+    }
+
+});
+
+
 
 router.post('/logout', authLimiter.ensureAuthenticated(), function(req, res){
     res.clearCookie('login');

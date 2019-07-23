@@ -55,7 +55,7 @@ router.get('/pwnpostback', async function(req, res){
     // 35.196.95.104
     // 35.196.169.46
     let subid = require('mongodb').ObjectId(req.query.subid1);
-    let payout = parseInt(req.query.payout) * 60;
+    let payout = parseInt(req.query.payout) * 40;
 
     let user = await User.findOne({_id: subid});
     user.addPoints(payout);

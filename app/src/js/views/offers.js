@@ -18,7 +18,7 @@ $(document).ready(function(){
             subid1: offer_list.attr('data-subid1'),
             limit: limit,
             offset: offset,
-            sort_by: 'popularity'
+            sort_by: 'epc'
         });
 
         $.getJSON(url+'?'+query_strings).done(function(data){
