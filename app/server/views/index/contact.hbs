@@ -1,19 +1,27 @@
 {{#section 'head'}}
-
+    <style>
+        img.img-fluid{
+            max-height: 128px;
+        }
+        .submit-row{
+            text-align: center !important;
+        }
+    </style>
 {{/section}}
 
 {{#section 'body_scripts'}}
 
 {{/section}}
 
-<section class="container">
+<section class="card center-vertical">
     <div class="container-header">
         <div class="row">
             <img class="col-12 img-fluid" src="/img/layout/accountpage.svg">
-            <h1 class="col-12 text-center">Your Account</h1>
+            <h1 class="col-12 text-center">Contact</h1>
         </div>
     </div>
 
+    {{>contact}}
 
 
 </section>

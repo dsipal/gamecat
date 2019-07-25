@@ -1,0 +1,40 @@
+<form id="contact-form" method="post" action="/contact" role="form">
+
+    <div class="messages"></div>
+
+    <div class="controls">
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input id="form_email" type="email" name="email" class="form-control" placeholder="Email" required="required" data-error="Valid email is required.">
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <select id="form_need" name="category" class="form-control" required="required" data-error="Please pick a category.">
+                        <option value="" disabled selected>Category</option>
+                        <option value="Site Issues">Site Issues</option>
+                        <option value="Payout Issues">Payout Issues</option>
+                        <option value="Requesting Partnership">Requesting Partnership</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <textarea id="form_message" name="message" class="form-control" placeholder="Message" rows="4" required="required" data-error="Please, leave us a message."></textarea>
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <div class="col-md-12 submit-row">
+                <input type="submit" class="btn btn-success btn-send" value="Send message">
+            </div>
+        </div>
+    </div>
+
+</form>

@@ -189,6 +189,23 @@ router.get('/about', function(req, res){
     res.render('index/about');
 });
 
+router.get('/contact', function(req, res){
+    res.render('index/contact');
+});
+router.post('/contact', function(req,res){
+    let email = req.query('email');
+    let category = req.query('category');
+    let message = req.query('message');
+
+    EM.dispatchSupport(email, category, message, function(err){
+        if(err){
+            res.sendStatus(500);
+        } else {
+            res.sendStatus(200);
+        }
+    })
+});
+
 
 module.exports = router;
 

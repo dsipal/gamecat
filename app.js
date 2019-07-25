@@ -10,6 +10,7 @@ let helmet = require('helmet');
 let passport = require('passport')
     ,	LocalStrategy = require('passport-local').Strategy;
 let mongoose = require('mongoose');
+let secure = require('ssl-express-www');
 const dotenv = require('dotenv');
 const compression = require('compression');
 dotenv.config();
@@ -21,6 +22,7 @@ var app = express();
 app.use(helmet());
 app.use(compression());
 app.set('port', process.env.PORT || 8080);
+app.use(secure);
 
 
 
@@ -133,13 +135,16 @@ if(process.env.NODE_ENV === 'live'){
     app.use('/admin', admin);
 }
 
+app.use(function(err, req, res, next) {
+    console.log(err);
+    return res.status(500).send({ error: err });
+});
+
 app.use(function(req, res, next) {
     return res.status(404).render('404');
 });
 
-app.use(function(err, req, res, next) {
-    return res.status(500).send({ error: err });
-});
+
 
 // create server //
 http.createServer(app).listen(process.env.PORT, function(){

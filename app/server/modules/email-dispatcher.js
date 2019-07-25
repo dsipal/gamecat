@@ -47,6 +47,25 @@ exports.dispatchPasswordReset = function(email, token, name, callback){
     });
 };
 
+exports.dispatchSupport = async function(email, category, message, callback){
+    let data = {
+        from: email,
+        to: 'support@mg.gamecat.co',
+        template: 'supportrequest',
+        'v:category': category,
+        'v:message': message,
+        'v:user': email
+    };
+
+    mailgun.messages().send(data, function(err, bod){
+        if(err){
+            callback(err);
+        } else {
+            callback(false);
+        }
+    })
+};
+
 exports.joinMailingList = function(email, name,optin) {
 
     let data = {
