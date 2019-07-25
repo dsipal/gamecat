@@ -193,15 +193,15 @@ router.get('/contact', function(req, res){
     res.render('index/contact');
 });
 router.post('/contact', function(req,res){
-    let email = req.query('email');
-    let category = req.query('category');
-    let message = req.query('message');
+    let email = req.param('email');
+    let category = req.param('category');
+    let message = req.param('message');
 
     EM.dispatchSupport(email, category, message, function(err){
         if(err){
-            res.sendStatus(500);
+            res.redirect('/');
         } else {
-            res.sendStatus(200);
+            res.redirect('/');
         }
     })
 });
