@@ -41,24 +41,23 @@ router.get('/surveys', authLimiter.ensureAuthenticated(), async function(req, re
 
 
 router.get('/postback', async function(req, res){
+    console.log('postback revieved');
     let subid = require('mongodb').ObjectId(req.query.subid1);
     let payout = parseInt(req.query.payout);
 
     let user = await User.findOne({_id: subid});
-    user.addPoints(payout);
-
+    user.points+= payout;
+    user.save();
     res.send(req.query.subid1 + " was paid " + req.query.payout);
 });
 
 router.get('/pwnpostback', async function(req, res){
-    //pwngames ip addresses
-    // 35.196.95.104
-    // 35.196.169.46
     let subid = require('mongodb').ObjectId(req.query.subid1);
     let payout = parseInt(req.query.payout) * 40;
 
     let user = await User.findOne({_id: subid});
-    user.addPoints(payout);
+    user.points+= payout;
+    user.save();
     res.send(req.query.subid1 + " was paid " + req.query.payout);
 });
 

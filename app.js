@@ -10,6 +10,7 @@ let helmet = require('helmet');
 let passport = require('passport')
     ,	LocalStrategy = require('passport-local').Strategy;
 let mongoose = require('mongoose');
+let secure = require('ssl-express-www');
 const dotenv = require('dotenv');
 const compression = require('compression');
 dotenv.config();
@@ -21,6 +22,7 @@ var app = express();
 app.use(helmet());
 app.use(compression());
 app.set('port', process.env.PORT || 8080);
+app.use(secure);
 
 
 
@@ -50,37 +52,57 @@ app.set('view engine', 'hbs');
 
 
 // TODO use below expression to limit ips that access /postback and /admin
-// app.use('/postback', function(req, res, next) {
-//     // filtering here, calls `res` method to stop progress or calls `next` to proceed
-//     let ip = req.ip ||
-//         req.headers['x-forwarded-for'] ||
-//         req.connection.remoteAddress ||
-//         req.socket.remoteAddress ||
-//         req.connection.socket.remoteAddress;
-//
-//     // The IP from the CPA site
-//     if (ip === '0.0.0.0') {
-//         next();
-//     } else {
-//         res.end();
-//     }
-// });
+app.use('/offers/postback', function(req, res, next) {
+    // filtering here, calls `res` method to stop progress or calls `next` to proceed
+    let ip = req.ip ||
+        req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress;
+    if(ip.substr(0,7) === "::ffff:"){
+        ip = ip.substr(7);
+    }
+    // The IP from the CPA site
+    if (ip === '54.204.57.82') {
+        next();
+    } else {
+        res.end();
+    }
+});
 
-// app.use('/admin/*', function(req, res, next) {
-//     // filtering here, calls `res` method to stop progress or calls `next` to proceed
-//     let ip = req.ip ||
-//         req.headers['x-forwarded-for'] ||
-//         req.connection.remoteAddress ||
-//         req.socket.remoteAddress ||
-//         req.connection.socket.remoteAddress;
-//
-//     // Our IPs
-//     if (ip === '0.0.0.0') {
-//         next();
-//     } else {
-//         res.end();
-//     }
-// });
+app.use('/offers/pwnpostback', function(req, res, next) {
+    // filtering here, calls `res` method to stop progress or calls `next` to proceed
+    let ip = req.ip ||
+        req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress;
+    if(ip.substr(0,7) === "::ffff:"){
+        ip = ip.substr(7);
+    }
+    // The IP from the CPA site
+    if (ip === '35.196.95.104' || ip === '35.196.169.46') {
+        next();
+    } else {
+        res.end();
+    }
+});
+
+app.use('/admin/*', function(req, res, next) {
+    // filtering here, calls `res` method to stop progress or calls `next` to proceed
+    let ip = req.ip ||
+        req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress;
+
+    // Our IPs
+    if (ip === '0.0.0.0') {
+        next();
+    } else {
+        res.end();
+    }
+});
 
 
 // set up view handling //
@@ -133,13 +155,16 @@ if(process.env.NODE_ENV === 'live'){
     app.use('/admin', admin);
 }
 
+app.use(function(err, req, res, next) {
+    console.log(err);
+    return res.status(500).send({ error: err });
+});
+
 app.use(function(req, res, next) {
     return res.status(404).render('404');
 });
 
-app.use(function(err, req, res, next) {
-    return res.status(500).send({ error: err });
-});
+
 
 // create server //
 http.createServer(app).listen(process.env.PORT, function(){
