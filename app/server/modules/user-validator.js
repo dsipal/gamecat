@@ -6,7 +6,7 @@ class UserValidator{
         this.errs = [];
 
         this.validateUsername = function(){
-            if (!RegExp(`^(?!.*__.*)(?!.*\\.\\..*)[a-z0-9_.]+$`).test(this.user.username)) {
+            if (!RegExp(`^(?!.*__.*)(?!.*\\.\\..*)[a-zA-Z0-9_.]+$`).test(this.user.username)) {
                 this.errs.push('invalid-username');
                 return this;
             } else {
@@ -54,18 +54,11 @@ class UserValidator{
             }
         };
 
-        this.validateTerms = function(){
-            if(!this.user.terms_conditions){
-                this.errs.push('terms-not-accepted');
-            }
-        };
-
         this.validate = function(){
             this.validateUsername()
                 .validatePass()
                 .validateEmail()
-                .validateRef()
-                .validateTerms();
+                .validateRef();
 
             if(this.errs.length > 0){
                 this.onFail(this.errs)

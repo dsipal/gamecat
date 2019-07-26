@@ -18,28 +18,12 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res) {
             populate: {path: 'prize'}
         });
 
-
     res.render('account/accountpage', {
         title: 'Control Panel',
         countries: CT,
         udata: populated_user
     });
 });
-
-// router.post('/change/password', function(req, res){
-//     let pass = req.params('password');
-//     let passRegex = new RegExp(`\\S*(\\S*([a-zA-Z]\\S*[0-9])|([0-9]\\S*[a-zA-Z]))\\S*`);
-//
-//     if(passRegex.test(pass)){
-//
-//     }
-//
-//
-// });
-//
-// router.post('/change/email', function(req, res){
-//
-// });
 
 router.post('/subscribe', authLimiter.ensureAuthenticated(), function(req, res){
     try{
@@ -54,8 +38,6 @@ router.post('/subscribe', authLimiter.ensureAuthenticated(), function(req, res){
 
 });
 
-
-
 router.post('/logout', authLimiter.ensureAuthenticated(), function(req, res){
     res.clearCookie('login');
     req.session.destroy(function(e){
@@ -69,41 +51,36 @@ router.post('/logout', authLimiter.ensureAuthenticated(), function(req, res){
 
 router.post('/delete', function(req, res){
     //TODO ensure that deleting a user works correctly
-    req.user.deleteAccount();
-    res.clearCookie('login');
-});
+    try{
+        req.user.deleteAccount();
+        res.clearCookie('login');
+    } catch(err) {
+        res.sendStatus(500);
+    }
 
-// router.get('/referrals', authLimiter.ensureAuthenticated(), async function(req, res) {
-//     let orders = await User.findOne({username: req.user.username})
-//         .populate({
-//             path: 'orders',
-//             populate: {
-//                 path: 'prize user'
-//             }
-//     });
-//     console.log(orders.orders[0]);
-//         //TODO possibly add multi-tiered referrals
-//     var ref_link = req.protocol + '://' + req.headers.host + '/signup?ref_by=' + req.user.username;
-//     res.render('referrals', {ref_link: ref_link, referrals: req.user.referrals});
-//
-// });
+});
 
 router.get('/verify', function(req, res){
     //TODO ensure that verification through email works, limit pages that user can access without verification
-    User.findOne({username:req.query.name}, function(e, o) {
-        if(e) {
-            console.log('Problem With Verification' + req.query.name + '   ' + req.query.id);
-        } else{
-            console.log('verifying');
-            o.confirmAccount(req.query.id, function(success){
-                if(success){
-                    res.redirect('/login?verify=success');
-                } else {
-                    res.redirect('/signup');
-                }
-            });
-        }
-    })
+    try{
+        User.findOne({username:req.query.name}, function(e, o) {
+            if(e) {
+                console.log('Problem With Verification' + req.query.name + '   ' + req.query.id);
+            } else{
+                console.log('verifying');
+                o.confirmAccount(req.query.id, function(success){
+                    if(success){
+                        res.redirect('/login?verify=success');
+                    } else {
+                        res.redirect('/signup');
+                    }
+                });
+            }
+        })
+    } catch(err) {
+        res.sendStatus(500)
+    }
+
 });
 
 module.exports = router;
