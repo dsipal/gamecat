@@ -17,6 +17,8 @@
     z-index: 0;
     -webkit-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%); }
+    .hero video::-webkit-media-controls {
+      display: none !important; }
   .hero .overlay {
     position: absolute;
     top: 0;
