@@ -54,6 +54,7 @@ app.use('/offers/postback', function(req, res, next) {
         req.connection.remoteAddress ||
         req.socket.remoteAddress ||
         req.connection.socket.remoteAddress;
+    console.log('raw ip: ' + ip);
     if(ip.substr(0,7) === "::ffff:"){
         ip = ip.substr(7);
     }
