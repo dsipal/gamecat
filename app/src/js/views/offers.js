@@ -29,7 +29,7 @@ $(document).ready(function(){
             } else {
                 $.each(data.offers, function(key, offer){
                     var element = `
-                    <li class="col-md-4 justify-content-center">
+                    <li class="col-md-3 justify-content-center">
                         <div class="offer-item">
                              <a href="`+offer.click_url+`" class="row offer-link">
                                 <img src="`+offer.creative_url+`"  alt="`+offer.name+`" class="row offer-image">
