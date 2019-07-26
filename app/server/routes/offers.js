@@ -51,9 +51,6 @@ router.get('/postback', async function(req, res){
 });
 
 router.get('/pwnpostback', async function(req, res){
-    //pwngames ip addresses
-    // 35.196.95.104
-    // 35.196.169.46
     let subid = require('mongodb').ObjectId(req.query.subid1);
     let payout = parseInt(req.query.payout) * 40;
 

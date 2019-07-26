@@ -52,37 +52,57 @@ app.set('view engine', 'hbs');
 
 
 // TODO use below expression to limit ips that access /postback and /admin
-// app.use('/postback', function(req, res, next) {
-//     // filtering here, calls `res` method to stop progress or calls `next` to proceed
-//     let ip = req.ip ||
-//         req.headers['x-forwarded-for'] ||
-//         req.connection.remoteAddress ||
-//         req.socket.remoteAddress ||
-//         req.connection.socket.remoteAddress;
-//
-//     // The IP from the CPA site
-//     if (ip === '0.0.0.0') {
-//         next();
-//     } else {
-//         res.end();
-//     }
-// });
+app.use('/offers/postback', function(req, res, next) {
+    // filtering here, calls `res` method to stop progress or calls `next` to proceed
+    let ip = req.ip ||
+        req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress;
+    if(ip.substr(0,7) === "::ffff:"){
+        ip = ip.substr(7);
+    }
+    // The IP from the CPA site
+    if (ip === '54.204.57.82') {
+        next();
+    } else {
+        res.end();
+    }
+});
 
-// app.use('/admin/*', function(req, res, next) {
-//     // filtering here, calls `res` method to stop progress or calls `next` to proceed
-//     let ip = req.ip ||
-//         req.headers['x-forwarded-for'] ||
-//         req.connection.remoteAddress ||
-//         req.socket.remoteAddress ||
-//         req.connection.socket.remoteAddress;
-//
-//     // Our IPs
-//     if (ip === '0.0.0.0') {
-//         next();
-//     } else {
-//         res.end();
-//     }
-// });
+app.use('/offers/pwnpostback', function(req, res, next) {
+    // filtering here, calls `res` method to stop progress or calls `next` to proceed
+    let ip = req.ip ||
+        req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress;
+    if(ip.substr(0,7) === "::ffff:"){
+        ip = ip.substr(7);
+    }
+    // The IP from the CPA site
+    if (ip === '35.196.95.104' || ip === '35.196.169.46') {
+        next();
+    } else {
+        res.end();
+    }
+});
+
+app.use('/admin/*', function(req, res, next) {
+    // filtering here, calls `res` method to stop progress or calls `next` to proceed
+    let ip = req.ip ||
+        req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress;
+
+    // Our IPs
+    if (ip === '0.0.0.0') {
+        next();
+    } else {
+        res.end();
+    }
+});
 
 
 // set up view handling //
