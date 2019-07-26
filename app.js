@@ -155,8 +155,6 @@ app.use(function(req, res, next) {
     return res.status(404).render('404');
 });
 
-
-
 // create server //
 http.createServer(app).listen(process.env.PORT, function(){
     console.log('Express server listening on port ' + process.env.PORT);
