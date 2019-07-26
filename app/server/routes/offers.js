@@ -17,11 +17,13 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     if(ip.substr(0,7) === "::ffff:"){
         ip = ip.substr(7);
     }
-    console.log(typeof ip);
+    if(ip.includes(',')){
+        let ipArr = str.split(', ');
+        ip = ipArr[0];
+    }
     const geo = geoip.lookup(ip);
 
-    console.log(ip);
-    console.log(geo);
+    console.log(ip + ' ' + geo + 'logging in.');
     let country_code;
     if(geo !== null){
         country_code = geo.country;
