@@ -13,31 +13,13 @@ router.get('/', function(req, res){
 
 router.get('/login', function(req, res){
     // check if the user has an auto login key saved in a cookie //
-    console.log(req.isAuthenticated());
     if(req.isAuthenticated()){
-        res.redirect('account');
+        res.redirect('/account');
     }else{
-        if (!req.cookies.login === undefined || !req.isAuthenticated()){
-            // attempt automatic login //
-            //TODO *removed call to AM for autoLogin and validateLoginKey*
-            let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
-            if(ip.substr(0,7) === "::ffff:"){
-                ip = ip.substr(7);
-            }
-            User.validateLoginKey(req.cookies.login, ip, async function(e, o){
-                if (o){
-                    User.autoLogin(o.user, o.pass, function(o){
-                        res.redirect('/account');
-                    });
-                }
-            });
-        } else {
-            res.render('index/login',{
-                layout: 'minimal'
-            });
-        }
+        res.render('index/login',{
+            layout: 'minimal'
+        });
     }
-
 });
 
 router.post('/login',
