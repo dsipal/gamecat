@@ -18,7 +18,7 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
         ip = ip.substr(7);
     }
     if(ip.includes(',')){
-        let ipArr = str.split(', ');
+        let ipArr = ip.split(', ');
         ip = ipArr[0];
     }
     const geo = geoip.lookup(ip);
