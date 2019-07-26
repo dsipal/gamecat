@@ -18,10 +18,10 @@ router.get('/', function(req,res){
     })
 });
 
-router.get('/:prizeID', async function(req, res){
-    let id = require('mongodb').ObjectID(req.params.prizeID);
+router.get('/:uri', async function(req, res){
+    let uri = req.params.uri;
     try {
-        let prize = await Prize.findOne({'_id': id});
+        let prize = await Prize.findOne({'uri': uri});
         res.render('shop/prize', {
             prize: prize,
             udata: req.user
