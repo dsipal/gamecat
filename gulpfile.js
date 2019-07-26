@@ -32,7 +32,7 @@ const paths = {
 
 async function style() {
     return gulp
-        .src(paths.styles.src)
+        .src(paths.styles.src, {since: gulp.lastRun(style)})
         .pipe(plumber({
             errorHandler: function (error) {
                 console.log(error.message);
@@ -50,7 +50,7 @@ async function style() {
 }
 
 async function scripts() {
-    return gulp.src(paths.scripts.src)
+    return gulp.src(paths.scripts.src, {since: gulp.lastRun(scripts)})
         .pipe(plumber({
             errorHandler: function (error) {
                 console.log(error.message);
@@ -65,10 +65,9 @@ async function scripts() {
 }
 
 async function images(){
-    gulp.src(paths.images.src)
+    gulp.src(paths.images.src, {since: gulp.lastRun(images)})
         .pipe(imagemin())
         .pipe(gulp.dest(paths.images.dest))
-
 }
 gulp.task('scripts', scripts);
 gulp.task('styles', style);

@@ -75,6 +75,11 @@
   #login form {
     background-color: #212121; }
 
+.reward-item a {
+  color: white; }
+  .reward-item a:hover {
+    color: #e6e6e6; }
+
 .graphic-panel {
   padding: 0; }
 

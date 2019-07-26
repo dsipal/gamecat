@@ -1,7 +1,6 @@
 const CT = require('../modules/country-list');
 const EM = require('../modules/email-dispatcher');
 const User = require('../models/User');
-const rateLimit = require("express-rate-limit");
 const passport = require('passport');
 const express = require('express');
 let router = express.Router();
