@@ -45,7 +45,7 @@ $(document).ready(function(){
 // setup the alert that displays when an account is successfully created //
 
 	$('.modal-alert').modal({ show:false, keyboard : false, backdrop : 'static' });
-	$('.modal-alert .modal-header h4').text('Account Created!');
-	$('.modal-alert .modal-body p').html('Your account has been created.</br>Click OK to return to the login page.');
+	$('.modal-alert .modal-header h4').text('Email Sent');
+	$('.modal-alert .modal-body p').html('<img src="/img/emailsent.svg" style="display:block;"/>An email has been sent to your email, please click the link inside of it before logging in.</br>Click OK to return to the login page.');
 
 });

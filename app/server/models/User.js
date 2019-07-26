@@ -177,6 +177,8 @@ user.methods.percolateReferrals = function () {
             user.save();
         })
     }
+    this.points += 100;
+    this.save();
 };
 
 // update account functions //
