@@ -32,12 +32,10 @@ a{
     color: lighten($accent-purple, 20%);
   }
   &:visited{
-    color: inherit;
+    color: $accent-purple;
     text-decoration: none;
   }
 }
-
-
 
 h1{
   font-weight: 600;

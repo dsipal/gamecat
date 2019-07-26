@@ -105,6 +105,13 @@
 
 .reward-item {
   margin: 25px 0 25px; }
+  .reward-item:hover img {
+    -webkit-filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.35));
+            filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.35)); }
+  .reward-item a {
+    color: #EFEFEF; }
+    .reward-item a:hover {
+      color: white; }
   .reward-item .reward-img {
     max-height: 250px; }
   .reward-item .reward-name {

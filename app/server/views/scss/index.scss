@@ -97,6 +97,15 @@
   }
 }
 
+.reward-item{
+  a{
+    color: white;
+    &:hover{
+      color:darken(white, 10%);
+    }
+  }
+}
+
 .graphic-panel{
   padding: 0;
 }
