@@ -155,19 +155,27 @@ router.post('/reset', function(req, res) {
 });
 
 router.get('/privacypolicy', function(req,res){
-    res.render('index/privacypolicy');
+    res.render('index/privacypolicy', {
+        layout: 'minimal'
+    });
 });
 
 router.get('/tos', function(req, res){
-    res.render('index/tos');
+    res.render('index/tos', {
+        layout: 'minimal'
+    });
 });
 
 router.get('/about', function(req, res){
-    res.render('index/about');
+    res.render('index/about', {
+        udata: req.user
+    });
 });
 
 router.get('/contact', function(req, res){
-    res.render('index/contact');
+    res.render('index/contact', {
+        udata: req.user
+    });
 });
 router.post('/contact', function(req,res){
     let email = req.param('email');
