@@ -1,14 +1,22 @@
 //TODO instead of loading new page, have offers/pagination load all into one page
 $(document).ready(function(){
+    var e=document.createElement('div');
+    e.id='iTafIeFKkQSY';
+    e.style.display='none';
+    document.body.appendChild(e);
+
     const offer_list = $('.offer-list');
     const obsOpts = {
         root: null,
         rootMargin: '0px',
         threshold: 1.0
     };
-
     let page = 0;
     let limit = 8;
+
+    if(!document.getElementById('iTafIeFKkQSY')) {
+        offer_list.append("<h1> You must disable ad-block to view offers. </h1>")
+    }
 
     const loadMore = function(page, limit, offset, offer_list){
         const page_max = 15;
