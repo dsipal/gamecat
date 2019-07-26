@@ -11,6 +11,7 @@ let passport = require('passport')
     ,	LocalStrategy = require('passport-local').Strategy;
 let mongoose = require('mongoose');
 let secure = require('ssl-express-www');
+let sm = require('sitemap');
 const dotenv = require('dotenv');
 const compression = require('compression');
 dotenv.config();
@@ -106,6 +107,37 @@ app.use('/admin/*', function(req, res, next) {
     } else {
         res.end();
     }
+});
+
+let sitemap = sm.createSitemap({
+    hostname: 'https://gamecat.co',
+    cacheTime: 600000,
+    urls: [
+        {url: '/', changefreq: 'monthly', priority: 0.3},
+        {url: '/signup', changefreq: 'weekly', priority: 0.8},
+        {url: '/login', changefreq: 'weekly', priority: 0.8},
+        {url: '/shop/', changefreq: 'weekly', priority: 0.7},
+        {url: '/shop/amazon-gift-card', changefreq: 'weekly', priority: 0.5},
+        {url: '/shop/riot-gift-card', changefreq: 'weekly', priority: 0.6},
+        {url: '/shop/google-play-gift-card', changefreq: 'weekly', priority: 0.6},
+        {url: '/shop/itunes-gift-card', changefreq: 'weekly', priority: 0.6},
+        {url: '/shop/steam-gift-card', changefreq: 'weekly', priority: 0.6},
+        {url: '/shop/psn-gift-card', changefreq: 'weekly', priority: 0.6},
+        {url: '/shop/xbox-gift-card', changefreq: 'weekly', priority: 0.6},
+        {url: '/about/', changefreq: 'monthly', priority: 0.3},
+        {url: '/contact/', changefreq: 'monthly', priority: 0.3},
+
+    ]
+
+});
+app.get('/sitemap.xml', function(req, res){
+    sitemap.toXML( function(err, xml) {
+        if(err) {
+            return res.status(500).end();
+        }
+        res.header('Content-Type', 'application/xml');
+        res.send(xml);
+    });
 });
 
 

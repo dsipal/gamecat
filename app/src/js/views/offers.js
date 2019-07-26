@@ -1,4 +1,3 @@
-//TODO instead of loading new page, have offers/pagination load all into one page
 $(document).ready(function(){
     var e=document.createElement('div');
     e.id='iTafIeFKkQSY';
@@ -72,13 +71,10 @@ $(document).ready(function(){
             console.log(entry.intersectionRatio);
             if(entry.intersectionRatio > 0){
                 let offset = limit * page;
-                console.log('viewable!');
                 loadMore(page, limit, offset, offer_list);
                 page += 1;
             }
         })
     }, obsOpts);
     observer.observe(document.querySelector('#infinite-trigger'));
-
-
 });
