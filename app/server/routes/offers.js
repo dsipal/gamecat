@@ -9,7 +9,7 @@ const Game = require('../models/Game');
 
 
 router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
-    let ip = req.headers['x-forwarded-for'][0]
+    let ip = req.headers['x-forwarded-for']
         || req.connection.remoteAddress
         || req.socket.remoteAddress
         || req.connection.socket.remoteAddress;
