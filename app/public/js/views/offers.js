@@ -18,7 +18,8 @@ $(document).ready(function(){
             subid1: offer_list.attr('data-subid1'),
             limit: limit,
             offset: offset,
-            sort_by: 'epc'
+            sort_by: 'payout',
+            payout_min: .60
         });
 
         $.getJSON(url+'?'+query_strings).done(function(data){
