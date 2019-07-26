@@ -17,11 +17,7 @@ router.get('/login', function(req, res){
     if(req.isAuthenticated()){
         res.redirect('account');
     }else{
-        if (req.cookies.login === undefined || !req.isAuthenticated()){
-            res.render('index/login', {
-                layout: 'minimal'
-            });
-        } else {
+        if (!req.cookies.login === undefined || !req.isAuthenticated()){
             // attempt automatic login //
             //TODO *removed call to AM for autoLogin and validateLoginKey*
             let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
@@ -33,11 +29,11 @@ router.get('/login', function(req, res){
                     User.autoLogin(o.user, o.pass, function(o){
                         res.redirect('/account');
                     });
-                } else {
-                    res.render('index/login',{
-                        layout: 'minimal'
-                    });
                 }
+            });
+        } else {
+            res.render('index/login',{
+                layout: 'minimal'
             });
         }
     }
