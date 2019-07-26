@@ -9,7 +9,7 @@ const Game = require('../models/Game');
 
 
 router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
-    let ip = req.headers['x-forwarded-for']
+    let ip = req.headers['x-forwarded-for'][0]
         || req.connection.remoteAddress
         || req.socket.remoteAddress
         || req.connection.socket.remoteAddress;
@@ -17,8 +17,10 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     if(ip.substr(0,7) === "::ffff:"){
         ip = ip.substr(7);
     }
-
     const geo = geoip.lookup(ip);
+
+    console.log(ip);
+    console.log(geo);
     let country_code;
     if(geo !== null){
         country_code = geo.country;
