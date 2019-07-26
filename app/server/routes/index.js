@@ -8,6 +8,29 @@ let router = express.Router();
 const authLimiter = require('../modules/authLimiter');
 const UserValidator = require('../modules/user-validator');
 
+const accountCreateLimiter = rateLimit({
+    windowMs: 60*60*1000 * 24, 		//3 Registrations per One Day
+    max: 3,
+    message:
+        "Too many account created on this IP, try again in a day."
+});
+
+const genericLimiter = rateLimit({
+    windowMs: 	1000, 				//2 Get/Posts per One Second
+    max:		4,
+    message:
+        "Try again in a few seconds"
+});
+
+const passwordResetLimiter = rateLimit( {
+    windowMs:   1000*60*60*24,
+    max:        5,
+    message:
+        "Too many password resets in one day, please try tomorrow"
+});
+
+router.use('/', genericLimiter());
+
 router.get('/', function(req, res){
     res.render('index/index', {udata: req.user});
 });
@@ -86,7 +109,7 @@ router.get('/signup', function(req, res) {
     });
 });
 
-router.post('/signup', function(req, res){
+router.post('/signup', accountCreateLimiter(), function(req, res){
     let userData = {
         username:   req.body['username'],
         password:   req.body['password'],
@@ -118,7 +141,7 @@ router.post('/signup', function(req, res){
     validator.validate();
 });
 
-router.post('/lost-password', function(req, res){
+router.post('/lost-password', passwordResetLimiter(), function(req, res){
     let resetEmail = req.body['email'];
     User.findOne({email:resetEmail}, function(e, o) {
         if(e) {
