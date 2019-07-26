@@ -57,6 +57,10 @@ app.use('/offers/postback', function(req, res, next) {
     if(ip.substr(0,7) === "::ffff:"){
         ip = ip.substr(7);
     }
+    if(ip.includes(',')){
+        let ipArr = ip.split(', ');
+        ip = ipArr[0];
+    }
     // The IP from the CPA site
     if (ip === '54.204.57.82') {
         next();
@@ -74,6 +78,10 @@ app.use('/offers/pwnpostback', function(req, res, next) {
         req.connection.socket.remoteAddress;
     if(ip.substr(0,7) === "::ffff:"){
         ip = ip.substr(7);
+    }
+    if(ip.includes(',')){
+        let ipArr = ip.split(', ');
+        ip = ipArr[0];
     }
     // The IP from the CPA site
     if (ip === '35.196.95.104' || ip === '35.196.169.46') {
