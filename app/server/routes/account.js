@@ -62,24 +62,16 @@ router.post('/delete', function(req, res){
 
 router.get('/verify', function(req, res){
     //TODO ensure that verification through email works, limit pages that user can access without verification
-    try{
-        User.findOne({username:req.query.name}, function(e, o) {
-            if(e) {
-                console.log('Problem With Verification' + req.query.name + '   ' + req.query.id);
-            } else{
-                console.log('verifying');
-                o.confirmAccount(req.query.id, function(success){
-                    if(success){
-                        res.redirect('/login?verify=success');
-                    } else {
-                        res.redirect('/signup');
-                    }
-                });
-            }
-        })
-    } catch(err) {
-        res.sendStatus(500)
-    }
+    User.findOne({username:req.query.name}, function(e, o) {
+        if(e) {
+            console.log('Problem With Verification' + req.query.name + '   ' + req.query.id);
+        } else{
+            console.log('verifying');
+            o.confirmAccount(req.query.id, function(success){
+                res.redirect('/login');
+            });
+        }
+    })
 
 });
 
