@@ -4,7 +4,7 @@
             <h2>{{this.prize.name}}</h2>
             <h3>{{this.user.username}}</h3>
             <p>{{this.user.email}}</p>
-            <p>{{this.option.dollar_value}}</p>
+            <p>{{this.option}}</p>
             <form>
                 <input type="hidden" id="cashout" name="cashout" value="{{this._id}}">
                 <button class="btn btn-primary" type="submit" formaction="/admin/cashouts/completed" formmethod="post">Complete</button>
