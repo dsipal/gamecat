@@ -99,29 +99,21 @@ router.get('/cashouts/pending', authLimiter.ensureAuthenticated(), async functio
         orders: orders,
         udata: req.user
     });
-
-    // Order.find({ status: 'pending'}).exec(function(err, orders){
-    //     if(err){
-    //         console.log(err);
-    //         return res.sendStatus(500);
-    //     } else {
-    //         return res.render('admin/pendinglist',{
-    //             orders: orders
-    //         });
-    //     }
-    // });
 });
 
 router.get('/cashouts/complete', authLimiter.ensureAuthenticated(), async function(req, res){
-    Order.find({ status: 'complete'}).exec(function(err, prizes){
-        if(err){
+    let orders = await Order.find({status: 'complete'})
+        .populate('prize')
+        .populate('user')
+        .catch(function(err){
+            console.log('Error querying the Order collection.');
             console.log(err);
-            return res.sendStatus(500);
-        } else {
-            return res.render('admin/completelist',{
-                prizes: prizes
-            });
-        }
+            res.status(500).send('Error querying the Order collection.');
+        });
+
+    return res.render('admin/completelist', {
+        orders: orders,
+        udata: req.user
     });
 });
 

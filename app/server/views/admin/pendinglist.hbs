@@ -6,6 +6,7 @@
             <p>{{this.user.email}}</p>
             <p>{{this.option}}</p>
             <form>
+                <input type="text" id="code" name="code" placeholder="giftcard code">
                 <input type="hidden" id="cashout" name="cashout" value="{{this._id}}">
                 <button class="btn btn-primary" type="submit" formaction="/admin/cashouts/completed" formmethod="post">Complete</button>
             </form>
