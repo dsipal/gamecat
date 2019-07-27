@@ -7,8 +7,6 @@ const Order = require('./Order');
 const uniqueValidator = require('mongoose-unique-validator');
 const UserValidator = require('../modules/user-validator');
 
-
-
 //TODO add validators in here, then handle the errors elsewhere.
 const user = new mongoose.Schema({
         username: {
@@ -47,7 +45,6 @@ const user = new mongoose.Schema({
 user.plugin(uniqueValidator);
 
 // class/static functions //
-
 user.statics.getAllRecords = function(callback){
     User.find().toArray(
         function(e, res) {
@@ -83,7 +80,6 @@ user.statics.generateLoginKey = function(username, ipAddress, callback)
 };
 
 // login functions //
-
 //TODO possibly figure out how to auth without sending plaintext pass
 //takes plaintext password, returns plainPass == hashedPass
 user.methods.validatePassword = function(plainPass){
