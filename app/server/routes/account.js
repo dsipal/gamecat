@@ -68,7 +68,7 @@ router.get('/verify', async function(req, res){
     let user = await User.findOne({username:name, rank:'new'});
 
     console.log('verifying');
-    await user.confirmAccount(id).then(function(success){
+    user.confirmAccount(id).then(function(success){
         if(success){
             return res.redirect('/login');
         } else {
