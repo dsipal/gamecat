@@ -65,10 +65,10 @@ router.get('/verify', async function(req, res){
     let name = req.query.name;
     let id = req.query.id;
 
-    let user = await User.findOne({username:name, rank:'new', id: id})
+    let user = await User.findOne({username:name, rank:'new', _id: id})
         .catch(function(){
             console.log('Problem With Verification:' + name + '   ' + id);
-            return res.redirect('/login');
+            return res.sendStatus(500);
         });
 
     console.log('verifying');
