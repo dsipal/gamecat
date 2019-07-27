@@ -171,12 +171,14 @@ user.statics.autoLogin = function(user, pass, callback)
 user.methods.percolateReferrals = function () {
     let refID = this._id;
     if(this.ref_by !== null){
+        console.log("Checking for ref_by, points: " + this.points);
         User.findOne({_id: this.ref_by}).exec(function(err, user){
             user.referrals.push(refID);
             user.points += 100;
             user.save();
         })
     }
+    console.log("After checking for referral: " + this.points);
     this.points += 100;
     this.save();
 };
@@ -234,7 +236,9 @@ user.methods.confirmAccount = async function(idToken, callback){
         this.rank = 'activated';
         this.save();
         emdisp.joinMailingList(this.email, this.name, this.email_optin);
+        console.log("before perc referrals: " + this.points);
         this.percolateReferrals();
+        console.log("after perc referrals: " + this.points);
         return true;
     } else {
         return false;
