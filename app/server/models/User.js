@@ -228,16 +228,16 @@ user.methods.unbanAccount = function(){
 };
 
 //Checking if the token from URL matches token stored in user data, if yes, activate account
-user.methods.confirmAccount = function(idToken, callback){
+user.methods.confirmAccount = async function(idToken, callback){
     console.log(this.token === idToken);
     if(this.token === idToken){
         this.rank = 'activated';
         this.save();
         emdisp.joinMailingList(this.email, this.name, this.email_optin);
         this.percolateReferrals();
-        callback(true);
+        return true;
     } else {
-        callback(false);
+        return false;
     }
 };
 

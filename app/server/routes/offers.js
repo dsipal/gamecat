@@ -30,7 +30,7 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     }
     const offers = await getOffers(country_code, req.user._id);
 
-    res.render('offers/quests', {
+    return res.render('offers/quests', {
         subid1: req.user._id,
         udata: req.user,
         offers: offers
@@ -52,7 +52,7 @@ router.get('/postback', async function(req, res){
 
     let user = await User.findOne({_id: subid});
     user.points+= payout;
-    user.save();
+    await user.save();
     res.send(req.query.subid1 + " was paid " + req.query.payout);
 });
 
@@ -62,8 +62,8 @@ router.get('/pwnpostback', async function(req, res){
 
     let user = await User.findOne({_id: subid});
     user.points+= payout;
-    user.save();
-    res.send(req.query.subid1 + " was paid " + req.query.payout);
+    await user.save();
+    return res.send(req.query.subid1 + " was paid " + req.query.payout);
 });
 
 

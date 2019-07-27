@@ -95,85 +95,86 @@ router.post('/signup', function(req, res){
     validator.validate();
 });
 
-router.post('/lost-password', function(req, res){
+router.post('/lost-password', async function(req, res){
     let resetEmail = req.body['email'];
-    User.findOne({email:resetEmail}, function(e, o) {
+    User.findOne({email:resetEmail}, async function(e, o) {
         if(e) {
             console.log('Problem With Reset' + req.query.name + '   ' + req.query.id);
         } else if(!o){
-            res.status(400).send('Reset email not sent, invalid email');
+            return res.status(400).send('Reset email not sent, invalid email');
         } else{
-            EM.dispatchPasswordReset(resetEmail, o.updateToken(), o.username, function(err){
+            await EM.dispatchPasswordReset(resetEmail, o.updateToken(), o.username, function(err){
                 if(!err){
-                    res.redirect('/');
+                    return res.redirect('/');
                 } else {
-                    res.redirect('/');
-                    res.status(400).send('Error in dispatching email');
                     console.log(err);
+                    return res.status(400).send('Error in dispatching email');
                 }
             });
         }
     });
 });
 
-router.get('/reset', function(req, res) {
+router.get('/reset', authLimiter.ensureAuthenticated(), async function(req, res) {
     console.log('Reset attempt by: ' + req.query.name + ' TOKEN: ' + req.query.id);
     User.findOne({username:req.query.name}, function(e, o){
         if(e || !o){
-            res.redirect('/');
+            return res.redirect('/');
         } else {
             if(o.token === req.query.id){
                 console.log('Valid Token');
                 req.session.token = o.token;
-                res.render('index/reset', { title : 'Reset Password' });
+                return res.render('index/reset', { title : 'Reset Password' });
             } else{
-                res.status(400).send('Invalid Reset Token');
+                return res.status(400).send('Invalid Reset Token');
             }
         }
     });
 
 });
 
-router.post('/reset', function(req, res) {
+router.post('/reset', authLimiter.ensureAuthenticated(), async function(req, res) {
     let newPass = req.body['pass'];
     let newToken = req.session.token;
     req.session.destroy();
-    User.findOne({token:newToken}, function(e, o){
+    User.findOne({token:newToken}, async function(e, o){
         if(o){
-            o.resetPassword(newPass, newToken,function(success){
+            await o.resetPassword(newPass, newToken,function(success){
                 if(success){
                     console.log('Password Reset Complete for: ' + o.username);
-                    res.redirect('/');
+                    return res.redirect('/');
                 } else{
                     console.log('Password Reset Failed');
+                    return res.sendStatus(500);
                 }
             });
-        } else{
+        } else {
             console.log('Password Reset User Not Found');
+            return res.sendStatus(400);
         }
     });
 });
 
 router.get('/privacypolicy', function(req,res){
-    res.render('index/privacypolicy', {
+    return res.render('index/privacypolicy', {
         layout: 'minimal'
     });
 });
 
 router.get('/tos', function(req, res){
-    res.render('index/tos', {
+    return res.render('index/tos', {
         layout: 'minimal'
     });
 });
 
 router.get('/about', function(req, res){
-    res.render('index/about', {
+    return res.render('index/about', {
         udata: req.user
     });
 });
 
 router.get('/contact', function(req, res){
-    res.render('index/contact', {
+    return res.render('index/contact', {
         udata: req.user
     });
 });
@@ -182,11 +183,11 @@ router.post('/contact', function(req,res){
     let category = req.param('category');
     let message = req.param('message');
 
-    EM.dispatchSupport(email, category, message, function(err){
+    EM.dispatchSupport(email, category, message).then(function(err){
         if(err){
-            res.redirect('/');
+            return res.redirect('/');
         } else {
-            res.redirect('/');
+            return res.redirect('/');
         }
     })
 });

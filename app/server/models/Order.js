@@ -21,10 +21,16 @@ const order = new mongoose.Schema({
 
 const Order = mongoose.model('Order', order);
 
-order.methods.completeCashout = function(){
-    this.status = 'complete';
-    console.log(this);
-    this.save();
+order.methods.completeCashout = async function(){
+    try{
+        this.status = 'complete';
+        console.log(this);
+        await this.save();
+        return false;
+    } catch(err){
+        return err;
+    }
+
 };
 
 module.exports = Order;
