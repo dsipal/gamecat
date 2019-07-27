@@ -1,0 +1,13 @@
+# Group 1
+User-agent: Googlebot
+Disallow: /admin/
+Disallow: /account/verify
+Disallow: /account/
+Disallow: /shop/buy
+
+
+# Group 2
+User-agent: *
+Allow: /
+
+Sitemap: https://gamecat.co/sitemap.xml
