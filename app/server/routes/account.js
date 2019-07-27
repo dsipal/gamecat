@@ -15,6 +15,9 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res) {
         .populate({
             path: 'orders',
             populate: {path: 'prize'}
+        }).catch(function(err){
+            console.log('Error getting user info for: ' + req.user.name);
+            console.log(err);
         });
 
     return res.render('account/accountpage', {
