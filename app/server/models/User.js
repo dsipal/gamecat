@@ -7,6 +7,8 @@ const Order = require('./Order');
 const uniqueValidator = require('mongoose-unique-validator');
 const UserValidator = require('../modules/user-validator');
 
+
+
 //TODO add validators in here, then handle the errors elsewhere.
 const user = new mongoose.Schema({
         username: {
@@ -236,20 +238,26 @@ user.methods.unbanAccount = async function(){
 };
 
 //Checking if the token from URL matches token stored in user data, if yes, activate account
-user.methods.confirmAccount = async function(idToken){
-    try {
-        await User.updateOne(
-            {_id: this._id, token: idToken, rank: 'new'},
-            {$set: {rank: 'activated'}}
-        );
+user.methods.confirmAccount = async function(token){
+
+    await User.updateOne(
+        {_id: this._id, token: token, rank: 'new'},
+        {$set: {rank: 'activated'}}
+    ).catch(function(err){
+        console.log('Error confirming user with token: ' + token);
+        console.log(err);
+        return err;
+    });
+
+    try{
         await emdisp.joinMailingList(this.email, this.name, this.email_optin);
         if(this.ref_by !== null){
             this.percolateReferrals();
         }
         return true;
-    } catch (err) {
+    } catch(err){
         console.log(err);
-        return false;
+        return err;
     }
 
 };
