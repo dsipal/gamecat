@@ -29,12 +29,12 @@ router.post('/login',
     function(req, res){
         req.session.save();
         if (req.body['remember-me'] === 'false'){
-            res.redirect('/account');
+            return res.redirect('/account');
         } else {
             //TODO *removed call to AM- moved function to User.js *
             User.generateLoginKey(req.user.username, req.ip, function(key){
                 res.cookie('login', key, { maxAge: 900000 });
-                res.redirect('/account');
+                return res.redirect('/account');
             });
 
         }
@@ -47,52 +47,62 @@ router.get('/logout', authLimiter.ensureAuthenticated(), function(req, res){
         if(e) {
             console.log(e);
         } else {
-            res.redirect('/');
+            return res.redirect('/');
         }
     });
 });
 
 router.get('/signup', function(req, res) {
-    res.render('index/signup', {
-        layout: 'minimal',
-        title: 'Signup',
-        countries : CT,
-        ref_by: req.query.ref_by,
-        email: req.query.email,
-        agree: req.query.agree
-    });
+    if(req.isAuthenticated){
+        return res.redirect('/account');
+    } else {
+        return res.render('index/signup', {
+            layout: 'minimal',
+            title: 'Signup',
+            countries : CT,
+            ref_by: req.query.ref_by,
+            email: req.query.email,
+            agree: req.query.agree
+        });
+    }
+
 });
 
 router.post('/signup', function(req, res){
-    let userData = {
-        username:   req.body['username'],
-        password:   req.body['password'],
-        passwordV:  req.body['password_verify'],
-        email:      req.body['email'],
-        ref_by:     req.body['ref_by'],
-        email_optin: req.body['email_optin'] === 'true',
-        terms_conditions: req.body['terms_conditions'] === 'true'
+    if(req.isAuthenticated){
+        return res.redirect('/account');
+    } else {
+        let userData = {
+            username:   req.body['username'],
+            password:   req.body['password'],
+            passwordV:  req.body['password_verify'],
+            email:      req.body['email'],
+            ref_by:     req.body['ref_by'],
+            email_optin: req.body['email_optin'] === 'true',
+            terms_conditions: req.body['terms_conditions'] === 'true'
 
-    };
+        };
 
-    let validator = new UserValidator(
-        userData,
-        function(err){
-            res.status(401).send(err);
-        },
-        function(user){
-            User.formatNewAccount(user, function(err){
-                if(err){
-                    console.log(err);
-                    console.log(err.errors);
-                    res.status(401).send(err);
-                } else {
-                    res.status(200).send('ok');
-                }
-            });
-        }
-    );
-    validator.validate();
+        let validator = new UserValidator(
+            userData,
+            function(err){
+                return res.status(401).send(err);
+            },
+            function(user){
+                User.formatNewAccount(user, function(err){
+                    if(err){
+                        console.log(err);
+                        console.log(err.errors);
+                        return res.status(401).send(err);
+                    } else {
+                        return res.status(200).send('ok');
+                    }
+                });
+            }
+        );
+        validator.validate();
+    }
+
 });
 
 router.post('/lost-password', async function(req, res){
@@ -117,7 +127,7 @@ router.post('/lost-password', async function(req, res){
 
 router.get('/reset', authLimiter.ensureAuthenticated(), async function(req, res) {
     console.log('Reset attempt by: ' + req.query.name + ' TOKEN: ' + req.query.id);
-    User.findOne({username:req.query.name}, function(e, o){
+    await User.findOne({username:req.query.name}, function(e, o){
         if(e || !o){
             return res.redirect('/');
         } else {
@@ -137,7 +147,7 @@ router.post('/reset', authLimiter.ensureAuthenticated(), async function(req, res
     let newPass = req.body['pass'];
     let newToken = req.session.token;
     req.session.destroy();
-    User.findOne({token:newToken}, async function(e, o){
+    await User.findOne({token:newToken}, async function(e, o){
         if(o){
             await o.resetPassword(newPass, newToken,function(success){
                 if(success){

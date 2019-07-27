@@ -127,23 +127,10 @@ user.statics.formatNewAccount = function(newData, callback){
 user.statics.addNewAccount  = function(newData, callback){
     User.create(newData, function(e,o){
         if(e) {
-            callback(e, null);
+            return callback(e, null);
         } else {
             emdisp.dispatchConfirm(newData.email, newData.token, newData.username);
-            callback(null,o);
-
-            // if(newData.ref_by !== null){
-            //     o.percolateReferrals().then(function(err, o){
-            //         console.log(err, o);
-            //         if(err){
-            //             callback(err, null);
-            //         } else {
-            //             callback(null, o);
-            //         }
-            //     });
-            // }else{
-            //     callback(null, o);
-            // }
+            return callback(null,o);
         }
     });
 };
@@ -173,7 +160,7 @@ user.methods.percolateReferrals = async function () {
         let ref_by = this.ref_by;
         let refID = this._id;
         if(ref_by !== null){
-            User.findOne({username: ref_by}).exec(async function(err, user){
+            await User.findOne({username: ref_by}).exec(async function(err, user){
                 user.referrals.push(refID);
                 user.points += 100;
                 await user.save();
@@ -185,7 +172,6 @@ user.methods.percolateReferrals = async function () {
     } catch(err) {
         return err;
     }
-
 };
 
 // update account functions //
