@@ -17,8 +17,6 @@ const order = new mongoose.Schema({
 
 
 
-const Order = mongoose.model('Order', order);
-
 order.methods.completeCashout = async function(id, giftCode){
     try{
         await Order.updateOne(
@@ -32,4 +30,5 @@ order.methods.completeCashout = async function(id, giftCode){
     }
 };
 
+const Order = mongoose.model('Order', order);
 module.exports = Order;
