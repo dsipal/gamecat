@@ -13,7 +13,7 @@ router.get('/', function(req, res){
 
 router.get('/login', function(req, res){
     // check if the user has an auto login key saved in a cookie //
-    if(req.isAuthenticated()){
+    if(req.isAuthenticated && req.isAuthenticated()){
         return res.redirect('/account');
     }else{
         return res.render('index/login',{
@@ -53,7 +53,7 @@ router.get('/logout', authLimiter.ensureAuthenticated(), function(req, res){
 });
 
 router.get('/signup', function(req, res) {
-    if(req.isAuthenticated){
+    if(req.isAuthenticated && req.isAuthenticated()){
         return res.redirect('/account');
     } else {
         return res.render('index/signup', {
@@ -69,7 +69,7 @@ router.get('/signup', function(req, res) {
 });
 
 router.post('/signup', function(req, res){
-    if(req.isAuthenticated){
+    if(req.isAuthenticated && req.isAuthenticated()){
         return res.redirect('/account');
     } else {
         let userData = {
@@ -187,6 +187,7 @@ router.get('/contact', function(req, res){
         udata: req.user
     });
 });
+
 router.post('/contact', function(req,res){
     let email = req.param('email');
     let category = req.param('category');
