@@ -4,7 +4,6 @@ const User = require('../models/User');
 const Prize = require('../models/Prize');
 const Order = require('../models/Order');
 const mongoose = require('mongoose');
-const rateLimit = require("express-rate-limit");
 const passport = require('passport');
 const express = require('express');
 const authLimiter = require('../modules/authLimiter');
@@ -39,33 +38,43 @@ router.get('/users/banlist', authLimiter.ensureAuthenticated(), function(req, re
 });
 
 router.post('/users/unban', authLimiter.ensureAuthenticated(), function(req, res){
-    let banID = req.body['/admin/unbanneduser'];
+    let username = req.body['/admin/unbanneduser'];
 
-    User.findOne({username:banID}).exec( function(e, o) {
+    User.findOne({username:username}).exec( async function(e, o) {
         if(e){
             console.log(e);
         } else {
-            o.unbanAccount();
+            await o.unbanAccount();
         }
+    }).catch(function(err){
+        console.log('Error unbanning user: ' + username);
+        console.log(err);
+        return res.status(500).send('Error unbanning user: ' + username + '\n' +err);
     });
+
     return res.redirect('/admin/users');
 });
 
 router.post('/users/ban', authLimiter.ensureAuthenticated(), async function (req, res) {
-    let banID = req.body['user'];
+    let username = req.body['user'];
 
-    User.findOne({username:banID}).exec( function(e, o) {
+    User.findOne({username:username}).then( function(e, o) {
         if(e){
             console.log(e);
         } else {
             o.banAccount();
         }
+    }).catch(function(err){
+        console.log('Error banning account: ' + username);
+        console.log(err);
+        return res.status(500).send('Error banning account: ' + username + '\n' +err);
     });
+
     return res.redirect('/admin/users');
 });
 
 router.get('/prizes', authLimiter.ensureAuthenticated(), async function(req, res){
-    Prize.find().exec(function(err, prizes){
+    Prize.find().then(function(err, prizes){
         if(err){
             console.log(err);
             return res.sendStatus(500);
@@ -74,6 +83,10 @@ router.get('/prizes', authLimiter.ensureAuthenticated(), async function(req, res
                 prizes: prizes
             });
         }
+    }).catch(function(err){
+        console.log('Error getting prizes.');
+        console.log(err);
+        return res.status(500).send('Error finding prizes: ' + '\n' +err);
     });
 });
 
@@ -99,21 +112,10 @@ router.get('/cashouts/pending', authLimiter.ensureAuthenticated(), async functio
         orders: orders,
         udata: req.user
     });
-
-    // Order.find({ status: 'pending'}).exec(function(err, orders){
-    //     if(err){
-    //         console.log(err);
-    //         return res.sendStatus(500);
-    //     } else {
-    //         return res.render('admin/pendinglist',{
-    //             orders: orders
-    //         });
-    //     }
-    // });
 });
 
 router.get('/cashouts/complete', authLimiter.ensureAuthenticated(), async function(req, res){
-    Order.find({ status: 'complete'}).exec(function(err, prizes){
+    Order.find({ status: 'complete'}).then(function(err, prizes){
         if(err){
             console.log(err);
             return res.sendStatus(500);
@@ -122,6 +124,10 @@ router.get('/cashouts/complete', authLimiter.ensureAuthenticated(), async functi
                 prizes: prizes
             });
         }
+    }).catch(function(err){
+        console.log('Error querying the order collection.');
+        console.log(err);
+        return res.status(500).send('Error querying the order collection. ' + '\n' + err);
     });
 });
 

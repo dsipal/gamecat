@@ -28,16 +28,16 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res) {
 });
 
 router.post('/subscribe', authLimiter.ensureAuthenticated(), async function(req, res){
-    try{
-
-        req.user.email_optin = !req.user.email_optin;
-        await req.user.save();
-
-        return res.sendStatus(200);
-    } catch(err) {
-        return res.sendStatus(300);
-    }
-
+    User.updateOne(
+        {_id: req.user._id},
+        {$set: {email_optin: true}}
+    ).then(function(){
+        return res.status(200).send('Email opt-in updated.')
+        }).catch(function(err){
+            console.log('Error updating email optin.');
+            console.log(err);
+            return res.status(500).send('Error updating email optin. ' + err);
+    });
 });
 
 router.post('/logout', authLimiter.ensureAuthenticated(), function(req, res){
