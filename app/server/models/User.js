@@ -40,7 +40,7 @@ const user = new mongoose.Schema({
         email_optin: Boolean,
     },
     {collection: 'Users'}
-    );
+);
 
 user.plugin(uniqueValidator);
 
@@ -236,16 +236,13 @@ user.methods.unbanAccount = async function(){
 
 //Checking if the token from URL matches token stored in user data, if yes, activate account
 user.methods.confirmAccount = async function(idToken){
-    if(this.token === idToken){
-        this.rank = 'activated';
-        await this.save();
-        await emdisp.joinMailingList(this.email, this.name, this.email_optin);
-        console.log("before perc referrals: " + this.points);
-        await this.percolateReferrals();
-        console.log("after perc referrals: " + this.points);
-        return true;
-    } else {
-        return false;
+    await User.updateOne(
+        {_id: this._id, token: idToken, rank: 'new'},
+        {$set: {rank: 'activated'}}
+    );
+    await emdisp.joinMailingList(this.email, this.name, this.email_optin);
+    if(this.ref_by !== null){
+        this.percolateReferrals();
     }
 };
 
