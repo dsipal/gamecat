@@ -37,7 +37,6 @@ router.get('/:uri', async function(req, res){
 router.post('/buy', authLimiter.ensureAuthenticated(), async function(req,res){
     let prizeID = mongoose.Types.ObjectId(req.body['product']);
     let option = parseInt(req.body['option']);
-    console.log(option);
 
     await Prize.findOne({'_id': prizeID}).exec(async function(err, prize){
         if(err){
@@ -45,9 +44,10 @@ router.post('/buy', authLimiter.ensureAuthenticated(), async function(req,res){
         } else {
             await req.user.purchasePrize(prize, option,async function(order, user){
                 if(order){
+                    console.log(user.username + ' purchased ' + prize.name + ' for ' + option + ' crystals.');
                     return res.redirect('/shop');
                 } else {
-                    console.log('failure purchasing for ', user);
+                    console.log('failure purchasing ' + prize.name + ' for ', user.username);
                     return res.redirect('/shop');
                 }
             })
