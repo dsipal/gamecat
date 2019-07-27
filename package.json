@@ -42,8 +42,7 @@
     "passport-local": "^1.0.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
-    "sitemap": "^3.2.2",
-    "ssl-express-www": "^3.0.3"
+    "sitemap": "^3.2.2"
   },
   "engines": {
     "node": "10.4.0"
