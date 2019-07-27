@@ -181,7 +181,7 @@ user.methods.percolateReferrals = async function () {
                     $inc: {points: 100}
                 }
             );
-
+            console.log("After checking for referral: " + this.points);
             return false;
         }
     } catch(err) {
