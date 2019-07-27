@@ -132,6 +132,8 @@ router.post('/cashouts/completed', authLimiter.ensureAuthenticated(), async func
         return res.status(500).send('Error querying the Order collection.');
     });
 
+    console.log(order);
+
     if(order !== null || order !== undefined){
         console.log("order not null");
         await order.completeCashout(cashID, giftCode).then(async function(success){
