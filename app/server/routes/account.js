@@ -70,6 +70,7 @@ router.get('/verify', async function(req, res){
             console.log('verifying');
             await o.confirmAccount(id).then(function(success){
                 if(success){
+                    console.log(o.points);
                     return res.redirect('/login');
                 } else {
                     return res.redirect('/');
