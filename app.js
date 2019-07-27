@@ -64,10 +64,10 @@ app.use('/offers/postback', function(req, res, next) {
     }
     // The IP from the CPA site
     if (ip === '54.204.57.82') {
-        console.log('valid postback from: '+ ip);
+        console.log('valid postback attempt from: ' + ip);
         next();
     } else {
-        console.log('invalid postback from: ' + ip);
+        console.log('invalid postback attempt from: ' + ip);
         res.end();
     }
 });
