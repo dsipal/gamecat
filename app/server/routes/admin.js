@@ -136,7 +136,7 @@ router.post('/cashouts/completed', authLimiter.ensureAuthenticated(), async func
 
     if(order !== null || order !== undefined){
         console.log("order not null");
-        await order.completeCashout(cashID, giftCode).then(async function(success){
+        await order.completeCashout(giftCode).then(async function(success){
             if(success){
                await EM.dispatchCode(email,name,giftCode,prize);
                return res.redirect('admin/cashouts/pending');

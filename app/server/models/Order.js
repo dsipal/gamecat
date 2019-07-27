@@ -17,7 +17,7 @@ const order = new mongoose.Schema({
 
 
 
-order.methods.completeCashout = async function(id, giftCode){
+order.methods.completeCashout = async function(giftCode){
     try{
         await Order.updateOne(
             {
