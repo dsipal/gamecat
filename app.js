@@ -142,7 +142,7 @@ app.get('/sitemap.xml', function(req, res){
         if(err) {
             return res.status(500).end();
         }
-        res.header('Content-Type', 'application/xml');
+        res.set('Content-Type', 'application/xml');
         return res.send(xml);
     });
 });
