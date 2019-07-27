@@ -65,22 +65,21 @@ router.get('/verify', async function(req, res){
     let name = req.query.name;
     let id = req.query.id;
 
-    let user = await User.findOne({username:name, rank:'new'});
-
-    if(user !== null){
-        console.log('verifying');
-        await user.confirmAccount(id).then(function(success){
-            if(success){
-                return res.redirect('/login');
-            } else {
-                return res.redirect('/');
-            }
+    let user = await User.findOne({username:name, rank:'new', id: id})
+        .catch(function(){
+            console.log('Problem With Verification:' + name + '   ' + id);
+            return res.redirect('/login');
         });
-    } else {
-        console.log('Problem With Verification:' + name + '   ' + id);
-        console.log('Error: ' + e);
-        return res.redirect('/login');
-    }
+
+    console.log('verifying');
+    await user.confirmAccount(id).then(function(success){
+        if(success){
+            return res.redirect('/login');
+        } else {
+            return res.redirect('/');
+        }
+    });
+
 });
 
 module.exports = router;

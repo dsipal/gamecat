@@ -236,14 +236,21 @@ user.methods.unbanAccount = async function(){
 
 //Checking if the token from URL matches token stored in user data, if yes, activate account
 user.methods.confirmAccount = async function(idToken){
-    await User.updateOne(
-        {_id: this._id, token: idToken, rank: 'new'},
-        {$set: {rank: 'activated'}}
-    );
-    await emdisp.joinMailingList(this.email, this.name, this.email_optin);
-    if(this.ref_by !== null){
-        this.percolateReferrals();
+    try {
+        await User.updateOne(
+            {_id: this._id, token: idToken, rank: 'new'},
+            {$set: {rank: 'activated'}}
+        );
+        await emdisp.joinMailingList(this.email, this.name, this.email_optin);
+        if(this.ref_by !== null){
+            this.percolateReferrals();
+        }
+        return true;
+    } catch (err) {
+        console.log(err);
+        return false;
     }
+
 };
 
 user.methods.updateToken = async function(){
