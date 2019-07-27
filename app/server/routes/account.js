@@ -69,6 +69,7 @@ router.get('/verify', async function(req, res){
         console.log('Attempting verification for ' + name + ' with id ' + id);
         let user = await User.findOne({username:name, rank:'new'}).catch(function(err){
             console.log('Cannot find user: ' + name);
+            console.log('Error: ' + err);
         });
 
         if(user !== null){
