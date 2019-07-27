@@ -120,7 +120,7 @@ let sitemap = sm.createSitemap({
     hostname: 'https://gamecat.co',
     cacheTime: 600000,
     urls: [
-        {url: '/', changefreq: 'monthly', priority: 0.3},
+        {url: '/', changefreq: 'monthly', priority: 0.7},
         {url: '/signup', changefreq: 'weekly', priority: 0.8},
         {url: '/login', changefreq: 'weekly', priority: 0.8},
         {url: '/shop/', changefreq: 'weekly', priority: 0.7},
