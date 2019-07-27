@@ -20,8 +20,15 @@ const order = new mongoose.Schema({
 order.methods.completeCashout = async function(id, giftCode){
     try{
         await Order.updateOne(
-            {_id: id, code: "pending", status: 'pending'},
-            {$set: {status: 'complete', code: giftCode}}
+            {
+                _id: this._id
+            },
+            {
+                $set:   {
+                    status: 'complete',
+                    code: giftCode
+                }
+            }
         );
         return true;
     } catch(err){
