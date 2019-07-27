@@ -145,7 +145,6 @@ router.post('/cashouts/completed', authLimiter.ensureAuthenticated(), async func
         return res.status(500).send('Error querying the Order collection.' + '\n' + err);
     });
 
-
     if(order !== null || order !== undefined){
         console.log("Order found, attempting to complete.");
         await order.completeCashout(giftCode).then(async function(success){
@@ -158,7 +157,6 @@ router.post('/cashouts/completed', authLimiter.ensureAuthenticated(), async func
             }
         });
     }
-
 });
 
 module.exports = router;
