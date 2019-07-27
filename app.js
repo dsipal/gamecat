@@ -93,21 +93,29 @@ app.use('/offers/pwnpostback', function(req, res, next) {
     }
 });
 
-app.use('/admin', function(req, res, next) {
-    // filtering here, calls `res` method to stop progress or calls `next` to proceed
-    let ip = req.ip ||
-        req.headers['x-forwarded-for'] ||
-        req.connection.remoteAddress ||
-        req.socket.remoteAddress ||
-        req.connection.socket.remoteAddress;
-
-    // Our IPs
-    if (ip === '75.40.152.150' || ip === '71.217.163.98') {
-        next();
-    } else {
-        res.end();
-    }
-});
+// app.use('/admin', function(req, res, next) {
+//     // filtering here, calls `res` method to stop progress or calls `next` to proceed
+//     let ip = req.ip ||
+//         req.headers['x-forwarded-for'] ||
+//         req.connection.remoteAddress ||
+//         req.socket.remoteAddress ||
+//         req.connection.socket.remoteAddress;
+//
+//     if(ip.substr(0,7) === "::ffff:"){
+//         ip = ip.substr(7);
+//     }
+//     if(ip.includes(',')){
+//         let ipArr = ip.split(', ');
+//         ip = ipArr[0];
+//     }
+//
+//     // Our IPs
+//     if (ip === '75.40.152.150' || ip === '71.217.163.98') {
+//         next();
+//     } else {
+//         res.end();
+//     }
+// });
 
 let sitemap = sm.createSitemap({
     hostname: 'https://gamecat.co',

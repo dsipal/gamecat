@@ -86,13 +86,13 @@ router.post('/prizes/newprize', function(req, res){
 });
 
 router.get('/cashouts/pending', authLimiter.ensureAuthenticated(), async function(req, res){
-    Order.find({ status: 'pending'}).exec(function(err, prizes){
+    Order.find({ status: 'pending'}).exec(function(err, orders){
         if(err){
             console.log(err);
             return res.sendStatus(500);
         } else {
             return res.render('admin/pendinglist',{
-                prizes: prizes
+                orders: orders
             });
         }
     });
