@@ -65,10 +65,10 @@ router.get('/verify', async function(req, res){
     let name = req.query.name;
     let id = req.query.id;
 
-    User.findOne({username:name, rank:'new'}, async function(e, o) {
+    User.findOne({username:name, rank:'new'}, function(e, o) {
         if(o) {
             console.log('verifying');
-            await o.confirmAccount(id).then(function(success){
+            o.confirmAccount(id).then(function(success){
                 if(success){
                     console.log(o.points);
                     return res.redirect('/login');
