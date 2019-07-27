@@ -10,7 +10,6 @@ let helmet = require('helmet');
 let passport = require('passport')
     ,	LocalStrategy = require('passport-local').Strategy;
 let mongoose = require('mongoose');
-let secure = require('ssl-express-www');
 let sm = require('sitemap');
 const dotenv = require('dotenv');
 const compression = require('compression');
@@ -21,7 +20,6 @@ var app = express();
 app.use(helmet());
 app.use(compression());
 app.set('port', process.env.PORT || 8080);
-app.use(secure);
 
 // route files //
 const index = require('./app/server/routes/index.js');
