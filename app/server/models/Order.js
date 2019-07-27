@@ -18,7 +18,6 @@ const order = new mongoose.Schema({
 
 
 order.methods.completeCashout = async function(giftCode){
-    try{
         await Order.updateOne(
             {
                 _id: this._id
@@ -29,12 +28,13 @@ order.methods.completeCashout = async function(giftCode){
                     code: giftCode
                 }
             }
-        );
-        return true;
-    } catch(err){
-        console.log(err);
-        return false;
-    }
+        ).catch( function(err) {
+            console.log("Error updating order: " + this._id);
+            console.log(err);
+            return false;
+        });
+
+    return true;
 };
 
 const Order = mongoose.model('Order', order);
