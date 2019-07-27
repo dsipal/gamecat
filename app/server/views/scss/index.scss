@@ -145,7 +145,7 @@
   }
   margin: 25px 0 25px;
   a{
-    color: #EFEFEF;
+    color: #EFEFEF !important;
     &:hover{
       color: lighten(#EFEFEF, 10%);
     }

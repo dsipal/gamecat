@@ -45,23 +45,24 @@
             </div>
         </div>
 
-        <div class="row banner-info" id="signup-banner">
-            <form class="signup-form" method="get" action="/signup">
-                <h4 class="text-center">Sign up and earn today!</h4>
-                <div class="form-group">
-                    <input type="email" name="email" class="form-control" id="email" placeholder="Enter your email" required />
-                </div>
-                <div class="form-group text-right">
-                    <input type="checkbox" name="agree" value="true" class="form-check-input" id="agree" required />
-                    <label for="agree" class="form-check-label">I agree to recieve emails from Gamecat as well as the <a href="#">terms and conditions</a>.</label>
-                </div>
+        {{#unless udata}}
+            <div class="row banner-info" id="signup-banner">
+                <form class="signup-form" method="get" action="/signup">
+                    <h4 class="text-center">Sign up and earn today!</h4>
+                    <div class="form-group">
+                        <input type="email" name="email" class="form-control" id="email" placeholder="Enter your email" required />
+                    </div>
+                    <div class="form-group text-right">
+                        <input type="checkbox" name="agree" value="true" class="form-check-input" id="agree" required />
+                        <label for="agree" class="form-check-label">I agree to recieve emails from Gamecat as well as the <a href="#">terms and conditions</a>.</label>
+                    </div>
 
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Continue</button>
-                </div>
-            </form>
-
-        </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Continue</button>
+                    </div>
+                </form>
+            </div>
+        {{/unless}}
     </div>
 
     <div class="row banner-info" id="how-work">

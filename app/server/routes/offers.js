@@ -23,7 +23,6 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     }
     const geo = geoip.lookup(ip);
 
-    console.log(ip + ' ' + geo + 'logging in.');
     let country_code;
     if(geo !== null){
         country_code = geo.country;
