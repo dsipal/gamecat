@@ -163,21 +163,15 @@ user.methods.percolateReferrals = async function () {
         let refID = this._id;
 
         if(ref_by !== null){
-
             await User.updateOne(
-                {
-                    _id: ref_by
-                },
+                {_id: ref_by},
                 {
                     $push: {referrals: refID},
                     $inc: {points: 100}
                 }
             );
-
             await User.updateOne(
-                {
-                    _id: refID
-                },
+                {_id: refID},
                 {
                     $inc: {points: 100}
                 }

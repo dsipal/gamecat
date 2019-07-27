@@ -5,6 +5,7 @@ const order = new mongoose.Schema({
         option: {type: Number},
         user: {type: mongoose.Schema.ObjectId, ref: 'User'},
         status: {type: String},
+        code:   {type: String},
         order_date: {type: Date},
     },
     {collection: 'Orders'});
@@ -13,21 +14,22 @@ const order = new mongoose.Schema({
 
 
 //instance methods
-
-
-
-const Order = mongoose.model('Order', order);
-
-order.methods.completeCashout = async function(){
+order.methods.completeCashout = async function(id, giftCode){
     try{
-        this.status = 'complete';
-        console.log(this);
-        await this.save();
-        return false;
+        await Order.updateOne(
+            {_id: this._id},
+            {$set:{status: 'complete', code: giftCode}}
+        ).catch(function(err){
+            console.log('Error updating order: ' + id);
+            console.log(err);
+            return false;
+        });
+        return true;
     } catch(err){
-        return err;
+        console.log(err);
+        return false;
     }
-
 };
 
+const Order = mongoose.model('Order', order);
 module.exports = Order;
