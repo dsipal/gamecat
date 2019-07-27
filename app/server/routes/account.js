@@ -67,8 +67,10 @@ router.get('/verify', async function(req, res){
 
     console.log('attempting verification for ' + name + ' with id ' + id);
 
-    if(req.name !== null && id !== null){
-        let user = await User.findOne({username:name, rank:'new'});
+    if(req.name !== undefined && id !== undefined){
+        let user = await User.findOne({username:name, rank:'new'}).catch(function(err){
+            console.log('Cannot find user: ' + name);
+        });
 
         console.log('verifying');
         user.confirmAccount(id).then(function(success){
