@@ -159,17 +159,29 @@ user.methods.percolateReferrals = async function () {
     try{
         let ref_by = this.ref_by;
         let refID = this._id;
+
         if(ref_by !== null){
             console.log("Checking for ref_by, points: " + this.points);
-            await User.findOne({username: ref_by}).then(async function(err, user){
-                if(user.referrals === null) user.referrals = [];
-                user.referrals.push(refID);
-                user.points += 100;
-                await user.save();
-            });
-            this.points += 100;
-            await this.save();
-            console.log("After checking for referral: " + this.points);
+
+            User.update(
+                {
+                    _id: ref_by
+                },
+                {
+                    $push: {referrals: refID},
+                    $inc: {points: 100}
+                }
+            );
+
+            User.update(
+                {
+                    _id: refID
+                },
+                {
+                    $inc: {points: 100}
+                }
+            );
+
             return false;
         }
     } catch(err) {
@@ -333,9 +345,6 @@ function guid(){
         let r = Math.random()*16|0,v=c=='x'?r:r&0x3|0x8;return v.toString(16);
     });
 }
-
-
-
 
 const User = mongoose.model('User', user);
 module.exports = User;
