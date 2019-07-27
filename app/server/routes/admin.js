@@ -88,6 +88,7 @@ router.post('/prizes/newprize', function(req, res){
 router.get('/cashouts/pending', authLimiter.ensureAuthenticated(), async function(req, res){
     let orders = await Order.find({status: 'pending'})
         .populate('prize')
+        .populate('user')
         .catch(function(err){
             console.log('Error querying the Order collection.');
             console.log(err);
