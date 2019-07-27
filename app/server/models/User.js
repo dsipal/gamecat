@@ -127,23 +127,10 @@ user.statics.formatNewAccount = function(newData, callback){
 user.statics.addNewAccount  = function(newData, callback){
     User.create(newData, function(e,o){
         if(e) {
-            callback(e, null);
+            return callback(e, null);
         } else {
             emdisp.dispatchConfirm(newData.email, newData.token, newData.username);
-            callback(null,o);
-
-            // if(newData.ref_by !== null){
-            //     o.percolateReferrals().then(function(err, o){
-            //         console.log(err, o);
-            //         if(err){
-            //             callback(err, null);
-            //         } else {
-            //             callback(null, o);
-            //         }
-            //     });
-            // }else{
-            //     callback(null, o);
-            // }
+            return callback(null,o);
         }
     });
 };
@@ -156,55 +143,60 @@ user.statics.validateLoginKey = function(cookie, ipAddress, callback)
 };
 
 //Also from AM
-user.statics.autoLogin = function(user, pass, callback)
+user.statics.autoLogin = async function(user, pass, callback)
 {
-    User.findOne({user:user}, function(e, o) {
+    User.findOne({user:user}, async function(e, o) {
         if (o) {
             o.pass === pass ? callback(o) : callback(null);
         } else {
-            callback(null);
+            return callback(null);
         }
     });
 };
 
 //used at end of registration, adds new user to referrer's list
-user.methods.percolateReferrals = function () {
-    let refID = this._id;
-    if(this.ref_by !== null){
-        console.log("Checking for ref_by, points: " + this.points);
-        User.findOne({_id: this.ref_by}).exec(function(err, user){
-            user.referrals.push(refID);
-            user.points += 100;
-            user.save();
-        })
+user.methods.percolateReferrals = async function () {
+    try{
+        let ref_by = this.ref_by;
+        let refID = this._id;
+        if(ref_by !== null){
+            console.log("Checking for ref_by, points: " + this.points);
+            await User.findOne({username: ref_by}).exec(async function(err, user){
+                user.referrals.push(refID);
+                user.points += 100;
+                await user.save();
+            })
+        }
+        this.points += 100;
+        await this.save();
+        console.log("After checking for referral: " + this.points);
+        return false;
+    } catch(err) {
+        return err;
     }
-    console.log("After checking for referral: " + this.points);
-    this.points += 100;
-    this.save();
 };
 
 // update account functions //
 
 //used by postback, called in routes, adds points to user
-user.methods.addPoints = function(amount){
+user.methods.addPoints = async function(amount){
     this.points += amount;
-    this.save();
+    await this.save();
 };
 
 //updates password, called in routes
-user.methods.updatePassword = function(newpass){
+user.methods.updatePassword = async function(newpass){
     this.password = newpass;
-    this.save()
+    await this.save()
 };
 
 //updates user's info, called in routes
-user.methods.updateAccount = function(data, callback){
-    console.log(this.validatePassword(data.password));
+user.methods.updateAccount = async function(data, callback){
     if(this.validatePassword(data.password)){
         this.name = data.name;
         this.email = data.email;
         this.country = data.country;
-        this.save();
+        await this.save();
         callback(null, this);
     } else {
         console.log('error updating.');
@@ -217,27 +209,26 @@ user.methods.deleteAccount = function(){
     this.delete();
 };
 
-user.methods.banAccount = function(){
+user.methods.banAccount = async function(){
     this.rank = 'banned';
     console.log(this);
-    this.save();
+    await this.save();
 };
 
-user.methods.unbanAccount = function(){
+user.methods.unbanAccount = async function(){
     this.rank = 'activated';
     console.log(this);
-    this.save();
+    await this.save();
 };
 
 //Checking if the token from URL matches token stored in user data, if yes, activate account
 user.methods.confirmAccount = async function(idToken, callback){
-    console.log(this.token === idToken);
     if(this.token === idToken){
         this.rank = 'activated';
-        this.save();
-        emdisp.joinMailingList(this.email, this.name, this.email_optin);
+        await this.save();
+        await emdisp.joinMailingList(this.email, this.name, this.email_optin);
         console.log("before perc referrals: " + this.points);
-        this.percolateReferrals();
+        await this.percolateReferrals();
         console.log("after perc referrals: " + this.points);
         return true;
     } else {
@@ -245,14 +236,14 @@ user.methods.confirmAccount = async function(idToken, callback){
     }
 };
 
-user.methods.updateToken = function(){
+user.methods.updateToken = async function(){
     const toke = crypto.randomBytes(20).toString('hex');
     this.token = toke;
-    this.save();
+    await this.save();
     return toke;
 };
 
-user.methods.resetPassword = function(newPass, resetToken, callback){
+user.methods.resetPassword = async function(newPass, resetToken, callback){
     if(this.token === resetToken){
         //Temp storing password to maintain scopes
         let temp = '';
@@ -260,29 +251,29 @@ user.methods.resetPassword = function(newPass, resetToken, callback){
             temp = hash;
         });
         this.password = temp;
-        this.updateToken();
-        callback(true);
+        await this.updateToken();
+        return callback(true);
     } else {
-        callback(false);
+        return callback(false);
     }
 };
 
-user.methods.updatePassword = function(passKey, newPass, callback)
+user.methods.updatePassword = async function(passKey, newPass, callback)
 {
-    saltAndHash(newPass, function(hash){
+    saltAndHash(newPass, async function(hash){
         newPass = hash;
         if(this.passKey === passKey){
             this.password = newPass;
             this.passKey = '';
-            this.save();
-            callback(this);
+            await this.save();
+            return callback(this);
         }
     });
 };
 
 // store functions //
 
-user.methods.purchasePrize = function(prize, option, callback){
+user.methods.purchasePrize = async function(prize, option, callback){
     let user = this;
     if(this.points >= option){
         this.points -= option;
@@ -292,16 +283,16 @@ user.methods.purchasePrize = function(prize, option, callback){
             user: this._id,
             status: 'Pending',
             order_date: new Date(),
-        }).then(function(order){
+        }).then(async function(order){
             user.orders.push(order.insertedId);
-            user.save(function(err){
+            await user.save(function(err){
                 console.log(err);
             });
-            callback(order.ops[0], user);
+            return callback(order.ops[0], user);
         });
 
     } else {
-        callback(null, this)
+        return callback(null, this)
     }
 };
 
