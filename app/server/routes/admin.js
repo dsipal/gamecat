@@ -28,13 +28,13 @@ router.get('/users', authLimiter.ensureAuthenticated(), function(req, res){
 
 router.get('/users/banlist', authLimiter.ensureAuthenticated(), function(req, res){
     User.find({rank:'banned'}).exec( function(err, busers){
-       if(err){
-           console.log(err);
-       } else {
-           return res.render('admin/banlist', {
+        if(err){
+            console.log(err);
+        } else {
+            return res.render('admin/banlist', {
                 users: busers
-           });
-       }
+            });
+        }
     });
 });
 
@@ -67,7 +67,7 @@ router.post('/users/ban', authLimiter.ensureAuthenticated(), async function (req
 router.get('/prizes', authLimiter.ensureAuthenticated(), async function(req, res){
     Prize.find().exec(function(err, prizes){
         if(err){
-            console.log(err)
+            console.log(err);
             return res.sendStatus(500);
         } else {
             return res.render('admin/prizelist',{
@@ -86,16 +86,29 @@ router.post('/prizes/newprize', function(req, res){
 });
 
 router.get('/cashouts/pending', authLimiter.ensureAuthenticated(), async function(req, res){
-    Order.find({ status: 'pending'}).exec(function(err, orders){
-        if(err){
+    let orders = await Order.find({status: 'pending'})
+        .populate('prize')
+        .catch(function(err){
+            console.log('Error querying the Order collection.');
             console.log(err);
-            return res.sendStatus(500);
-        } else {
-            return res.render('admin/pendinglist',{
-                orders: orders
-            });
-        }
+            res.status(500).send('Error querying the Order collection.');
+        });
+
+    return res.render('admin/pendinglist', {
+        orders: orders,
+        udata: req.user
     });
+
+    // Order.find({ status: 'pending'}).exec(function(err, orders){
+    //     if(err){
+    //         console.log(err);
+    //         return res.sendStatus(500);
+    //     } else {
+    //         return res.render('admin/pendinglist',{
+    //             orders: orders
+    //         });
+    //     }
+    // });
 });
 
 router.get('/cashouts/complete', authLimiter.ensureAuthenticated(), async function(req, res){

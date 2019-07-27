@@ -25,10 +25,10 @@ p {
 
 #top {
   margin-top: -20px;
-  background-color: #3b3b3b; }
-
-#mid {
   background-color: #767D92; }
 
-#bot {
+#mid {
   background-color: #3b3b3b; }
+
+#bot {
+  background-color: #767D92; }
