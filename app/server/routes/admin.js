@@ -129,18 +129,18 @@ router.post('/cashouts/completed', authLimiter.ensureAuthenticated(), async func
     let order = await Order.findOne({_id:cashID, status:'pending'}).catch(function(err){
         console.log('Error querying the Order collection.');
         console.log(err);
-        res.status(500).send('Error querying the Order collection.');
+        return res.status(500).send('Error querying the Order collection.');
     });
 
-    if(order !== null){
+    if(order !== null || order !== undefined){
         console.log("order not null");
         await order.completeCashout(cashID, giftCode).then(async function(success){
             if(success){
                await EM.dispatchCode(email,name,giftCode,prize);
                return res.redirect('admin/cashouts/pending');
             } else{
-                console.log("Unsuccessful in attempt to cashout " + prize);
-                return res.redirect('admin/cashouts/pending');
+               console.log("Unsuccessful in attempt to cashout " + prize);
+               return res.redirect('admin/cashouts/pending');
             }
         });
     }
