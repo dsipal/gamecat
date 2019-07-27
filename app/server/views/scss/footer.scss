@@ -22,8 +22,9 @@ footer{
         }
       }
       img{
-        max-height: 48px;
-        min-height: 32px;
+        width: 100%;
+        max-width: 128px;
+        min-width: 32px;
       }
     }
   }

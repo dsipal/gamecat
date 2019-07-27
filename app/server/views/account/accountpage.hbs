@@ -100,19 +100,15 @@
         <h3>Your Orders</h3>
         <table class="table table-dark">
             {{#if udata.orders}}
-                <thead>
-                <tr>
-                    <th scope="col">Product Name</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Placed on</th>
-                </tr>
-                </thead>
-
                 {{#each udata.orders}}
                     <tr>
                         <td>{{this.prize.name}}</td>
                         <td>{{this.status}}</td>
-                        <td>{{this.order_date}}</td>
+                        {{#if this.code}}
+                            <td>{{this.code}}</td>
+                        {{else}}
+                            <td>Placed on: {{this.order_date}}</td>
+                        {{/if}}
                     </tr>
                 {{/each}}
             {{else}}

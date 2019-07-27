@@ -193,10 +193,14 @@ form {
     background-image: url("/img/textures/cubes.png");
     border-bottom: 7px solid #767D92;
     box-shadow: 0 3px 5px 0 #323232; }
-    .container .container-header img {
-      max-height: 178px; }
     .container .container-header .row {
-      background-color: rgba(0, 0, 0, 0.4); }
+      padding: 10px;
+      background-color: rgba(0, 0, 0, 0.4);
+      -webkit-box-pack: center;
+              justify-content: center; }
+      .container .container-header .row img {
+        width: 100%;
+        max-width: 200px; }
 
 .col-form-label {
   margin-right: 25px; }

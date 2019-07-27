@@ -1,23 +1,34 @@
-.prize-list {
-  padding: 50px; }
+@media screen and (min-width: 991px) {
+  .prize-list {
+    padding: 50px; } }
 
 .prize {
   -webkit-box-pack: center;
           justify-content: center;
   text-align: center;
-  padding: 20px; }
+  padding: 10px; }
   .prize a {
     color: white; }
     .prize a:hover {
       color: white; }
     .prize a:visited {
       color: white; }
-  .prize .prize-img {
-    max-height: 256px;
-    padding: 10px; }
+  .prize .prize-head {
+    border: 3px solid #767D92;
+    border-radius: 5px;
+    margin: 0;
+    background-color: #495057;
+    padding: 5px; }
+    .prize .prize-head .prize-img {
+      width: 100%;
+      max-width: 256px;
+      padding: 10px; }
   .prize .prize-info {
     -webkit-box-pack: center;
-            justify-content: center; }
+            justify-content: center;
+    border: 3px solid #767D92;
+    border-top: none;
+    border-radius: 0 0 5px 5px; }
     @media screen and (min-width: 991px) {
       .prize .prize-info {
         margin: 0 30px 0 30px; } }

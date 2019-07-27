@@ -29,4 +29,6 @@
     .prize .prize-info .prize-desc {
       padding: 10px;
       background-color: #495057;
-      border-radius: 0 0 5px 5px; }
+      border-radius: 0 0 5px 5px;
+      border: 3px solid #767D92;
+      border-top: none; }
