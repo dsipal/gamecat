@@ -124,6 +124,8 @@ router.post('/cashouts/completed', authLimiter.ensureAuthenticated(), async func
     let email = req.body['email'];
     let prize = req.body['prize'];
 
+    console.log(giftCode, name, email, prize);
+
     let order = await Order.findOne({_id:cashID, status:'pending'}).catch(function(err){
         console.log('Error querying the Order collection.');
         console.log(err);
@@ -131,6 +133,7 @@ router.post('/cashouts/completed', authLimiter.ensureAuthenticated(), async func
     });
 
     if(order !== null){
+        console.log("order not null");
         await order.completeCashout(cashID, giftCode).then(async function(success){
             if(success){
                await EM.dispatchCode(email,name,giftCode,prize);
