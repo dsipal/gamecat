@@ -71,9 +71,7 @@ router.get('/verify', async function(req, res){
             console.log('Cannot find user: ' + name);
         });
 
-        if(user == null){
-            return res.redirect('/');
-        } else {
+        if(user !== null){
             console.log('verifying');
             user.confirmAccount(id).then(function(success){
                 if(success){
