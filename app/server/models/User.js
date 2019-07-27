@@ -299,7 +299,7 @@ user.methods.purchasePrize = async function(prize, option, callback){
             prize: prize._id,
             option: option,
             user: this._id,
-            status: 'Pending',
+            status: 'pending',
             order_date: new Date(),
         }).then(async function(order){
             user.orders.push(order.insertedId);
