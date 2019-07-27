@@ -71,14 +71,19 @@ router.get('/verify', async function(req, res){
             console.log('Cannot find user: ' + name);
         });
 
-        console.log('verifying');
-        user.confirmAccount(id).then(function(success){
-            if(success){
-                return res.redirect('/login');
-            } else {
-                return res.redirect('/');
-            }
-        });
+        if(user == null){
+            return res.redirect('/');
+        } else {
+            console.log('verifying');
+            user.confirmAccount(id).then(function(success){
+                if(success){
+                    return res.redirect('/login');
+                } else {
+                    return res.redirect('/');
+                }
+            });
+        }
+
     } else {
         return res.status(500).send('Invalid username or ID.');
     }
