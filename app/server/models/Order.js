@@ -5,6 +5,7 @@ const order = new mongoose.Schema({
         option: {type: Number},
         user: {type: mongoose.Schema.ObjectId, ref: 'User'},
         status: {type: String},
+        code:   {type: String},
         order_date: {type: Date},
     },
     {collection: 'Orders'});
@@ -18,16 +19,17 @@ const order = new mongoose.Schema({
 
 const Order = mongoose.model('Order', order);
 
-order.methods.completeCashout = async function(){
+order.methods.completeCashout = async function(id, giftCode){
     try{
-        this.status = 'complete';
-        console.log(this);
-        await this.save();
-        return false;
+        await Order.updateOne(
+            {_id: id, code: "pending", status: 'pending'},
+            {$set: {status: 'complete', code: giftCode}}
+        );
+        return true;
     } catch(err){
-        return err;
+        console.log(err);
+        return false;
     }
-
 };
 
 module.exports = Order;
