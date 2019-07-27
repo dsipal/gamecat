@@ -101,6 +101,14 @@ app.use('/admin', function(req, res, next) {
         req.socket.remoteAddress ||
         req.connection.socket.remoteAddress;
 
+    if(ip.substr(0,7) === "::ffff:"){
+        ip = ip.substr(7);
+    }
+    if(ip.includes(',')){
+        let ipArr = ip.split(', ');
+        ip = ipArr[0];
+    }
+
     // Our IPs
     if (ip === '75.40.152.150' || ip === '71.217.163.98') {
         next();
