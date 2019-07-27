@@ -101,15 +101,14 @@ body {
 main {
   min-height: 100vh;
   position: relative; }
-
-a {
-  color: #8b33bb; }
-  a:hover {
-    text-decoration: none;
-    color: #b879db; }
-  a:visited {
-    color: #8b33bb;
-    text-decoration: none; }
+  main a {
+    color: #8b33bb; }
+    main a:hover {
+      text-decoration: none;
+      color: #b879db; }
+    main a:visited {
+      color: #8b33bb;
+      text-decoration: none; }
 
 h1 {
   font-weight: 600; }

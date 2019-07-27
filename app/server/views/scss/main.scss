@@ -23,17 +23,16 @@ body {
 main{
   min-height: 100vh;
   position: relative;
-}
-
-a{
-  color: $accent-purple;
-  &:hover{
-    text-decoration: none;
-    color: lighten($accent-purple, 20%);
-  }
-  &:visited{
+  a{
     color: $accent-purple;
-    text-decoration: none;
+    &:hover{
+      text-decoration: none;
+      color: lighten($accent-purple, 20%);
+    }
+    &:visited{
+      color: $accent-purple;
+      text-decoration: none;
+    }
   }
 }
 
@@ -52,15 +51,9 @@ hr {
   border-bottom: 1px solid rgb(255, 255, 255);
 }
 
-p {
-}
-
 ul {
   margin: 4px 0 0 0;
 }
-
-
-
 
 input{
   background-color: $dialogue-background;
@@ -96,7 +89,6 @@ form{
     &:disabled, &[readonly]{
       background-color: $dialogue-background !important;
     }
-
   }
 
   .header-reg{
@@ -112,13 +104,11 @@ form{
     margin-top: 10px;
     justify-content: center;
   }
-
 }
 
 .table-dark{
   background-color: inherit !important;
 }
-
 
 .center-vertical {
   top: 50%;  left: 50%;
@@ -154,8 +144,8 @@ form{
     }
 
   }
-
 }
+
 .col-form-label{
   margin-right: 25px;
 }

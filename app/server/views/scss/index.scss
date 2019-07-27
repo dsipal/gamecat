@@ -1,116 +1,168 @@
-@import 'base';
-.container{
+@import "base";
+.hero {
+  position: relative;
+  background-color: black;
+  height: 45vh;
+  min-height: 25rem;
+  width: 100%;
   overflow: hidden;
-  padding: 0;
-  background-color: $base-color;
-}
-.jumbotron{
-  background-image: url('/img/jumbotron.webp');
-  min-height: 50vh;
-  margin-bottom: 0;
-  border-radius: 0;
-  padding: 20vh 8vh 20vh 8vh;
   -webkit-box-shadow: 0px 5px 15px 2px rgba(50,50,50,1);
   -moz-box-shadow: 0px 5px 15px 2px rgba(50,50,50,1);
   box-shadow: 0px 5px 15px 2px rgba(50,50,50,1);
-}
+  video {
+    &::-webkit-media-controls {
+      display:none !important;
+    }
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: 0;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+  }
 
-.display-4{
-  color: white;
-  background-color: rgba(0,0,0,0.4);
-  text-align: center;
-}
-
-.index-info{
-  background-color: $secondary-purple;
-  margin-bottom: 0;
-  .index-desc{
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: $lighter-base;
+    opacity: 0.3;
+    z-index: 1;
     text-align: center;
-    min-height: 60px;
-    font-size: 18px;
-    padding: 10px;
-    box-sizing: border-box;
-    color: white;
-  }
-}
-
-.info-bar {
-  margin-left: 0;
-  margin-top: 0;
-  .banner-info{
-    padding: 30px;
-    box-sizing: border-box;
-    min-height: 215px;
-    &>.col-md-4{
-      @media screen and (max-width: $breakpoint-sm){
-        text-align: center !important;
+    .mascot-img{
+      height: 90%;
+      position: center;
+      margin-top: 30px;
+      @media screen and(max-width: $breakpoint-md){
+        width: 100%;
+        height: auto;
       }
     }
-    h1{
-      margin-top: 50px;
-      font-size: calc(1.4em + 1vw);
-      @media screen and (max-width: $breakpoint-sm){
-        text-align: center !important;
-      }
-
-    }
-    img{
-      max-width: 100%;
-      max-height: 175px;
-      line-height: 100%;
-      @media screen and (max-width: $breakpoint-md){
-        margin-top: 25px;
-      }
-      @media screen and (max-width: $breakpoint-sm){
-        float: none;
-      }
-    }
-
   }
 
-  #complete-quests{
-    background-color: $dialogue-background;
-  }
-  #epic-loot{
-    background-color: $accent-cyan;
-    &>h1{
-      text-align: right;
-    }
-  }
-  #play-for-keeps{
-    background-color: $dialogue-background;
+  #tagline{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 200px;
     justify-content: center;
-    &>h1{
-      font-size: 48px;
-      color: $accent-red;
+    z-index: 3;
+    display: block;
+    text-align: center;
+    h3{
+      color: #fff;
     }
   }
 }
 
-#login{
-  position: fixed;
-  width: 25vw;
-  height: 33vw;
-  z-index: 4;
-  form{
+
+.container{
+  #top-banner-group{
+    background-color: $accent-purple;
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+
+  #top-info{
+    padding: 25px;
+    .landing-description{
+      margin-top: 40px;
+      h1{
+        text-align: center;
+      }
+      p{
+        font-size: 18px;
+        padding: 20px;
+      }
+    }
+  }
+
+  #signup-banner{
     background-color: $base-color;
+    justify-content: center;
+    padding: 60px;
+    border-radius: 300px 300px 0 0;
+  }
+
+  #how-work{
+    margin-left: -15px;
+    margin-right: -15px;
+    #complete-quests{
+      padding: 20px;
+      background-color: $accent-cyan-darker;
+    }
+    #tell-friends{
+      padding: 20px;
+      background-color: $lighter-base;
+    }
+    #get-loot{
+      padding: 20px;
+      background-color: $dialogue-background;
+    }
+  }
+
+
+}
+#rewards{
+  margin-left: -15px;
+  margin-right: -15px;
+  padding-bottom: 25px;
+  background-color: $lighter-base;
+  #rewards-list{
+    padding: 35px;
   }
 }
+
+.form-check-label{
+  font-size: 12px;
+}
+
+.banner-info-header{
+  background-color: $secondary-purple;
+  -webkit-box-shadow: 0 5px 15px 2px rgba(50,50,50,1);
+  -moz-box-shadow: 0px 5px 15px 2px rgba(50,50,50,1);
+  box-shadow: 0px 5px 15px 2px rgba(50,50,50,1);
+  margin-bottom: 0;
+  padding: 25px;
+  z-index: 2;
+}
+
+
 
 .reward-item{
-  a{
-    color: white;
-    &:hover{
-      color:darken(white, 10%);
+  &:hover{
+    img{
+      filter: drop-shadow(0px 0px 10px rgba(255,255,255,0.35));
     }
+  }
+  margin: 25px 0 25px;
+  a{
+    color: #EFEFEF;
+    &:hover{
+      color: lighten(#EFEFEF, 10%);
+    }
+  }
+  .reward-img{
+    max-height: 250px;
+  }
+  .reward-name{
+    margin-top: 25px;
+    text-align: center;
   }
 }
 
-.graphic-panel{
-  padding: 0;
-}
 
-.signup-index{
-  padding: 0;
-  background-color: $lighter-base;
+
+#signup{
+  margin-left: 40px;
+  max-height: 200px;
+  width: auto;
 }

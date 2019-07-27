@@ -1,10 +1,10 @@
 {
   "name": "moneyplease",
   "version": "1.0.0",
-  "description": "get paid to site",
-  "author": "d c",
+  "description": "GPT Site Script, rewards users for completing CPA offers- featuring an admin panel.",
+  "author": "D, C",
   "website": {
-    "url": "https://summermoney.herokuapp.com"
+    "url": "https://gamecat.co"
   },
   "private": true,
   "repository": {
@@ -20,26 +20,22 @@
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "express-handlebars": "^3.1.0",
-    "express-rate-limit": "5.0.0",
     "express-session": "^1.16.2",
     "geoip-country": "^3.2.2",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "6.1.0",
-    "gulp-cache": "1.1.2",
     "gulp-clean-css": "4.2.0",
     "gulp-concat": "2.6.1",
     "gulp-imagemin": "6.0.0",
-    "gulp-jshint": "2.1.0",
     "gulp-plumber": "1.2.1",
     "gulp-rename": "1.4.0",
     "gulp-sass": "^4.0.2",
     "gulp-uglify-es": "^1.0.4",
-    "gutil": "^1.6.4",
     "helmet": "^3.20.0",
     "mailgun-js": "^0.22.0",
     "moment": "^2.24.0",
     "mongodb": "^3.2.7",
-    "mongoose": "^5.6.3",
+    "mongoose": "^5.6.7",
     "mongoose-unique-validator": "^2.0.3",
     "node-sass": "^4.12.0",
     "passport": "^0.4.0",
@@ -53,7 +49,8 @@
     "node": "10.4.0"
   },
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "build": "gulp build"
   },
   "nodemonConfig": {
     "verbose": false,

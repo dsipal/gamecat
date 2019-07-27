@@ -18,107 +18,111 @@
             <h1 class="col-12 text-center">Your Account</h1>
         </div>
     </div>
-    <table class="table table-dark">
-        <tr>
-            <th scope="row">Username</th>
-            <td>{{udata.username}}</td>
-            <td></td>
-        </tr>
-        <tr>
-            <th scope="row">Email</th>
-            <td>{{udata.email}}</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">Password</th>
-            <td><input class="form-control" type="password" value="password" disabled></td>
-            <td>
-
-            </td>
-
-        </tr>
-        <tr>
-            <th scope="row">Points</th>
-            <td>{{udata.points}}</td>
-            <td></td>
-        </tr>
-        {{#if udata.ref_by}}
+    <div class="account-info">
+        <h3>Account Information</h3>
+        <table class="table table-dark">
             <tr>
-                <th scope="row">Referred by</th>
-                <td>{{udata.ref_by.username}}</td>
+                <th scope="row">Username</th>
+                <td>{{udata.username}}</td>
+                <td></td>
             </tr>
-        {{/if}}
-        <tr>
-            <th scope="row">Your referral link</th>
-            <td>
-                <input class="form-control" type="text" value="https://gamecat.co/signup?ref_by={{udata.username}}" readonly>
-            </td>
-            <td></td>
-        </tr>
-
-        <tr>
-            <th scope="row">Receive exclusive offers by email</th>
-            <td>
-                <input id="subscribe" type="checkbox" {{#if udata.email_optin}}checked{{/if}}>
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <th scope="row">Date joined</th>
-            <td>{{udata.reg_date}}</td>
-            <td></td>
-        </tr>
-    </table>
-
-    <h3>Your Referrals</h3>
-    <table class="table table-dark">
-        {{#if udata.referrals}}
-            <thead>
             <tr>
-                <th scope="col">Username</th>
-                <th scope="col">Date joined</th>
-            </tr>
-            </thead>
+                <th scope="row">Email</th>
+                <td>{{udata.email}}</td>
+                <td>
 
-            {{#each udata.referrals}}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Password</th>
+                <td><input class="form-control" type="password" value="password" disabled></td>
+                <td>
+
+                </td>
+
+            </tr>
+            <tr>
+                <th scope="row">Points</th>
+                <td>{{udata.points}}</td>
+                <td></td>
+            </tr>
+            {{#if udata.ref_by}}
                 <tr>
-                    <td>{{this.username}}</td>
-                    <td>{{this.reg_date}}</td>
+                    <th scope="row">Referred by</th>
+                    <td>{{udata.ref_by.username}}</td>
                 </tr>
-            {{/each}}
-        {{else}}
+            {{/if}}
             <tr>
-                <td>You don't have any yet. Invite your friends to earn more crystals!</td>
+                <th scope="row">Your referral link</th>
+                <td>
+                    <input class="form-control" type="text" value="https://gamecat.co/signup?ref_by={{udata.username}}" readonly>
+                </td>
+                <td></td>
             </tr>
-        {{/if}}
-    </table>
 
-    <h3>Your Orders</h3>
-    <table class="table table-dark">
-        {{#if udata.orders}}
-            <thead>
             <tr>
-                <th scope="col">Product Name</th>
-                <th scope="col">Status</th>
-                <th scope="col">Placed on</th>
+                <th scope="row">Receive exclusive offers by email</th>
+                <td>
+                    <input id="subscribe" type="checkbox" {{#if udata.email_optin}}checked{{/if}}>
+                </td>
+                <td></td>
             </tr>
-            </thead>
+            <tr>
+                <th scope="row">Date joined</th>
+                <td>{{udata.reg_date}}</td>
+                <td></td>
+            </tr>
+        </table>
 
-            {{#each udata.orders}}
+        <h3>Your Referrals</h3>
+        <table class="table table-dark">
+            {{#if udata.referrals}}
+                <thead>
                 <tr>
-                    <td>{{this.prize.name}}</td>
-                    <td>{{this.status}}</td>
-                    <td>{{this.order_date}}</td>
+                    <th scope="col">Username</th>
+                    <th scope="col">Date joined</th>
                 </tr>
-            {{/each}}
-        {{else}}
-            <tr>
-                <td>You don't have any yet. Complete some quests and get rewarded!</td>
-            </tr>
-        {{/if}}
-    </table>
+                </thead>
+
+                {{#each udata.referrals}}
+                    <tr>
+                        <td>{{this.username}}</td>
+                        <td>{{this.reg_date}}</td>
+                    </tr>
+                {{/each}}
+            {{else}}
+                <tr>
+                    <td>You don't have any yet. Invite your friends to earn more crystals!</td>
+                </tr>
+            {{/if}}
+        </table>
+
+        <h3>Your Orders</h3>
+        <table class="table table-dark">
+            {{#if udata.orders}}
+                <thead>
+                <tr>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Placed on</th>
+                </tr>
+                </thead>
+
+                {{#each udata.orders}}
+                    <tr>
+                        <td>{{this.prize.name}}</td>
+                        <td>{{this.status}}</td>
+                        <td>{{this.order_date}}</td>
+                    </tr>
+                {{/each}}
+            {{else}}
+                <tr>
+                    <td>You don't have any yet. Complete some quests and get rewarded!</td>
+                </tr>
+            {{/if}}
+        </table>
+    </div>
+
 
 </section>
 

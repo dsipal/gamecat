@@ -4,8 +4,7 @@ let gulp = require('gulp'),
     rename = require('gulp-rename');
 let autoprefixer = require('gulp-autoprefixer');
 let uglify = require('gulp-uglify-es').default;
-let imagemin = require('gulp-imagemin'),
-    cache = require('gulp-cache');
+let imagemin = require('gulp-imagemin');
 let minifycss = require('gulp-clean-css');
 let sass = require('gulp-sass');
 let browserSync = require('browser-sync');
@@ -44,9 +43,7 @@ async function style() {
         .pipe(rename({suffix: '.min'}))
         .pipe(minifycss())
         .pipe(gulp.dest(paths.styles.dest))
-        .pipe(browserSync.reload({stream:true}))
-
-
+        .pipe(browserSync.reload({stream:true}));
 }
 
 async function scripts() {
@@ -60,19 +57,17 @@ async function scripts() {
         .pipe(rename({suffix: '.min'}))
         .pipe(uglify())
         .on('error', function (err) { console.log(err.toString()); })
-        .pipe(gulp.dest(paths.scripts.dest))
-
+        .pipe(gulp.dest(paths.scripts.dest));
 }
 
 async function images(){
     gulp.src(paths.images.src, {since: gulp.lastRun(images)})
         .pipe(imagemin())
-        .pipe(gulp.dest(paths.images.dest))
+        .pipe(gulp.dest(paths.images.dest));
 }
 gulp.task('scripts', scripts);
 gulp.task('styles', style);
 gulp.task('images', images);
-
 
 gulp.task('browser-sync', async function() {
     browserSync({
@@ -82,7 +77,6 @@ gulp.task('browser-sync', async function() {
         notify: false
     });
 });
-
 gulp.task('bs-reload', async function () {
     browserSync.reload();
 });
