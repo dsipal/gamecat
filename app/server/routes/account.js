@@ -55,7 +55,7 @@ router.post('/delete', function(req, res){
         req.user.deleteAccount();
         return res.clearCookie('login');
     } catch(err) {
-        return res.sendStatus(500);
+        return res.status(500).send('Error deleting user');
     }
 
 });
