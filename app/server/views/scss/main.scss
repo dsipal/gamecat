@@ -23,19 +23,20 @@ body {
 main{
   min-height: 100vh;
   position: relative;
+  a{
+    color: $accent-purple;
+    &:hover{
+      text-decoration: none;
+      color: lighten($accent-purple, 20%);
+    }
+    &:visited{
+      color: $accent-purple;
+      text-decoration: none;
+    }
+  }
 }
 
-a{
-  color: $accent-purple;
-  &:hover{
-    text-decoration: none;
-    color: lighten($accent-purple, 20%);
-  }
-  &:visited{
-    color: $accent-purple;
-    text-decoration: none;
-  }
-}
+
 
 h1{
   font-weight: 600;
