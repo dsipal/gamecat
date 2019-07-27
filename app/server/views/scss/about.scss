@@ -11,7 +11,6 @@ p{
   margin-right:-15px;
   padding-top: 20px;
   padding-bottom: 20px;
-  border-bottom: 3px solid $lighter-base;
 }
 
 .about-content{
@@ -27,6 +26,13 @@ p{
       display: inline-block;
       vertical-align: middle;
       line-height: normal;
+    }
+    h2{
+      text-align: center;
+    }
+
+    .col-md-8{
+      padding: 20px;
     }
 
   }
