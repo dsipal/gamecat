@@ -180,7 +180,7 @@ user.methods.percolateReferrals = async function () {
                     $inc: {points: 100}
                 }
             ).then(function(){
-                console.log("Referrals percolated for " + this.username + "  points: " + this.points);
+                console.log("Referrals percolated for " + refID);
             });
 
             return false;
