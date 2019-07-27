@@ -13,10 +13,13 @@
     <div class="row prize-list">
         {{#each prizes}}
             <div class="col-md-6 prize">
-                <a href="/shop/{{this.uri}}" >
-                    <img src="{{this.image_path}}" alt="{{this.name}}" class="img-fluid prize-img">
-                    <h2 class="prize-name">{{this.name}}</h2>
-                </a>
+                <div class="prize-head">
+                    <a href="/shop/{{this.uri}}" >
+                        <img src="{{this.image_path}}" alt="{{this.name}}" class="img-fluid prize-img">
+                        <h2 class="prize-name">{{this.name}}</h2>
+                    </a>
+                </div>
+
                 <div class="row prize-info">
                     <h4 class="prize-price">Starting at {{this.options.[0].point_cost}} <img src="/img/crystal.svg" alt="crystals" class="crystal-ico" /></h4>
                     <p class="prize-desc">{{this.description}}</p>

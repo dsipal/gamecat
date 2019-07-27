@@ -136,11 +136,15 @@ form{
     background-image: url("/img/textures/cubes.png");
     border-bottom: 7px solid $secondary-purple;
     box-shadow: 0 3px 5px 0 rgb(50, 50, 50);
-    img{
-      max-height: 178px;
-    }
+
     .row{
+      padding: 10px;
       background-color: $container-header-bg;
+      justify-content: center;
+      img{
+        width: 100%;
+        max-width: 200px;
+      }
     }
 
   }
