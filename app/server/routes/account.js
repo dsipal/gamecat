@@ -65,9 +65,8 @@ router.get('/verify', async function(req, res){
     let name = req.query.name;
     let id = req.query.id;
 
-    console.log('Attempting verification for ' + name + ' with id ' + id);
-
-    if(req.name !== undefined && id !== undefined){
+    if(name !== undefined && id !== undefined){
+        console.log('Attempting verification for ' + name + ' with id ' + id);
         let user = await User.findOne({username:name, rank:'new'}).catch(function(err){
             console.log('Cannot find user: ' + name);
         });
@@ -81,11 +80,8 @@ router.get('/verify', async function(req, res){
             }
         });
     } else {
-        res.status(500).send('Invalid username or ID.');
+        return res.status(500).send('Invalid username or ID.');
     }
-
-
-
 });
 
 module.exports = router;
