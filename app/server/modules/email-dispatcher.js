@@ -9,7 +9,7 @@ const promolist = mailgun.lists('promotions@mg.gamecat.co');
 const sitelist = mailgun.lists('sitenews@mg.gamecat.co');
 const emailAcc = "Gamecat <admin@gamecat.co>";
 
-exports.dispatchConfirm = function(email, token, name) {
+exports.dispatchConfirm = async function(email, token, name) {
     console.log(name, token);
     const data = {
         from: emailAcc,
@@ -21,12 +21,12 @@ exports.dispatchConfirm = function(email, token, name) {
         "o:tag": ['confirmation']
     };
 
-    mailgun.messages().send(data, function(err, bod){
+    await mailgun.messages().send(data, function(err, bod){
         console.log(bod);
     });
 };
 
-exports.dispatchPasswordReset = function(email, token, name, callback){
+exports.dispatchPasswordReset = async function(email, token, name, callback){
     const data = {
         from: emailAcc,
         to: email,
@@ -37,7 +37,7 @@ exports.dispatchPasswordReset = function(email, token, name, callback){
         "o:tag": ['passwordreset']
     };
 
-    mailgun.messages().send(data, function(err, bod){
+    await mailgun.messages().send(data, function(err, bod){
         if(err){
             callback(err);
         } else {
@@ -47,20 +47,39 @@ exports.dispatchPasswordReset = function(email, token, name, callback){
     });
 };
 
-exports.joinMailingList = function(email, name,optin) {
+exports.dispatchSupport = async function(email, category, message, callback){
+    let data = {
+        from: email,
+        to: 'support@mg.gamecat.co',
+        template: 'supportrequest',
+        'v:category': category,
+        'v:message': message,
+        'v:user': email
+    };
+
+    await mailgun.messages().send(data, function(err, bod){
+        if(err){
+            callback(err);
+        } else {
+            callback(false);
+        }
+    });
+};
+
+exports.joinMailingList = async function(email, name,optin) {
 
     let data = {
         address:    email,
         name:       name
     };
 
-    sitelist.members().create(data, function(err, data){
+    await sitelist.members().create(data, function(err, data){
         console.log('New Member On Mail List:');
         console.log(data);
     });
 
     if(optin){
-        promolist.members().create(data, function(err, data){
+        await promolist.members().create(data, function(err, data){
             console.log('New Member On Mail List:');
             console.log(data);
         });

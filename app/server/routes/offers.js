@@ -17,15 +17,20 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     if(ip.substr(0,7) === "::ffff:"){
         ip = ip.substr(7);
     }
-
+    if(ip.includes(',')){
+        let ipArr = ip.split(', ');
+        ip = ipArr[0];
+    }
     const geo = geoip.lookup(ip);
+
+    console.log(ip + ' ' + geo + 'logging in.');
     let country_code;
     if(geo !== null){
         country_code = geo.country;
     }
     const offers = await getOffers(country_code, req.user._id);
 
-    res.render('offers/quests', {
+    return res.render('offers/quests', {
         subid1: req.user._id,
         udata: req.user,
         offers: offers
@@ -41,25 +46,24 @@ router.get('/surveys', authLimiter.ensureAuthenticated(), async function(req, re
 
 
 router.get('/postback', async function(req, res){
+    console.log('postback revieved');
     let subid = require('mongodb').ObjectId(req.query.subid1);
     let payout = parseInt(req.query.payout);
 
     let user = await User.findOne({_id: subid});
-    user.addPoints(payout);
-
+    user.points+= payout;
+    await user.save();
     res.send(req.query.subid1 + " was paid " + req.query.payout);
 });
 
 router.get('/pwnpostback', async function(req, res){
-    //pwngames ip addresses
-    // 35.196.95.104
-    // 35.196.169.46
     let subid = require('mongodb').ObjectId(req.query.subid1);
     let payout = parseInt(req.query.payout) * 40;
 
     let user = await User.findOne({_id: subid});
-    user.addPoints(payout);
-    res.send(req.query.subid1 + " was paid " + req.query.payout);
+    user.points+= payout;
+    await user.save();
+    return res.send(req.query.subid1 + " was paid " + req.query.payout);
 });
 
 

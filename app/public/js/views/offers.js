@@ -1,14 +1,21 @@
-//TODO instead of loading new page, have offers/pagination load all into one page
 $(document).ready(function(){
+    var e=document.createElement('div');
+    e.id='iTafIeFKkQSY';
+    e.style.display='none';
+    document.body.appendChild(e);
+
     const offer_list = $('.offer-list');
     const obsOpts = {
         root: null,
         rootMargin: '0px',
         threshold: 1.0
     };
-
     let page = 0;
     let limit = 8;
+
+    if(!document.getElementById('iTafIeFKkQSY')) {
+        offer_list.append("<h1> You must disable ad-block to view offers. </h1>")
+    }
 
     const loadMore = function(page, limit, offset, offer_list){
         const page_max = 15;
@@ -18,7 +25,8 @@ $(document).ready(function(){
             subid1: offer_list.attr('data-subid1'),
             limit: limit,
             offset: offset,
-            sort_by: 'epc'
+            sort_by: 'payout',
+            payout_min: .60
         });
 
         $.getJSON(url+'?'+query_strings).done(function(data){
@@ -28,7 +36,7 @@ $(document).ready(function(){
             } else {
                 $.each(data.offers, function(key, offer){
                     var element = `
-                    <li class="col-md-4 justify-content-center">
+                    <li class="col-md-3 justify-content-center">
                         <div class="offer-item">
                              <a href="`+offer.click_url+`" class="row offer-link">
                                 <img src="`+offer.creative_url+`"  alt="`+offer.name+`" class="row offer-image">
@@ -63,13 +71,10 @@ $(document).ready(function(){
             console.log(entry.intersectionRatio);
             if(entry.intersectionRatio > 0){
                 let offset = limit * page;
-                console.log('viewable!');
                 loadMore(page, limit, offset, offer_list);
                 page += 1;
             }
         })
     }, obsOpts);
     observer.observe(document.querySelector('#infinite-trigger'));
-
-
 });

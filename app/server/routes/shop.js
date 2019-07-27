@@ -8,9 +8,10 @@ const authLimiter = require('../modules/authLimiter');
 router.get('/', function(req,res){
     Prize.find().exec(function(err, prizes){
         if(err){
-            console.log(err)
+            console.log(err);
+            return res.sendStatus(500);
         } else {
-            res.render('shop/index',{
+            return res.render('shop/index',{
                 prizes: prizes,
                 udata: req.user
             });
@@ -18,36 +19,36 @@ router.get('/', function(req,res){
     })
 });
 
-router.get('/:prizeID', async function(req, res){
-    let id = require('mongodb').ObjectID(req.params.prizeID);
+router.get('/:uri', async function(req, res){
+    let uri = req.params.uri;
     try {
-        let prize = await Prize.findOne({'_id': id});
-        res.render('shop/prize', {
+        let prize = await Prize.findOne({'uri': uri});
+        return res.render('shop/prize', {
             prize: prize,
             udata: req.user
         });
     } catch(err) {
-        res.render('404');
+        return res.render('404');
     }
 
 
 });
 
-router.post('/buy', authLimiter.ensureAuthenticated(), function(req,res){
+router.post('/buy', authLimiter.ensureAuthenticated(), async function(req,res){
     let prizeID = mongoose.Types.ObjectId(req.body['product']);
     let option = parseInt(req.body['option']);
-    console.log(option);
 
-    Prize.findOne({'_id': prizeID}).exec(function(err, prize){
+    await Prize.findOne({'_id': prizeID}).exec(async function(err, prize){
         if(err){
             console.log(err);
         } else {
-            req.user.purchasePrize(prize, option,function(order, user){
+            await req.user.purchasePrize(prize, option,async function(order, user){
                 if(order){
-                    res.redirect('/shop');
+                    console.log(user.username + ' purchased ' + prize.name + ' for ' + option + ' crystals.');
+                    return res.redirect('/shop');
                 } else {
-                    console.log('failure purchasing for ', user);
-                    res.redirect('/shop');
+                    console.log('failure purchasing ' + prize.name + ' for ', user.username);
+                    return res.redirect('/shop');
                 }
             })
         }

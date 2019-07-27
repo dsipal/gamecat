@@ -10,9 +10,9 @@
 {{/section}}
 
 {{#section 'body_scripts'}}
-    <script src="/js/views/signup.js"></script>
-    <script src="/js/controllers/signupController.js"></script>
-    <script src="/js/form-validators/accountValidator.js"></script>
+    <script src="/js/views/signup.min.js"></script>
+    <script src="/js/controllers/signupController.min.js"></script>
+    <script src="/js/form-validators/accountValidator.min.js"></script>
 {{/section}}
 
 <section class="hero">
@@ -39,8 +39,8 @@
                 <h1>Welcome to Gamecat.</h1>
                 <hr />
                 <p>
-                    Gamecat is an upcoming exclusive rewards site where you can earn gift cards for Steam, Amazon, League of Legends and more! Made by a dedicated team of gamers, for gamers,
-                    you can wave goodbye to all the scams and spam and impress your friends with all the new loot you'll acquire. If you request an invite before the site launches we will give you a head start with 100 free <img src="/img/crystal.svg" alt="crystals" class="crystal-ico" />.
+                    Gamecat is an exclusive rewards site where you can earn gift cards for Steam, Amazon, League of Legends and more! Made by a dedicated team of gamers, for gamers,
+                    you can wave goodbye to all the scams and spam and impress your friends with all the new loot you'll acquire.
                 </p>
             </div>
         </div>
@@ -80,7 +80,7 @@
             <img src="/img/friend.svg" alt="Invite your friends!" class="img-fluid" />
             <h4 class="text-center">2. Tell your friends.</h4>
             <p class="text-left">
-                Got a Discord server? You and your friends can both earn 100 free <img src="/img/crystal.svg" alt="crystals" class="crystal-ico" /> if they sign up using your personal invite code. Not to mention you can earn up to 5% of whatever your referrals earn. You can also <a href="#">partner with
+                Got a Discord server? You and your friends can both earn 100 free <img src="/img/crystal.svg" alt="crystals" class="crystal-ico" /> if they sign up using your personal invite code. Not to mention you can earn up to 5% of whatever your referrals earn. You can also <a href="/contact">partner with
                 us</a> for even better deals.
             </p>
         </div>
@@ -100,30 +100,41 @@
         </div>
         <div class="row" id="rewards-list">
             <div class="col-md-4 reward-item">
-                <img src="/img/rewards/riotcards.png" alt="Riot store gift cards" class="img-fluid reward-img" />
-                <h4 class="reward-name">League of Legends Gift Cards</h4>
+                <a href="/shop/riot-gift-card">
+                    <img src="/img/rewards/riotcards.png" alt="Riot store gift cards" class="img-fluid reward-img" />
+                    <h4 class="reward-name">League of Legends Gift Cards</h4>
+                </a>
             </div>
             <div class="col-md-4 reward-item">
-                <img src="/img/rewards/steamwallet.png"  alt="Steam wallet gift cards" class="img-fluid reward-img" />
-                <h4 class="reward-name">Steam Gift Cards</h4>
+                <a href="/shop/steam-gift-card">
+                    <img src="/img/rewards/steamwallet.png"  alt="Steam wallet gift cards" class="img-fluid reward-img" />
+                    <h4 class="reward-name">Steam Gift Cards</h4>
+                </a>
             </div>
             <div class="col-md-4 reward-item">
-                <img src="/img/rewards/xboxcards.png" alt="XBox store gift cards" class="img-fluid reward-img" />
-                <h4 class="reward-name">XBox Store Gift Cards</h4>
+                <a href="/shop/xbox-gift-card">
+                    <img src="/img/rewards/xboxcards.png" alt="XBox store gift cards" class="img-fluid reward-img" />
+                    <h4 class="reward-name">XBox Store Gift Cards</h4>
+                </a>
             </div>
             <div class="col-md-4 reward-item">
-                <img src="/img/rewards/googleplaycards.png" alt="Google play gift cards" class="img-fluid reward-img" />
-                <h4 class="reward-name">Google Play Store Gift Cards</h4>
+                <a href="/shop/google-play-gift-card">
+                    <img src="/img/rewards/googleplaycards.png" alt="Google play gift cards" class="img-fluid reward-img" />
+                    <h4 class="reward-name">Google Play Store Gift Cards</h4>
+                </a>
             </div>
             <div class="col-md-4 reward-item">
-                <img src="/img/rewards/itunescards.png" alt="iTunes gift cards" class="img-fluid reward-img" />
-                <h4 class="reward-name">iTunes Gift Cards</h4>
+                <a href="/shop/itunes-gift-card">
+                    <img src="/img/rewards/itunescards.png" alt="iTunes gift cards" class="img-fluid reward-img" />
+                    <h4 class="reward-name">iTunes Gift Cards</h4>
+                </a>
             </div>
             <div class="col-md-4 reward-item">
-                <img src="/img/rewards/amazongiftcards.png" alt="Amazon gift cards" class="img-fluid reward-img" />
-                <h4 class="reward-name">Amazon Gift Cards</h4>
+                <a href="/shop/amazon-gift-card">
+                    <img src="/img/rewards/amazongiftcards.png" alt="Amazon gift cards" class="img-fluid reward-img" />
+                    <h4 class="reward-name">Amazon Gift Cards</h4>
+                </a>
             </div>
-
         </div>
         <h2 class="col-12 text-center">And more!</h2>
     </div>

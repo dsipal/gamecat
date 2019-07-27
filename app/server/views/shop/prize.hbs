@@ -3,7 +3,7 @@
 {{/section}}
 
 {{#section 'body_scripts'}}
-    <script src="/js/views/prize.js"></script>
+    <script src="/js/views/prize.min.js"></script>
 {{/section}}
 
 <section class="container">
@@ -35,7 +35,10 @@
                     </div>
 
                     <div class="col-4">
-                        <input type="submit" value="Buy" class="btn btn-primary">
+                        {{#if udata}}
+                            <input type="submit" value="Buy" class="btn btn-primary">
+                        {{/if}}
+
                     </div>
 
                 </div>

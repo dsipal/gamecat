@@ -1,0 +1,44 @@
+@import 'base';
+
+p{
+  font-size: 18px;
+}
+
+.subheader{
+  background-color: $accent-purple;
+  text-align: center;
+  margin-left: -15px;
+  margin-right:-15px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 3px solid $lighter-base;
+}
+
+.about-content{
+  padding: 20px;
+
+  .content-row{
+    padding-bottom: 20px;
+    padding-top: 20px;
+    margin-right: -35px;
+    margin-left: -35px;
+    p{
+      margin-top: 50px;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: normal;
+    }
+
+  }
+}
+
+#top{
+  margin-top: -20px;
+  background-color: $secondary-purple;
+}
+#mid{
+  background-color: $lighter-base;
+}
+#bot{
+  background-color: $secondary-purple;
+}

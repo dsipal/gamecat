@@ -1,5 +1,5 @@
 $base-color: #212121;
-$lighter-base: #353535;
+$lighter-base: lighten($base-color, 10%);
 $body-bg: #505050;
 $dialogue-background: #495057;
 $accent-cyan: #26aeda;

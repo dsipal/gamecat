@@ -1,5 +1,6 @@
 @import "base";
 .modal {
+
   .modal-dialog {
     width: 480px;
 
@@ -27,4 +28,8 @@
       width: 80px;
     }
   }
+}
+.modal-body > p{
+  text-align: center;
+  justify-content: center;
 }

@@ -2,7 +2,6 @@ const CT = require('../modules/country-list');
 const EM = require('../modules/email-dispatcher');
 const User = require('../models/User');
 let UserValidator = require('../modules/user-validator');
-const rateLimit = require("express-rate-limit");
 const passport = require('passport');
 const express = require('express');
 const authLimiter = require('../modules/authLimiter');
@@ -16,94 +15,81 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res) {
         .populate({
             path: 'orders',
             populate: {path: 'prize'}
+        }).catch(function(err){
+            console.log('Error getting user info for: ' + req.user.name);
+            console.log(err);
         });
 
-
-    res.render('account/accountpage', {
+    return res.render('account/accountpage', {
         title: 'Control Panel',
         countries: CT,
         udata: populated_user
     });
 });
 
-// router.post('/change/password', function(req, res){
-//     let pass = req.params('password');
-//     let passRegex = new RegExp(`\\S*(\\S*([a-zA-Z]\\S*[0-9])|([0-9]\\S*[a-zA-Z]))\\S*`);
-//
-//     if(passRegex.test(pass)){
-//
-//     }
-//
-//
-// });
-//
-// router.post('/change/email', function(req, res){
-//
-// });
-
-router.post('/subscribe', authLimiter.ensureAuthenticated(), function(req, res){
+router.post('/subscribe', authLimiter.ensureAuthenticated(), async function(req, res){
     try{
 
         req.user.email_optin = !req.user.email_optin;
-        req.user.save();
+        await req.user.save();
 
-        res.sendStatus(200);
+        return res.sendStatus(200);
     } catch(err) {
-        res.sendStatus(300);
+        return res.sendStatus(300);
     }
 
 });
-
-
 
 router.post('/logout', authLimiter.ensureAuthenticated(), function(req, res){
     res.clearCookie('login');
     req.session.destroy(function(e){
         if(e) {
             console.log(e);
+            return res.sendStatus(500);
         } else {
-            res.status(200).send('ok');
+            return res.status(200).send('ok');
         }
     });
 });
 
 router.post('/delete', function(req, res){
     //TODO ensure that deleting a user works correctly
-    req.user.deleteAccount();
-    res.clearCookie('login');
+    try{
+        req.user.deleteAccount();
+        return res.clearCookie('login');
+    } catch(err) {
+        return res.status(500).send('Error deleting user');
+    }
+
 });
 
-// router.get('/referrals', authLimiter.ensureAuthenticated(), async function(req, res) {
-//     let orders = await User.findOne({username: req.user.username})
-//         .populate({
-//             path: 'orders',
-//             populate: {
-//                 path: 'prize user'
-//             }
-//     });
-//     console.log(orders.orders[0]);
-//         //TODO possibly add multi-tiered referrals
-//     var ref_link = req.protocol + '://' + req.headers.host + '/signup?ref_by=' + req.user.username;
-//     res.render('referrals', {ref_link: ref_link, referrals: req.user.referrals});
-//
-// });
-
-router.get('/verify', function(req, res){
+router.get('/verify', async function(req, res){
     //TODO ensure that verification through email works, limit pages that user can access without verification
-    User.findOne({username:req.query.name}, function(e, o) {
-        if(e) {
-            console.log('Problem With Verification' + req.query.name + '   ' + req.query.id);
-        } else{
+    let name = req.query.name;
+    let id = req.query.id;
+
+    if(name !== undefined && id !== undefined){
+        console.log('Attempting verification for ' + name + ' with id ' + id);
+        let user = await User.findOne({username:name, rank:'new'}).catch(function(err){
+            console.log('Cannot find user: ' + name);
+            console.log('Error: ' + err);
+            return res.status(500).send('Invalid username or ID.');
+        });
+
+        if(user !== null){
             console.log('verifying');
-            o.confirmAccount(req.query.id, function(success){
+            user.confirmAccount(id).then(function(success){
                 if(success){
-                    res.redirect('/login?verify=success');
+                    return res.redirect('/login');
                 } else {
-                    res.redirect('/signup');
+                    return res.redirect('/');
                 }
             });
         }
-    })
+
+    } else {
+        return res.status(500).send('Invalid username or ID.');
+    }
 });
 
 module.exports = router;

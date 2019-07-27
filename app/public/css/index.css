@@ -75,9 +75,14 @@
   #login form {
     background-color: #212121; }
 
+.reward-item a {
+  color: white; }
+  .reward-item a:hover {
+    color: #e6e6e6; }
+
 .graphic-panel {
   padding: 0; }
 
 .signup-index {
   padding: 0;
-  background-color: #353535; }
+  background-color: #3b3b3b; }

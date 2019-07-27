@@ -19,7 +19,7 @@ router.get('/users', authLimiter.ensureAuthenticated(), function(req, res){
         if(err){
             console.log(err)
         } else {
-            res.render('admin/userlist',{
+            return res.render('admin/userlist',{
                 users: users
             });
         }
@@ -28,13 +28,13 @@ router.get('/users', authLimiter.ensureAuthenticated(), function(req, res){
 
 router.get('/users/banlist', authLimiter.ensureAuthenticated(), function(req, res){
     User.find({rank:'banned'}).exec( function(err, busers){
-       if(err){
-           console.log(err);
-       } else {
-           res.render('admin/banlist', {
+        if(err){
+            console.log(err);
+        } else {
+            return res.render('admin/banlist', {
                 users: busers
-           });
-       }
+            });
+        }
     });
 });
 
@@ -48,10 +48,10 @@ router.post('/users/unban', authLimiter.ensureAuthenticated(), function(req, res
             o.unbanAccount();
         }
     });
-    res.redirect('/admin/users');
+    return res.redirect('/admin/users');
 });
 
-router.post('/users/ban', authLimiter.ensureAuthenticated(), function (req, res) {
+router.post('/users/ban', authLimiter.ensureAuthenticated(), async function (req, res) {
     let banID = req.body['user'];
 
     User.findOne({username:banID}).exec( function(e, o) {
@@ -61,15 +61,16 @@ router.post('/users/ban', authLimiter.ensureAuthenticated(), function (req, res)
             o.banAccount();
         }
     });
-    res.redirect('/admin/users');
+    return res.redirect('/admin/users');
 });
 
-router.get('/prizes', authLimiter.ensureAuthenticated(), function(req, res){
+router.get('/prizes', authLimiter.ensureAuthenticated(), async function(req, res){
     Prize.find().exec(function(err, prizes){
         if(err){
-            console.log(err)
+            console.log(err);
+            return res.sendStatus(500);
         } else {
-            res.render('admin/prizelist',{
+            return res.render('admin/prizelist',{
                 prizes: prizes
             });
         }
@@ -77,48 +78,65 @@ router.get('/prizes', authLimiter.ensureAuthenticated(), function(req, res){
 });
 
 router.get('/prizes/newprize', authLimiter.ensureAuthenticated(), function(req, res){
-    res.render('admin/newprize');
+    return res.render('admin/newprize');
 });
 
 router.post('/prizes/newprize', function(req, res){
 
 });
 
-router.get('/cashouts/pending', authLimiter.ensureAuthenticated(), function(req, res){
-    Order.find({ status: 'pending'}).exec(function(err, prizes){
-        if(err){
-            console.log(err)
-        } else {
-            res.render('admin/pendinglist',{
-                prizes: prizes
-            });
-        }
+router.get('/cashouts/pending', authLimiter.ensureAuthenticated(), async function(req, res){
+    let orders = await Order.find({status: 'pending'})
+        .populate('prize')
+        .populate('user')
+        .catch(function(err){
+            console.log('Error querying the Order collection.');
+            console.log(err);
+            res.status(500).send('Error querying the Order collection.');
+        });
+
+    return res.render('admin/pendinglist', {
+        orders: orders,
+        udata: req.user
     });
+
+    // Order.find({ status: 'pending'}).exec(function(err, orders){
+    //     if(err){
+    //         console.log(err);
+    //         return res.sendStatus(500);
+    //     } else {
+    //         return res.render('admin/pendinglist',{
+    //             orders: orders
+    //         });
+    //     }
+    // });
 });
 
-router.get('/cashouts/complete', authLimiter.ensureAuthenticated(), function(req, res){
+router.get('/cashouts/complete', authLimiter.ensureAuthenticated(), async function(req, res){
     Order.find({ status: 'complete'}).exec(function(err, prizes){
         if(err){
-            console.log(err)
+            console.log(err);
+            return res.sendStatus(500);
         } else {
-            res.render('admin/completelist',{
+            return res.render('admin/completelist',{
                 prizes: prizes
             });
         }
     });
 });
 
-router.post('/cashouts/completed', authLimiter.ensureAuthenticated(), function(req, res){
+router.post('/cashouts/completed', authLimiter.ensureAuthenticated(), async function(req, res){
     let cashID = req.body['cashout'];
 
-    Order.findOne({_id:cashID}).exec( function(e, o) {
+    Order.findOne({_id:cashID}).exec( async function(e, o) {
         if(e){
             console.log(e);
+            return res.sendStatus(500);
         } else {
-            o.completeCashout();
+            await o.completeCashout();
+            return res.redirect('/admin/cashouts/pending');
         }
     });
-    res.redirect('/admin/cashouts/pending');
 });
 
 module.exports = router;

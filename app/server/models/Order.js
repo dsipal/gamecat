@@ -2,10 +2,7 @@ const mongoose = require('mongoose');
 
 const order = new mongoose.Schema({
         prize: {type: mongoose.Schema.ObjectId, ref: 'Prize'},
-        option: {
-            point_cost: Number,
-            dollar_value: String
-        },
+        option: {type: Number},
         user: {type: mongoose.Schema.ObjectId, ref: 'User'},
         status: {type: String},
         order_date: {type: Date},
@@ -21,10 +18,16 @@ const order = new mongoose.Schema({
 
 const Order = mongoose.model('Order', order);
 
-order.methods.completeCashout = function(){
-    this.status = 'complete';
-    console.log(this);
-    this.save();
+order.methods.completeCashout = async function(){
+    try{
+        this.status = 'complete';
+        console.log(this);
+        await this.save();
+        return false;
+    } catch(err){
+        return err;
+    }
+
 };
 
 module.exports = Order;
