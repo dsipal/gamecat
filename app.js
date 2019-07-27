@@ -93,7 +93,7 @@ app.use('/offers/pwnpostback', function(req, res, next) {
     }
 });
 
-app.use('/admin/*', function(req, res, next) {
+app.use('/admin', function(req, res, next) {
     // filtering here, calls `res` method to stop progress or calls `next` to proceed
     let ip = req.ip ||
         req.headers['x-forwarded-for'] ||
@@ -102,7 +102,7 @@ app.use('/admin/*', function(req, res, next) {
         req.connection.socket.remoteAddress;
 
     // Our IPs
-    if (ip === '0.0.0.0') {
+    if (ip === '75.40.152.150' || ip === '71.217.163.98') {
         next();
     } else {
         res.end();
