@@ -64,18 +64,19 @@ router.get('/verify', async function(req, res){
     //TODO ensure that verification through email works, limit pages that user can access without verification
     let name = req.query.name;
     let id = req.query.id;
-    User.findOne({username:req.query.name}, function(e, o) {
+
+    User.findOne({username:name}, function(e, o) {
         if(e) {
-            console.log('Problem With Verification' + req.query.name + '   ' + req.query.id);
-        } else{
+            console.log('Problem With Verification' + name + '   ' + id);
+        } else {
             console.log('verifying');
-            o.confirmAccount(req.query.id).then(function(success){
+            o.confirmAccount(id).then(function(success){
                 if(success){
                     return res.redirect('/login');
                 } else {
                     return res.redirect('/');
                 }
-            })
+            });
         }
     })
 });

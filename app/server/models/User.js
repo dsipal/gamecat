@@ -161,16 +161,17 @@ user.methods.percolateReferrals = async function () {
         let refID = this._id;
         if(ref_by !== null){
             console.log("Checking for ref_by, points: " + this.points);
-            await User.findOne({username: ref_by}).exec(async function(err, user){
+            await User.findOne({username: ref_by}).then(async function(err, user){
+                if(user.referrals === null) user.referrals = [];
                 user.referrals.push(refID);
                 user.points += 100;
                 await user.save();
-            })
+            });
+            this.points += 100;
+            await this.save();
+            console.log("After checking for referral: " + this.points);
+            return false;
         }
-        this.points += 100;
-        await this.save();
-        console.log("After checking for referral: " + this.points);
-        return false;
     } catch(err) {
         return err;
     }
@@ -222,7 +223,7 @@ user.methods.unbanAccount = async function(){
 };
 
 //Checking if the token from URL matches token stored in user data, if yes, activate account
-user.methods.confirmAccount = async function(idToken, callback){
+user.methods.confirmAccount = async function(idToken){
     if(this.token === idToken){
         this.rank = 'activated';
         await this.save();
