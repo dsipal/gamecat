@@ -6,7 +6,11 @@
             <p>{{this.user.email}}</p>
             <p>{{this.option}}</p>
             <form>
+                <input type="text" id="code" name="code" placeholder="{{this.code}}">
                 <input type="hidden" id="cashout" name="cashout" value="{{this._id}}">
+                <input type="hidden" id="name" name="name" value="{{this.user.username}}">
+                <input type="hidden" id="email" name="email" value="{{this.user.email}}">
+                <input type="hidden" id="prize" name="prize" value="{{this.prize.name}}">
                 <button class="btn btn-primary" type="submit" formaction="/admin/cashouts/completed" formmethod="post">Complete</button>
             </form>
             <!--            <a class="btn btn-primary" href="/store/buy?id={{this._id}}">Purchase</a>-->

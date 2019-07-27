@@ -115,34 +115,51 @@ router.get('/cashouts/pending', authLimiter.ensureAuthenticated(), async functio
 });
 
 router.get('/cashouts/complete', authLimiter.ensureAuthenticated(), async function(req, res){
-    Order.find({ status: 'complete'}).then(function(err, prizes){
-        if(err){
+let orders = await Order.find({status: 'complete'})
+        .populate('prize')
+        .populate('user')
+        .catch(function(err){
+            console.log('Error querying the Order collection.');
             console.log(err);
-            return res.sendStatus(500);
-        } else {
-            return res.render('admin/completelist',{
-                prizes: prizes
-            });
-        }
-    }).catch(function(err){
-        console.log('Error querying the order collection.');
-        console.log(err);
-        return res.status(500).send('Error querying the order collection. ' + '\n' + err);
+            res.status(500).send('Error querying the Order collection.');
+        });
+
+    return res.render('admin/completelist', {
+        orders: orders,
+        udata: req.user
     });
 });
 
 router.post('/cashouts/completed', authLimiter.ensureAuthenticated(), async function(req, res){
     let cashID = req.body['cashout'];
+    let giftCode = req.body['code'];
+    let name = req.body['name'];
+    let email = req.body['email'];
+    let prize = req.body['prize'];
 
-    Order.findOne({_id:cashID}).exec( async function(e, o) {
-        if(e){
-            console.log(e);
-            return res.sendStatus(500);
-        } else {
-            await o.completeCashout();
-            return res.redirect('/admin/cashouts/pending');
-        }
+    console.log(giftCode, name, email, prize);
+
+    let order = await Order.findOne({_id:cashID, status:'pending'}).catch(function(err){
+        console.log('Error querying the Order collection.');
+        console.log(err);
+        return res.status(500).send('Error querying the Order collection.');
     });
+
+    console.log(order);
+
+    if(order !== null || order !== undefined){
+        console.log("order not null");
+        await order.completeCashout(giftCode).then(async function(success){
+            if(success){
+               await EM.dispatchCode(email,name,giftCode,prize);
+               return res.redirect('admin/cashouts/pending');
+            } else{
+               console.log("Unsuccessful in attempt to cashout " + prize);
+               return res.redirect('admin/cashouts/pending');
+            }
+        });
+    }
+
 });
 
 module.exports = router;

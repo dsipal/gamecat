@@ -14,21 +14,25 @@ const order = new mongoose.Schema({
 
 
 //instance methods
-order.methods.completeCashout = async function(id, giftCode){
-    try{
+
+order.methods.completeCashout = async function(giftCode){
         await Order.updateOne(
-            {_id: this._id},
-            {$set:{status: 'complete', code: giftCode}}
-        ).catch(function(err){
-            console.log('Error updating order: ' + id);
+            {
+                _id: this._id
+            },
+            {
+                $set:   {
+                    status: 'complete',
+                    code: giftCode
+                }
+            }
+        ).catch( function(err) {
+            console.log("Error updating order: " + this._id);
             console.log(err);
             return false;
         });
-        return true;
-    } catch(err){
-        console.log(err);
-        return false;
-    }
+
+    return true;
 };
 
 const Order = mongoose.model('Order', order);

@@ -26,6 +26,23 @@ exports.dispatchConfirm = async function(email, token, name) {
     });
 };
 
+exports.dispatchCode = async function(email, name, code, prize) {
+    console.log("Preparing to send " + prize + " code to " + name + " at " + email);
+    const data = {
+        from: emailAcc,
+        to: email,
+        subject: 'Your Giftcard Order',
+        template: 'sendprizecode',
+        "v:username": name,
+        "v:prizecode": code,
+        "v:prizename": prize
+    };
+
+    await mailgun.messages().send(data, function(err, bod){
+       console.log(bod);
+    });
+};
+
 exports.dispatchPasswordReset = async function(email, token, name, callback){
     const data = {
         from: emailAcc,
