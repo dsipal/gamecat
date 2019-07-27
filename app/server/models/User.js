@@ -160,8 +160,8 @@ user.methods.percolateReferrals = async function () {
         let ref_by = this.ref_by;
         let refID = this._id;
 
-        console.log("Checking for ref_by, points: " + this.points);
         if(ref_by !== null){
+
             await User.updateOne(
                 {
                     _id: ref_by
@@ -180,7 +180,7 @@ user.methods.percolateReferrals = async function () {
                     $inc: {points: 100}
                 }
             ).then(function(){
-                console.log("After checking for referral: " + this.points);
+                console.log("Referrals percolated for " + this.username + "  points: " + this.points);
             });
 
             return false;
