@@ -3,8 +3,11 @@
     padding: 50px; } }
 
 @media screen and (max-width: 991px) {
-  .account-info table {
-    width: 100%; } }
+  .account-info {
+    margin-right: -15px;
+    margin-left: -15px; }
+    .account-info h3 {
+      font-size: 18px; } }
 
 .account-info h3 {
   background-color: #8b33bb;
