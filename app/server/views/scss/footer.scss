@@ -12,7 +12,7 @@ footer{
 
   .social-icons{
     .social-icon{
-      margin-bottom: 15px;
+      margin: 5px;
       a{
         border: none;
         &:hover{
@@ -23,8 +23,8 @@ footer{
       }
       img{
         width: 100%;
-        max-width: 64px;
-        min-width: 32px;
+        max-width: 56px;
+        min-width: 48px;
       }
     }
   }

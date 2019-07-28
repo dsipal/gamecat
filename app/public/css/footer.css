@@ -6,7 +6,7 @@ footer {
     footer .site-description {
       width: 80%; } }
   footer .social-icons .social-icon {
-    margin-bottom: 15px; }
+    margin: 5px; }
     footer .social-icons .social-icon a {
       border: none; }
       footer .social-icons .social-icon a:hover img {
@@ -14,8 +14,8 @@ footer {
                 filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.55)); }
     footer .social-icons .social-icon img {
       width: 100%;
-      max-width: 64px;
-      min-width: 32px; }
+      max-width: 56px;
+      min-width: 48px; }
   footer .list-group {
     background: inherit; }
     footer .list-group .list-group-item {
