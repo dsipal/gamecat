@@ -21,7 +21,8 @@ $(document).ready(function(){
             if (status === 'success') window.location.href = '/account';
         },
         error : function(e){
-            if(e.responseJSON.error === 'not-verified'){
+            console.log(e);
+            if(e.responseText.includes('not-verified')){
                 lv.showLoginError('Login Failure', 'You need to verify your email first.');
             } else {
                 lv.showLoginError('Login Failure', 'Please check your username and/or password');
