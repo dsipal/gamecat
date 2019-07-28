@@ -1,5 +1,15 @@
 @import 'base';
 
+#adblock-off{
+  max-height: 256px;
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+  img{
+    height: 60%;
+  }
+}
+
 .offer-tabs{
   margin-bottom: 35px;
   div.col-6{
