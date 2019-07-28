@@ -1,14 +1,21 @@
-.account-info {
-  padding: 50px; }
-  .account-info h3 {
-    background-color: #8b33bb;
-    color: white;
-    text-align: center;
-    margin: 0 10% 0 10%;
-    padding: 5px; }
+@media screen and (min-width: 991px) {
+  .account-info {
+    padding: 50px; } }
+
+@media screen and (max-width: 991px) {
   .account-info table {
-    background-color: #495057 !important;
-    border: 5px solid #767D92 !important; }
+    width: 100%; } }
+
+.account-info h3 {
+  background-color: #8b33bb;
+  color: white;
+  text-align: center;
+  margin: 0 10% 0 10%;
+  padding: 5px; }
+
+.account-info table {
+  background-color: #495057 !important;
+  border: 5px solid #767D92 !important; }
 
 .img-thumbnail {
   background-color: inherit;

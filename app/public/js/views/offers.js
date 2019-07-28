@@ -34,6 +34,9 @@ $(document).ready(function(){
             if(data === undefined){
                 observer.disconnect();
             } else {
+                if($('#adblock-off')){
+                    $('#adblock-off').remove();
+                }
                 $.each(data.offers, function(key, offer){
                     var element = `
                     <li class="col-md-3 justify-content-center">
@@ -68,7 +71,6 @@ $(document).ready(function(){
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry =>{
-            console.log(entry.intersectionRatio);
             if(entry.intersectionRatio > 0){
                 let offset = limit * page;
                 loadMore(page, limit, offset, offer_list);

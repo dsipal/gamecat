@@ -1,6 +1,8 @@
 @import "base";
 .account-info{
-  padding: 50px;
+  @media screen and (min-width: $breakpoint-md){
+    padding: 50px;
+  }
   h3{
     background-color: $accent-purple;
     color: white;
