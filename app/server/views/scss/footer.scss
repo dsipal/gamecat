@@ -10,11 +10,21 @@ footer{
     }
   }
 
+  @media screen and (max-width: $breakpoint-sm) {
+    .navbar-brand{
+      font-size: 16px;
+    }
+  }
   .social-icons{
+    justify-content: center;
     .social-icon{
-      margin: 5px;
+      padding: 10px;
+      min-width: 58px;
       a{
         border: none;
+        img{
+          height: 100%;
+        }
         &:hover{
           img{
             filter: drop-shadow(0px 0px 10px rgba(255,255,255,0.55));
