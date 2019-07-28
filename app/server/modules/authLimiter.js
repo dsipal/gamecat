@@ -3,7 +3,8 @@ module.exports.ensureAuthenticated = function(){
     return function(req, res, next){
         if(!req.isAuthenticated || !req.isAuthenticated()){
             console.log('Failed login attempt from ' + req.user);
-            res.status(401).send('not-authenticated');
+            //res.status(401).send('not-authenticated');
+            res.redirect('/login');
         } else if(req.user.rank === 'new'){
             console.log('Non-verified email attempt from ' + req.user);
             res.status(401).send('not-verified');
