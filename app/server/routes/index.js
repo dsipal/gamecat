@@ -27,7 +27,7 @@ router.post('/login',
         session: true,
     }),
     async function(req, res){
-        console.log(req.user.username + ' logging in.');
+        console.log(req.body['username'] + ' logging in.');
         await req.session.save();
         if (req.body['remember-me'] === 'false'){
             return res.redirect('/account');

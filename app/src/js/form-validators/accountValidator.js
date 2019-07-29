@@ -20,7 +20,7 @@ function AccountValidator()
     this.alert.modal({ show : false, keyboard : true, backdrop : true});
 
     this.validateUsername = function(s){
-        let regex = new RegExp(`^(?!.*__.*)(?!.*\\.\\..*)[a-z0-9_.]+$`);
+        let regex = new RegExp(`^(?!.*__.*)(?!.*\\.\\..*)[a-zA-Z0-9_.]+$`);
         return regex.test(s);
     };
 
