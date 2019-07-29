@@ -27,6 +27,7 @@ router.post('/login',
         session: true,
     }),
     async function(req, res){
+        console.log(req.body['username'] + ' logging in.');
         await req.session.save();
         if (req.body['remember-me'] === 'false'){
             return res.redirect('/account');
@@ -42,6 +43,7 @@ router.post('/login',
 );
 
 router.get('/logout', authLimiter.ensureAuthenticated(), function(req, res){
+    console.log(req.username + ' logging out.');
     res.clearCookie('login');
     req.session.destroy(function(e){
         if(e) {
@@ -72,6 +74,7 @@ router.post('/signup', function(req, res){
     if(req.isAuthenticated && req.isAuthenticated()){
         return res.redirect('/account');
     } else {
+        console.log('Registration for ' + req.body['username']);
         let userData = {
             username:   req.body['username'],
             password:   req.body['password'],
@@ -108,10 +111,12 @@ router.post('/lost-password', async function(req, res){
     let resetEmail = req.body['email'];
     User.findOne({email:resetEmail}, async function(e, o) {
         if(e) {
-            console.log('Problem With Reset' + req.query.name + '   ' + req.query.id);
+            console.log('Problem with password reset' + req.query.name + '   ' + req.query.id);
         } else if(!o){
+            console.log('Problem with password reset' + req.query.name + '   ' + req.query.id);
             return res.status(400).send('Reset email not sent, invalid email');
         } else{
+            console.log('Sent password reset email to ' + o.username);
             await EM.dispatchPasswordReset(resetEmail, o.updateToken(), o.username, function(err){
                 if(!err){
                     return res.redirect('/');
@@ -128,13 +133,15 @@ router.get('/reset', authLimiter.ensureAuthenticated(), async function(req, res)
     console.log('Reset attempt by: ' + req.query.name + ' TOKEN: ' + req.query.id);
     await User.findOne({username:req.query.name}, function(e, o){
         if(e || !o){
+            console.log('Invalid reset attempt for ' + req.query.name);
             return res.redirect('/');
         } else {
             if(o.token === req.query.id){
-                console.log('Valid Token');
+                console.log('Resetting password for ' + o.username);
                 req.session.token = o.token;
                 return res.render('index/reset', { title : 'Reset Password' });
             } else{
+                console.log('Invalid reset token for ' + req.username);
                 return res.status(400).send('Invalid Reset Token');
             }
         }
@@ -150,15 +157,15 @@ router.post('/reset', authLimiter.ensureAuthenticated(), async function(req, res
         if(o){
             await o.resetPassword(newPass, newToken,function(success){
                 if(success){
-                    console.log('Password Reset Complete for: ' + o.username);
+                    console.log('Password reset complete for: ' + o.username);
                     return res.redirect('/');
                 } else{
-                    console.log('Password Reset Failed');
+                    console.log('Password reset attempt failed.');
                     return res.sendStatus(500);
                 }
             });
         } else {
-            console.log('Password Reset User Not Found');
+            console.log('User not found for password reset.');
             return res.sendStatus(400);
         }
     });
