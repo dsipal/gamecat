@@ -19,7 +19,8 @@ router.get('/users', authLimiter.ensureAuthenticated(), function(req, res){
             console.log(err)
         } else {
             return res.render('admin/userlist',{
-                users: users
+                users: users,
+                udata: req.user
             });
         }
     })
@@ -31,7 +32,8 @@ router.get('/users/banlist', authLimiter.ensureAuthenticated(), function(req, re
             console.log(err);
         } else {
             return res.render('admin/banlist', {
-                users: busers
+                users: busers,
+                udata: req.user
             });
         }
     });
@@ -80,7 +82,8 @@ router.get('/prizes', authLimiter.ensureAuthenticated(), async function(req, res
             return res.sendStatus(500);
         } else {
             return res.render('admin/prizelist',{
-                prizes: prizes
+                prizes: prizes,
+                udata: req.user
             });
         }
     }).catch(function(err){
