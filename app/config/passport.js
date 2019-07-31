@@ -44,11 +44,11 @@ module.exports = function(passport) {
     passport.use(new FbStrategy({
         clientID: '1155941491256574',
         clientSecret: 'e45b2e96a79685e03688ca1c54b5a864',
-        callbackURL: '/login/auth/facebook/cback'
+        callbackURL: 'https://gamecat.co/login/auth/facebook/cback'
     },
     function(accessToken, refreshToken, profile, done) {
         User.findOne({
-            'facebook.id': profile.id
+            'facebookID': profile.id
         }, function(err, user) {
             if (err) {
                 return done(err);
@@ -59,7 +59,7 @@ module.exports = function(passport) {
                     username: profile.displayName,
                     email: profile.emails[0].value,
                     password: profile.username,
-                    facebook: profile._json
+                    facebookID: profile.id
                 });
                 user.save(function(err) {
                     if (err) console.log(err);
