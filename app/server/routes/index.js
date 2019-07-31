@@ -42,6 +42,16 @@ router.post('/login',
     }
 );
 
+router.get('/login/auth/facebook/cback',
+    passport.authenticate('facebook',{ failureRedirect: '/login' }),
+    function(req, res){
+        res.redirect('/');
+    }
+);
+
+router.get('/login/auth/facebook',
+    passport.authenticate('facebook'));
+
 router.get('/logout', authLimiter.ensureAuthenticated(), function(req, res){
     console.log(req.username + ' logging out.');
     res.clearCookie('login');
