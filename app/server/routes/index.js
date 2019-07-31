@@ -83,7 +83,13 @@ router.get('/signup', function(req, res) {
 
 router.get('/gsignup', passport.authenticate('google', {scope: ['profile']}) );
 
-router.get('/goauth', passport.authenticate('google', {failureRedirect: '/login'}), function(req, res){
+router.get('/goauth', passport.authenticate('google', {
+    scope: [
+        'https://www.googleapis.com/auth/userinfo.profile',
+        'https://www.googleapis.com/auth/userinfo.email'
+    ],
+    failureRedirect: '/login'}
+), function(req, res){
     console.log('test');
 });
 
