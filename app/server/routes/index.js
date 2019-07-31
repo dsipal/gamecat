@@ -2,6 +2,7 @@ const CT = require('../modules/country-list');
 const EM = require('../modules/email-dispatcher');
 const User = require('../models/User');
 const passport = require('passport');
+let GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const express = require('express');
 let router = express.Router();
 const authLimiter = require('../modules/authLimiter');
@@ -68,6 +69,12 @@ router.get('/signup', function(req, res) {
         });
     }
 
+});
+
+router.get('/gsignup', passport.authenticate('google', {scope: ['profile']}) );
+
+router.get('/goauth', passport.authenticate('google', {failureRedirect: '/login'}), function(req, res){
+    console.log('test');
 });
 
 router.post('/signup', function(req, res){

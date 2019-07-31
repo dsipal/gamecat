@@ -1,5 +1,6 @@
 //TODO clean up code in passport.js, capitalization and wording of text shown to user.
 const LocalStrategy = require('passport-local').Strategy;
+const GoogleOAuth = require('passport-google-oauth').OAuth2Strategy;
 const User = require('../server/models/User');
 
 module.exports = function(passport) {
@@ -40,4 +41,17 @@ module.exports = function(passport) {
         });
     }));
 
+    passport.use(new GoogleOAuth({
+        clientID: process.env.GOAUTH_ID,
+        clientSecret: process.env.GOAUTH_SECRET,
+        callbackURL: process.env.GOAUTH_REDIR,
+    },
+        function(accessToken, refreshToken, profile, done) {
+            console.log(profile);
+            User.findOne({ email: profile.email }, function(err, user){
+                if(err) return done(err, false);
+
+
+            })
+        }))
 };
