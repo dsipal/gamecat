@@ -44,10 +44,13 @@ module.exports = function(passport) {
     passport.use(new FbStrategy({
         clientID: '1155941491256574',
         clientSecret: 'e45b2e96a79685e03688ca1c54b5a864',
-        callbackURL: 'https://gamecat.co/login/auth/facebook/cback'
+        callbackURL: 'https://gamecat.co/login/auth/facebook/cback',
+        profileFields: ['email', 'displayName']
     },
     function(accessToken, refreshToken, profile, done) {
         console.log(profile);
+        console.log(accessToken);
+        console.log(refreshToken);
         User.findOne({
             'facebookID': profile.id
         }, function(err, user) {
