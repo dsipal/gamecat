@@ -43,48 +43,62 @@ module.exports = function(passport) {
     }));
 
     passport.use(new GoogleOAuth({
-        clientID: process.env.GOAUTH_ID,
-        clientSecret: process.env.GOAUTH_SECRET,
-        callbackURL: process.env.GOAUTH_REDIR,
-    },
+            clientID: process.env.GOAUTH_ID,
+            clientSecret: process.env.GOAUTH_SECRET,
+            callbackURL: process.env.GOAUTH_REDIR,
+        },
         function(accessToken, refreshToken, profile, done) {
             console.log(profile);
             User.findOne({ email: profile.email }, function(err, user){
                 if(err) return done(err, false);
 
+                if(!user){
+                    user = new User({
+                        username: profile.displayName,
+                        email: profile.emails[0].value,
+                        google: profile._json,
+                    });
+                    user.save(function(err){
+                        console.log(err);
+                        return done(err, user);
+                    });
+                } else {
+                    return done(err, user);
+                }
 
             })
-        }))
+        })
+    );
+
     passport.use(new FbStrategy({
-        clientID: '1155941491256574',
-        clientSecret: 'e45b2e96a79685e03688ca1c54b5a864',
-        callbackURL: '/login/auth/facebook/cback'
-    },
-    function(accessToken, refreshToken, profile, done) {
-        User.findOne({
-            'facebook.id': profile.id
-        }, function(err, user) {
-            if (err) {
-                return done(err);
-            }
-            //No user was found... so create a new user with values from Facebook (all the profile. stuff)
-            if (!user) {
-                user = new User({
-                    username: profile.displayName,
-                    email: profile.emails[0].value,
-                    password: profile.username,
-                    facebook: profile._json
-                });
-                user.save(function(err) {
-                    if (err) console.log(err);
+            clientID: '1155941491256574',
+            clientSecret: 'e45b2e96a79685e03688ca1c54b5a864',
+            callbackURL: '/login/auth/facebook/cback'
+        },
+        function(accessToken, refreshToken, profile, done) {
+            User.findOne({
+                'facebook.id': profile.id
+            }, function(err, user) {
+                if (err) {
+                    return done(err);
+                }
+                //No user was found... so create a new user with values from Facebook (all the profile. stuff)
+                if (!user) {
+                    user = new User({
+                        username: profile.displayName,
+                        email: profile.emails[0].value,
+                        facebook: profile._json
+                    });
+                    user.save(function(err) {
+                        if (err) console.log(err);
+                        return done(err, user);
+                    });
+                } else {
+                    //found user. Return
                     return done(err, user);
-                });
-            } else {
-                //found user. Return
-                return done(err, user);
-            }
-        });
-    }
-    ));
+                }
+            });
+        })
+    );
 
 };
