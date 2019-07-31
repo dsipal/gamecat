@@ -56,10 +56,11 @@ module.exports = function(passport) {
             //No user was found... so create a new user with values from Facebook (all the profile. stuff)
             if (!user) {
                 user = new User({
-                    username: profile.displayName,
+                    username: profile.name,
                     email: profile.email,
-                    password: profile.username,
-                    facebookID: profile.id
+                    password: '420420',
+                    facebookID: profile.id,
+                    reg_date: new Date(),
                 });
                 user.save(function(err) {
                     if (err) console.log(err);
