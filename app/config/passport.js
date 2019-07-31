@@ -49,6 +49,7 @@ module.exports = function(passport) {
         },
         function(accessToken, refreshToken, profile, done) {
             console.log(profile);
+            console.log(profile.emails);
             User.findOne({ email: profile.email }, function(err, user){
                 if(err) return done(err, false);
 
