@@ -50,7 +50,7 @@ router.get('/login/auth/facebook/cback',
 );
 
 router.get('/login/auth/facebook',
-    passport.authenticate('facebook'));
+    passport.authenticate('facebook', { scope: ['email']}));
 
 router.get('/logout', authLimiter.ensureAuthenticated(), function(req, res){
     console.log(req.username + ' logging out.');

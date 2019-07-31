@@ -47,6 +47,7 @@ module.exports = function(passport) {
         callbackURL: 'https://gamecat.co/login/auth/facebook/cback'
     },
     function(accessToken, refreshToken, profile, done) {
+        console.log(profile);
         User.findOne({
             'facebookID': profile.id
         }, function(err, user) {
@@ -56,7 +57,7 @@ module.exports = function(passport) {
             //No user was found... so create a new user with values from Facebook (all the profile. stuff)
             if (!user) {
                 user = new User({
-                    username: profile.first_name,
+                    username: profile.displayName,
                     email: profile.email,
                     password: '420420',
                     facebookID: profile.id,
