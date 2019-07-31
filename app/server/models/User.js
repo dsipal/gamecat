@@ -16,7 +16,6 @@ const user = new mongoose.Schema({
         },
         password: {
             type: String,
-            required: true
         },
         email: {
             type: String,
@@ -39,6 +38,7 @@ const user = new mongoose.Schema({
         token: String,
         email_optin: Boolean,
         facebookID: String, //TODO Remove when implementing better social sign-in system
+        google: JSON, //TODO Remove when implementing better social sign-in system
     },
     {collection: 'Users'}
 );

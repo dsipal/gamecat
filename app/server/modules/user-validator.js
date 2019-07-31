@@ -39,8 +39,6 @@ class UserValidator{
         };
 
         this.validateRef = function(){
-            console.log(this.user.ref_by);
-            console.log(typeof (this.user.ref_by));
             if(this.user.ref_by === ""){
                 console.log('no ref!');
                 this.user.ref_by = null;

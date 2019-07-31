@@ -1,5 +1,6 @@
 //TODO clean up code in passport.js, capitalization and wording of text shown to user.
 const LocalStrategy = require('passport-local').Strategy;
+const GoogleOAuth = require('passport-google-oauth').OAuth2Strategy;
 const FbStrategy = require('passport-facebook').Strategy;
 const User = require('../server/models/User');
 
@@ -40,6 +41,34 @@ module.exports = function(passport) {
             }
         });
     }));
+
+    passport.use(new GoogleOAuth({
+            clientID: process.env.GOAUTH_ID,
+            clientSecret: process.env.GOAUTH_SECRET,
+            callbackURL: process.env.GOAUTH_REDIR,
+        },
+        function(accessToken, refreshToken, profile, done) {
+            console.log(profile);
+            User.findOne({ email: profile.email }, function(err, user){
+                if(err) return done(err, false);
+
+                if(!user){
+                    user = new User({
+                        username: profile.displayName,
+                        email: profile.emails[0].value,
+                        google: profile._json,
+                    });
+                    user.save(function(err){
+                        console.log(err);
+                        return done(err, user);
+                    });
+                } else {
+                    return done(err, user);
+                }
+
+            })
+        })
+    );
 
     passport.use(new FbStrategy({
         clientID: '1155941491256574',
