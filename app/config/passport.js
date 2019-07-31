@@ -61,7 +61,7 @@ module.exports = function(passport) {
             if (!user) {
                 user = new User({
                     username: profile.displayName,
-                    email: profile.email,
+                    email: profile.emails[0].value,
                     password: '420420',
                     facebookID: profile.id,
                     reg_date: new Date(),
