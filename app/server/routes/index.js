@@ -41,7 +41,7 @@ router.post('/login',
     }
 );
 
-router.get('/login/instagram', passport.authenticate('instagram', {scope: ['profile', 'email']}) );
+router.get('/login/instagram', passport.authenticate('instagram') );
 
 router.get('/login/instagram/callback',
     passport.authenticate('instagram', { failureRedirect: '/login' }),
