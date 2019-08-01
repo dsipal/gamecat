@@ -106,6 +106,7 @@ module.exports = function(passport) {
                 facebookID: profile.id,
             };
             let user = User.findOrCreate(userData);
+            console.log('we got to done!');
             return done(null, user);
         })
     );
