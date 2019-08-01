@@ -161,6 +161,7 @@ user.statics.formatNewAccount = function(newData, callback){
 user.statics.addNewAccount  = function(newData, callback){
     User.create(newData, function(e,o){
         if(e) {
+            console.log('error creating new account' + newData);
             return callback(e, null);
         } else {
             console.log('Inside addNewAccount, user created: ' + o);
