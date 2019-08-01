@@ -2,6 +2,7 @@
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleOAuth = require('passport-google-oauth').OAuth2Strategy;
 const FbStrategy = require('passport-facebook').Strategy;
+const InstaStrategy = require('passport-instagram').Strategy;
 const User = require('../server/models/User');
 
 module.exports = function(passport) {
@@ -88,6 +89,23 @@ module.exports = function(passport) {
             //     console.log(err);
             //     return done(err);
             // });
+        })
+    );
+
+    passport.use(new InstaStrategy({
+            clientID: process.env.IGAUTH_ID,
+            clientSecret: process.env.IGAUTH_SECRET,
+            callbackURL: 'https://gamecat.co/login/instagram/callback',
+        },
+        function(accessToken, refreshToken, profile, done) {
+            console.log(profile);
+            let userData = {
+                username: profile.displayName,
+                email: profile.emails[0].value,
+                facebookID: profile.id,
+            };
+            let user = User.findOrCreate(userData);
+            return done(null, user);
         })
     );
 

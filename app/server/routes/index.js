@@ -40,6 +40,16 @@ router.post('/login',
         }
     }
 );
+
+router.get('/login/instagram', passport.authenticate('instagram', {scope: ['profile', 'email']}) );
+
+router.get('/login/instagram/callback',
+    passport.authenticate('instagram', { failureRedirect: '/login' }),
+    function(req, res) {
+        res.redirect('/');
+    }
+);
+
 router.get('/login/google', passport.authenticate('google', {scope: ['profile', 'email']}) );
 
 router.get('/login/facebook', passport.authenticate('facebook', { scope: ['email']}));
