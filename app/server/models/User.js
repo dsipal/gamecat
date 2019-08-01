@@ -124,7 +124,7 @@ user.statics.validateNewAccount = function(newData, onFail, callback){
 //ensures that username & email are unique, and that referrer exists.
 user.statics.formatNewAccount = function(newData, callback){
     if(newData.password) newData.password = saltAndHash(newData.password);
-    if(!newData.googleID || !newData.facebookID) {
+    if(!newData.googleID && !newData.facebookID) {
         newData.rank = 'new';
     } else {
         newData.rank = 'activated';
