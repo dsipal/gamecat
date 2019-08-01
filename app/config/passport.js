@@ -46,6 +46,7 @@ module.exports = function(passport) {
             clientID: process.env.GOAUTH_ID,
             clientSecret: process.env.GOAUTH_SECRET,
             callbackURL: 'https://gamecat.co/login/google/callback',
+            passReqToCallback: true,
         },
         function(accessToken, refreshToken, profile, done) {
             let userData = {
