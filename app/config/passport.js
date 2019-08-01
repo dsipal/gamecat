@@ -53,7 +53,7 @@ module.exports = function(passport) {
             console.log(profile);
             let userData = {
                 username: profile.displayName,
-                email: profile.username,
+                email: profile.emails[0].value,
                 googleID: profile.id,
             };
             User.findOrCreate(userData, function(err, user){
