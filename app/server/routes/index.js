@@ -43,7 +43,7 @@ router.post('/login',
 );
 router.get('/login/google', passport.authenticate('google', {scope: ['profile', 'email']}) );
 
-router.get('/login/auth/facebook', passport.authenticate('facebook', { scope: ['email']}));
+router.get('/login/facebook', passport.authenticate('facebook', { scope: ['email']}));
 
 router.get('/login/google/callback', passport.authenticate('google', {
     failureRedirect: '/login'}
@@ -52,7 +52,7 @@ router.get('/login/google/callback', passport.authenticate('google', {
     res.redirect('/');
 });
 
-router.get('/login/auth/facebook/callback',
+router.get('/login/facebook/callback',
     passport.authenticate('facebook',{ failureRedirect: '/login' }),
     function(req, res){
         res.redirect('/');
