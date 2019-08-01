@@ -114,9 +114,13 @@ user.statics.validateNewAccount = function(newData, onFail, callback){
 //ensures that username & email are unique, and that referrer exists.
 user.statics.formatNewAccount = function(newData, callback){
     if(newData.password) newData.password = saltAndHash(newData.password);
+    if(!newData.googleID || !newData.facebookID) {
+        newData.rank = 'new';
+    } else {
+        newData.rank = 'activated';
+    }
     newData.reg_date = new Date();
     newData.points = 0;
-    newData.rank = 'new';
     newData.token = crypto.randomBytes(20).toString('hex');
 
     if(newData.ref_by !== null){
@@ -143,7 +147,7 @@ user.statics.addNewAccount  = function(newData, callback){
         if(e) {
             return callback(e, null);
         } else {
-            emdisp.dispatchConfirm(newData.email, newData.token, newData.username);
+            if(newData.rank === 'new') emdisp.dispatchConfirm(newData.email, newData.token, newData.username);
             return callback(null,o);
         }
     });
