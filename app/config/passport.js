@@ -49,12 +49,12 @@ module.exports = function(passport) {
             passReqToCallback: true,
         },
         function(accessToken, refreshToken, profile, done) {
+            console.log(profile);
             let userData = {
                 username: profile.displayName,
                 email: profile.emails[0].value,
                 googleID: profile.id,
             };
-            console.log(profile);
             User.findOrCreate(userData).then(function(user){
                 return done(null, user);
             }).catch(function(err){
