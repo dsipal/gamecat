@@ -45,7 +45,7 @@ router.get('/login/google', passport.authenticate('google', {scope: ['profile', 
 router.get('/login/facebook', passport.authenticate('facebook', { scope: ['email']}));
 
 router.get('/login/google/callback', passport.authenticate('google'), function(req, res){
-    console.log(res);
+    console.log(req);
     //res.redirect('/');
 });
 
