@@ -105,7 +105,7 @@ module.exports = function(passport) {
                 email: profile.username,
                 facebookID: profile.id,
             };
-            let user = User.findOrCreate(userData);
+            let user = await User.findOrCreate(userData);
             console.log('we got to done!');
             return done(null, user);
         })
