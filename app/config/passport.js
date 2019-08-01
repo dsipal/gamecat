@@ -50,7 +50,7 @@ module.exports = function(passport) {
         function(accessToken, refreshToken, profile, done) {
             let userdata = {
                 username: profile.displayName,
-                email: profile.email,
+                email: profile.emails[0].value,
                 googleID: profile.id,
             };
             console.log(profile);
