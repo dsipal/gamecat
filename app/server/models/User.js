@@ -47,7 +47,7 @@ user.plugin(uniqueValidator);
 
 user.statics.findOrCreate = async function(userData) {
     console.log(userData);
-    User.findOne({email: userData.email}).then(function(err, user){
+    User.findOne({email: userData.email}).then(function(user, err){
         console.log('User:' + user);
         console.log('Error:' + err);
         if(user){
