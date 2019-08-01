@@ -131,7 +131,7 @@ user.statics.formatNewAccount = function(newData, callback){
     newData.points = 0;
     newData.token = crypto.randomBytes(20).toString('hex');
 
-    if(newData.ref_by !== null){
+    if(newData.ref_by){
         console.log('Populating ' + newData.ref_by +' as referrer for new user: ' + newData.username);
         User.findOne({username: newData.ref_by}).then(function(err, user){
             if(err){
