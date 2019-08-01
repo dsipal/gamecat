@@ -32,7 +32,6 @@ router.post('/login',
         if (req.body['remember-me'] === 'false'){
             return res.redirect('/account');
         } else {
-            //TODO *removed call to AM- moved function to User.js *
             await User.generateLoginKey(req.user.username, req.ip, function(key){
                 res.cookie('login', key, { maxAge: 900000 });
                 return res.redirect('/account');
