@@ -8,7 +8,6 @@ const authLimiter = require('../modules/authLimiter');
 const UserValidator = require('../modules/user-validator');
 
 router.get('/', function(req, res){
-    User.findOrCreate({email: 'test123@gmail.com'});
     return res.render('index/index', {udata: req.user});
 });
 
