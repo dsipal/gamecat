@@ -49,9 +49,17 @@ user.statics.findOrCreate = async function(userdata) {
     User.findOne({email: userdata.email}).then(function(u, err){
         if(u){
             console.log('User already exists for email: ' + userdata.email);
+            return u;
         } else {
             console.log('User not found for email: ' + userdata.email + ' creating account.');
-
+            User.formatNewAccount(userdata, function(err, o){
+                if(err){
+                    console.log(err);
+                    return err;
+                } else {
+                    return o;
+                }
+            });
         }
     }).catch(function(err){
         console.log(err);
