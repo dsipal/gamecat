@@ -43,16 +43,25 @@ router.post('/login',
         }
     }
 );
+router.get('/login/google', passport.authenticate('google', {scope: ['profile', 'email']}) );
 
-router.get('/login/auth/facebook/cback',
+router.get('/login/auth/facebook', passport.authenticate('facebook', { scope: ['email']}));
+
+router.get('/login/google/callback', passport.authenticate('google', {
+    failureRedirect: '/login'}
+), function(req, res){
+    console.log(res);
+    res.redirect('/');
+});
+
+router.get('/login/auth/facebook/callback',
     passport.authenticate('facebook',{ failureRedirect: '/login' }),
     function(req, res){
         res.redirect('/');
     }
 );
 
-router.get('/login/auth/facebook',
-    passport.authenticate('facebook', { scope: ['email']}));
+
 
 router.get('/logout', authLimiter.ensureAuthenticated(), function(req, res){
     console.log(req.username + ' logging out.');
@@ -82,13 +91,7 @@ router.get('/signup', function(req, res) {
 
 });
 
-router.get('/gsignup', passport.authenticate('google', {scope: ['profile', 'email']}) );
 
-router.get('/goauth', passport.authenticate('google', {
-    failureRedirect: '/login'}
-), function(req, res){
-    console.log('test');
-});
 
 router.post('/signup', function(req, res){
     if(req.isAuthenticated && req.isAuthenticated()){

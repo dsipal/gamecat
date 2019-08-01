@@ -45,36 +45,28 @@ module.exports = function(passport) {
     passport.use(new GoogleOAuth({
             clientID: process.env.GOAUTH_ID,
             clientSecret: process.env.GOAUTH_SECRET,
-            callbackURL: process.env.GOAUTH_REDIR,
+            callbackURL: 'https://gamecat.co/login/google/callback',
         },
         function(accessToken, refreshToken, profile, done) {
-            console.log(profile);
-            console.log(profile.emails);
-            User.findOne({ email: profile.email }, function(err, user){
-                if(err) return done(err, false);
-
-                if(!user){
-                    user = new User({
-                        username: profile.displayName,
-                        email: profile.emails[0].value,
-                        google: profile._json,
-                    });
-                    user.save(function(err){
-                        console.log(err);
-                        return done(err, user);
-                    });
-                } else {
-                    return done(err, user);
-                }
-
-            })
+            let userdata = {
+                username: profile.displayName,
+                email: profile.emails[0].value,
+                googleID: profile.id,
+            };
+            User.findOrCreate(userdata).then(function(user){
+                return done(null, user);
+            }).catch(function(err){
+                console.log('Error with Google OAuth for ' + userdata.username);
+                console.log(err);
+                return done(err);
+            });
         })
     );
 
     passport.use(new FbStrategy({
-        clientID: '1155941491256574',
-        clientSecret: 'e45b2e96a79685e03688ca1c54b5a864',
-        callbackURL: 'https://gamecat.co/login/auth/facebook/cback',
+        clientID: process.env.FBAUTH_ID,
+        clientSecret: process.env.FBAUTH_SECRET,
+        callbackURL: 'https://gamecat.co/login/facebook/callback',
         profileFields: ['email', 'displayName']
     },
     function(accessToken, refreshToken, profile, done) {
