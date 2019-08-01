@@ -45,24 +45,24 @@ const user = new mongoose.Schema({
 
 user.plugin(uniqueValidator);
 
-user.statics.findOrCreate = async function(userData) {
+user.statics.findOrCreate = async function(userData, callback) {
     console.log(userData);
     User.findOne({email: userData.email}).then(function(user, err){
         console.log('User:' + user);
         console.log('Error:' + err);
         if(user){
-            console.log('User already exists for email: ' + userData.email);
-            return user;
+            console.log('User already exists for email: ' + userData.email + ' that user is : ' + user);
+            callback(null, user);
         } else {
             console.log('User not found for email: ' + userData.email + ' creating account.');
             User.formatNewAccount(userData, function(err, newUser){
                 console.log('callback on formatNewAccount has been tripped, user: ' + newUser);
                 if(err){
                     console.log(err);
-                    return err;
+                    callback(err, null);
                 } else {
                     console.log('returning the user: ' + newUser);
-                    return newUser;
+                    callback(null, newUser);
                 }
             });
         }

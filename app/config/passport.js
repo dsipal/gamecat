@@ -105,10 +105,14 @@ module.exports = function(passport) {
                 email: profile.username,
                 facebookID: profile.id,
             };
-            User.findOrCreate(userData).then( function(user){
-                console.log('User right before done: ' + user);
-                console.log('we got to done!');
-                return done(null, user);
+            User.findOrCreate(userData, function(err, user){
+                if(err){
+                    return done(err);
+                } else {
+                    console.log('User right before done: ' + user);
+                    console.log('we got to done!');
+                    return done(null, user);
+                }
             });
 
         })
