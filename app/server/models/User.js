@@ -45,6 +45,21 @@ const user = new mongoose.Schema({
 
 user.plugin(uniqueValidator);
 
+user.statics.findOrCreate = async function(userdata) {
+    User.findOne({email: userdata.email}).then(function(u, err){
+        if(u){
+            console.log('User already exists for email: ' + userdata.email);
+        } else {
+            console.log('User not found for email: ' + userdata.email + ' creating account.');
+
+        }
+    }).catch(function(err){
+        console.log(err);
+        return err;
+    });
+};
+
+
 // class/static functions //
 user.statics.getAllRecords = function(callback){
     User.find().toArray(
@@ -60,7 +75,7 @@ user.statics.deleteAllAccounts = function(){
 };
 
 user.statics.getUser = function(uname){
-    User.findOne({username: uname}).exec(function(err, obj){
+    User.findOne({username: uname}).then(function(err, obj){
         if(err){
             console.log(err);
         } else {
@@ -98,14 +113,14 @@ user.statics.validateNewAccount = function(newData, onFail, callback){
 //takes in registration form data, callback is handled in routes.
 //ensures that username & email are unique, and that referrer exists.
 user.statics.formatNewAccount = function(newData, callback){
-    newData.password = saltAndHash(newData.password);
+    if(newData.password) newData.password = saltAndHash(newData.password);
     newData.reg_date = new Date();
     newData.points = 0;
     newData.rank = 'new';
     newData.token = crypto.randomBytes(20).toString('hex');
 
     if(newData.ref_by !== null){
-        User.findOne({username: newData.ref_by}).exec(function(err, user){
+        User.findOne({username: newData.ref_by}).then(function(err, user){
             if(err){
                 console.log(err);
                 callback(err, null);
