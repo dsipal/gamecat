@@ -48,16 +48,16 @@ module.exports = function(passport) {
             callbackURL: 'https://gamecat.co/login/google/callback',
         },
         function(accessToken, refreshToken, profile, done) {
-            let userdata = {
+            let userData = {
                 username: profile.displayName,
                 email: profile.emails[0].value,
                 googleID: profile.id,
             };
             console.log(profile);
-            User.findOrCreate(userdata).then(function(user){
+            User.findOrCreate(userData).then(function(user){
                 return done(null, user);
             }).catch(function(err){
-                console.log('Error with Google OAuth for ' + userdata.username);
+                console.log('Error with Google OAuth for ' + userData.username);
                 console.log(err);
                 return done(err);
             });
