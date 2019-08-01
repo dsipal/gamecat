@@ -100,31 +100,32 @@ module.exports = function(passport) {
     );
 
     passport.use(new FbStrategy({
-        clientID: process.env.FBAUTH_ID,
-        clientSecret: process.env.FBAUTH_SECRET,
-        callbackURL: 'https://gamecat.co/login/facebook/callback',
-        profileFields: ['email', 'displayName']
-    },
-    function(accessToken, refreshToken, profile, done) {
+            clientID: process.env.FBAUTH_ID,
+            clientSecret: process.env.FBAUTH_SECRET,
+            callbackURL: 'https://gamecat.co/login/facebook/callback',
+            profileFields: ['email', 'displayName']
+        },
+        function(accessToken, refreshToken, profile, done) {
 
-        console.log(profile);
-        let userData = {
-            username: profile.displayName,
-            email: profile.emails[0].value,
-            facebookID: profile.id,
-        };
-        User.findOrCreate(userData, function(err, user){
-            if(err){
+            console.log(profile);
+            let userData = {
+                username: profile.displayName,
+                email: profile.emails[0].value,
+                facebookID: profile.id,
+            };
+            User.findOrCreate(userData, function(err, user){
+                if(err){
+                    return done(err);
+                } else {
+                    console.log('User right before done: ' + user);
+                    console.log('we got to done!');
+                    return done(null, user);
+                }
+            }).catch(function(err){
+                console.log(err);
                 return done(err);
-            } else {
-                console.log('User right before done: ' + user);
-                console.log('we got to done!');
-                return done(null, user);
-            }
-        }).catch(function(err){
-            console.log(err);
-            return done(err);
-        });
-    }));
+            });
+        })
+    );
 
 };
