@@ -96,12 +96,13 @@ module.exports = function(passport) {
             clientID: process.env.IGAUTH_ID,
             clientSecret: process.env.IGAUTH_SECRET,
             callbackURL: 'https://gamecat.co/login/instagram/callback',
+            profileFields: ['email'],
         },
         function(accessToken, refreshToken, profile, done) {
             console.log(profile);
             let userData = {
                 username: profile.displayName,
-                email: profile.emails[0].value,
+                email: profile.username,
                 facebookID: profile.id,
             };
             let user = User.findOrCreate(userData);
