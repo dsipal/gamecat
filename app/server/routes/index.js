@@ -44,11 +44,9 @@ router.get('/login/google', passport.authenticate('google', {scope: ['profile', 
 
 router.get('/login/facebook', passport.authenticate('facebook', { scope: ['email']}));
 
-router.get('/login/google/callback', passport.authenticate('google', {
-    failureRedirect: '/login'}
-), function(req, res){
+router.get('/login/google/callback', passport.authenticate('google'), function(req, res){
     console.log(res);
-    res.redirect('/');
+    //res.redirect('/');
 });
 
 router.get('/login/facebook/callback',
