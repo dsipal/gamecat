@@ -68,7 +68,7 @@ user.statics.findOrCreate = async function(userData, callback) {
         }
     }).catch(function(err){
         console.log(err);
-        return err;
+        callback(err, null);
     });
 };
 

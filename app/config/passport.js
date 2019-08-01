@@ -125,33 +125,53 @@ module.exports = function(passport) {
         profileFields: ['email', 'displayName']
     },
     function(accessToken, refreshToken, profile, done) {
+
         console.log(profile);
-        console.log(accessToken);
-        console.log(refreshToken);
-        User.findOne({
-            'facebookID': profile.id
-        }, function(err, user) {
-            if (err) {
+        let userData = {
+            username: profile.displayName,
+            email: profile.emails[0].value,
+            facebookID: profile.id,
+        };
+        User.findOrCreate(userData, function(err, user){
+            if(err){
                 return done(err);
-            }
-            //No user was found... so create a new user with values from Facebook (all the profile. stuff)
-            if (!user) {
-                user = new User({
-                    username: profile.displayName,
-                    email: profile.emails[0].value,
-                    password: '420420',
-                    facebookID: profile.id,
-                    reg_date: new Date(),
-                });
-                user.save(function(err) {
-                    if (err) console.log(err);
-                    return done(err, user);
-                });
             } else {
-                //found user. Return
-                return done(err, user);
+                console.log('User right before done: ' + user);
+                console.log('we got to done!');
+                return done(null, user);
             }
+        }).catch(function(err){
+            console.log(err);
+            return done(err);
         });
+
+        // console.log(profile);
+        // console.log(accessToken);
+        // console.log(refreshToken);
+        // User.findOne({
+        //     'facebookID': profile.id
+        // }, function(err, user) {
+        //     if (err) {
+        //         return done(err);
+        //     }
+        //     //No user was found... so create a new user with values from Facebook (all the profile. stuff)
+        //     if (!user) {
+        //         user = new User({
+        //             username: profile.displayName,
+        //             email: profile.emails[0].value,
+        //             password: '420420',
+        //             facebookID: profile.id,
+        //             reg_date: new Date(),
+        //         });
+        //         user.save(function(err) {
+        //             if (err) console.log(err);
+        //             return done(err, user);
+        //         });
+        //     } else {
+        //         //found user. Return
+        //         return done(err, user);
+        //     }
+        // });
     }
     ));
 
