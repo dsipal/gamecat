@@ -2,7 +2,6 @@ const CT = require('../modules/country-list');
 const EM = require('../modules/email-dispatcher');
 const User = require('../models/User');
 const passport = require('passport');
-let GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const express = require('express');
 let router = express.Router();
 const authLimiter = require('../modules/authLimiter');
