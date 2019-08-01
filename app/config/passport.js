@@ -48,7 +48,7 @@ module.exports = function(passport) {
             callbackURL: 'https://gamecat.co/login/google/callback',
             passReqToCallback: true,
         },
-        function(accessToken, refreshToken, profile, done) {
+        function(req, accessToken, refreshToken, profile, done) {
             console.log(profile);
             let userData = {
                 username: profile.displayName,
