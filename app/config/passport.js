@@ -50,18 +50,44 @@ module.exports = function(passport) {
         },
         function(req, accessToken, refreshToken, profile, done) {
             console.log(profile);
-            let userData = {
-                username: profile.displayName,
-                email: profile.emails[0].value,
-                googleID: profile.id,
-            };
-            User.findOrCreate(userData).then(function(user){
-                return done(null, user);
-            }).catch(function(err){
-                console.log('Error with Google OAuth for ' + userData.username);
-                console.log(err);
-                return done(err);
+
+            User.findOne({
+                'googleID': profile.id
+            }, function(err, user) {
+                if (err) {
+                    return done(err);
+                }
+                //No user was found... so create a new user with values from Facebook (all the profile. stuff)
+                if (!user) {
+                    user = new User({
+                        username: profile.displayName,
+                        email: profile.emails[0].value,
+                        password: '420420',
+                        facebookID: profile.id,
+                        reg_date: new Date(),
+                    });
+                    user.save(function(err) {
+                        if (err) console.log(err);
+                        return done(err, user);
+                    });
+                } else {
+                    //found user. Return
+                    return done(err, user);
+                }
             });
+
+            // let userData = {
+            //     username: profile.displayName,
+            //     email: profile.emails[0].value,
+            //     googleID: profile.id,
+            // };
+            // User.findOrCreate(userData).then(function(user){
+            //     return done(null, user);
+            // }).catch(function(err){
+            //     console.log('Error with Google OAuth for ' + userData.username);
+            //     console.log(err);
+            //     return done(err);
+            // });
         })
     );
 
