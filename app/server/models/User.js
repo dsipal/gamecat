@@ -56,10 +56,12 @@ user.statics.findOrCreate = async function(userData) {
         } else {
             console.log('User not found for email: ' + userData.email + ' creating account.');
             User.formatNewAccount(userData, function(err, newUser){
+                console.log('callback on formatNewAccount has been tripped, user: ' + newUser);
                 if(err){
                     console.log(err);
                     return err;
                 } else {
+                    console.log('returning the user: ' + newUser);
                     return newUser;
                 }
             });
@@ -150,6 +152,7 @@ user.statics.formatNewAccount = function(newData, callback){
             }
         });
     } else {
+        console.log('adding new account');
         User.addNewAccount(newData, callback);
     }
 };
@@ -159,6 +162,7 @@ user.statics.addNewAccount  = function(newData, callback){
         if(e) {
             return callback(e, null);
         } else {
+            console.log('Inside addNewAccount, user created: ' + o);
             if(newData.rank === 'new') emdisp.dispatchConfirm(newData.email, newData.token, newData.username);
             return callback(null,o);
         }
