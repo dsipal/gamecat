@@ -38,7 +38,8 @@ const user = new mongoose.Schema({
         token: String,
         email_optin: Boolean,
         facebookID: String, //TODO Remove when implementing better social sign-in system
-        googleID: JSON, //TODO Remove when implementing better social sign-in system
+        googleID: String, //TODO Remove when implementing better social sign-in system
+        instagramID: String,
     },
     {collection: 'Users'}
 );
