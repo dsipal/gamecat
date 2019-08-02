@@ -139,10 +139,10 @@ user.statics.formatNewAccount = function(newData, callback){
 
     if(newData.ref_by){
         console.log('Populating ' + newData.ref_by +' as referrer for new user: ' + newData.username);
-        User.findOne({username: newData.ref_by}).then(function(err, user){
+        User.findOne({username: newData.ref_by}).exec(function(err, user){
             if(err){
                 console.log('Error populating the referrer for ' + newData.username);
-                console.log(err);
+                console.log('Error: ' + err);
                 callback(err, null);
             } else {
                 if(user !== null){
@@ -152,6 +152,9 @@ user.statics.formatNewAccount = function(newData, callback){
                     callback(['invalid-referral'], null);
                 }
             }
+        }).catch(function(err){
+            console.log('Error formatting new account: ' + newData.username);
+            console.log('Error: ' + err);
         });
     } else {
         console.log('adding new account');

@@ -120,7 +120,7 @@ router.post('/signup', function(req, res){
             function(user){
                 User.formatNewAccount(user, function(err){
                     if(err){
-                        console.log(err);
+                        console.log('Error formatting new account: ' + err);
                         console.log(err.errors);
                         return res.status(401).send(err);
                     } else {
