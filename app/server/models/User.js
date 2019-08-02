@@ -83,11 +83,14 @@ user.statics.getAllRecords = function(callback){
         });
 };
 
+//this method isn't used and probably shouldnt be.
 user.statics.deleteAllAccounts = function(){
     User.deleteMany({});
     console.log('deleted accounts');
 };
 
+
+//this method is never used.
 user.statics.getUser = function(uname){
     User.findOne({username: uname}).then(function(err, obj){
         if(err){
@@ -110,7 +113,7 @@ user.statics.generateLoginKey = function(username, ipAddress, callback)
 };
 
 // login functions //
-//TODO possibly figure out how to auth without sending plaintext pass
+//TODO possibly figure out how to auth without sending plaintext pass -- now that we have SSL there will be no plantext sent between client and server.
 //takes plaintext password, returns plainPass == hashedPass
 user.methods.validatePassword = function(plainPass){
     let salt = this.password.substr(0, 10);
