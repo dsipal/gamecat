@@ -152,9 +152,6 @@ user.statics.formatNewAccount = function(newData, callback){
                     callback(['invalid-referral'], null);
                 }
             }
-        }).catch(function(err){
-            console.log('Error formatting new account: ' + newData.username);
-            console.log('Error: ' + err);
         });
     } else {
         console.log('adding new account');
