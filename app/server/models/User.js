@@ -141,6 +141,7 @@ user.statics.formatNewAccount = function(newData, callback){
         console.log('Populating ' + newData.ref_by +' as referrer for new user: ' + newData.username);
         User.findOne({username: newData.ref_by}).then(function(err, user){
             if(err){
+                console.log('Error populating the referrer for ' + newData.username);
                 console.log(err);
                 callback(err, null);
             } else {
