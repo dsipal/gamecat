@@ -44,7 +44,7 @@ class UserValidator{
                 this.user.ref_by = null;
                 return this;
             } else {
-                if(!RegExp(`^(?!.*__.*)(?!.*\\.\\..*)[a-z0-9_.]+$`).test(this.user.ref_by)){
+                if(!RegExp(`^(?!.*__.*)(?!.*\\.\\..*)[a-zA-Z0-9_.]+$`).test(this.user.ref_by)){
                     this.errs.push('invalid-referral');
                 } else {
                     return this;

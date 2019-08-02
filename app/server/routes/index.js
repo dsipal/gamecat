@@ -32,7 +32,6 @@ router.post('/login',
         if (req.body['remember-me'] === 'false'){
             return res.redirect('/account');
         } else {
-            //TODO *removed call to AM- moved function to User.js *
             await User.generateLoginKey(req.user.username, req.ip, function(key){
                 res.cookie('login', key, { maxAge: 900000 });
                 return res.redirect('/account');
@@ -41,14 +40,21 @@ router.post('/login',
         }
     }
 );
+
+router.get('/login/instagram', passport.authenticate('instagram') );
+
+router.get('/login/instagram/callback',
+    passport.authenticate('instagram', { failureRedirect: '/login' }),
+    function(req, res) {
+        res.redirect('/');
+    }
+);
+
 router.get('/login/google', passport.authenticate('google', {scope: ['profile', 'email']}) );
 
 router.get('/login/facebook', passport.authenticate('facebook', { scope: ['email']}));
 
-router.get('/login/google/callback', passport.authenticate('google', {
-    failureRedirect: '/login'}
-), function(req, res){
-    console.log(res);
+router.get('/login/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), function(req, res){
     res.redirect('/');
 });
 
@@ -114,7 +120,7 @@ router.post('/signup', function(req, res){
             function(user){
                 User.formatNewAccount(user, function(err){
                     if(err){
-                        console.log(err);
+                        console.log('Error formatting new account: ' + err);
                         console.log(err.errors);
                         return res.status(401).send(err);
                     } else {

@@ -38,32 +38,38 @@ const user = new mongoose.Schema({
         token: String,
         email_optin: Boolean,
         facebookID: String, //TODO Remove when implementing better social sign-in system
-        googleID: JSON, //TODO Remove when implementing better social sign-in system
+        googleID: String, //TODO Remove when implementing better social sign-in system
+        instagramID: String,
     },
     {collection: 'Users'}
 );
 
 user.plugin(uniqueValidator);
 
-user.statics.findOrCreate = async function(userdata) {
-    User.findOne({email: userdata.email}).then(function(u, err){
-        if(u){
-            console.log('User already exists for email: ' + userdata.email);
-            return u;
+user.statics.findOrCreate = async function(userData, callback) {
+    console.log(userData);
+    User.findOne({email: userData.email}).then(function(user, err){
+        console.log('User:' + user);
+        console.log('Error:' + err);
+        if(user){
+            console.log('User already exists for email: ' + userData.email + ' that user is : ' + user);
+            callback(null, user);
         } else {
-            console.log('User not found for email: ' + userdata.email + ' creating account.');
-            User.formatNewAccount(userdata, function(err, o){
+            console.log('User not found for email: ' + userData.email + ' creating account.');
+            User.formatNewAccount(userData, function(err, newUser){
+                console.log('callback on formatNewAccount has been tripped, user: ' + newUser);
                 if(err){
                     console.log(err);
-                    return err;
+                    callback(err, null);
                 } else {
-                    return o;
+                    console.log('returning the user: ' + newUser);
+                    callback(null, newUser);
                 }
             });
         }
     }).catch(function(err){
         console.log(err);
-        return err;
+        callback(err, null);
     });
 };
 
@@ -77,11 +83,14 @@ user.statics.getAllRecords = function(callback){
         });
 };
 
+//this method isn't used and probably shouldnt be.
 user.statics.deleteAllAccounts = function(){
     User.deleteMany({});
     console.log('deleted accounts');
 };
 
+
+//this method is never used.
 user.statics.getUser = function(uname){
     User.findOne({username: uname}).then(function(err, obj){
         if(err){
@@ -104,7 +113,7 @@ user.statics.generateLoginKey = function(username, ipAddress, callback)
 };
 
 // login functions //
-//TODO possibly figure out how to auth without sending plaintext pass
+//TODO possibly figure out how to auth without sending plaintext pass -- now that we have SSL there will be no plantext sent between client and server.
 //takes plaintext password, returns plainPass == hashedPass
 user.methods.validatePassword = function(plainPass){
     let salt = this.password.substr(0, 10);
@@ -122,7 +131,7 @@ user.statics.validateNewAccount = function(newData, onFail, callback){
 //ensures that username & email are unique, and that referrer exists.
 user.statics.formatNewAccount = function(newData, callback){
     if(newData.password) newData.password = saltAndHash(newData.password);
-    if(!newData.googleID || !newData.facebookID) {
+    if(!newData.googleID && !newData.facebookID) {
         newData.rank = 'new';
     } else {
         newData.rank = 'activated';
@@ -131,11 +140,12 @@ user.statics.formatNewAccount = function(newData, callback){
     newData.points = 0;
     newData.token = crypto.randomBytes(20).toString('hex');
 
-    if(newData.ref_by !== null){
-        console.log('Checking ' + newData.ref_by +' as referrer for new user: ' + newData.username);
-        User.findOne({username: newData.ref_by}).then(function(err, user){
+    if(newData.ref_by){
+        console.log('Populating ' + newData.ref_by +' as referrer for new user: ' + newData.username);
+        User.findOne({username: newData.ref_by}).exec(function(err, user){
             if(err){
-                console.log(err);
+                console.log('Error populating the referrer for ' + newData.username);
+                console.log('Error: ' + err);
                 callback(err, null);
             } else {
                 if(user !== null){
@@ -147,6 +157,7 @@ user.statics.formatNewAccount = function(newData, callback){
             }
         });
     } else {
+        console.log('adding new account');
         User.addNewAccount(newData, callback);
     }
 };
@@ -154,8 +165,10 @@ user.statics.formatNewAccount = function(newData, callback){
 user.statics.addNewAccount  = function(newData, callback){
     User.create(newData, function(e,o){
         if(e) {
+            console.log('error creating new account' + newData);
             return callback(e, null);
         } else {
+            console.log('Inside addNewAccount, user created: ' + o);
             if(newData.rank === 'new') emdisp.dispatchConfirm(newData.email, newData.token, newData.username);
             return callback(null,o);
         }

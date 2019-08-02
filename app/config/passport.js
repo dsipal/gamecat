@@ -2,6 +2,7 @@
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleOAuth = require('passport-google-oauth').OAuth2Strategy;
 const FbStrategy = require('passport-facebook').Strategy;
+const InstaStrategy = require('passport-instagram').Strategy;
 const User = require('../server/models/User');
 
 module.exports = function(passport) {
@@ -46,17 +47,52 @@ module.exports = function(passport) {
             clientID: process.env.GOAUTH_ID,
             clientSecret: process.env.GOAUTH_SECRET,
             callbackURL: 'https://gamecat.co/login/google/callback',
+            passReqToCallback: true,
         },
-        function(accessToken, refreshToken, profile, done) {
-            let userdata = {
+        function(req, accessToken, refreshToken, profile, done) {
+            console.log(profile);
+            let userData = {
                 username: profile.displayName,
                 email: profile.emails[0].value,
                 googleID: profile.id,
             };
-            User.findOrCreate(userdata).then(function(user){
-                return done(null, user);
+            User.findOrCreate(userData, function(err, user){
+                if(err){
+                    return done(err);
+                } else {
+                    console.log('User right before done: ' + user);
+                    console.log('we got to done!');
+                    return done(null, user);
+                }
             }).catch(function(err){
-                console.log('Error with Google OAuth for ' + userdata.username);
+                console.log(err);
+                return done(err);
+            });
+        })
+    );
+
+    passport.use(new InstaStrategy({
+            clientID: process.env.IGAUTH_ID,
+            clientSecret: process.env.IGAUTH_SECRET,
+            callbackURL: 'https://gamecat.co/login/instagram/callback',
+            profileFields: ['email'],
+        },
+        function(accessToken, refreshToken, profile, done) {
+            console.log(profile);
+            let userData = {
+                username: profile.displayName,
+                email: profile.username,
+                instagramID: profile.id,
+            };
+            User.findOrCreate(userData, function(err, user){
+                if(err){
+                    return done(err);
+                } else {
+                    console.log('User right before done: ' + user);
+                    console.log('we got to done!');
+                    return done(null, user);
+                }
+            }).catch(function(err){
                 console.log(err);
                 return done(err);
             });
@@ -64,40 +100,32 @@ module.exports = function(passport) {
     );
 
     passport.use(new FbStrategy({
-        clientID: process.env.FBAUTH_ID,
-        clientSecret: process.env.FBAUTH_SECRET,
-        callbackURL: 'https://gamecat.co/login/facebook/callback',
-        profileFields: ['email', 'displayName']
-    },
-    function(accessToken, refreshToken, profile, done) {
-        console.log(profile);
-        console.log(accessToken);
-        console.log(refreshToken);
-        User.findOne({
-            'facebookID': profile.id
-        }, function(err, user) {
-            if (err) {
+            clientID: process.env.FBAUTH_ID,
+            clientSecret: process.env.FBAUTH_SECRET,
+            callbackURL: 'https://gamecat.co/login/facebook/callback',
+            profileFields: ['email', 'displayName']
+        },
+        function(accessToken, refreshToken, profile, done) {
+
+            console.log(profile);
+            let userData = {
+                username: profile.displayName,
+                email: profile.emails[0].value,
+                facebookID: profile.id,
+            };
+            User.findOrCreate(userData, function(err, user){
+                if(err){
+                    return done(err);
+                } else {
+                    console.log('User right before done: ' + user);
+                    console.log('we got to done!');
+                    return done(null, user);
+                }
+            }).catch(function(err){
+                console.log(err);
                 return done(err);
-            }
-            //No user was found... so create a new user with values from Facebook (all the profile. stuff)
-            if (!user) {
-                user = new User({
-                    username: profile.displayName,
-                    email: profile.emails[0].value,
-                    password: '420420',
-                    facebookID: profile.id,
-                    reg_date: new Date(),
-                });
-                user.save(function(err) {
-                    if (err) console.log(err);
-                    return done(err, user);
-                });
-            } else {
-                //found user. Return
-                return done(err, user);
-            }
-        });
-    }
-    ));
+            });
+        })
+    );
 
 };
