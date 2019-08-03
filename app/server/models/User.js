@@ -273,7 +273,7 @@ user.methods.unbanAccount = async function(){
 user.methods.confirmAccount = async function(token){
 
     await User.updateOne(
-        {_id: this._id, token: token, rank: 'new'},
+        {_id: this._id },
         {$set: {rank: 'activated'}}
     ).catch(function(err){
         console.log('Error confirming user with token: ' + token);
