@@ -20,7 +20,6 @@ const user = new mongoose.Schema({
         email: {
             type: String,
             unique: true,
-            required: true
         },
         orders: [{type: mongoose.Schema.ObjectId, ref: 'Order'}],
         awarded_prizes: [{type: mongoose.Schema.ObjectId, ref: 'Prize'}],
