@@ -4,12 +4,7 @@
 {{/section}}
 
 <section class="container">
-    <div class="container-header">
-        <div class="row">
-            <img class="col-12 img-fluid" src="/img/layout/questpage.svg">
-            <h1 class="col-12 text-center">Quests</h1>
-        </div>
-    </div>
+    {{>container_header header_image="/img/layout/questpage.svg" header_text="Quests"}}
 
     <ul class="row offer-list" data-subid1="{{subid1}}">
         {{#each offers}}

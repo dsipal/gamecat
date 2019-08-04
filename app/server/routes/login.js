@@ -7,7 +7,8 @@ let router = express.Router();
 const authLimiter = require('../modules/authLimiter');
 const UserValidator = require('../modules/user-validator');
 
-router.get('/login', function(req, res){
+
+router.get('/', function(req, res){
     // check if the user has an auto login key saved in a cookie //
     if(req.isAuthenticated && req.isAuthenticated()){
         return res.redirect('/account');
@@ -18,7 +19,7 @@ router.get('/login', function(req, res){
     }
 });
 
-router.post('/login',
+router.post('/',
     passport.authenticate('local', {
         session: true,
     }),
@@ -37,30 +38,32 @@ router.post('/login',
     }
 );
 
-router.get('/login/instagram', passport.authenticate('instagram') );
+router.get('/instagram', passport.authenticate('instagram') );
 
-router.get('/login/google', passport.authenticate('google', {scope: ['profile', 'email']}) );
+router.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}) );
 
-router.get('/login/facebook', passport.authenticate('facebook', { scope: ['email']}));
+router.get('/facebook', passport.authenticate('facebook', { scope: ['email']}));
 
-router.get('/login/instagram/callback',
+router.get('/instagram/callback',
     passport.authenticate('instagram', { failureRedirect: '/login' }),
     function(req, res) {
         res.redirect('/');
     }
 );
 
-router.get('/login/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), function(req, res){
+router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), function(req, res){
     res.redirect('/');
 });
 
-router.get('/login/facebook/callback',
+router.get('/facebook/callback',
     passport.authenticate('facebook',{ failureRedirect: '/login' }),
     function(req, res){
         res.redirect('/');
     }
 );
 
-router.get('/login/finalize', function(req, res){
-    res.send('finalize_registration');
+router.get('/finalize', function(req, res){
+    res.render('index/finalize_registration');
 });
+
+module.exports = router;

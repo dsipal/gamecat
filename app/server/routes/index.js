@@ -28,7 +28,6 @@ router.get('/signup', function(req, res) {
         return res.redirect('/account');
     } else {
         return res.render('index/signup', {
-            layout: 'minimal',
             title: 'Signup',
             countries : CT,
             ref_by: req.query.ref_by,

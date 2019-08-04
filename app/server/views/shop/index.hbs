@@ -3,12 +3,7 @@
 {{/section}}
 
 <section class="container">
-    <div class="container-header">
-        <div class="row">
-            <img class="col-12 img-fluid" src="/img/layout/shoppage.svg">
-            <h1 class="col-12 text-center">Shop</h1>
-        </div>
-    </div>
+    {{>container_header header_image="/img/layout/shoppage.svg" header_text="Shop"}}
 
     <div class="row prize-list">
         {{#each prizes}}
