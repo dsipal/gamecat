@@ -142,15 +142,11 @@ router.post('/reset', authLimiter.ensureAuthenticated(), async function(req, res
 });
 
 router.get('/privacypolicy', function(req,res){
-    return res.render('index/privacypolicy', {
-        layout: 'minimal'
-    });
+    return res.render('index/privacypolicy');
 });
 
 router.get('/tos', function(req, res){
-    return res.render('index/tos', {
-        layout: 'minimal'
-    });
+    return res.render('index/tos');
 });
 
 router.get('/about', function(req, res){
