@@ -1,8 +1,19 @@
 @import 'base';
+@import 'social-buttons';
 
 .container {
-  width: 40vw;
-  @media screen and (max-width: $breakpoint-md){
-    width: 100vw;
+  .social-login{
+    text-align: center;
+    justify-content: center;
+    margin: 10px;
+    .sb{
+      margin: 10px;
+    }
+  }
+}
+.form-group{
+  margin-bottom: 30px;
+  input{
+    margin-bottom: 15px;
   }
 }

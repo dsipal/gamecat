@@ -14,6 +14,12 @@ function AccountValidator()
         terms_conditions: $('#terms-conditions')
     };
 
+    this.socialFields = {
+        username: $('#username'),
+        email: $('#email'),
+        referrer: $('#ref_by')
+    };
+
     this.errs = [];
 
     this.alert = $('.modal-form-errors');
@@ -104,15 +110,10 @@ AccountValidator.prototype.validateForm = function()
         this.fields.email.addClass('error');
         this.errs.push('Please enter a valid email.');
     }
-    if(!this.validateCountry(this.fields.country.val())){
-        this.fields.country.addClass('error');
-        this.errs.push('Please select a country.');
-    }
     if(!this.validateTermsConditions(this.fields.terms_conditions.val())){
         this.fields.terms_conditions.addClass('error');
         this.errs.push('You must accept our terms and conditions.')
     }
-
     this.validatePassword(
         this.fields.password.val(),
         this.fields.passwordV.val(),
@@ -123,6 +124,20 @@ AccountValidator.prototype.validateForm = function()
     });
     if (this.errs.length) this.showErrors();
     return this.errs.length === 0;
+};
+
+AccountValidator.prototype.validateSocialForm = function(){
+    for (let key in this.socialFields){ this.socialFields[key].removeClass('error');}
+    if(!this.validateUsername(this.socialFields.username.val())){
+        this.socialFields.username.addClass('error');
+        this.errs.push('Please enter a valid username.')
+    }
+    if(this.socialFields.email){
+        if (!this.validateEmail(this.fields.email.val())) {
+            this.fields.email.addClass('error');
+            this.errs.push('Please enter a valid email.');
+        }
+    }
 };
 
 AccountValidator.prototype.showErrors = function()

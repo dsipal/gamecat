@@ -3,9 +3,8 @@ $(document).ready(function(){
 	var av = new AccountValidator();
 
 	$('#alert-ok').click(function(){
-		console.log('ok clicked');
 		setTimeout(function(){
-			window.location.href = '/'; //redirect with client side js
+			window.location.href = '/account'; //redirect with client side js
 		}, 300)
 	});
 

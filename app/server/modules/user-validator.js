@@ -40,7 +40,6 @@ class UserValidator{
 
         this.validateRef = function(){
             if(this.user.ref_by === ""){
-                console.log('no ref!');
                 this.user.ref_by = null;
                 return this;
             } else {
@@ -64,6 +63,19 @@ class UserValidator{
                 this.onComplete(this.user);
             }
         };
+
+        this.validateSocial = function(){
+            this.validateUsername()
+                .validateRef();
+            if(this.email){
+                this.validateEmail();
+            }
+            if(this.errs.length > 0){
+                this.onFail(this.errs)
+            } else {
+                this.onComplete(this.user);
+            }
+        }
     }
 }
 

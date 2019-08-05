@@ -20,7 +20,6 @@ const user = new mongoose.Schema({
         email: {
             type: String,
             unique: true,
-            required: true
         },
         orders: [{type: mongoose.Schema.ObjectId, ref: 'Order'}],
         awarded_prizes: [{type: mongoose.Schema.ObjectId, ref: 'Prize'}],
@@ -37,8 +36,8 @@ const user = new mongoose.Schema({
         rank: String,
         token: String,
         email_optin: Boolean,
-        facebookID: String, //TODO Remove when implementing better social sign-in system
-        googleID: String, //TODO Remove when implementing better social sign-in system
+        facebookID: String,
+        googleID: String,
         instagramID: String,
     },
     {collection: 'Users'}
@@ -134,8 +133,12 @@ user.statics.formatNewAccount = function(newData, callback){
     if(!newData.googleID && !newData.facebookID) {
         newData.rank = 'new';
     } else {
-        newData.rank = 'activated';
+        newData.rank = 'social-new';
+        let tempNum = Math.random() * 1000;
+        let tempUser = newData.username.replace(/\s/g, '');
+        newData.username = tempUser + tempNum;
     }
+
     newData.reg_date = new Date();
     newData.points = 0;
     newData.token = crypto.randomBytes(20).toString('hex');

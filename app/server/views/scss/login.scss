@@ -1,4 +1,13 @@
 @import "base";
+@import 'social-buttons';
+.social-login{
+  text-align: center;
+  justify-content: center;
+  margin: 10px;
+  .sb{
+    margin: 10px;
+  }
+}
 #login {
   figure{
     width: 100%;

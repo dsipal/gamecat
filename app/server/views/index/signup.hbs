@@ -2,6 +2,9 @@
     <link rel="stylesheet" href="/css/signup.css">
 {{/section}}
 
+{{>"modals/form-errors"}}
+{{>"modals/alert"}}
+
 {{#section 'body_scripts'}}
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="/js/views/signup.min.js" async defer></script>
@@ -9,13 +12,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" defer></script>
 {{/section}}
 
-<section class="container center-vertical">
-    <div class="container-header">
-        <div class="row">
-            <img class="col-12 img-fluid" src="/img/nav/signup.svg">
-            <h1 class="col-12 text-center">Sign Up</h1>
-        </div>
-    </div>
+<section class="container">
+
+    {{>container_header header_image="/img/nav/signup.svg" header_text="Sign Up"}}
 
     {{>"registration" ref_by=ref_by}}
 </section>

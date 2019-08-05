@@ -1,38 +1,37 @@
 <!--TODO clean up html here, remove unnecessary divs-->
+<div class="row social-login">
+    <a href="/login/facebook" class="sb sb-facebook">Sign in with Facebook</a>
+    <a href="/login/google" class="sb sb-google">Sign in with Google</a>
+    <a href="/login/instagram" class="sb sb-instagram">Sign in with Instagram</a>
+</div>
+
+<hr>
 
 <form action="/signup" method="post" id="account-form">
     <div class="form-group row">
 
         <div class="col-md-6">
-            <label for="user-tf">Username</label>
-            <input id="user-tf" type="text" name="username" value="" class="form-control disabled" pattern="^(?!.*__.*)(?!.*\.\..*)[a-zA-Z0-9_.]+$" required>
+            <input id="user-tf" type="text" name="username" placeholder="Username" value="" class="form-control disabled" pattern="^(?!.*__.*)(?!.*\.\..*)[a-zA-Z0-9_.]+$" required>
         </div>
         <div class="col-md-6">
-            <label for="email-tf">Email</label>
-            <input id="email-tf" type="email" name="email" value="{{email}}" class="form-control" required>
+            <input id="email-tf" type="email" name="email" placeholder="Email"  value="{{email}}" class="form-control" required>
         </div>
     </div>
-    <hr>
     <div class="form-group row margin-zero">
         <div class="col-md-6">
-            <label for="pass-tf">Password</label>
-            <input id="pass-tf" type="password" name="password" value="" class="form-control" minlength="6" pattern="\S*(\S*([a-zA-Z]\S*[0-9])|([0-9]\S*[a-zA-Z]))\S*" required>
+            <input id="pass-tf" type="password" name="password" placeholder="Password" value="" class="form-control" minlength="6" pattern="\S*(\S*([a-zA-Z]\S*[0-9])|([0-9]\S*[a-zA-Z]))\S*" required>
         </div>
         <div class="col-md-6">
-            <label for="pass-tf">Verify Password</label>
-            <input id="pass-verify-tf" type="password" name="password_verify" value="" class="form-control" minlength="6" pattern="\S*(\S*([a-zA-Z]\S*[0-9])|([0-9]\S*[a-zA-Z]))\S*" required>
+            <input id="pass-verify-tf" type="password" name="password_verify" placeholder="Verify Password" value="" class="form-control" minlength="6" pattern="\S*(\S*([a-zA-Z]\S*[0-9])|([0-9]\S*[a-zA-Z]))\S*" required>
         </div>
 
     </div>
-    <hr>
     <div class="form-group row">
 
         <div class="col-12">
-            <label for="ref_by">Referrer</label>
-            <input id="ref_by" type="text" name="ref_by" value="{{ref_by}}" class="form-control">
+            <input id="ref_by" type="text" name="ref_by" placeholder="Referrer" value="{{ref_by}}" class="form-control">
         </div>
     </div>
-    <hr>
     <div class="row">
         <div class="col-6">
             <label class="col-form-label col-form-label-sm" for="email_optin">Send me exclusive quests</label>

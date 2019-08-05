@@ -497,16 +497,3 @@
 
 .sb-steam:hover {
   background-color: #545454; }
-
-.container .social-login {
-  text-align: center;
-  -webkit-box-pack: center;
-          justify-content: center;
-  margin: 10px; }
-  .container .social-login .sb {
-    margin: 10px; }
-
-.form-group {
-  margin-bottom: 30px; }
-  .form-group input {
-    margin-bottom: 15px; }

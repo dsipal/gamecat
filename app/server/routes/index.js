@@ -11,62 +11,6 @@ router.get('/', function(req, res){
     return res.render('index/index', {udata: req.user});
 });
 
-router.get('/login', function(req, res){
-    // check if the user has an auto login key saved in a cookie //
-    if(req.isAuthenticated && req.isAuthenticated()){
-        return res.redirect('/account');
-    }else{
-        return res.render('index/login',{
-            layout: 'minimal'
-        });
-    }
-});
-
-router.post('/login',
-    passport.authenticate('local', {
-        session: true,
-    }),
-    async function(req, res){
-        console.log(req.body['username'] + ' logging in.');
-        await req.session.save();
-        if (req.body['remember-me'] === 'false'){
-            return res.redirect('/account');
-        } else {
-            await User.generateLoginKey(req.user.username, req.ip, function(key){
-                res.cookie('login', key, { maxAge: 900000 });
-                return res.redirect('/account');
-            });
-
-        }
-    }
-);
-
-router.get('/login/instagram', passport.authenticate('instagram') );
-
-router.get('/login/instagram/callback',
-    passport.authenticate('instagram', { failureRedirect: '/login' }),
-    function(req, res) {
-        res.redirect('/');
-    }
-);
-
-router.get('/login/google', passport.authenticate('google', {scope: ['profile', 'email']}) );
-
-router.get('/login/facebook', passport.authenticate('facebook', { scope: ['email']}));
-
-router.get('/login/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), function(req, res){
-    res.redirect('/');
-});
-
-router.get('/login/facebook/callback',
-    passport.authenticate('facebook',{ failureRedirect: '/login' }),
-    function(req, res){
-        res.redirect('/');
-    }
-);
-
-
-
 router.get('/logout', authLimiter.ensureAuthenticated(), function(req, res){
     console.log(req.username + ' logging out.');
     res.clearCookie('login');
@@ -84,7 +28,6 @@ router.get('/signup', function(req, res) {
         return res.redirect('/account');
     } else {
         return res.render('index/signup', {
-            layout: 'minimal',
             title: 'Signup',
             countries : CT,
             ref_by: req.query.ref_by,
@@ -92,10 +35,7 @@ router.get('/signup', function(req, res) {
             agree: req.query.agree
         });
     }
-
 });
-
-
 
 router.post('/signup', function(req, res){
     if(req.isAuthenticated && req.isAuthenticated()){
@@ -199,15 +139,11 @@ router.post('/reset', authLimiter.ensureAuthenticated(), async function(req, res
 });
 
 router.get('/privacypolicy', function(req,res){
-    return res.render('index/privacypolicy', {
-        layout: 'minimal'
-    });
+    return res.render('index/privacypolicy');
 });
 
 router.get('/tos', function(req, res){
-    return res.render('index/tos', {
-        layout: 'minimal'
-    });
+    return res.render('index/tos');
 });
 
 router.get('/about', function(req, res){
@@ -233,7 +169,7 @@ router.post('/contact', function(req,res){
         } else {
             return res.redirect('/');
         }
-    })
+    });
 });
 
 

@@ -23,6 +23,7 @@ app.set('port', process.env.PORT || 8080);
 
 // route files //
 const index = require('./app/server/routes/index.js');
+const login = require('./app/server/routes/login.js');
 const account = require('./app/server/routes/account');
 const shop = require('./app/server/routes/shop');
 const offers = require('./app/server/routes/offers');
@@ -185,6 +186,7 @@ app.use(passport.session());
 
 // set up the router //
 app.use('/', index);
+app.use('/login', login);
 app.use('/account', account);
 app.use('/shop', shop);
 app.use('/offers', offers);

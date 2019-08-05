@@ -1,0 +1,39 @@
+{{#section 'body_scripts'}}
+    <script src="/js/views/finalize.min.js" async defer></script>
+    <script src="/js/form-validators/accountValidator.min.js" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" defer></script>
+{{/section}}
+
+{{>"modals/form-errors"}}
+{{>"modals/alert"}}
+
+<section class="container">
+    {{>container_header header_image="/img/nav/signup.svg" header_text="Sign Up"}}
+    <div class="text-center">
+        <h1>You're almost there!</h1>
+        <h3>Just make sure this information is correct.</h3>
+    </div>
+
+    <form action="/login/finalize" method="post" id="finalize_social" class="px-5">
+        <div class="form-group row">
+            <div class="col-6">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" placeholder="Username" value="{{udata.username}}" class="form-control">
+            </div>
+            <div class="col-6">
+                <label for="email">Email</label>
+                <input type="text" name="email" id="email" placeholder="Email" value="{{udata.email}}" class="form-control">
+            </div>
+            <div class="form-group col-12">
+                <label for="referrer">Referrer</label>
+                <input type="text" name="ref_by" id="referrer" placeholder="Referrer" value="{{udata.ref_by}}" class="form-control">
+            </div>
+        </div>
+        <div class="form-group text-center">
+            <button type="submit" id="account-form-btn2" class="btn btn-primary" form="finalize_social">Submit</button>
+        </div>
+        <div class="row justify-content-center">
+            <small>By pressing submit you agree to Gamecat's <a href="/tos">Terms of Service</a> and <a href="/privacypolicy">Privacy Policy</a></small>
+        </div>
+    </form>
+</section>

@@ -9,18 +9,26 @@
     <script src="/js/form-validators/emailValidator.min.js"></script>
 {{/section}}
 
-<div id="login" class="center-vertical">
-    <form method="post" class="card card-body">
+<div id="login" class="container">
+    <form method="post">
         <figure><img src="/img/login.svg"></figure>
         <div class="form-group"><input type="text" id="user-tf" name="username" class="form-control" placeholder="Username"></div>
         <div class="form-group"><input type="password" id="pass-tf" name="password" class="form-control" placeholder="Password"></div>
         <div id="row1"><button type="button" id="btn_remember" class="btn btn-dark btn-left"><span class="fa fa-check-square"></span>Remember Me</button><button type="submit" id="btn_sign_in" class="btn btn-primary"><span class="fa fa-lock"></span>Sign In</button></div>
         <hr>
+
         <div class="btm-links">
             <div id="forgot-password"><a href="#">Forgot Your Password?</a></div>
             <div id="create-account"><a href="/signup">Create An Account</a></div>
         </div>
     </form>
+
+    <div class="row social-login">
+        <a href="/login/facebook" class="sb sb-facebook">Sign in with Facebook</a>
+        <a href="/login/google" class="sb sb-google">Sign in with Google</a>
+        <a href="/login/instagram" class="sb sb-instagram">Sign in with Instagram</a>
+    </div>
+
 </div>
 
 {{>"modals/alert"}}
