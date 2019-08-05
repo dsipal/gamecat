@@ -135,6 +135,13 @@ user.statics.formatNewAccount = function(newData, callback){
     } else {
         newData.rank = 'social-new';
     }
+
+    if(newData.rank === 'activated'){
+        let tempNum = Math.random() * 99;
+        let tempUser = newData.username.replace(/\s/g, '');
+        newData.username = tempUser + tempNum;
+    }
+
     newData.reg_date = new Date();
     newData.points = 0;
     newData.token = crypto.randomBytes(20).toString('hex');
