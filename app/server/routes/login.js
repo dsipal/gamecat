@@ -13,9 +13,7 @@ router.get('/', function(req, res){
     if(req.isAuthenticated && req.isAuthenticated()){
         return res.redirect('/account');
     }else{
-        return res.render('index/login',{
-            layout: 'minimal'
-        });
+        return res.render('index/login');
     }
 });
 
