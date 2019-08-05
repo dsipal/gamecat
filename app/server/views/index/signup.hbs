@@ -2,6 +2,9 @@
     <link rel="stylesheet" href="/css/signup.css">
 {{/section}}
 
+{{>"modals/form-errors"}}
+{{>"modals/alert"}}
+
 {{#section 'body_scripts'}}
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="/js/views/signup.min.js" async defer></script>
@@ -15,6 +18,3 @@
 
     {{>"registration" ref_by=ref_by}}
 </section>
-
-{{>"modals/form-errors"}}
-{{>"modals/alert"}}

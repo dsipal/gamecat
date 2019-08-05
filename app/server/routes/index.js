@@ -35,10 +35,7 @@ router.get('/signup', function(req, res) {
             agree: req.query.agree
         });
     }
-
 });
-
-
 
 router.post('/signup', function(req, res){
     if(req.isAuthenticated && req.isAuthenticated()){

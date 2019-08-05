@@ -64,11 +64,42 @@ router.get('/facebook/callback',
 
 router.get('/finalize', function(req, res){
     if(req.user.rank !== "social-new"){
-        res.rediect('/account');
+        res.redirect('/account');
     } else {
-        res.render('index/finalize_registration', {udata: req.user});
+        res.render('login/finalize_registration', {udata: req.user});
     }
-
 });
 
+router.post('/finalize', function(req, res){
+    let userData = {
+        username: req.body['username'],
+        ref_by: req.body['ref_by'],
+        email: req.body['email']
+    };
+    let validator = new UserValidator(userData,
+        function(err){
+            return res.status(401).send(err);
+        },
+        function(user){
+            try{
+                req.user.username = userData.username;
+                req.user.ref_by = userData.ref_by;
+                req.user.email = userData.email;
+                req.user.rank = 'activated';
+                req.user.save();
+                res.status(200).send('ok');
+            } catch(err){
+                res.status(401).send(err);
+            }
+        });
+    validator.validateSocial();
+});
+
+router.get('/unverified', function(req, res){
+    if(req.user.rank !== "new"){
+        res.rediect('/account');
+    } else {
+        res.render('login/unverified', {udata: req.user});
+    }
+});
 module.exports = router;
