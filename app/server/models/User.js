@@ -36,8 +36,8 @@ const user = new mongoose.Schema({
         rank: String,
         token: String,
         email_optin: Boolean,
-        facebookID: String, //TODO Remove when implementing better social sign-in system
-        googleID: String, //TODO Remove when implementing better social sign-in system
+        facebookID: String,
+        googleID: String,
         instagramID: String,
     },
     {collection: 'Users'}
@@ -133,7 +133,7 @@ user.statics.formatNewAccount = function(newData, callback){
     if(!newData.googleID && !newData.facebookID) {
         newData.rank = 'new';
     } else {
-        newData.rank = 'activated';
+        newData.rank = 'social-new';
     }
     newData.reg_date = new Date();
     newData.points = 0;
