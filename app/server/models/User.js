@@ -136,7 +136,7 @@ user.statics.formatNewAccount = function(newData, callback){
         newData.rank = 'activated';
     }
 
-    if(newData.rank === 'social-new'){
+    if(newData.rank === 'activated'){
         let tempNum = Math.random() * 99;
         let tempUser = newData.username.replace(/\s/g, '');
         newData.username = tempUser + tempNum;
