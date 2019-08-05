@@ -172,7 +172,7 @@ router.post('/contact', function(req,res){
         } else {
             return res.redirect('/');
         }
-    })
+    });
 });
 
 

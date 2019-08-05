@@ -47,23 +47,28 @@ router.get('/facebook', passport.authenticate('facebook', { scope: ['email']}));
 router.get('/instagram/callback',
     passport.authenticate('instagram', { failureRedirect: '/login' }),
     function(req, res) {
-        res.redirect('/');
+        res.redirect('/login/finalize');
     }
 );
 
 router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), function(req, res){
-    res.redirect('/');
+    res.redirect('/login/finalize');
 });
 
 router.get('/facebook/callback',
     passport.authenticate('facebook',{ failureRedirect: '/login' }),
     function(req, res){
-        res.redirect('/');
+        res.redirect('/login/finalize');
     }
 );
 
 router.get('/finalize', function(req, res){
-    res.render('index/finalize_registration');
+    if(req.user.rank !== "social-new"){
+        res.rediect('/account');
+    } else {
+        res.render('index/finalize_registration', {udata: req.user});
+    }
+
 });
 
 module.exports = router;
