@@ -72,7 +72,7 @@ $(document).ready(function(){
                 let page = content.data('page');
                 console.log(page);
                 let offset = limit * page;
-                setTimeout(loadMore(page, limit, offset, content.find('.offer-list')), 70);
+                loadMore(page, limit, offset, content.find('.offer-list'));
                 content.data('page', page+1);
             }
         })
@@ -87,10 +87,10 @@ $(document).ready(function(){
 
     updateCategory();
 
-    observers.surveys.observe(document.querySelector('#surveys-infinite-trigger'));
-    observers.videos.observe(document.querySelector('#videos-infinite-trigger'));
-    observers.trials.observe(document.querySelector('#trials-infinite-trigger'));
-    observers.shopping.observe(document.querySelector('#shopping-infinite-trigger'));
+    observers.surveys.observe(document.querySelector('#infinite-trigger'));
+    observers.videos.observe(document.querySelector('#infinite-trigger'));
+    observers.trials.observe(document.querySelector('#infinite-trigger'));
+    observers.shopping.observe(document.querySelector('#infinite-trigger'));
 
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
         updateCategory();
