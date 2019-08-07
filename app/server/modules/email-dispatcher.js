@@ -56,6 +56,7 @@ exports.dispatchPasswordReset = async function(email, token, name, callback){
 
     await mailgun.messages().send(data, function(err, bod){
         if(err){
+            console.log('Error dispatching password reset email: ');
             callback(err);
         } else {
             callback(false);
@@ -76,6 +77,7 @@ exports.dispatchSupport = async function(email, category, message, callback){
 
     await mailgun.messages().send(data, function(err, bod){
         if(err){
+            console.log('Error dispatching support email: ');
             callback(err);
         } else {
             callback(false);

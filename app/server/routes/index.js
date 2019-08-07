@@ -16,6 +16,7 @@ router.get('/logout', authLimiter.ensureAuthenticated(), function(req, res){
     res.clearCookie('login');
     req.session.destroy(function(e){
         if(e) {
+            console.log('Error logging out user: ' + req.user.username);
             console.log(e);
         } else {
             return res.redirect('/');
@@ -87,6 +88,7 @@ router.post('/lost-password', async function(req, res){
                 if(!err){
                     return res.redirect('/');
                 } else {
+                    console.log('Error dispatching password reset email');
                     console.log(err);
                     return res.status(400).send('Error in dispatching email');
                 }
