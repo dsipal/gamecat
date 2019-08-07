@@ -25,7 +25,6 @@
 
 .offer-list {
   list-style: none;
-  min-height: 500px;
   box-sizing: border-box;
   padding: 0; }
   .offer-list .col-md-6 {
