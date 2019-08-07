@@ -106,8 +106,7 @@ user.statics.generateLoginKey = function(username, ipAddress, callback)
             ip : ipAddress,
             cookie : cookie
         }}, {returnOriginal : false}, function(e, o){
-        callback(cookie);
-    });
+        callback(cookie);});
 };
 
 // login functions //
