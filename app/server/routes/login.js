@@ -11,7 +11,7 @@ const UserValidator = require('../modules/user-validator');
 router.get('/', function(req, res){
     // check if the user has an auto login key saved in a cookie //
     if(req.isAuthenticated && req.isAuthenticated()){
-        return res.redirect('/account');
+        return res.redirect('/');
     }else{
         return res.render('index/login');
     }
@@ -25,11 +25,11 @@ router.post('/',
         console.log(req.body['username'] + ' logging in.');
         await req.session.save();
         if (req.body['remember-me'] === 'false'){
-            return res.redirect('/account');
+            return res.redirect('/');
         } else {
             await User.generateLoginKey(req.user.username, req.ip, function(key){
                 res.cookie('login', key, { maxAge: 900000 });
-                return res.redirect('/account');
+                return res.redirect('/');
             });
 
         }
@@ -62,7 +62,7 @@ router.get('/facebook/callback',
 
 router.get('/finalize', function(req, res){
     if(req.user.rank !== "social-new"){
-        res.redirect('/account');
+        res.redirect('/');
     } else {
         res.render('login/finalize_registration', {udata: req.user});
     }
@@ -95,7 +95,7 @@ router.post('/finalize', function(req, res){
 
 router.get('/unverified', function(req, res){
     if(req.user.rank !== "new"){
-        res.rediect('/account');
+        res.rediect('/');
     } else {
         res.render('login/unverified', {udata: req.user});
     }

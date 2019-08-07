@@ -3,7 +3,7 @@ $(document).ready(function(){
 
     $('#alert-ok').click(function(){
         setTimeout(function(){
-            window.location.href = '/account'; //redirect with client side js
+            window.location.href = '/'; //redirect with client side js
         }, 300)
     });
 

@@ -18,7 +18,7 @@ $(document).ready(function(){
         },
         success	: function(responseText, status, xhr, $form){
             console.log(responseText, status);
-            if (status === 'success') window.location.href = '/account';
+            if (status === 'success') window.location.href = '/';
         },
         error : function(e){
             console.log(e);

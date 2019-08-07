@@ -31,7 +31,7 @@ router.get('/logout', authLimiter.ensureAuthenticated(), function(req, res){
 
 router.get('/signup', function(req, res) {
     if(req.isAuthenticated && req.isAuthenticated()){
-        return res.redirect('/account');
+        return res.redirect('/');
     } else {
         return res.render('index/signup', {
             title: 'Signup',
@@ -45,7 +45,7 @@ router.get('/signup', function(req, res) {
 
 router.post('/signup', function(req, res){
     if(req.isAuthenticated && req.isAuthenticated()){
-        return res.redirect('/account');
+        return res.redirect('/');
     } else {
         console.log('Registration for ' + req.body['username']);
         let userData = {
