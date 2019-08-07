@@ -8,7 +8,12 @@ const authLimiter = require('../modules/authLimiter');
 const UserValidator = require('../modules/user-validator');
 
 router.get('/', function(req, res){
-    return res.render('index/index', {udata: req.user});
+    if(req.user){
+        return res.render('index/home', {udata: req.user});
+    }else{
+        return res.render('index/index', {udata: req.user});
+    }
+
 });
 
 router.get('/logout', authLimiter.ensureAuthenticated(), function(req, res){

@@ -1,0 +1,67 @@
+{{#section 'head'}}
+    <meta property="og:title" content="Gamecat- Rewards for Gamers" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.gamecat.co/" />
+    <meta property="og:image" content="https://gamecat.co/img/social.png" />
+    <meta property="og:description" content="Gamecat is an exclusive rewards program for gamers, by gamers. Play new games, watch videos, and get paid!" />
+    <link rel="stylesheet" href="/css/index.css">
+{{/section}}
+
+<section class="container">
+    {{>container_header header_image="/img/mascot.svg" header_text="Home"}}
+    <div class="row banner-info">
+        <div class="col-12 banner-info-header">
+            <h1>Your Crystals</h1>
+        </div>
+        <div class="row mt-3 mb-3 justify-content-center">
+            <div class="row text-center">
+                <h4>You currently have {{udata.points}} <img src="/img/crystal.svg" alt="crystals" class="crystal-ico">.</h4>
+            </div>
+            <p>Visit the <a href="/shop">shop</a> to spend your crystals on rewards.
+                If you don't see the reward you want feel free to <a href="/contact">contact us</a> for a custom order or to suggest new products.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="row banner-info">
+        <div class="col-12 banner-info-header">
+            <h1>Earn More Crystals</h1>
+        </div>
+        <div class="row mt-3 text-center justify-content-center">
+            <div class="col-md-4 ">
+                <a href="/offers">
+                    <img src="/img/quest.svg" alt="Complete quests!" class="img-fluid" width="50%" />
+                    <h3 >Complete Quests</h3>
+                </a>
+                <p>You can earn crystals by playing new games at the <a href="/offers">Quests Page</a>.
+                    To complete a quest you sign up for a game with a valid email address, and play it for a few days.
+                    What could be better than getting paid to game?
+                </p>
+            </div>
+            <div class="col-md-4">
+                <a href="/offers/surveys">
+                    <img src="/img/survey.svg" alt="Invite your friends!" class="img-fluid" width="50%"/>
+                    <h3>Finish Offers</h3>
+                </a>
+                <p>You can also earn crystals very quickly by finishing offers on the <a href="/offers/surveys">Offers Page</a>.
+                    There are a variety of offers available such as surveys, free trials, and shopping deals! You can even earn
+                    Crystals by watching videos.
+                    Most of these offers take only a few minutes, and many of them give you a chance to get free stuff or gift cards!</p>
+            </div>
+            <div class="col-md-4">
+                <a href="/account">
+                    <img src="/img/friend.svg" alt="Invite your friends!" class="img-fluid" width="50%"/>
+                    <h3>Refer Friends</h3>
+                </a>
+                <p>
+                    If you refer your friends to Gamecat you will both get 100 free <img src="/img/crystal.svg" alt="crystals" class="crystal-ico">
+                    Just tell them to sign up using your referral link.
+                    Your referral link is:
+                    <input class="form-control mt-2" type="text" value="https://gamecat.co/signup?ref_by={{udata.username}}" readonly>
+                </p>
+            </div>
+        </div>
+
+    </div>
+</section>
