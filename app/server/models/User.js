@@ -38,7 +38,6 @@ const user = new mongoose.Schema({
         email_optin: Boolean,
         facebookID: String,
         googleID: String,
-        instagramID: String,
     },
     {collection: 'Users'}
 );
