@@ -56,8 +56,10 @@ router.get('/postback', async function(req, res){
 });
 
 router.get('/pwnpostback', async function(req, res){
+    console.log('pwn games postback recieved');
     let subid = require('mongodb').ObjectId(req.query.subid1);
-    let payout = parseInt(req.query.payout) * 40;
+    let offer = await Game.find({'offer_ids': {$elemMatch: {'offer_id': req.query.offer}}});
+    let payout = offer.payout;
 
     let user = await User.findOne({_id: subid});
     user.points+= payout;
