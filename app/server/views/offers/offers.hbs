@@ -1,20 +1,58 @@
 {{#section 'head'}}
     <meta name="referrer" content="no-referrer" />
-    <link rel="stylesheet" href="/css/offer-page.css">
+    <link rel="stylesheet" href="/css/offer-page.min.css">
 {{/section}}
 
 {{#section 'body_scripts'}}
-    <script src="/js/views/offers.min.js"></script>
+    <script src="/js/views/offers.js"></script>
 {{/section}}
 
 <section class="container">
     {{>container_header header_image="/img/layout/surveypage.svg" header_text="Surveys"}}
 
-    <ul class="row offer-list" data-subid1="{{subid1}}">
+    <ul class="nav nav-tabs" id="offers-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link nav-fill nav-justify active" id="surveys-tab" data-toggle="tab" aria-controls="surveys" data-category="[17,20]"  href="#surveys">Surveys</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link nav-fill nav-justify" id="videos-tab" data-toggle="tab" aria-controls="videos" data-category="[19]"  href="#videos">Videos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link nav-fill nav-justify" id="trials-tab" data-toggle="tab" aria-controls="trials" data-category="[22]"  href="#trials">Free Trials</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link nav-fill nav-justify" id="shopping-tab" data-toggle="tab" aria-controls="shopping" data-category="[21,25]"  href="#shopping">Premium</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="offersContent">
+        <div class="tab-pane fade show active" id="surveys" role="tabpanel" aria-labelledby="surveys-tab" data-page="0">
+            <ul class="row offer-list" data-subid1="{{subid1}}">
+                <div id="surveys-infinite-trigger"></div>
+            </ul>
+        </div>
+        <div class="tab-pane fade" id="videos" role="tabpanel" aria-labelledby="videos-tab" data-page="0">
+            <ul class="row offer-list" data-subid1="{{subid1}}">
+                <div id="videos-infinite-trigger"></div>
+            </ul>
+        </div>
+        <div class="tab-pane fade" id="trials" role="tabpanel" aria-labelledby="trials-tab" data-page="0">
+            <ul class="row offer-list" data-subid1="{{subid1}}">
+                <div id="trials-infinite-trigger"></div>
+            </ul>
+        </div>
+        <div class="tab-pane fade" id="shopping" role="tabpanel" aria-labelledby="shopping-tab" data-page="0">
+            <ul class="row offer-list" data-subid1="{{subid1}}">
+                <div id="shopping-infinite-trigger"></div>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
         <div id="adblock-off">
             <img src="/img/layout/adblock.svg">
             <h1>You need to turn off adblock in order to see surveys.</h1>
         </div>
-    </ul>
-    <div id="infinite-trigger"></div>
+    </div>
+
 </section>

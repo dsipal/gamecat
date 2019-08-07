@@ -1,23 +1,19 @@
 $(document).ready(function(){
-    var e=document.createElement('div');
-    e.id='iTafIeFKkQSY';
-    e.style.display='none';
-    document.body.appendChild(e);
-
-    const offer_list = $('.offer-list');
     const obsOpts = {
         root: null,
         rootMargin: '0px',
         threshold: 1.0
     };
-    let page = 0;
+    //let page = 0;
     let limit = 8;
+    let category;
 
-    if(!document.getElementById('iTafIeFKkQSY')) {
-        offer_list.append("<h1> You must disable ad-block to view offers. </h1>")
-    }
+    const updateCategory = function(){
+        category = $('#offers-tabs .nav-item a.active').data('category');
+    };
 
     const loadMore = function(page, limit, offset, offer_list){
+
         const page_max = 15;
         const url = "https://adscendmedia.com/adwall/api/publisher/9359/profile/16028/offers.json";
 
@@ -25,14 +21,15 @@ $(document).ready(function(){
             subid1: offer_list.attr('data-subid1'),
             limit: limit,
             offset: offset,
+            category_id: category,
             sort_by: 'payout',
-            payout_min: .60
         });
 
         $.getJSON(url+'?'+query_strings).done(function(data){
             //on success
             if(data === undefined){
-                observer.disconnect();
+                observers[$('#offers-tabs .nav-item a.active').attr('aria-controls')].disconnect();
+
             } else {
                 if($('#adblock-off')){
                     $('#adblock-off').remove();
@@ -55,8 +52,6 @@ $(document).ready(function(){
                                 </a>
                                 <p class="offer-description">`+offer.description+`</p>
                              </div>
-                             
-                            
                         </div>
                     </li>
                     `;
@@ -69,14 +64,35 @@ $(document).ready(function(){
         });
     };
 
-    const observer = new IntersectionObserver((entries) => {
+    const observerCheck = function(entries){
         entries.forEach(entry =>{
             if(entry.intersectionRatio > 0){
+                console.log('intersect');
+                let content = $('#offersContent div.active');
+                let page = content.data('page');
+                console.log(page);
                 let offset = limit * page;
-                loadMore(page, limit, offset, offer_list);
-                page += 1;
+                setTimeout(loadMore(page, limit, offset, content.find('.offer-list')), 70);
+                content.data('page', page+1);
             }
         })
-    }, obsOpts);
-    observer.observe(document.querySelector('#infinite-trigger'));
+    };
+
+    let observers = {
+        surveys: new IntersectionObserver((entries) => {observerCheck(entries)}, obsOpts),
+        videos: new IntersectionObserver((entries) => {observerCheck(entries)}, obsOpts),
+        trials: new IntersectionObserver((entries) => {observerCheck(entries)}, obsOpts),
+        shopping: new IntersectionObserver((entries) => {observerCheck(entries)}, obsOpts)
+    };
+
+    updateCategory();
+
+    observers.surveys.observe(document.querySelector('#surveys-infinite-trigger'));
+    observers.videos.observe(document.querySelector('#videos-infinite-trigger'));
+    observers.trials.observe(document.querySelector('#trials-infinite-trigger'));
+    observers.shopping.observe(document.querySelector('#shopping-infinite-trigger'));
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+        updateCategory();
+    });
 });
