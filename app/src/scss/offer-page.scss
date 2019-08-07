@@ -10,6 +10,18 @@
   }
 }
 
+#offers-tabs{
+  padding: 20px 20px 0px 20px;
+  .nav-item{
+    .nav-link{
+      color: white !important;
+      &.active.nav-fill{
+        background-color: $accent-purple;
+      }
+    }
+  }
+}
+
 .offer-tabs{
   margin-bottom: 35px;
   div.col-6{
@@ -76,9 +88,6 @@
         margin: 0;
       }
     }
-
-
-
   }
 }
 

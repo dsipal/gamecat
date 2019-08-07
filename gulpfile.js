@@ -12,7 +12,7 @@ sass.compiler = require('node-sass');
 
 const paths = {
     styles: {
-        src: 'app/server/views/scss/**/*.scss',
+        src: 'app/src/scss/**/*.scss',
         dest: 'app/public/css'
     },
     scripts: {

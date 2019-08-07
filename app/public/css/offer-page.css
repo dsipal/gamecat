@@ -7,6 +7,13 @@
   #adblock-off img {
     height: 60%; }
 
+#offers-tabs {
+  padding: 20px 20px 0px 20px; }
+  #offers-tabs .nav-item .nav-link {
+    color: white !important; }
+    #offers-tabs .nav-item .nav-link.active.nav-fill {
+      background-color: #8b33bb; }
+
 .offer-tabs {
   margin-bottom: 35px; }
   .offer-tabs div.col-6 {

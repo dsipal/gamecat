@@ -46,7 +46,7 @@ module.exports = function(passport) {
     passport.use(new GoogleOAuth({
             clientID: process.env.GOAUTH_ID,
             clientSecret: process.env.GOAUTH_SECRET,
-            callbackURL: 'https://gamecat.co/login/google/callback',
+            callbackURL: process.env.ROOT_URL,
             passReqToCallback: true,
         },
         function(req, accessToken, refreshToken, profile, done) {
@@ -55,34 +55,6 @@ module.exports = function(passport) {
                 username: profile.displayName,
                 email: profile.emails[0].value,
                 googleID: profile.id,
-            };
-            User.findOrCreate(userData, function(err, user){
-                if(err){
-                    return done(err);
-                } else {
-                    console.log('User right before done: ' + user);
-                    console.log('we got to done!');
-                    return done(null, user);
-                }
-            }).catch(function(err){
-                console.log(err);
-                return done(err);
-            });
-        })
-    );
-
-    passport.use(new InstaStrategy({
-            clientID: process.env.IGAUTH_ID,
-            clientSecret: process.env.IGAUTH_SECRET,
-            callbackURL: 'https://gamecat.co/login/instagram/callback',
-            profileFields: ['email'],
-        },
-        function(accessToken, refreshToken, profile, done) {
-            console.log(profile);
-            let userData = {
-                username: profile.displayName,
-                email: profile.username,
-                instagramID: profile.id,
             };
             User.findOrCreate(userData, function(err, user){
                 if(err){

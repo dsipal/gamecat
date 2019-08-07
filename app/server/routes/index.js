@@ -71,7 +71,6 @@ router.post('/signup', function(req, res){
         );
         validator.validate();
     }
-
 });
 
 router.post('/lost-password', async function(req, res){
@@ -113,7 +112,6 @@ router.get('/reset', authLimiter.ensureAuthenticated(), async function(req, res)
             }
         }
     });
-
 });
 
 router.post('/reset', authLimiter.ensureAuthenticated(), async function(req, res) {
