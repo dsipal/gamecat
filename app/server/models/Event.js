@@ -11,9 +11,9 @@ const event = new mongoose.Schema({
 );
 
 
-event.statics.newEvent = function(name, start, end, mod, callback){
+event.statics.newEvent = async function(name, start, end, mod, callback){
     console.log('Starting newEvent');
-    let doc = Event.collection.insertOne({
+    let doc = await Event.collection.insertOne({
         name: name,
         status: 'pending',
         startDate: start,
@@ -22,7 +22,7 @@ event.statics.newEvent = function(name, start, end, mod, callback){
     });
     console.log('Inserted new event : ' + doc);
 
-    let event = Event.findOne({_id: doc.insertedId});
+    let event = await Event.findOne({_id: doc.insertedId});
 
     if(event === null || event === undefined){
         console.log('event null or undefined')
