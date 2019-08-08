@@ -14,7 +14,7 @@ function getIP(req){
     }
 
     let country_code = req.header['CF-IPCountry HTTP'];
-    console.log('country_code');
+    console.log(country_code);
     const geo = geoip.lookup(ip);
     return [ip, geo];
 }
