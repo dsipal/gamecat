@@ -22,12 +22,24 @@ router.post('/',
         session: true,
     }),
     async function(req, res){
+        let ip = req.headers['x-forwarded-for']
+            || req.connection.remoteAddress
+            || req.socket.remoteAddress
+            || req.connection.socket.remoteAddress;
+
+        if(ip.substr(0,7) === "::ffff:"){
+            ip = ip.substr(7);
+        }
+        if(ip.includes(',')){
+            let ipArr = ip.split(', ');
+            ip = ipArr[0];
+        }
         console.log(req.body['username'] + ' logging in.');
         await req.session.save();
         if (req.body['remember-me'] === 'false'){
             return res.redirect('/');
         } else {
-            await User.generateLoginKey(req.user.username, req.ip, function(key){
+            await User.generateLoginKey(req.user.username, ip, function(key){
                 res.cookie('login', key, { maxAge: 900000 });
                 return res.redirect('/');
             });
