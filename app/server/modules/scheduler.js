@@ -5,7 +5,7 @@ const Event = require('../models/Event');
 //     console.log('Testing the scheduler');
 // });
 
-module.exports.newEventSchedule = function(start, end, modifier, event){
+let newEventSchedule = function(start, end, modifier, event){
 
     console.log('New event with x' + modifier + ' starting at: ' + start + ' and ending at: ' + end + " the event is " + event);
 
@@ -38,7 +38,7 @@ let test = function(){
                 console.log('error in newEvent process ' + err);
             } else{
                 console.log('Created event, about to test schedule ' + evnt);
-                newEventSchedule(start, end, modifier, evnt);
+                scheduler.newEventSchedule(start, end, modifier, evnt);
             }
 
         })
@@ -48,4 +48,5 @@ let test = function(){
 
 };
 
+module.exports.newEventSchedule = newEventSchedule;
 module.exports = test;
