@@ -1,9 +1,9 @@
 const schedule = require('node-schedule');
 const Event = require('../models/Event');
 
-let job = schedule.scheduleJob('*/1 * * * *', function(){
-    console.log('Testing the scheduler');
-});
+// let job = schedule.scheduleJob('*/1 * * * *', function(){
+//     console.log('Testing the scheduler');
+// });
 
 module.exports.newEventSchedule = function(start, end, modifier, event){
 
