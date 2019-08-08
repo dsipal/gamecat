@@ -3,6 +3,7 @@ const passport = require('passport');
 const express = require('express');
 let router = express.Router();
 const UserValidator = require('../modules/user-validator');
+const ipFormatter = require('../modules/ipFormatter');
 
 
 router.get('/', function(req, res){
@@ -94,7 +95,7 @@ router.post('/finalize', function(req, res){
 
 router.get('/unverified', function(req, res){
     if(req.user.rank !== "new"){
-        res.rediect('/');
+        res.redirect('/');
     } else {
         res.render('login/unverified', {udata: req.user});
     }
