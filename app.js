@@ -12,7 +12,7 @@ let passport = require('passport')
 let mongoose = require('mongoose');
 let sm = require('sitemap');
 const dotenv = require('dotenv');
-const ipFormatter = require('/app/server/modules/ipFormatter');
+const ipFormatter = require('./app/server/modules/ipFormatter');
 dotenv.config();
 
 // create instance of express server //
