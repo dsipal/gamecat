@@ -26,19 +26,25 @@ module.exports.newEventSchedule = function(start, end, modifier, event){
     });
 };
 
-let test = async function(){
+let test = function(){
     console.log('Starting test');
     let start = new Date(Date.now() + 10000);
     let end = new Date(Date.now() +50000);
     let name = 'Test Event';
     let modifier = 2;
 
-    await Event.newEvent(name,start,end,modifier).then(function (ev) {
-        console.log('Created event, about to test schedule ' + ev);
-        newEventSchedule(start, end, modifier, ev);
-    }).catch(function (err) {
-        console.log('Messed up test but in a good way: ' + err);
-    });
+        Event.newEvent(name,start,end,modifier, function(err, evnt){
+            if(err){
+                console.log('error in newEvent process ' + err);
+            } else{
+                console.log('Created event, about to test schedule ' + evnt);
+                newEventSchedule(start, end, modifier, evnt);
+            }
+
+        })
+        .catch(function (err) {
+            console.log('Messed up test but in a good way: ' + err);
+        });
 
 };
 
