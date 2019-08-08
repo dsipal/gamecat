@@ -12,7 +12,6 @@ let mongoose = require('mongoose');
 let sm = require('sitemap');
 const dotenv = require('dotenv');
 const ipFormatter = require('./app/server/modules/ipFormatter');
-const sched = require('./app/server/modules/scheduler');
 dotenv.config();
 
 // create instance of express server //
