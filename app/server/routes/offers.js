@@ -5,28 +5,14 @@ const router = express.Router();
 const geoip = require('geoip-country');
 const request = require('request-promise');
 const Game = require('../models/Game');
+const ipFormatter = require('../modules/ipFormatter');
 
 
 
 router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
-    let ip = req.headers['x-forwarded-for']
-        || req.connection.remoteAddress
-        || req.socket.remoteAddress
-        || req.connection.socket.remoteAddress;
-
-    if(ip.substr(0,7) === "::ffff:"){
-        ip = ip.substr(7);
-    }
-    if(ip.includes(',')){
-        let ipArr = ip.split(', ');
-        ip = ipArr[0];
-    }
-    const geo = geoip.lookup(ip);
-
-    let country_code;
-    if(geo !== null){
-        country_code = geo.country;
-    }
+    let formatted = ipFormatter(req);
+    let country_code = formatted[1];
+    console.log(country_code);
     const offers = await getOffers(country_code, req.user._id);
 
     return res.render('offers/quests', {
