@@ -12,7 +12,6 @@ let mongoose = require('mongoose');
 let sm = require('sitemap');
 const dotenv = require('dotenv');
 const ipFormatter = require('./app/server/modules/ipFormatter');
-const sched = require('./app/server/modules/scheduler');
 dotenv.config();
 
 // create instance of express server //
@@ -176,5 +175,3 @@ app.use(function(req, res, next) {
 http.createServer(app).listen(process.env.PORT, function(){
     console.log('Express server listening on port ' + process.env.PORT);
 });
-
-sched();
