@@ -1,4 +1,3 @@
-const geoip = require('geoip-country');
 function getIP(req){
     let ip = req.headers['x-forwarded-for']
         || req.connection.remoteAddress
@@ -14,8 +13,6 @@ function getIP(req){
     }
 
     let country_code = req.header['CF-IPCountry HTTP'];
-    console.log(country_code);
-    const geo = geoip.lookup(ip);
-    return [ip, geo];
+    return [ip, country_code];
 }
 module.exports = getIP;
