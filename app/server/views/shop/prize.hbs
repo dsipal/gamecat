@@ -4,7 +4,11 @@
 
 {{#section 'body_scripts'}}
     <script src="/js/views/prize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" defer></script>
 {{/section}}
+
+{{>"modals/form-errors"}}
+{{>"modals/alert"}}
 
 <section class="container">
     {{>container_header header_image="/img/layout/shoppage.svg" header_text="Shop"}}

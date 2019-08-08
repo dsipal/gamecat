@@ -45,10 +45,10 @@ router.post('/buy', authLimiter.ensureAuthenticated(), async function(req,res){
             await req.user.purchasePrize(prize, option,async function(order, user){
                 if(order){
                     console.log(user.username + ' purchased ' + prize.name + ' for ' + option + ' crystals.');
-                    return res.redirect('/shop');
+                    return res.status(200).send('Order placed');
                 } else {
                     console.log('failure purchasing ' + prize.name + ' for ', user.username);
-                    return res.redirect('/shop');
+                    return res.status(500).send('Failure purchasing prize');
                 }
             })
         }
