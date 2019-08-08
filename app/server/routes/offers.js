@@ -4,7 +4,6 @@ const express = require('express');
 const router = express.Router();
 const request = require('request-promise');
 const Game = require('../models/Game');
-const ipFormatter = require('../modules/ipFormatter');
 
 router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     let country_code = req.headers['cf-ipcountry'];

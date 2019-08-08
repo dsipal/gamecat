@@ -3,7 +3,6 @@ const passport = require('passport');
 const express = require('express');
 let router = express.Router();
 const UserValidator = require('../modules/user-validator');
-const ipFormatter = require('../modules/ipFormatter');
 
 
 router.get('/', function(req, res){
