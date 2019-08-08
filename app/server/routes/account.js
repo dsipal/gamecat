@@ -12,7 +12,7 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res) {
             path: 'orders',
             populate: {path: 'prize'}
         }).catch(function(err){
-            console.log('Error getting user info for: ' + req.user.name);
+            console.log('Error getting user info for: ' + req.user.username);
             console.log(err);
         });
 
@@ -59,8 +59,8 @@ router.post('/delete', function(req, res){
 });
 
 router.get('/verify', async function(req, res){
-    let name = req.query.name;
-    let token = req.query.id;
+    let name = req.query.username;
+    let token = req.query.token;
 
     if(name !== undefined && token !== undefined){
         console.log('Attempting verification for ' + name + ' with token ' + token);
