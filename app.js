@@ -176,6 +176,3 @@ app.use(function(req, res, next) {
 http.createServer(app).listen(process.env.PORT, function(){
     console.log('Express server listening on port ' + process.env.PORT);
 });
-
-console.log('Sched : ' + sched);
-sched;
