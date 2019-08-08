@@ -41,7 +41,6 @@ const user = new mongoose.Schema({
 user.plugin(uniqueValidator);
 
 user.statics.findOrCreate = async function(userData, callback) {
-    console.log(userData);
     User.findOne({email: userData.email}).then(function(user){
         if(user){
             console.log('User already exists for email: ' + userData.email);

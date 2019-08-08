@@ -11,8 +11,8 @@ function getIP(req){
         let ipArr = ip.split(', ');
         ip = ipArr[0];
     }
-
-    let country_code = req.header['CF-IPCountry HTTP'];
+    console.log(req.header['CF-Connecting-IP']);
+    let country_code = req.header['CF-IPCountry'];
     console.log(country_code);
     return [ip, country_code];
 }
