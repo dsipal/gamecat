@@ -47,8 +47,7 @@ app.set('view engine', 'hbs');
 // // TODO use below expression to limit ips that access /postback and /admin
 app.use('/offers/postback', function(req, res, next) {
     // filtering here, calls `res` method to stop progress or calls `next` to proceed
-    let formattedIP = ipFormatter(req);
-    let ip = formattedIP[0];
+    let ip = req.header['CF-Connecting-IP'];
     // The IP from the CPA site
     if (ip === '54.204.57.82') {
         console.log('valid postback attempt from: ' + ip);
@@ -61,8 +60,7 @@ app.use('/offers/postback', function(req, res, next) {
 
 app.use('/offers/pwnpostback', function(req, res, next) {
     // filtering here, calls `res` method to stop progress or calls `next` to proceed
-    let formattedIP = ipFormatter(req);
-    let ip = formattedIP[0];
+    let ip = req.header['CF-Connecting-IP'];
     // The IP from the CPA site
     if (ip === '35.196.95.104' || ip === '35.196.169.46') {
         next();
@@ -73,8 +71,7 @@ app.use('/offers/pwnpostback', function(req, res, next) {
 
 app.use('/admin', function(req, res, next) {
     // filtering here, calls `res` method to stop progress or calls `next` to proceed
-    let formattedIP = ipFormatter(req);
-    let ip = formattedIP[0];
+    let ip = req.header['CF-Connecting-IP'];
     // Our IPs
     if (ip === '75.40.152.150' || ip === '71.217.163.98') {
         next();
