@@ -33,11 +33,15 @@ let test = async function(){
     let name = 'Test Event';
     let modifier = 2;
 
-    let ev = await Event.newEvent(name,start,end,modifier);
+    await Event.newEvent(name,start,end,modifier).then(function (ev) {
+        console.log('Created event, about to test schedule ' + ev);
 
-    console.log('Created event, about to test schedule ' + ev);
+        newEventSchedule(start, end, modifier, ev);
+    }).catch(function (err) {
+        console.log('Messed up test but in a good way: ' + err);
+    });
 
-    newEventSchedule(start, end, modifier, ev);
+
 };
 
 module.exports = test;
