@@ -1,8 +1,7 @@
 #adblock-off {
   max-height: 256px;
   width: 100%;
-  -webkit-box-pack: center;
-          justify-content: center;
+  justify-content: center;
   text-align: center; }
   #adblock-off img {
     height: 60%; }
@@ -30,14 +29,12 @@
   .offer-list .col-md-6 {
     padding: 0; }
   .offer-list .offer-item {
-    -webkit-box-pack: center;
-            justify-content: center;
+    justify-content: center;
     border: 3px solid #495057;
     border-radius: 7px;
     margin: 35px; }
     .offer-list .offer-item .offer-link {
-      -webkit-box-pack: center;
-              justify-content: center;
+      justify-content: center;
       text-align: center;
       font-size: 16px;
       font-weight: 500;

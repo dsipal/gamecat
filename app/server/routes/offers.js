@@ -12,7 +12,6 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     const offers = await getOffers(country_code, req.user._id);
 
     return res.render('offers/quests', {
-        subid1: req.user._id,
         udata: req.user,
         offers: offers
     });
@@ -36,11 +35,11 @@ router.get('/postback', async function(req, res){
         user.points+= payout;
         await user.save();
         console.log(req.query.subid1 + " was paid " + req.query.payout);
-        res.status(200).send('Postback recieved.');
+        return res.status(200).send('Postback recieved.');
     } catch(e){
         console.log('Error with AdscendMedia postback.');
         console.log(e);
-        res.status(500).send('Invalid postback.');
+        return res.status(500).send('Invalid postback.');
     }
 
 });
@@ -48,21 +47,25 @@ router.get('/postback', async function(req, res){
 router.get('/pwnpostback', async function(req, res){
     console.log('pwn games postback recieved');
     try{
-        let subid = require('mongodb').ObjectId(req.query.subid1);
-        let offer = await Game.find({'offer_ids': {$elemMatch: {'offer_id': req.query.offer}}});
-        let payout = offer.payout;
+        let sourceid = req.query.subid1;
+        if(sourceid === 'gc'){
+            let subid = require('mongodb').ObjectId(req.query.subid2);
+            let offer = await Game.find({'offer_ids': {$elemMatch: {'offer_id': req.query.offer}}});
+            let payout = offer.payout;
 
-        let user = await User.findOne({_id: subid});
-        user.points+= payout;
-        await user.save();
-        console.log(req.query.subid1 + " was paid " + payout);
-        return res.status(200).send("Postback recieved.");
+            let user = await User.findOne({_id: subid});
+            user.points+= payout;
+            await user.save();
+            console.log(req.query.subid1 + " was paid " + payout);
+            return res.status(200).send("Postback recieved.");
+        } else {
+            return res.status(200).send('Postback not for Gamecat.');
+        }
     }catch(e){
         console.log('Error with PWNGames postback.');
         console.log(e);
-        res.status(500).send('Invalid postback.');
+        return res.status(500).send('Invalid postback.');
     }
-
 });
 
 
@@ -106,7 +109,7 @@ async function getOffers(country_code, subid){
     let responses = await Promise.all(promises);
 
     responses.map((response,key) => {
-        response.tracking_url += `&subid1=${subid}`;
+        response.tracking_url += `?subid1=gc&subid2=${subid}`;
         response.description = descriptions[key];
         response.name = names[key];
         response.payout = payouts[key];
