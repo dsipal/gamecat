@@ -175,10 +175,3 @@ app.use(function(req, res, next) {
 http.createServer(app).listen(process.env.PORT, function(){
     console.log('Express server listening on port ' + process.env.PORT);
 });
-
-
-let schedule = require('node-schedule');
-
-schedule.scheduleJob('*/1 * * * *', function(){
-    console.log('Testing the scheduler');
-});
