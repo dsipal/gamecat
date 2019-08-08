@@ -94,7 +94,7 @@ router.post('/finalize', function(req, res){
 
 router.get('/unverified', function(req, res){
     if(req.user.rank !== "new"){
-        res.rediect('/');
+        res.redirect('/');
     } else {
         res.render('login/unverified', {udata: req.user});
     }
