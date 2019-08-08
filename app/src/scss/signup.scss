@@ -1,14 +1,17 @@
 @import 'base';
-@import 'social-buttons';
-
 .container {
   .social-login{
     text-align: center;
     justify-content: center;
     margin: 10px;
-    .sb{
+    .fb-login-button{
       margin: 10px;
     }
+
+    #my-signin2{
+      margin: 10px;
+    }
+
   }
 }
 .form-group{

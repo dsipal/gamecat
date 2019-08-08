@@ -3,7 +3,8 @@
     padding: 50px; } }
 
 .prize {
-  justify-content: center;
+  -webkit-box-pack: center;
+          justify-content: center;
   text-align: center;
   padding: 10px; }
   .prize a {
@@ -23,7 +24,8 @@
       max-width: 256px;
       padding: 10px; }
   .prize .prize-info {
-    justify-content: center;
+    -webkit-box-pack: center;
+            justify-content: center;
     border: 3px solid #767D92;
     border-top: none;
     border-radius: 0 0 5px 5px; }

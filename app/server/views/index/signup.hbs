@@ -1,19 +1,21 @@
 {{#section 'head'}}
+    <meta name="google-signin-client_id" content=" 1030276056125-vtv82bgbggango3bd351ijfc3drl7j3u.apps.googleusercontent.com ">
     <link rel="stylesheet" href="/css/signup.css">
 {{/section}}
-
-{{>"modals/form-errors"}}
-{{>"modals/alert"}}
 
 {{#section 'body_scripts'}}
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="/js/views/signup.min.js" async defer></script>
     <script src="/js/form-validators/accountValidator.min.js" async defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" defer></script>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v4.0&appId=1155941491256574&autoLogAppEvents=1"></script>
 {{/section}}
 
-<section class="container">
+{{>"modals/form-errors"}}
+{{>"modals/alert"}}
 
+<section class="container">
     {{>container_header header_image="/img/nav/signup.svg" header_text="Sign Up"}}
 
     {{>"registration" ref_by=ref_by}}

@@ -1,5 +1,4 @@
 @import "base";
-@import 'social-buttons';
 .social-login{
   text-align: center;
   justify-content: center;
@@ -69,4 +68,12 @@
       margin-right: 20px;
     }
   }
+}
+
+.fb-login-button{
+  margin-top: 10px;
+}
+
+#my-signin2{
+  margin-top: 10px;
 }

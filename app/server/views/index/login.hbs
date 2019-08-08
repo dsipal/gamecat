@@ -1,4 +1,5 @@
 {{#section 'head'}}
+    <meta name="google-signin-client_id" content=" 1030276056125-vtv82bgbggango3bd351ijfc3drl7j3u.apps.googleusercontent.com ">
     <link rel="stylesheet" href="/css/login.css">
 {{/section}}
 
@@ -8,6 +9,8 @@
     <script src="/js/form-validators/loginValidator.min.js"></script>
     <script src="/js/form-validators/emailValidator.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" defer></script>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v4.0&appId=1155941491256574&autoLogAppEvents=1"></script>
 {{/section}}
 
 <div id="login" class="container">
@@ -25,8 +28,8 @@
     </form>
 
     <div class="row social-login">
-        <a href="/login/facebook" class="sb sb-facebook">Sign in with Facebook</a>
-        <a href="/login/google" class="sb sb-google">Sign in with Google</a>
+        <div class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
+        {{>googlesignin}}
     </div>
 
 </div>
