@@ -55,9 +55,10 @@ router.get('/pwnpostback', async function(req, res){
         let user = await User.findOne({_id: subid});
         user.points+= payout;
         await user.save();
+        console.log(req.query.subid1 + " was paid " + payout);
         return res.status(200).send("Postback recieved.");
     }catch(e){
-        console.log('Error with AdscendMedia postback.');
+        console.log('Error with PWNGames postback.');
         console.log(e);
         res.status(500).send('Invalid postback.');
     }

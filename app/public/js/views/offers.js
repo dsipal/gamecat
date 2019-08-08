@@ -67,10 +67,8 @@ $(document).ready(function(){
     const observerCheck = function(entries){
         entries.forEach(entry =>{
             if(entry.intersectionRatio > 0){
-                console.log('intersect');
                 let content = $('#offersContent div.active');
                 let page = content.data('page');
-                console.log(page);
                 let offset = limit * page;
                 loadMore(page, limit, offset, content.find('.offer-list'));
                 content.data('page', page+1);
