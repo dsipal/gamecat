@@ -2,7 +2,6 @@
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleOAuth = require('passport-google-oauth').OAuth2Strategy;
 const FbStrategy = require('passport-facebook').Strategy;
-const InstaStrategy = require('passport-instagram').Strategy;
 const User = require('../server/models/User');
 
 module.exports = function(passport) {
@@ -46,7 +45,7 @@ module.exports = function(passport) {
     passport.use(new GoogleOAuth({
             clientID: process.env.GOAUTH_ID,
             clientSecret: process.env.GOAUTH_SECRET,
-            callbackURL: process.env.ROOT_URL,
+            callbackURL: process.env.ROOT_URL + '/login/google/callback',
             passReqToCallback: true,
         },
         function(req, accessToken, refreshToken, profile, done) {
@@ -74,7 +73,7 @@ module.exports = function(passport) {
     passport.use(new FbStrategy({
             clientID: process.env.FBAUTH_ID,
             clientSecret: process.env.FBAUTH_SECRET,
-            callbackURL: 'https://gamecat.co/login/facebook/callback',
+            callbackURL: process.env.ROOT_URL + '/login/facebook/callback',
             profileFields: ['email', 'displayName']
         },
         function(accessToken, refreshToken, profile, done) {
