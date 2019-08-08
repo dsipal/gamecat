@@ -20,7 +20,6 @@
     "express": "^4.17.1",
     "express-handlebars": "^3.1.0",
     "express-session": "^1.16.2",
-    "geoip-country": "^3.2.2",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "6.1.0",
     "gulp-clean-css": "4.2.0",
