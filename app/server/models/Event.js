@@ -9,7 +9,7 @@ const event = new mongoose.Schema({
     },
     {collection: 'Events'});
 
-event.static.newEvent = async function(name, start, end, mod){
+event.statics.newEvent = async function(name, start, end, mod){
     Event.collection.insertOne({
         name: name,
         status: 'pending',
