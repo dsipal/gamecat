@@ -26,24 +26,21 @@ let newEventSchedule = function(start, end, modifier, event){
     });
 };
 
-let test = async function(){
+let test = function(){
     console.log('Starting test');
     let start = new Date(Date.now() + 10000);
     let end = new Date(Date.now() +50000);
     let name = 'Test Event';
     let modifier = 2;
 
-        await Event.newEvent(name,start,end,modifier, function(err, event){
+         Event.newEvent(name,start,end,modifier, function(err, event){
             if(err){
                 console.log('error in newEvent process ' + err);
             } else{
                 console.log('Created event, about to test schedule ' + event);
-                newEventSchedule(start, end, modifier, event);
+ //               newEventSchedule(start, end, modifier, event);
             }
 
-        })
-        .catch(function (err) {
-            console.log('Messed up test but in a good way: ' + err);
         });
 
 };

@@ -11,31 +11,50 @@ const event = new mongoose.Schema({
 );
 
 
-event.statics.newEvent = async function(name, start, end, mod, callback){
+event.statics.newEvent = function(name, start, end, mod, callback){
     console.log('Starting newEvent');
-    Event.collection.insertOne({
+    let doc = Event.collection.insertOne({
         name: name,
         status: 'pending',
         startDate: start,
         endDate: end,
         modifier: mod
-    }).then(function(doc){
-        console.log('Inserted new event : ' + doc);
-        Event.collection.findOne({_id: doc.insertedId}).then(function (event) {
-            if(event){
-                console.log('Event found, calling back');
-                callback(false, event);
-            } else {
-                callback('Event wasnt found after insertion', null);
-            }
-        }).catch(function (err) {
-            console.log('yet another error catch oof ' + err);
-            callback(err, null);
-        });
-    }).catch(function (err) {
-        console.log('Error creating new event : ' + err);
-        callback(err, null);
     });
+    console.log('Inserted new event : ' + doc);
+
+    let event = Event.findOne({_id: doc.insertedId});
+
+    if(event === null || event === undefined){
+        console.log('event null or undefined')
+    } else{
+        console.log('Event found, calling back' + event);
+        callback(null, event);
+    }
+
+
+    // Event.collection.insertOne({
+    //     name: name,
+    //     status: 'pending',
+    //     startDate: start,
+    //     endDate: end,
+    //     modifier: mod
+    // }).then(function(doc){
+    //     console.log('Inserted new event : ' + doc);
+    //     Event.collection.findOne({_id: doc.insertedId}).then(function (event) {
+    //         if(event){
+    //             console.log('Event found, calling back');
+    //             callback(false, event);
+    //         } else {
+    //             callback('Event wasnt found after insertion', null);
+    //         }
+    //     }).catch(function (err) {
+    //         console.log('yet another error catch oof ' + err);
+    //         callback(err, null);
+    //     });
+    // }).catch(function (err) {
+    //     console.log('Error creating new event : ' + err);
+    //     callback(err, null);
+    // });
 };
 
 event.methods.startEvent = async function(){
