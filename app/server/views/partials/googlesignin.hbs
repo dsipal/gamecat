@@ -1,5 +1,6 @@
 <div id="my-signin2"></div>
 <script>
+
     function onSuccess(googleUser) {
         console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
     }
@@ -7,6 +8,15 @@
         console.log(error);
     }
     function renderButton() {
+        gapi.load('auth2', function () {
+            auth2 = gapi.auth2.init({
+                client_id: '1030276056125-vtv82bgbggango3bd351ijfc3drl7j3u.apps.googleusercontent.com',
+                cookiepolicy: 'single_host_origin',
+                ux_mode: 'redirect',
+                redirect_uri: 'https://gamecat.co/login/google/callback'
+            });
+        });
+
         gapi.signin2.render('my-signin2', {
             'scope': 'profile email',
             'width': 236,
