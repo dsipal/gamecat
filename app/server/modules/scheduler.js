@@ -1,7 +1,5 @@
 let schedule = require('node-schedule');
 
-let j = schedule.scheduleJob('5 * * * *', function(){
+schedule.scheduleJob('*/10 * * * * *', function(){
     console.log('Testing the scheduler');
 });
-
-j.start();
