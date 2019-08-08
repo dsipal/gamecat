@@ -1,10 +1,7 @@
-const CT = require('../modules/country-list');
-const EM = require('../modules/email-dispatcher');
 const User = require('../models/User');
 const passport = require('passport');
 const express = require('express');
 let router = express.Router();
-const authLimiter = require('../modules/authLimiter');
 const UserValidator = require('../modules/user-validator');
 
 

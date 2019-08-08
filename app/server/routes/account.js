@@ -1,8 +1,4 @@
-const CT = require('../modules/country-list');
-const EM = require('../modules/email-dispatcher');
 const User = require('../models/User');
-let UserValidator = require('../modules/user-validator');
-const passport = require('passport');
 const express = require('express');
 const authLimiter = require('../modules/authLimiter');
 const router = express.Router();
@@ -22,7 +18,6 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res) {
 
     return res.render('account/accountpage', {
         title: 'Control Panel',
-        countries: CT,
         udata: populated_user
     });
 });

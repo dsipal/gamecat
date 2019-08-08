@@ -5,8 +5,8 @@ const domain = process.env.MG_DOMAIN;
 const mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 
 //TODO set up email_optin list
-const promolist = mailgun.lists('promotions@mg.gamecat.co');
-const sitelist = mailgun.lists('sitenews@mg.gamecat.co');
+const promolist = mailgun.lists('promotions@gamecat.co');
+const sitelist = mailgun.lists('sitenews@gamecat.co');
 const emailAcc = "Gamecat <admin@gamecat.co>";
 
 exports.dispatchConfirm = async function(email, token, name) {
@@ -68,7 +68,7 @@ exports.dispatchPasswordReset = async function(email, token, name, callback){
 exports.dispatchSupport = async function(email, category, message, callback){
     let data = {
         from: email,
-        to: 'support@mg.gamecat.co',
+        to: 'support@gamecat.co',
         template: 'supportrequest',
         'v:category': category,
         'v:message': message,
