@@ -12,8 +12,6 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     const offers = await getOffers(country_code, req.user._id);
 
     return res.render('offers/quests', {
-        subid1: 'gc',
-        subid2: req.user._id,
         udata: req.user,
         offers: offers
     });
@@ -111,7 +109,7 @@ async function getOffers(country_code, subid){
     let responses = await Promise.all(promises);
 
     responses.map((response,key) => {
-        response.tracking_url += `&subid1=${subid}`;
+        response.tracking_url += `?subid1=gc&subid2=${subid}`;
         response.description = descriptions[key];
         response.name = names[key];
         response.payout = payouts[key];
