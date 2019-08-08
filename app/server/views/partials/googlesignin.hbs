@@ -9,7 +9,7 @@
     }
     function renderButton() {
         gapi.load('auth2', function () {
-            auth2 = gapi.auth2.ClientConfig({
+            gapi.auth2.ClientConfig({
                 client_id: '1030276056125-vtv82bgbggango3bd351ijfc3drl7j3u.apps.googleusercontent.com',
                 scope: 'profile email openid',
                 cookiepolicy: 'single_host_origin',
