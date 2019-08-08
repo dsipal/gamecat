@@ -26,4 +26,18 @@ module.exports.newEventSchedule = function(start, end, modifier, event){
     });
 };
 
-//module.exports = job;
+let test = function(){
+    console.log('Starting test');
+    let start = new Date(Date.now() + 10000);
+    let end = new Date(Date.now() +50000);
+    let name = 'Test Event';
+    let modifier = 2;
+
+    let ev = Event.newEvent(name,start,end,modifier);
+
+    console.log('Created event, about to test schedule ' + ev);
+
+    newEventSchedule(start, end, modifier, ev);
+};
+
+module.exports = test;
