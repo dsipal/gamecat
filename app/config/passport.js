@@ -2,7 +2,6 @@
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleOAuth = require('passport-google-oauth').OAuth2Strategy;
 const FbStrategy = require('passport-facebook').Strategy;
-const InstaStrategy = require('passport-instagram').Strategy;
 const User = require('../server/models/User');
 
 module.exports = function(passport) {
@@ -38,6 +37,7 @@ module.exports = function(passport) {
             if(user.validatePassword(password, user.password)){
                 return done(null, user);
             }else{
+                console.log('Error logging in local user.');
                 return done(err);
             }
         });
@@ -46,7 +46,7 @@ module.exports = function(passport) {
     passport.use(new GoogleOAuth({
             clientID: process.env.GOAUTH_ID,
             clientSecret: process.env.GOAUTH_SECRET,
-            callbackURL: process.env.ROOT_URL,
+            callbackURL: process.env.ROOT_URL + '/login/google/callback',
             passReqToCallback: true,
         },
         function(req, accessToken, refreshToken, profile, done) {
@@ -60,11 +60,11 @@ module.exports = function(passport) {
                 if(err){
                     return done(err);
                 } else {
-                    console.log('User right before done: ' + user);
-                    console.log('we got to done!');
+                    console.log('Logging in Google user: ' + user.username);
                     return done(null, user);
                 }
             }).catch(function(err){
+                console.log('Error logging in Google user.');
                 console.log(err);
                 return done(err);
             });
@@ -74,7 +74,7 @@ module.exports = function(passport) {
     passport.use(new FbStrategy({
             clientID: process.env.FBAUTH_ID,
             clientSecret: process.env.FBAUTH_SECRET,
-            callbackURL: 'https://gamecat.co/login/facebook/callback',
+            callbackURL: process.env.ROOT_URL + '/login/facebook/callback',
             profileFields: ['email', 'displayName']
         },
         function(accessToken, refreshToken, profile, done) {
@@ -89,11 +89,11 @@ module.exports = function(passport) {
                 if(err){
                     return done(err);
                 } else {
-                    console.log('User right before done: ' + user);
-                    console.log('we got to done!');
+                    console.log('Logging in Facebook user: ' + user.username);
                     return done(null, user);
                 }
             }).catch(function(err){
+                console.log('Error logging in Facebook user.');
                 console.log(err);
                 return done(err);
             });
