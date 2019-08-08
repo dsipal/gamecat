@@ -22,18 +22,8 @@ router.post('/',
         session: true,
     }),
     async function(req, res){
-        let ip = req.headers['x-forwarded-for']
-            || req.connection.remoteAddress
-            || req.socket.remoteAddress
-            || req.connection.socket.remoteAddress;
-
-        if(ip.substr(0,7) === "::ffff:"){
-            ip = ip.substr(7);
-        }
-        if(ip.includes(',')){
-            let ipArr = ip.split(', ');
-            ip = ipArr[0];
-        }
+        let formattedIP = ipFormatter(req);
+        let ip = formattedIP[0];
         console.log(req.body['username'] + ' logging in.');
         await req.session.save();
         if (req.body['remember-me'] === 'false'){

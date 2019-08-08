@@ -14,7 +14,6 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "browser-sync": "2.26.7",
-    "compression": "^1.7.4",
     "connect-mongo": "3.0.0",
     "cookie-parser": "^1.4.4",
     "dotenv": "^8.0.0",
