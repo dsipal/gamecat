@@ -1,4 +1,4 @@
-//TODO set these in env vars for security.
+//TODO set these in .env vars for security.
 const api_key = process.env.MG_KEY;
 const domain = process.env.MG_DOMAIN;
 
@@ -10,7 +10,6 @@ const sitelist = mailgun.lists('sitenews@gamecat.co');
 const emailAcc = "Gamecat <admin@gamecat.co>";
 
 exports.dispatchConfirm = async function(email, token, name) {
-    console.log(name, token);
     const data = {
         from: emailAcc,
         to: email,
@@ -32,7 +31,7 @@ exports.dispatchCode = async function(email, name, code, prize) {
         from: emailAcc,
         to: email,
         bcc: '3516abaf43@invite.trustpilot.com, gamecatgg@gmail.com',
-        subject: 'Your Giftcard Order',
+        subject: 'Your Gamecat Reward Is Here!',
         template: 'sendprizecode',
         "v:username": name,
         "v:prizecode": code,
@@ -55,7 +54,8 @@ exports.dispatchPasswordReset = async function(email, token, name, callback){
         "o:tag": ['passwordreset']
     };
 
-    await mailgun.messages().send(data, function(err, bod){
+
+    await mailgun.messages().send(data, function(err, bod) {
         if(err){
             console.log('Error dispatching password reset email: ');
             callback(err);
@@ -70,13 +70,14 @@ exports.dispatchSupport = async function(email, category, message, callback){
     let data = {
         from: email,
         to: 'support@gamecat.co',
+        subject: 'New support request',
         template: 'supportrequest',
         'v:category': category,
         'v:message': message,
-        'v:user': email
+        'v:email': email
     };
 
-    await mailgun.messages().send(data, function(err, bod){
+    await mailgun.messages().send(data, function(err, bod) {
         if(err){
             console.log('Error dispatching support email: ');
             callback(err);

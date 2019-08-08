@@ -1,11 +1,8 @@
 const mongoose = require('mongoose');
 const crypto = require('crypto');
-const emchecker = require('../modules/email-checker.js');
 const emdisp = require('../modules/email-dispatcher');
-const Prize = require('./Prize');
 const Order = require('./Order');
 const uniqueValidator = require('mongoose-unique-validator');
-const UserValidator = require('../modules/user-validator');
 
 //TODO add validators in here, then handle the errors elsewhere.
 const user = new mongoose.Schema({
@@ -41,26 +38,23 @@ const user = new mongoose.Schema({
     },
     {collection: 'Users'}
 );
-
 user.plugin(uniqueValidator);
 
 user.statics.findOrCreate = async function(userData, callback) {
     console.log(userData);
-    User.findOne({email: userData.email}).then(function(user, err){
-        console.log('User:' + user);
-        console.log('Error:' + err);
+    User.findOne({email: userData.email}).then(function(user){
         if(user){
-            console.log('User already exists for email: ' + userData.email + ' that user is : ' + user);
+            console.log('User already exists for email: ' + userData.email);
             callback(null, user);
         } else {
             console.log('User not found for email: ' + userData.email + ' creating account.');
             User.formatNewAccount(userData, function(err, newUser){
-                console.log('callback on formatNewAccount has been tripped, user: ' + newUser);
                 if(err){
+                    console.log('Error formatting new account: ' + userData.username);
                     console.log(err);
                     callback(err, null);
                 } else {
-                    console.log('returning the user: ' + newUser);
+                    console.log('Created new user: ' + newUser);
                     callback(null, newUser);
                 }
             });
@@ -71,7 +65,6 @@ user.statics.findOrCreate = async function(userData, callback) {
     });
 };
 
-
 // class/static functions //
 user.statics.getAllRecords = function(callback){
     User.find().toArray(
@@ -81,26 +74,7 @@ user.statics.getAllRecords = function(callback){
         });
 };
 
-//this method isn't used and probably shouldnt be.
-user.statics.deleteAllAccounts = function(){
-    User.deleteMany({});
-    console.log('deleted accounts');
-};
-
-
-//this method is never used.
-user.statics.getUser = function(uname){
-    User.findOne({username: uname}).then(function(err, obj){
-        if(err){
-            console.log(err);
-        } else {
-            return obj;
-        }
-    });
-};
-
-user.statics.generateLoginKey = function(username, ipAddress, callback)
-{
+user.statics.generateLoginKey = function(username, ipAddress, callback){
     let cookie = guid();
     User.findOneAndUpdate({username:username}, {$set:{
             ip : ipAddress,
@@ -110,7 +84,6 @@ user.statics.generateLoginKey = function(username, ipAddress, callback)
 };
 
 // login functions //
-//TODO possibly figure out how to auth without sending plaintext pass -- now that we have SSL there will be no plantext sent between client and server.
 //takes plaintext password, returns plainPass == hashedPass
 user.methods.validatePassword = function(plainPass){
     let salt = this.password.substr(0, 10);
@@ -118,12 +91,6 @@ user.methods.validatePassword = function(plainPass){
     return validHash === this.password;
 };
 
-// registration functions //
-user.statics.validateNewAccount = function(newData, onFail, callback){
-    const validator = new UserValidator(newData);
-};
-
-//TODO clean addNewAccount, move verification into different function
 //takes in registration form data, callback is handled in routes.
 //ensures that username & email are unique, and that referrer exists.
 user.statics.formatNewAccount = function(newData, callback){
@@ -141,35 +108,37 @@ user.statics.formatNewAccount = function(newData, callback){
     newData.points = 0;
     newData.token = crypto.randomBytes(20).toString('hex');
 
-    if(newData.ref_by){
+    if(newData.ref_by) {
         console.log('Populating ' + newData.ref_by +' as referrer for new user: ' + newData.username);
-        User.findOne({username: newData.ref_by}).exec(function(err, user){
-            if(err){
+        User.findOne({username: newData.ref_by}).exec(function(err, user) {
+            if(err) {
                 console.log('Error populating the referrer for ' + newData.username);
-                console.log('Error: ' + err);
+                console.log(err);
                 callback(err, null);
             } else {
-                if(user !== null){
+                if(user !== null) {
                     newData.ref_by = user._id;
                     User.addNewAccount(newData, callback);
                 } else {
+                    console.log('Invalid referral for ' + newData.username);
                     callback(['invalid-referral'], null);
                 }
             }
         });
     } else {
-        console.log('adding new account');
+        console.log('Account ' + newData.username + ' formatted, creating new account.');
         User.addNewAccount(newData, callback);
     }
 };
 
-user.statics.addNewAccount  = function(newData, callback){
-    User.create(newData, function(e,o){
+user.statics.addNewAccount  = function(newData, callback) {
+    User.create(newData, function(e,o) {
         if(e) {
-            console.log('error creating new account' + newData);
+            console.log('Error creating new account: ' + newData.username);
+            console.log(e);
             return callback(e, null);
         } else {
-            console.log('Inside addNewAccount, user created: ' + o);
+            console.log('Adding new account: ' + o.username);
             if(newData.rank === 'new') emdisp.dispatchConfirm(newData.email, newData.token, newData.username);
             return callback(null,o);
         }
@@ -177,8 +146,7 @@ user.statics.addNewAccount  = function(newData, callback){
 };
 
 //Moved from AM
-user.statics.validateLoginKey = function(cookie, ipAddress, callback)
-{
+user.statics.validateLoginKey = function(cookie, ipAddress, callback) {
 // ensure the cookie maps to the user's last recorded ip address //
     User.findOne({cookie:cookie, ip:ipAddress}, callback);
 };
@@ -201,78 +169,51 @@ user.methods.percolateReferrals = async function () {
         let ref_by = this.ref_by;
         let refID = this._id;
 
-        if(ref_by !== null){
+        if(ref_by !== null) {
             await User.updateOne(
                 {_id: ref_by},
-                {
-                    $push: {referrals: refID},
-                    $inc: {points: 100}
-                }
+                {$push: {referrals: refID}, $inc: {points: 100}}
             );
             await User.updateOne(
                 {_id: refID},
-                {
-                    $inc: {points: 100}
-                }
-            ).then(function(){
+                {$inc: {points: 100}}
+            ).then(function() {
                 console.log("Referrals percolated for " + refID);
             });
-
             return false;
         }
     } catch(err) {
+        console.log('Error percolating referrals.');
+        console.log(err);
         return err;
     }
 };
 
 // update account functions //
-
-//used by postback, called in routes, adds points to user
-user.methods.addPoints = async function(amount){
-    this.points += amount;
-    await this.save();
-};
-
 //updates password, called in routes
-user.methods.updatePassword = async function(newpass){
-    this.password = newpass;
+user.methods.updatePassword = async function(newPassword) {
+    this.password = newPassword;
     await this.save()
 };
 
-//updates user's info, called in routes
-user.methods.updateAccount = async function(data, callback){
-    if(this.validatePassword(data.password)){
-        this.name = data.name;
-        this.email = data.email;
-        this.country = data.country;
-        await this.save();
-        callback(null, this);
-    } else {
-        console.log('error updating.');
-        callback('invalid-password', null);
-    }
-
-};
-
-user.methods.deleteAccount = function(){
+user.methods.deleteAccount = function() {
     this.delete();
 };
 
-user.methods.banAccount = async function(){
+user.methods.banAccount = async function() {
     this.rank = 'banned';
     console.log(this);
     await this.save();
 };
 
-user.methods.unbanAccount = async function(){
+user.methods.unbanAccount = async function() {
     this.rank = 'activated';
     console.log(this);
     await this.save();
 };
 
 //Checking if the token from URL matches token stored in user data, if yes, activate account
-user.methods.confirmAccount = async function(token){
-
+user.methods.confirmAccount = async function(token) {
     await User.updateOne(
         {_id: this._id },
         {$set: {rank: 'activated'}}
@@ -289,13 +230,13 @@ user.methods.confirmAccount = async function(token){
         }
         return true;
     } catch(err){
+        console.log('Error adding user to mailing list.');
         console.log(err);
         return(err);
     }
-
 };
 
-user.methods.updateToken = async function(){
+user.methods.updateToken = async function() {
     const toke = crypto.randomBytes(20).toString('hex');
     this.token = toke;
     await this.save();
@@ -317,8 +258,7 @@ user.methods.resetPassword = async function(newPass, resetToken, callback){
     }
 };
 
-user.methods.updatePassword = async function(passKey, newPass, callback)
-{
+user.methods.updatePassword = async function(passKey, newPass, callback) {
     saltAndHash(newPass, async function(hash){
         newPass = hash;
         if(this.passKey === passKey){
@@ -330,8 +270,7 @@ user.methods.updatePassword = async function(passKey, newPass, callback)
     });
 };
 
-// store functions //
-
+// Shop Functions //
 user.methods.purchasePrize = async function(prize, option, callback){
     let user = this;
     if(this.points >= option){
@@ -346,25 +285,22 @@ user.methods.purchasePrize = async function(prize, option, callback){
         }).then(async function(order){
             user.orders.push(order.insertedId);
             await user.save(function(err){
+                console.log('Error adding prize to user: ' + user.username);
                 console.log(err);
             });
             return callback(order.ops[0], user);
         });
-
     } else {
         return callback(null, this)
     }
 };
 
-
-// helper functions //
-
+// Helper Functions //
 function md5 (str) {
     return crypto.createHash('md5').update(str).digest('hex');
 }
 
-function generateSalt()
-{
+function generateSalt() {
     let set = '0123456789abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ';
     let salt = '';
     for (let i = 0; i < 10; i++) {
@@ -374,20 +310,14 @@ function generateSalt()
     return salt;
 }
 
-function saltAndHash(pass)
-{
+function saltAndHash(pass) {
     let salt = generateSalt();
     //callback(salt + md5(pass + salt));
 
     return salt+md5(pass+salt);
 }
 
-function getObjectId(id)
-{
-    return new require('mongodb').ObjectID(id);
-}
-
-function guid(){
+function guid() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
         let r = Math.random()*16|0,v=c=='x'?r:r&0x3|0x8;return v.toString(16);
     });

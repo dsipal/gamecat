@@ -500,8 +500,7 @@
 
 .container .social-login {
   text-align: center;
-  -webkit-box-pack: center;
-          justify-content: center;
+  justify-content: center;
   margin: 10px; }
   .container .social-login .sb {
     margin: 10px; }

@@ -4,6 +4,8 @@ const Prize = require('../models/Prize');
 const Order = require('../models/Order');
 const express = require('express');
 const authLimiter = require('../modules/authLimiter');
+const sched = require('../modules/scheduler');
+// const sched = require('./app/server/modules/scheduler');
 const router = express.Router();
 
 router.get('/', authLimiter.ensureAuthenticated(), function(req, res){
@@ -51,7 +53,7 @@ router.post('/users/unban', authLimiter.ensureAuthenticated(), function(req, res
         return res.status(500).send('Error unbanning user: ' + username + '\n' +err);
     });
 
-    return res.redirect('/admin/users');
+    return res.redirect('/users');
 });
 
 router.post('/users/ban', authLimiter.ensureAuthenticated(), async function (req, res) {
@@ -69,7 +71,7 @@ router.post('/users/ban', authLimiter.ensureAuthenticated(), async function (req
         return res.status(500).send('Error banning account: ' + username + '\n' +err);
     });
 
-    return res.redirect('/admin/users');
+    return res.redirect('/users/banlist');
 });
 
 router.get('/prizes', authLimiter.ensureAuthenticated(), async function(req, res){
@@ -150,7 +152,7 @@ router.post('/cashouts/completed', authLimiter.ensureAuthenticated(), async func
         await order.completeCashout(giftCode).then(async function(success){
             if(success){
                await EM.dispatchCode(email,name,giftCode,prize);
-               return res.redirect('admin/cashouts/pending');
+               return res.redirect('/cashouts/complete');
             } else {
                console.log("Unsuccessful in attempt to cashout " + prize);
                return res.status(500).send('Error updating the Order collection.');
