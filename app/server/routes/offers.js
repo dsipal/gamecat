@@ -9,6 +9,7 @@ const ipFormatter = require('../modules/ipFormatter');
 router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     let country_code = req.header['cf-ipcountry'];
     console.log(req.headers);
+    console.log(req.headers['cf-ipcountry']);
     console.log(req.header['cf-ipcountry']);
     const offers = await getOffers(country_code, req.user._id);
 
