@@ -17,6 +17,7 @@ event.static.newEvent = async function(name, start, end, mod){
         endDate: end,
         modifier: mod
     }).then(function(doc){
+        console.log('Inserted new event : ' + doc);
         return Event.collection.findOne({_id: doc.insertedId});
     }).catch(function (err) {
         console.log('Error creating new event : ' + err);
