@@ -2,7 +2,6 @@ const User = require('../models/User');
 const authLimiter = require('../modules/authLimiter');
 const express = require('express');
 const router = express.Router();
-const geoip = require('geoip-country');
 const request = require('request-promise');
 const Game = require('../models/Game');
 const ipFormatter = require('../modules/ipFormatter');

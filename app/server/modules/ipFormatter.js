@@ -12,6 +12,9 @@ function getIP(req){
         let ipArr = ip.split(', ');
         ip = ipArr[0];
     }
+
+    let country_code = req.header['CF-IPCountry HTTP'];
+    console.log('country_code');
     const geo = geoip.lookup(ip);
     return [ip, geo];
 }
