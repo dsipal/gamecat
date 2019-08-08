@@ -21,8 +21,17 @@ event.statics.newEvent = async function(name, start, end, mod, callback){
         modifier: mod
     }).then(function(doc){
         console.log('Inserted new event : ' + doc);
-        let ref = Event.collection.findOne({_id: doc.insertedId});
-        callback(false, ref);
+        Event.collection.findOne({_id: doc.insertedId}).then(function (event) {
+            if(event){
+                console.log('Event found, calling back');
+                callback(false, event);
+            } else {
+                callback('Event wasnt found after insertion', null);
+            }
+        }).catch(function (err) {
+            console.log('yet another error catch oof ' + err);
+            callback(err, null);
+        });
     }).catch(function (err) {
         console.log('Error creating new event : ' + err);
         callback(err, null);

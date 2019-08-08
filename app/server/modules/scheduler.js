@@ -38,7 +38,7 @@ let test = function(){
                 console.log('error in newEvent process ' + err);
             } else{
                 console.log('Created event, about to test schedule ' + evnt);
-                scheduler.newEventSchedule(start, end, modifier, evnt);
+                newEventSchedule(start, end, modifier, evnt);
             }
 
         })
