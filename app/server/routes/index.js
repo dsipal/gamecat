@@ -1,4 +1,3 @@
-const CT = require('../modules/country-list');
 const EM = require('../modules/email-dispatcher');
 const User = require('../models/User');
 const passport = require('passport');
@@ -35,7 +34,6 @@ router.get('/signup', function(req, res) {
     } else {
         return res.render('index/signup', {
             title: 'Signup',
-            countries : CT,
             ref_by: req.query.ref_by,
             email: req.query.email,
             agree: req.query.agree
