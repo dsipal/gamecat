@@ -13,12 +13,13 @@
                 client_id: '1030276056125-vtv82bgbggango3bd351ijfc3drl7j3u.apps.googleusercontent.com',
                 cookiepolicy: 'single_host_origin',
                 ux_mode: 'redirect',
-                redirect_uri: 'https://gamecat.co/login/google/callback'
+                redirect_uri: 'https://gamecat.co/login/google/callback',
+                scope: 'profile email openid'
             });
         });
 
         gapi.signin2.render('my-signin2', {
-            'scope': 'profile email',
+            'scope': 'profile email openid',
             'width': 236,
             'height': 40,
             'longtitle': true,
