@@ -20,7 +20,7 @@ router.post('/',
         session: true,
     }),
     async function(req, res){
-        let ip = req.header['CF-Connecting-IP'];
+        let ip = req.headers['CF-Connecting-IP'];
         console.log(req.body['username'] + ' logging in.');
         await req.session.save();
         if (req.body['remember-me'] === 'false'){

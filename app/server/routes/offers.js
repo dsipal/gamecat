@@ -7,10 +7,7 @@ const Game = require('../models/Game');
 const ipFormatter = require('../modules/ipFormatter');
 
 router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
-    let country_code = req.header['cf-ipcountry'];
-    console.log(req.headers);
-    console.log(req.headers['cf-ipcountry']);
-    console.log(req.header['cf-ipcountry']);
+    let country_code = req.headers['CF-IPCountry'];
     const offers = await getOffers(country_code, req.user._id);
 
     return res.render('offers/quests', {
