@@ -1,6 +1,5 @@
 const EM = require('../modules/email-dispatcher');
 const User = require('../models/User');
-const passport = require('passport');
 const express = require('express');
 let router = express.Router();
 const authLimiter = require('../modules/authLimiter');
@@ -101,18 +100,20 @@ router.post('/lost-password', async function(req, res){
 });
 
 router.get('/reset', authLimiter.ensureAuthenticated(), async function(req, res) {
-    console.log('Reset attempt by: ' + req.query.name + ' TOKEN: ' + req.query.id);
-    await User.findOne({username:req.query.name}, function(e, o){
+    let token = req.query.token;
+    let username = req.query.username;
+    console.log('Reset attempt by: ' + username + ' with token: ' + token);
+    await User.findOne({username:username}, function(e, o){
         if(e || !o){
-            console.log('Invalid reset attempt for ' + req.query.name);
+            console.log('Invalid reset attempt for ' + username);
             return res.redirect('/');
         } else {
-            if(o.token === req.query.id){
+            if(o.token === token){
                 console.log('Resetting password for ' + o.username);
                 req.session.token = o.token;
                 return res.render('index/reset', { title : 'Reset Password' });
             } else{
-                console.log('Invalid reset token for ' + req.username);
+                console.log('Invalid reset token for ' + o.username);
                 return res.status(400).send('Invalid Reset Token');
             }
         }
