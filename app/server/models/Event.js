@@ -25,8 +25,8 @@ event.statics.newEvent = async function(name, start, end, mod, callback){
         callback(false, ref);
     }).catch(function (err) {
         console.log('Error creating new event : ' + err);
+        callback(err, null);
     });
-    console.log('Nothing happened');
 };
 
 event.methods.startEvent = async function(){
