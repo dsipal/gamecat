@@ -12,6 +12,7 @@ function getIP(req){
         ip = ipArr[0];
     }
     console.log(req.header['CF-Connecting-IP']);
+    console.log(JSON.stringify(req.headers));
     let country_code = req.header['CF-IPCountry'];
     console.log(country_code);
     return [ip, country_code];
