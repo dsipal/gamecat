@@ -45,26 +45,41 @@ router.get('/surveys', authLimiter.ensureAuthenticated(), async function(req, re
 
 
 router.get('/postback', async function(req, res){
-    console.log('postback revieved');
-    let subid = require('mongodb').ObjectId(req.query.subid1);
-    let payout = parseInt(req.query.payout);
+    console.log('Postback from AdscendMedia revieved.');
+    try{
+        let subid = require('mongodb').ObjectId(req.query.subid1);
+        let payout = parseInt(req.query.payout);
 
-    let user = await User.findOne({_id: subid});
-    user.points+= payout;
-    await user.save();
-    res.send(req.query.subid1 + " was paid " + req.query.payout);
+        let user = await User.findOne({_id: subid});
+        user.points+= payout;
+        await user.save();
+        console.log(req.query.subid1 + " was paid " + req.query.payout);
+        res.status(200).send('Postback recieved.');
+    } catch(e){
+        console.log('Error with AdscendMedia postback.');
+        console.log(e);
+        res.status(500).send('Invalid postback.');
+    }
+
 });
 
 router.get('/pwnpostback', async function(req, res){
     console.log('pwn games postback recieved');
-    let subid = require('mongodb').ObjectId(req.query.subid1);
-    let offer = await Game.find({'offer_ids': {$elemMatch: {'offer_id': req.query.offer}}});
-    let payout = offer.payout;
+    try{
+        let subid = require('mongodb').ObjectId(req.query.subid1);
+        let offer = await Game.find({'offer_ids': {$elemMatch: {'offer_id': req.query.offer}}});
+        let payout = offer.payout;
 
-    let user = await User.findOne({_id: subid});
-    user.points+= payout;
-    await user.save();
-    return res.send(req.query.subid1 + " was paid " + req.query.payout);
+        let user = await User.findOne({_id: subid});
+        user.points+= payout;
+        await user.save();
+        return res.status(200).send("Postback recieved.");
+    }catch(e){
+        console.log('Error with AdscendMedia postback.');
+        console.log(e);
+        res.status(500).send('Invalid postback.');
+    }
+
 });
 
 
