@@ -35,12 +35,10 @@ let test = async function(){
 
     await Event.newEvent(name,start,end,modifier).then(function (ev) {
         console.log('Created event, about to test schedule ' + ev);
-
         newEventSchedule(start, end, modifier, ev);
     }).catch(function (err) {
         console.log('Messed up test but in a good way: ' + err);
     });
-
 
 };
 

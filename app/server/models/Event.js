@@ -7,9 +7,12 @@ const event = new mongoose.Schema({
         endDate: {type: Date},
         modifier: {type: Number}
     },
-    {collection: 'Events'});
+    {collection: 'Events'}
+);
+
 
 event.statics.newEvent = async function(name, start, end, mod){
+    console.log('Starting newEvent');
     Event.collection.insertOne({
         name: name,
         status: 'pending',
@@ -22,6 +25,7 @@ event.statics.newEvent = async function(name, start, end, mod){
     }).catch(function (err) {
         console.log('Error creating new event : ' + err);
     });
+    console.log('Nothing happened');
 };
 
 event.methods.startEvent = async function(){
