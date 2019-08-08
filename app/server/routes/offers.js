@@ -10,8 +10,8 @@ const ipFormatter = require('../modules/ipFormatter');
 
 
 router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
-    let formatted = ipFormatter(req);
-    let country_code = formatted[1];
+    let formattedIP = ipFormatter(req);
+    let country_code = formattedIP[1].country;
     console.log(country_code);
     const offers = await getOffers(country_code, req.user._id);
 
