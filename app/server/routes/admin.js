@@ -4,7 +4,8 @@ const Prize = require('../models/Prize');
 const Order = require('../models/Order');
 const express = require('express');
 const authLimiter = require('../modules/authLimiter');
-const sched = require('./app/server/modules/scheduler');
+const sched = require('../modules/scheduler');
+// const sched = require('./app/server/modules/scheduler');
 const router = express.Router();
 
 router.get('/', authLimiter.ensureAuthenticated(), function(req, res){
