@@ -37,6 +37,7 @@ module.exports = function(passport) {
             if(user.validatePassword(password, user.password)){
                 return done(null, user);
             }else{
+                console.log('Error logging in local user.');
                 return done(err);
             }
         });
@@ -59,11 +60,11 @@ module.exports = function(passport) {
                 if(err){
                     return done(err);
                 } else {
-                    console.log('User right before done: ' + user);
-                    console.log('we got to done!');
+                    console.log('Logging in Google user: ' + user.username);
                     return done(null, user);
                 }
             }).catch(function(err){
+                console.log('Error logging in Google user.');
                 console.log(err);
                 return done(err);
             });
@@ -88,11 +89,11 @@ module.exports = function(passport) {
                 if(err){
                     return done(err);
                 } else {
-                    console.log('User right before done: ' + user);
-                    console.log('we got to done!');
+                    console.log('Logging in Facebook user: ' + user.username);
                     return done(null, user);
                 }
             }).catch(function(err){
+                console.log('Error logging in Facebook user.');
                 console.log(err);
                 return done(err);
             });
