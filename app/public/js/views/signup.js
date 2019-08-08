@@ -45,6 +45,6 @@ $(document).ready(function(){
 
 	$('.modal-alert').modal({ show:false, keyboard : false, backdrop : 'static' });
 	$('.modal-alert .modal-header h4').text('Email Sent');
-	$('.modal-alert .modal-body p').html('<img src="/img/emailsent.svg" style="display:block;"/>An email has been sent to your email, please click the link inside of it before logging in.</br>Click OK to return to the login page.');
+	$('.modal-alert .modal-body p').html('<div class="row justify-content-center"><img src="/img/emailsent.svg" /></div>An email has been sent to your email, please click the link inside of it before logging in.</br>Click OK to return to the login page.');
 
 });

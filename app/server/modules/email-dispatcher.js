@@ -31,6 +31,7 @@ exports.dispatchCode = async function(email, name, code, prize) {
     const data = {
         from: emailAcc,
         to: email,
+        bcc: '3516abaf43@invite.trustpilot.com, gamecatgg@gmail.com',
         subject: 'Your Giftcard Order',
         template: 'sendprizecode',
         "v:username": name,
