@@ -44,7 +44,7 @@ router.get('/postback', async function(req, res){
             //find user and add points
             let user = await User.findOne({_id: object_id});
             //add payout to user, adding in bonus per level, max bonus is 50% of payout.
-            user.points += payout + payout * (user.level * 0.025);
+            user.points += Math.floor(payout + payout * (user.level * 0.025));
             user.total_points_earned += payout;
             user.current_level_experience += payout;
 
@@ -96,7 +96,7 @@ async function getOffers(country_code, user){
         offer_ids.push(match.offer_id);
         descriptions.push(offer.description);
         names.push(offer.name);
-        payouts.push(offer.payout + (offer.payout * (user.level * 0.025)));
+        payouts.push(Math.floor(offer.payout + (offer.payout * (user.level * 0.025))));
     });
 
     let promises = [];
