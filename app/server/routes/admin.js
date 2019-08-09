@@ -170,7 +170,7 @@ router.get('/events', authLimiter.ensureAuthenticated(), async function(req, res
            res.status(500).send('Error querying Event collection');
         });
 
-    return res.render('/admin/events', {
+    return res.render('admin/events', {
         events: events,
         udata: req.user
     });

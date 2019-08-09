@@ -2,12 +2,9 @@
     {{#each events}}
         <div class="col-sm-3">
             <h2>{{this.name}}</h2>
-            <h3>{{this.username}}</h3>
-            <p>{{this.email}}</p>
-            <form>
-                <input type="hidden" id="user" name="user" value="{{this.username}}">
-                <button class="btn btn-primary" type="submit" formaction="/admin/users/ban" formmethod="post">BAN</button>
-            </form>
+            <h3>{{this.modifier}}</h3>
+            <p>Start: {{this.startDate}}</p>
+            <p>End: {{this.endDate}}</p>
             <!--            <a class="btn btn-primary" href="/store/buy?id={{this._id}}">Purchase</a>-->
         </div>
     {{/each}}
