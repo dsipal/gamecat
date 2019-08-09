@@ -48,7 +48,7 @@ app.use('/offers/postback', function(req, res, next) {
     // filtering here, calls `res` method to stop progress or calls `next` to proceed
     let ip = req.headers['cf-connecting-ip'];
     // The IP from the CPA site
-    if (ip === '54.204.57.82') {
+    if (ip === '54.204.57.82' || ip === '35.196.95.104' || ip === '35.196.169.46') {
         console.log('valid postback attempt from: ' + ip);
         next();
     } else {
@@ -57,22 +57,11 @@ app.use('/offers/postback', function(req, res, next) {
     }
 });
 
-app.use('/offers/pwnpostback', function(req, res, next) {
-    // filtering here, calls `res` method to stop progress or calls `next` to proceed
-    let ip = req.headers['cf-connecting-ip'];
-    // The IP from the CPA site
-    if (ip === '35.196.95.104' || ip === '35.196.169.46') {
-        next();
-    } else {
-        res.end();
-    }
-});
-
 app.use('/admin', function(req, res, next) {
     // filtering here, calls `res` method to stop progress or calls `next` to proceed
     let ip = req.headers['cf-connecting-ip'];
     // Our IPs
-    if (ip === '75.40.152.150' || ip === '71.217.163.98') {
+    if (ip === '75.40.152.150' || ip === '71.217.183.27') {
         next();
     } else {
         res.end();
@@ -96,10 +85,9 @@ let sitemap = sm.createSitemap({
         {url: '/shop/xbox-gift-card', changefreq: 'weekly', priority: 0.6},
         {url: '/about/', changefreq: 'monthly', priority: 0.3},
         {url: '/contact/', changefreq: 'monthly', priority: 0.3},
-
     ]
-
 });
+
 app.get('/sitemap.xml', function(req, res){
     sitemap.toXML( function(err, xml) {
         if(err) {
