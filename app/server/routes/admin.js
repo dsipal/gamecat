@@ -2,6 +2,7 @@ const EM = require('../modules/email-dispatcher');
 const User = require('../models/User');
 const Prize = require('../models/Prize');
 const Order = require('../models/Order');
+const Event = require('../models/Event');
 const express = require('express');
 const authLimiter = require('../modules/authLimiter');
 const sched = require('../modules/scheduler');
@@ -59,11 +60,11 @@ router.post('/users/unban', authLimiter.ensureAuthenticated(), function(req, res
 router.post('/users/ban', authLimiter.ensureAuthenticated(), async function (req, res) {
     let username = req.body['user'];
 
-    User.findOne({username:username}).then( function(e, o) {
+    User.findOne({username:username}).then( async function(e, o) {
         if(e){
             console.log(e);
         } else {
-            o.banAccount();
+            await o.banAccount();
         }
     }).catch(function(err){
         console.log('Error banning account: ' + username);
@@ -159,6 +160,20 @@ router.post('/cashouts/completed', authLimiter.ensureAuthenticated(), async func
             }
         });
     }
+});
+
+router.get('/events', authLimiter.ensureAuthenticated(), async function(req, res){
+    let events = await Event.find({status: 'pending' || 'active'})
+        .catch(function(err){
+           console.log('Error querying Event collection');
+           console.log(err);
+           res.status(500).send('Error querying Event collection');
+        });
+
+    return res.render('/admin/events', {
+        events: events,
+        udata: req.user
+    });
 });
 
 module.exports = router;
