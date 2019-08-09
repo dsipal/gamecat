@@ -53,12 +53,15 @@ router.get('/postback', async function(req, res){
             let requiredExp = 600 + ((user.level-1) * 400);
             //check for level up, if user is not max level and has more than required exp to level up
             if(user.level < 20 && user.current_level_experience >= requiredExp){
+                console.log(user.username + ' has leveled up to level ' + user.level + ', getting a bonus of ' + user.level*40);
+
+                //give bonus reward for leveling up, max bonus is $2
+                user.points += 40 * user.level;
+
                 //subtract required exp and add level
                 user.current_level_experience -= requiredExp;
                 user.level += 1;
-                //give bonus reward for leveling up, max bonus is $2
-                user.points += 40 * user.level;
-                console.log(user.username + 'has leveled up to level ' + user.level + ', getting a bonus of ' + user.level*40);
+
             }
 
             await user.save();
