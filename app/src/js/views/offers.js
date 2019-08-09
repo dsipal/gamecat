@@ -86,6 +86,14 @@ $(document).ready(function(){
 
     updateCategory();
 
+    {
+        let content = $('#offersContent div.active');
+        let page = content.data('page');
+        let offset = limit * page;
+        loadMore(page, limit, offset, content.find('.offer-list'));
+    }
+
+
     observers.surveys.observe(document.querySelector('#infinite-trigger'));
     observers.videos.observe(document.querySelector('#infinite-trigger'));
     observers.trials.observe(document.querySelector('#infinite-trigger'));
