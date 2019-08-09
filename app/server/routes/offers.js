@@ -98,7 +98,7 @@ async function getOffers(country_code, subid){
     let responses = await Promise.all(promises);
 
     responses.map((response,key) => {
-        response.tracking_url += `?subid1=gc&subid2=${subid}`;
+        response.tracking_url += `?sub1=gc&sub2=${subid}`;
         response.description = descriptions[key];
         response.name = names[key];
         response.payout = payouts[key];
