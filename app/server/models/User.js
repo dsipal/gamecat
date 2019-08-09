@@ -206,15 +206,29 @@ user.methods.deleteAccount = function() {
 };
 
 user.methods.banAccount = async function() {
-    this.rank = 'banned';
-    console.log(this);
-    await this.save();
+    await User.findOneAndUpdate(
+        {_id: this._id},
+        {$set: {rank: 'banned'}},
+        { returnOriginal: false })
+        .then(function(obj){
+            console.log(obj.username + ' has been banned');
+        })
+        .catch(function(err){
+            console.log("Error in banning : " + err);
+        })
 };
 
 user.methods.unbanAccount = async function() {
-    this.rank = 'activated';
-    console.log(this);
-    await this.save();
+    await User.findOneAndUpdate(
+        {_id: this._id},
+        {$set: {rank: 'activated'}},
+        { returnOriginal: false })
+        .then(function(obj){
+            console.log(obj.username + ' has been unbanned');
+        })
+        .catch(function(err){
+            console.log("Error in unbanning : " + err);
+        })
 };
 
 //Checking if the token from URL matches token stored in user data, if yes, activate account

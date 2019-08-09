@@ -23,7 +23,7 @@ let newEventSchedule = function(start, end, modifier, event){
     }.bind(null, event._id));
 
     //Job that runs at the end date and resets the default modifier
-    schedule.scheduleJob(end, async function(id){
+    schedule.scheduleJob(end, function(id){
         console.log('Ending an active event, ID : ' + id);
 
         Event.findOne({_id: id}).then(function(ev){
