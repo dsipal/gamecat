@@ -39,15 +39,35 @@ header {
     background-color: #212121 !important;
     box-shadow: 0 3px 5px 0 #323232; }
     header nav .nav-item {
+      color: rgba(255, 255, 255, 0.5);
       margin-left: 25px; }
       header nav .nav-item img {
         height: 21px;
         margin-right: 5px;
         position: relative;
         bottom: 2px; }
-      header nav .nav-item:hover img {
+      header nav .nav-item:hover {
         -webkit-filter: drop-shadow(0px 0px 3px rgba(255, 255, 255, 0.3));
                 filter: drop-shadow(0px 0px 3px rgba(255, 255, 255, 0.3)); }
+    header nav .crystal-ico {
+      height: 16px !important; }
+    header nav #level-information {
+      width: 100px;
+      color: rgba(255, 255, 255, 0.5); }
+    header nav #level {
+      font-size: 12px; }
+      header nav #level #bonus-amount {
+        color: #52bb6f;
+        float: right; }
+    header nav .xp-bar-container {
+      height: 5px;
+      background-color: #495057;
+      border-radius: 3px;
+      overflow: hidden; }
+      header nav .xp-bar-container .xp-bar {
+        background-color: #8b33bb;
+        border-bottom: #4f1d6b;
+        height: 100%; }
     header nav .nav-link {
       font-size: 18px; }
     header nav .navbar-brand {

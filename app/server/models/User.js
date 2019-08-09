@@ -38,7 +38,6 @@ const user = new mongoose.Schema({
         last_rewarded: Date,
         current_level_experience: Number,
         level: Number,
-
     },
     {collection: 'Users'}
 );

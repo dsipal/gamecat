@@ -5,8 +5,6 @@ header{
   width: 100%;
   z-index: 100;
   border-bottom: 3px solid $accent-purple;
-
-
   nav {
     width: 100%;
     min-height: 63px;
@@ -14,6 +12,7 @@ header{
     background-color: $base-color !important;
     box-shadow: 0 3px 5px 0 rgb(50, 50, 50);
     .nav-item{
+      color: rgba(255,255,255,.5);
       margin-left: 25px;
       img{
         height: 21px;
@@ -22,12 +21,35 @@ header{
         bottom: 2px;
       }
       &:hover{
-        img{
-          filter: drop-shadow(0px 0px 3px rgba(255,255,255,0.3));
-        }
+        filter: drop-shadow(0px 0px 3px rgba(255,255,255,0.3));
       }
     }
+    .crystal-ico{
+      height: 16px !important;
+    }
+    #level-information{
+      width: 100px;
+      color: rgba(255,255,255,.5);
+    }
+    #level{
+      font-size: 12px;
+      #bonus-amount{
+        color: $button-green;
+        float: right;
+      }
+    }
+    .xp-bar-container {
+      height: 5px;
+      background-color: $dialogue-background;
+      border-radius: 3px;
+      overflow: hidden;
+      .xp-bar {
+        background-color: $accent-purple;
+        border-bottom: darken($accent-purple, 20%);
+        height: 100%;
+      }
 
+    }
     .nav-link{
       font-size: 18px;
     }
@@ -36,8 +58,11 @@ header{
       color: white;
       font-weight: 600;
     }
+
+
   }
 }
+
 
 
 

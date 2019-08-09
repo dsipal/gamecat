@@ -11,34 +11,38 @@
             <div class="collapse navbar-collapse" id="togglerContent">
                 {{#if user}}
                     <li class="nav-item">
-                        <a class="nav-link" href="/shop">
-                            <img src="/img/nav/shop.svg" alt="Shop"> Shop
-                        </a>
+
                     </li>
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="earn-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="/img/nav/earn.svg" alt="Earn"> Earn
+                            {{user.points}} <img src="/img/crystal.svg" alt="crystals" class="crystal-ico"/>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="earn-dropdown">
                             <a class="dropdown-item" href="/offers">Quests</a>
                             <a class="dropdown-item" href="/offers/surveys">Surveys</a>
+                            <a class="dropdown-item" href="/shop">Shop</a>
                         </div>
                     </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="account-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="/img/nav/signup.svg" alt="Sign Up"> Account
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="account-dropdown">
-                            <span class="dropdown-item">
-                                Balance: {{user.points}} <img src="/img/crystal.svg" alt="crystals" class="crystal-ico" />
-                            </span>
-                            <a class="dropdown-item" href="/account">Account Information</a>
+                    <li class="nav-item" id="level-information">
+                        <div id="level" data-level="{{user.level}}" data-cur-exp="{{user.current_level_experience}}">
+                            Level {{user.level}}
+                            <span id="bonus-amount"></span>
+                        </div>
+                        <div class="xp-bar-container">
+                            <div class="xp-bar">
+
+                            </div>
                         </div>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="/account">
+                            <img src="/img/nav/signup.svg" alt="Account"> {{user.username}}
+                        </a>
+                    </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/logout" id="btn-logout"><img src="/img/nav/signout.svg" id="logout-button" alt="Log Out"> Log Out</a>
+                        <a class="nav-link" href="/logout" id="btn-logout"><img src="/img/nav/signout.svg" id="logout-button" alt="Log Out"></a>
                     </li>
                 {{else}}
                     <li class="nav-item">
@@ -60,5 +64,6 @@
             </div>
         </ul>
     </nav>
+    <script src="/js/controllers/xpController.min.js"></script>
 </header>
 

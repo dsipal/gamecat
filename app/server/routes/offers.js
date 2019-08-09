@@ -61,7 +61,6 @@ router.get('/postback', async function(req, res){
                 //subtract required exp and add level
                 user.current_level_experience -= requiredExp;
                 user.level += 1;
-
             }
 
             await user.save();
