@@ -23,12 +23,11 @@ router.get('/surveys', authLimiter.ensureAuthenticated(), async function(req, re
 
 
 router.get('/postback', async function(req, res){
-    let source_id = req.query.subid1;
-    let object_id = require('mongodb').ObjectId(req.query.subid2);
-    let ip = req.headers['cf-connecting-ip'];
-    let payout;
-
     try{
+        let source_id = req.query.subid1;
+        let object_id = require('mongodb').ObjectId(req.query.subid2);
+        let ip = req.headers['cf-connecting-ip'];
+        let payout;
         if(source_id === 'gc'){
             //if postback is from PWN Games
             if(ip === '35.196.95.104' || ip === '35.196.169.46'){
