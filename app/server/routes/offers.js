@@ -59,7 +59,6 @@ router.get('/postback', async function(req, res){
                 //give bonus reward for leveling up, max bonus is $2
                 user.points += 40 * user.level;
                 console.log(user.username + 'has leveled up to level ' + user.level + ', getting a bonus of ' + user.level*40);
-                user.save();
             }
 
             await user.save();
