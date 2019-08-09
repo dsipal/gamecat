@@ -7,7 +7,7 @@ const Game = require('../models/Game');
 
 router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     let country_code = req.headers['cf-ipcountry'];
-    const offers = await getOffers(country_code, req.user._id);
+    const offers = await getOffers(country_code, req.user);
 
     return res.render('offers/quests', {
         udata: req.user,
@@ -43,7 +43,25 @@ router.get('/postback', async function(req, res){
             }
             //find user and add points
             let user = await User.findOne({_id: object_id});
-            user.points+= payout;
+            //add payout to user, adding in bonus per level, max bonus is 50% of payout.
+            user.points += payout + payout * (user.level * 0.025);
+            user.total_points_earned += payout;
+            user.current_level_experience += payout;
+
+            //calculate required exp for leveling up, base requirement is 600 (for first level)
+            //and an additional 400 for each level past that
+            let requiredExp = 600 + ((user.level-1) * 400);
+            //check for level up, if user is not max level and has more than required exp to level up
+            if(user.level < 20 && user.current_level_experience >= requiredExp){
+                //subtract required exp and add level
+                user.current_level_experience -= requiredExp;
+                user.level += 1;
+                //give bonus reward for leveling up, max bonus is $2
+                user.points += 40 * user.level;
+                console.log(user.username + 'has leveled up to level ' + user.level + ', getting a bonus of ' + user.level*40);
+                user.save();
+            }
+
             await user.save();
             console.log(req.query.subid1 + " was paid " + req.query.payout);
             return res.status(200).send('Postback recieved.');
@@ -58,7 +76,8 @@ router.get('/postback', async function(req, res){
     }
 });
 
-async function getOffers(country_code, subid){
+//get offers from PWNGames
+async function getOffers(country_code, user){
     const base_uri = 'https://api.eflow.team/v1/affiliates';
     let offer_ids = [];
     let descriptions = [];
@@ -67,7 +86,6 @@ async function getOffers(country_code, subid){
 
     //get games from the mongo db collection where there is a country code match
     let games = await Game.find({'offer_ids': {$elemMatch: {'country_codes': country_code}}});
-
 
     games.forEach((offer) => {
         //get the offerid that matches the country code
@@ -78,7 +96,7 @@ async function getOffers(country_code, subid){
         offer_ids.push(match.offer_id);
         descriptions.push(offer.description);
         names.push(offer.name);
-        payouts.push(offer.payout);
+        payouts.push(offer.payout + (offer.payout * (user.level * 0.025)));
     });
 
     let promises = [];
@@ -98,7 +116,7 @@ async function getOffers(country_code, subid){
     let responses = await Promise.all(promises);
 
     responses.map((response,key) => {
-        response.tracking_url += `?sub1=gc&sub2=${subid}`;
+        response.tracking_url += `?sub1=gc&sub2=${user._id}`;
         response.description = descriptions[key];
         response.name = names[key];
         response.payout = payouts[key];

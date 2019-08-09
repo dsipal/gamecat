@@ -27,7 +27,7 @@ const user = new mongoose.Schema({
             required: true
         },
         points: Number,
-        points_earned: Number,
+        total_points_earned: Number,
         cookie: String,
         ip: String,
         rank: String,
@@ -35,6 +35,10 @@ const user = new mongoose.Schema({
         email_optin: Boolean,
         facebookID: String,
         googleID: String,
+        last_rewarded: Date,
+        current_level_experience: Number,
+        level: Number,
+
     },
     {collection: 'Users'}
 );
@@ -105,6 +109,9 @@ user.statics.formatNewAccount = function(newData, callback){
 
     newData.reg_date = new Date();
     newData.points = 0;
+    newData.total_points_earned = 0;
+    newData.level = 1;
+    newData.current_level_experience = 0;
     newData.token = crypto.randomBytes(20).toString('hex');
 
     if(newData.ref_by) {
