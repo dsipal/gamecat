@@ -31,14 +31,14 @@ router.get('/postback', async function(req, res){
         if(source_id === 'gc'){
             //if postback is from PWN Games
             if(ip === '35.196.95.104' || ip === '35.196.169.46'){
-                console.log('Postback from PWNGames recieved.');
-                let offer_id = req.query.offer
+                console.log('Postback from PWNGames received.');
+                let offer_id = req.query.offer;
                 let offer = await Game.find({'offer_ids': {$elemMatch: {'offer_id':offer_id}}});
                 payout = offer.payout;
             }
             //if postback is from AdscendMedia
             else if(ip === '54.204.57.82'){
-                console.log('Postback from AdscendMedia revieved.');
+                console.log('Postback from AdscendMedia received.');
                 payout = parseInt(req.query.payout);
             }
             //find user and add points
@@ -65,7 +65,7 @@ router.get('/postback', async function(req, res){
             }
 
             await user.save();
-            console.log(req.query.subid1 + " was paid " + req.query.payout);
+            console.log(user.username + " was paid " + payout);
             return res.status(200).send('Postback recieved.');
         } else {
             return res.status(200).send('Postback not for Gamecat.');
