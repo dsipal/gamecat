@@ -36,7 +36,7 @@ $(document).ready(function(){
                     $('#adblock-off').remove();
                 }
                 $.each(data.offers, function(key, offer){
-                    offer.currency_count = offer.currency_count + (offer.currency_count * ($('div.tab-content').attr('data-userlevel') * 0.025));
+                    offer.currency_count = Math.floor(offer.currency_count + (offer.currency_count * ($('div.tab-content').attr('data-userlevel') * 0.025)));
 
                     var element = `
                     <li class="col-md-3 justify-content-center">
