@@ -41,6 +41,7 @@ router.get('/postback', async function(req, res){
         let object_id = require('mongodb').ObjectId(req.query.subid2);
         let ip = req.headers['cf-connecting-ip'];
         let payout;
+
         if(source_id === 'gc'){
             //if postback is from PWN Games
             if(ip === '35.196.95.104' || ip === '35.196.169.46'){
@@ -60,12 +61,24 @@ router.get('/postback', async function(req, res){
             let user = await User.findOne({_id: object_id});
             let adjustedPayout = payout;
 
+            //check for active events
+            let event = await Event.findOne({status: 'active'}).catch(function(err){
+                console.log('Error fetching event.');
+                console.log(err);
+            });
+            //if active event add modifier to payout
+            if(event){
+                adjustedPayout += payout * event.modifier;
+                console.log('Active event, adding ' + payout * event.modifier + ' points to payout');
+            }
+
             //check, apply, and update daily bonus
             if(!user.daily_bonus_claimed){
                 console.log(user.username + ' has claimed their daily bonus gaining ' + payout/2 + ' extra points.');
                 adjustedPayout += payout/2;
                 user.update({$set: {daily_bonus_claimed: true}}).exec();
             }
+
 
             //add in level bonus;
             adjustedPayout += Math.floor( payout * ((user.level-1) * 0.025));
