@@ -5,6 +5,7 @@ const User = require('../models/User');
 //Schedules job that resets
 module.exports.createDailyBonusReset = function(){
     schedule.scheduleJob('* 0 * * *', function(){
+        console.log('Beginning the reset for daily bonuses');
         User.dailyBonusReset();
     });
 };
@@ -60,4 +61,3 @@ let test = function(){
 
 
 module.exports.newEventSchedule = newEventSchedule;
-module.exports = test;
