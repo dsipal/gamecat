@@ -229,7 +229,7 @@ user.methods.banAccount = async function() {
 user.methods.checkLevelUp = async function(){
     console.log(this);
     console.log(this.level);
-    console.log(this.current_level_experience);
+    console.log(this.current_level_experience)
     let requiredExp = 600 + ((this.level-1) * 400);
     console.log('Required experience: ' + requiredExp);
     console.log('Current experience: ' + this.current_level_experience);
@@ -264,8 +264,11 @@ user.methods.addExperience = async function(amount){
         {_id: this._id},
         {
             $inc: {current_level_experience: amount}
-        }
-    ).then(this.checkLevelUp).catch(function(err){
+        },
+        {returnOriginal: false}
+    ).then(function(user){
+        user.checkLevelUp();
+    }).catch(function(err){
         console.log('Error adding experience to user: ' + this.username);
         console.log(err);
     });
