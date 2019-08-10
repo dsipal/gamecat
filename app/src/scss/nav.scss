@@ -1,4 +1,6 @@
 @import 'base';
+@import url('https://fonts.googleapis.com/css?family=Lexend+Peta|Roboto+Mono&display=swap');
+
 header{
   top: 0;
   left: 0;
@@ -14,6 +16,7 @@ header{
     .nav-item{
       color: rgba(255,255,255,.5);
       margin-left: 25px;
+      font-family: 'Roboto Mono', monospace !important;
       img{
         height: 21px;
         margin-right: 5px;
@@ -27,36 +30,20 @@ header{
     .crystal-ico{
       height: 16px !important;
     }
-    #level-information{
-      width: 100px;
-      color: rgba(255,255,255,.5);
-    }
-    #level{
-      font-size: 12px;
-      #bonus-amount{
-        color: $button-green;
-        float: right;
-      }
-    }
-    .xp-bar-container {
-      height: 5px;
-      background-color: $dialogue-background;
-      border-radius: 3px;
-      overflow: hidden;
-      .xp-bar {
-        background-color: $accent-purple;
-        border-bottom: darken($accent-purple, 20%);
-        height: 100%;
-      }
 
-    }
     .nav-link{
       font-size: 18px;
     }
-
     .navbar-brand {
       color: white;
-      font-weight: 600;
+      font-weight: 500;
+      font-family: 'Lexend Peta', sans-serif;
+      #navbar-logo{
+        height: 14px;
+        position: relative;
+        bottom: 2px;
+        margin-right: 5px;
+      }
     }
 
 

@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=Lexend+Peta|Roboto+Mono&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Nunito|Roboto&display=swap");
 .modal .modal-dialog {
   width: 480px; }
   .modal .modal-dialog .modal-content {
@@ -40,7 +42,8 @@ header {
     box-shadow: 0 3px 5px 0 #323232; }
     header nav .nav-item {
       color: rgba(255, 255, 255, 0.5);
-      margin-left: 25px; }
+      margin-left: 25px;
+      font-family: 'Roboto Mono', monospace !important; }
       header nav .nav-item img {
         height: 21px;
         margin-right: 5px;
@@ -51,28 +54,17 @@ header {
                 filter: drop-shadow(0px 0px 3px rgba(255, 255, 255, 0.3)); }
     header nav .crystal-ico {
       height: 16px !important; }
-    header nav #level-information {
-      width: 100px;
-      color: rgba(255, 255, 255, 0.5); }
-    header nav #level {
-      font-size: 12px; }
-      header nav #level #bonus-amount {
-        color: #52bb6f;
-        float: right; }
-    header nav .xp-bar-container {
-      height: 5px;
-      background-color: #495057;
-      border-radius: 3px;
-      overflow: hidden; }
-      header nav .xp-bar-container .xp-bar {
-        background-color: #8b33bb;
-        border-bottom: #4f1d6b;
-        height: 100%; }
     header nav .nav-link {
       font-size: 18px; }
     header nav .navbar-brand {
       color: white;
-      font-weight: 600; }
+      font-weight: 500;
+      font-family: 'Lexend Peta', sans-serif; }
+      header nav .navbar-brand #navbar-logo {
+        height: 14px;
+        position: relative;
+        bottom: 2px;
+        margin-right: 5px; }
 
 footer {
   min-height: 50px;
@@ -118,6 +110,26 @@ footer {
           color: #b3b3b3;
           border-bottom: 2px solid #a351d0; }
 
+#level-information {
+  width: 100px;
+  color: rgba(255, 255, 255, 0.5); }
+
+#level {
+  font-size: 12px; }
+  #level .bonus-amount {
+    color: #52bb6f;
+    float: right; }
+
+.xp-bar-container {
+  height: 5px;
+  background-color: #495057;
+  border-radius: 3px;
+  overflow: hidden; }
+  .xp-bar-container .xp-bar {
+    background-color: #8b33bb;
+    border-bottom: #4f1d6b;
+    height: 100%; }
+
 .row {
   margin: 0; }
 
@@ -126,19 +138,26 @@ body {
   background-color: #505050;
   margin: 0;
   padding: 0;
-  color: white; }
+  color: white;
+  font-family: 'Roboto', sans-serif; }
 
 main {
   min-height: 100vh;
   position: relative; }
   main a {
-    color: #8b33bb; }
+    color: #bb86fc; }
     main a:hover {
       text-decoration: none;
-      color: #b879db; }
+      color: #d1aefd; }
     main a:visited {
-      color: #8b33bb;
+      color: #bb86fc;
       text-decoration: none; }
+      main a:visited:hover {
+        text-decoration: none;
+        color: #d1aefd; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Nunito', sans-serif; }
 
 h1 {
   font-weight: 600; }

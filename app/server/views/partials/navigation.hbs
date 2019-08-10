@@ -1,6 +1,7 @@
 <header>
     <nav class="navbar navbar-expand-md navbar-dark">
         <a class="navbar-brand" href="/">
+            <img id="navbar-logo" src="/img/nav/nav-logo.svg" >
             Gamecat
         </a>
         <ul class="navbar-nav ml-auto">
@@ -26,15 +27,7 @@
                     </li>
 
                     <li class="nav-item" id="level-information">
-                        <div id="level" data-level="{{user.level}}" data-cur-exp="{{user.current_level_experience}}">
-                            Level {{user.level}}
-                            <span id="bonus-amount"></span>
-                        </div>
-                        <div class="xp-bar-container">
-                            <div class="xp-bar">
-
-                            </div>
-                        </div>
+                        {{>widgets/xpBar}}
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link" href="/account">

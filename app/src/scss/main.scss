@@ -2,7 +2,8 @@
 @import 'modals';
 @import 'nav';
 @import 'footer';
-
+@import 'xpBar';
+@import url('https://fonts.googleapis.com/css?family=Nunito|Roboto&display=swap');
 @mixin raiseText() {
   color: grey;
   text-shadow: -1px 1px 0 white;
@@ -18,22 +19,31 @@ body {
   margin: 0;
   padding: 0;
   color: white;
+  font-family: 'Roboto', sans-serif;
 }
 
 main{
   min-height: 100vh;
   position: relative;
   a{
-    color: $accent-purple;
+    color: $link-color;
     &:hover{
       text-decoration: none;
-      color: lighten($accent-purple, 20%);
+      color: lighten($link-color, 8%);
     }
     &:visited{
-      color: $accent-purple;
+      color: $link-color;
       text-decoration: none;
+      &:hover{
+        text-decoration: none;
+        color: lighten($link-color, 8%);
+      }
     }
   }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Nunito', sans-serif;
 }
 
 h1{
