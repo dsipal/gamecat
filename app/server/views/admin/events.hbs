@@ -8,5 +8,21 @@
             <!--            <a class="btn btn-primary" href="/store/buy?id={{this._id}}">Purchase</a>-->
         </div>
     {{/each}}
+</div>
+
+<div id="login" class="container">
+    <form action="/admin/events/create" method="post" id="create_event">
+        <div class="form-group text-center">
+        <div class="form-group"><input type="text" name="name"  placeholder="Event Name"></div>
+        <div class="form-group"><input type="number" step="0.01" name="modifier"  value= "1.00"></div>
+
+        <div class="form-group"><input type="datetime-local" name="start"  value="2020-06-20T00:00"></div>
+        <div class="form-group"><input type="datetime-local" name="end"  value="2020-06-20T00:00"></div>
+
+        <button type="submit" id="event-form-btn1" class="btn btn-primary" form="create_event">Submit</button>
+        </div>
+
+    </form>
+
 
 </div>
