@@ -138,11 +138,11 @@
 }
 
 #dailybonus{
-  background-color: darken($accent-purple, 15%);
+  background-color: darken($accent-purple, 11%);
 }
 
 #levelup{
-  background-color: darken($accent-red, 3%);
+  background-color: $accent-cyan-darker;
 }
 
 #rewards{
