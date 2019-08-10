@@ -228,6 +228,8 @@ user.methods.banAccount = async function() {
 
 user.methods.checkLevelUp = async function(){
     let requiredExp = 600 + ((this.level-1) * 400);
+    console.log('Required experience: ' + requiredExp);
+    console.log('Current experience: ' + this.current_level_experience);
     let reward =  ((this.level-1) * 40);
     if(this.level < 20 && this.current_level_experience >= requiredExp){
         await User.findOneAndUpdate(
