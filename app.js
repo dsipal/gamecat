@@ -10,7 +10,7 @@ let helmet = require('helmet');
 let passport = require('passport');
 let mongoose = require('mongoose');
 let sm = require('sitemap');
-const dotenv = require('dotenv').config();
+require('dotenv').config();
 let sched = require('./app/server/modules/scheduler');
 
 // create instance of express server //

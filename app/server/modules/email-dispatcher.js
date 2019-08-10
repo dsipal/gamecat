@@ -1,5 +1,3 @@
-console.log(process.env.MG_KEY);
-
 const api_key = process.env.MG_KEY;
 const domain = process.env.MG_DOMAIN;
 
