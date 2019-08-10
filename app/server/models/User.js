@@ -158,8 +158,7 @@ user.statics.validateLoginKey = function(cookie, ipAddress, callback) {
 };
 
 //Also from AM
-user.statics.autoLogin = async function(user, pass, callback)
-{
+user.statics.autoLogin = async function(user, pass, callback) {
     User.findOne({user:user}, async function(e, o) {
         if (o) {
             o.pass === pass ? callback(o) : callback(null);
@@ -182,15 +181,23 @@ user.methods.percolateReferrals = async function () {
         let refID = this._id;
 
         if(ref_by !== null) {
+            //add referral, points, and experience to referrer
             await User.updateOne(
                 {_id: ref_by},
-                {$push: {referrals: refID}, $inc: {points: 100}}
-            );
+                {$push: {referrals: refID}, $inc: {points: 100, total_points_earned: 100, current_level_experience: 100}}
+            ).catch(function(err){
+                console.log('Error percolating to referrer');
+                console.log(err);
+            });
+            //add referral, points, and experience to referred user
             await User.updateOne(
                 {_id: refID},
-                {$inc: {points: 100}}
+                {$inc: {points: 100, total_points_earned: 100, current_level_experience: 100}}
             ).then(function() {
-                console.log("Referrals percolated for " + refID);
+                console.log("Referrals percolated for " + this.username);
+            }).catch(function(err){
+                console.log('Error percolating to referred user');
+                console.log(err);
             });
             return false;
         }
@@ -202,12 +209,6 @@ user.methods.percolateReferrals = async function () {
 };
 
 // update account functions //
-//updates password, called in routes
-user.methods.updatePassword = async function(newPassword) {
-    this.password = newPassword;
-    await this.save()
-};
-
 user.methods.deleteAccount = function() {
     this.delete();
 };
@@ -222,7 +223,47 @@ user.methods.banAccount = async function() {
         })
         .catch(function(err){
             console.log("Error in banning : " + err);
-        })
+        });
+};
+
+user.methods.checkLevelUp = async function(){
+    let requiredExp = 600 + ((this.level-1) * 400);
+    let reward =  ((this.level-1) * 40);
+    if(this.level < 20 && this.current_level_experience >= requiredExp){
+        await User.findOneAndUpdate(
+            {_id: this._id},
+            {
+                $inc: {level: 1, points: reward, current_level_experience: - requiredExp}
+            }
+        ).catch(function(err){
+            console.log('Error leveling up user ' + this.username);
+            console.log(err);
+        });
+    }
+};
+
+user.methods.addPoints = async function(amount){
+    User.findOneAndUpdate(
+        {_id: this._id},
+        {
+            $inc: {points: amount}
+        }
+    ).catch(function(err){
+        console.log('Error adding points to user: ' + this.username);
+        console.log(err);
+    });
+};
+
+user.methods.addExperience = async function(amount){
+    User.findOneAndUpdate(
+        {_id: this._id},
+        {
+            $inc: {current_level_experience: amount}
+        }
+    ).then(this.checkLevelUp).catch(function(err){
+        console.log('Error adding experience to user: ' + this.username);
+        console.log(err);
+    });
 };
 
 user.methods.unbanAccount = async function() {
@@ -263,10 +304,17 @@ user.methods.confirmAccount = async function(token) {
 };
 
 user.methods.updateToken = async function() {
-    const toke = crypto.randomBytes(20).toString('hex');
-    this.token = toke;
-    await this.save();
-    return toke;
+    const newToken = crypto.randomBytes(20).toString('hex');
+    User.findOneAndUpdate(
+        {_id: this._id},
+        {
+            $set: {token: newToken}
+        }
+    ).catch(function(err){
+        console.log('Error updating token for ' + this.username);
+        console.log(err);
+    });
+    return newToken;
 };
 
 user.methods.resetPassword = async function(newPass, resetToken, callback){
@@ -288,9 +336,12 @@ user.methods.updatePassword = async function(passKey, newPass, callback) {
     saltAndHash(newPass, async function(hash){
         newPass = hash;
         if(this.passKey === passKey){
-            this.password = newPass;
-            this.passKey = '';
-            await this.save();
+            User.findOneAndUpdate(
+                {_id: this._id},
+                {
+                    $set: {password: newPass}
+                }
+            );
             return callback(this);
         }
     });
