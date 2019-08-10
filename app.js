@@ -65,7 +65,7 @@ app.use('/admin', function(req, res, next) {
     if (ip === '75.40.152.150' || ip === '71.217.183.27') {
         next();
     } else {
-        res.end();
+        res.redirect('/');
     }
 });
 

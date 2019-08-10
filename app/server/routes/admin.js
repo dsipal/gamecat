@@ -163,7 +163,7 @@ router.post('/cashouts/completed', authLimiter.ensureAuthenticated(), async func
 });
 
 router.get('/events', authLimiter.ensureAuthenticated(), async function(req, res){
-    let events = await Event.find({status: 'pending' || 'active'})
+    let events = await Event.find({status: 'active'})
         .catch(function(err){
            console.log('Error querying Event collection');
            console.log(err);

@@ -169,6 +169,12 @@ user.statics.autoLogin = async function(user, pass, callback)
     });
 };
 
+//Changing daily_bonus_claimed to false
+user.statics.dailyBonusReset = function(){
+    User.updateMany({daily_bonus_claimed: true},
+        {$set: {daily_bonus_claimed: false}});
+};
+
 //used at end of registration, adds new user to referrer's list
 user.methods.percolateReferrals = async function () {
     try{
