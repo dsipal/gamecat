@@ -11,7 +11,7 @@ let passport = require('passport');
 let mongoose = require('mongoose');
 let sm = require('sitemap');
 require('dotenv').config();
-let sched = require('./app/server/modules/scheduler');
+let scheduler = require('./app/server/modules/scheduler');
 
 // create instance of express server //
 var app = express();
@@ -160,4 +160,4 @@ http.createServer(app).listen(process.env.PORT, function(){
     console.log('Express server listening on port ' + process.env.PORT);
 });
 
-sched();
+scheduler.createDailyBonusReset();
