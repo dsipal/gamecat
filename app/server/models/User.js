@@ -151,23 +151,6 @@ user.statics.addNewAccount  = function(newData, callback) {
     });
 };
 
-//Moved from AM
-user.statics.validateLoginKey = function(cookie, ipAddress, callback) {
-// ensure the cookie maps to the user's last recorded ip address //
-    User.findOne({cookie:cookie, ip:ipAddress}, callback);
-};
-
-//Also from AM
-user.statics.autoLogin = async function(user, pass, callback) {
-    User.findOne({user:user}, async function(e, o) {
-        if (o) {
-            o.pass === pass ? callback(o) : callback(null);
-        } else {
-            return callback(null);
-        }
-    });
-};
-
 //Changing daily_bonus_claimed to false
 user.statics.dailyBonusReset = function(){
     User.updateMany({daily_bonus_claimed: true},

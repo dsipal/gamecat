@@ -66,24 +66,27 @@ router.get('/finalize', function(req, res){
     }
 });
 
-router.post('/finalize', function(req, res){
+router.post('/finalize', async function(req, res){
     let userData = {
         username: req.body['username'],
-        ref_by: req.body['ref_by'],
-        email: req.body['email']
+        ref_by: req.body['ref_by']
     };
     let validator = new UserValidator(userData,
         function(err){
             return res.status(401).send(err);
         },
-        function(user){
+        async function(user){
+
+            let referrer = await User.findOne({username: user.ref_by}).catch(function(err){
+                console.log('Invalid referrer for ' + user.username);
+                console.log(err);
+            });
             User.findOneAndUpdate(
                 {_id: user._id},
                 {
                     $set: {
-                        username: userData.username,
-                        ref_by: userData.ref_by,
-                        email: userData.email,
+                        username: user.username,
+                        ref_by: referrer._id,
                         rank: 'activated'
                     }
                 }
