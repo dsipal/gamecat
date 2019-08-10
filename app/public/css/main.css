@@ -264,7 +264,8 @@ form {
 #event-info {
   background-color: #52bb6f;
   margin-right: -15px;
-  margin-left: -15px; }
+  margin-left: -15px;
+  border-bottom: 5px solid #3e9c58; }
 
 .daily-bonus {
   background-color: #52bb6f;

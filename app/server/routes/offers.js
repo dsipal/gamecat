@@ -4,20 +4,33 @@ const express = require('express');
 const router = express.Router();
 const request = require('request-promise');
 const Game = require('../models/Game');
+const Event =  require('../models/Event');
 
 router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     let country_code = req.headers['cf-ipcountry'];
     const offers = await getOffers(country_code, req.user);
 
+    let event = await Event.findOne({status: 'active'}).catch(function(err){
+        console.log('Error fetching event.');
+        console.log(err);
+    });
+
     return res.render('offers/quests', {
         udata: req.user,
-        offers: offers
+        offers: offers,
+        event: event
     });
 });
 
 router.get('/surveys', authLimiter.ensureAuthenticated(), async function(req, res){
+    let event = await Event.findOne({status: 'active'}).catch(function(err){
+        console.log('Error fetching event.');
+        console.log(err);
+    });
+
     res.render('offers/offers', {
         udata: req.user,
+        event: event
     });
 });
 

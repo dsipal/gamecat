@@ -10,14 +10,9 @@
 
 <section id="home" class="container">
     {{>container_header header_image="/img/mascot.svg" header_text="Home"}}
-    {{#if event}}
-        <div class="row banner-info text-center justify-content-center" id="event-info">
-            <div class="col-12 pt-4">
-                <h1>{{event.modifier}}x Crystal Event Active!</h1>
-                <p>Get {{event.modifier}}x the crystals for each quest and survey you complete until {{event.endDate}}!</p>
-            </div>
-        </div>
-    {{/if}}
+
+    {{>widgets/eventNotifier event=event}}
+
     <div class="row banner-info pt-3 pb-3 text-center justify-content-center" id="user-info">
         <div class="col-12 mb-3">
             <h1>{{udata.username}}</h1>

@@ -176,6 +176,7 @@ form{
   background-color: $button-green;
   margin-right: -15px;
   margin-left: -15px;
+  border-bottom: 5px solid darken($button-green, 10%);
 }
 
 .daily-bonus{
