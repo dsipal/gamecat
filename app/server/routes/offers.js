@@ -36,6 +36,7 @@ router.get('/postback', async function(req, res){
                 let offer = await Game.find({'offer_ids': {$elemMatch: {'offer_id':offer_id}}});
                 payout = offer.payout;
             }
+
             //if postback is from AdscendMedia
             else if(ip === '54.204.57.82'){
                 console.log('Postback from AdscendMedia received.');
@@ -43,9 +44,20 @@ router.get('/postback', async function(req, res){
             }
             //find user and add points
             let user = await User.findOne({_id: object_id});
-            //add payout to user, adding in bonus per level, max bonus is 50% of payout.
-            user.points += Math.floor(payout + payout * (user.level * 0.025));
-            user.total_points_earned += payout;
+            let adjustedPayout = payout;
+
+            if(!user.daily_bonus_claimed){
+                console.log(user.username + ' has claimed their daily bonus gaining ' + payout/2 + ' extra points.');
+                adjustedPayout += payout/2;
+                user.daily_bonus_claimed = true;
+            }
+
+            //add in level bonus;
+            adjustedPayout += Math.floor( payout * ((user.level-1) * 0.025));
+
+            //add payout to user and give experience
+            user.points += adjustedPayout;
+            user.total_points_earned += adjustedPayout;
             user.current_level_experience += payout;
 
             //calculate required exp for leveling up, base requirement is 600 (for first level)
@@ -64,7 +76,7 @@ router.get('/postback', async function(req, res){
             }
 
             await user.save();
-            console.log(user.username + " was paid " + payout);
+            console.log(user.username + " was paid " + adjustedPayout);
             return res.status(200).send('Postback recieved.');
         } else {
             return res.status(200).send('Postback not for Gamecat.');

@@ -35,7 +35,7 @@ const user = new mongoose.Schema({
         email_optin: Boolean,
         facebookID: String,
         googleID: String,
-        last_rewarded: Date,
+        daily_bonus_claimed: Boolean,
         current_level_experience: Number,
         level: Number,
     },
@@ -111,6 +111,7 @@ user.statics.formatNewAccount = function(newData, callback){
     newData.total_points_earned = 0;
     newData.level = 1;
     newData.current_level_experience = 0;
+    newData.daily_bonus_claimed = false;
     newData.token = crypto.randomBytes(20).toString('hex');
 
     if(newData.ref_by) {

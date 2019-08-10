@@ -142,7 +142,7 @@ form{
     height: 280px;
     margin-left: -15px;
     margin-right: -15px;
-    background-color: inherit;
+    background-color: lighten($base-color, 2%);
     background-image: url("/img/textures/cubes.png");
     border-bottom: 7px solid $secondary-purple;
     box-shadow: 0 3px 5px 0 rgb(50, 50, 50);
@@ -170,4 +170,16 @@ form{
   display: inline-block;
   position: relative;
   bottom: 1px;
+}
+
+#event-info{
+  background-color: $button-green;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.daily-bonus{
+  background-color: $button-green;
+  text-align: center;
+  border-bottom: 5px solid darken($button-green, 10%);
 }

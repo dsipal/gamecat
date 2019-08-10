@@ -4,12 +4,19 @@ const express = require('express');
 let router = express.Router();
 const authLimiter = require('../modules/authLimiter');
 const UserValidator = require('../modules/user-validator');
+const Event =  require('../models/Event');
 
-router.get('/', function(req, res){
+router.get('/', async function(req, res){
+
+    let event = await Event.findOne({status: 'active'}).catch(function(err){
+        console.log('Error fetching event.');
+        console.log(err);
+    });
+
     if(req.user){
-        return res.render('index/home', {udata: req.user});
+        return res.render('index/home', {udata: req.user, event: event});
     }else{
-        return res.render('index/index', {udata: req.user});
+        return res.render('index/index', {udata: req.user, event: event});
     }
 
 });
