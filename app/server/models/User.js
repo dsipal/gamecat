@@ -227,6 +227,8 @@ user.methods.banAccount = async function() {
 };
 
 user.methods.checkLevelUp = async function(){
+    console.log(this.level);
+    console.log(this.current_level_experience);
     let requiredExp = 600 + ((this.level-1) * 400);
     console.log('Required experience: ' + requiredExp);
     console.log('Current experience: ' + this.current_level_experience);
