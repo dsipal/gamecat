@@ -1,4 +1,3 @@
-//TODO set these in .env vars for security.
 const api_key = process.env.MG_KEY;
 const domain = process.env.MG_DOMAIN;
 
