@@ -1,9 +1,16 @@
 const schedule = require('node-schedule');
 const Event = require('../models/Event');
+const User = require('../models/User');
 
 // let job = schedule.scheduleJob('*/1 * * * *', function(){
 //     console.log('Testing the scheduler');
 // });
+
+module.exports.createDailyBonusReset = function(){
+    schedule.scheduleJob('* 0 * * *', function(){
+        User.dailyBonusReset();
+    });
+};
 
 let newEventSchedule = function(start, end, modifier, event){
 
@@ -52,6 +59,8 @@ let test = function(){
         });
 
 };
+
+
 
 module.exports.newEventSchedule = newEventSchedule;
 module.exports = test;

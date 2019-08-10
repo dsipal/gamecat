@@ -38,7 +38,6 @@ event.statics.newEvent = async function(name, start, end, mod, callback){
         endDate: end,
         modifier: mod
     }).then(async function(doc){
-        console.log('Inserted new event : ' + doc);
         await Event.findOne({_id: doc.insertedId}).then(function (event) {
             if(event){
                 callback(false, event);
