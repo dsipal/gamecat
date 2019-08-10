@@ -10,9 +10,8 @@ let helmet = require('helmet');
 let passport = require('passport');
 let mongoose = require('mongoose');
 let sm = require('sitemap');
-const dotenv = require('dotenv');
+const dotenv = require('dotenv').config();
 let sched = require('./app/server/modules/scheduler');
-dotenv.config();
 
 // create instance of express server //
 var app = express();
@@ -65,7 +64,7 @@ app.use('/admin', function(req, res, next) {
     if (ip === '75.40.152.150' || ip === '71.217.183.27') {
         next();
     } else {
-        res.redirect('/');
+        return res.redirect('/');
     }
 });
 
