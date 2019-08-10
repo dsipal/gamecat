@@ -55,40 +55,25 @@ router.get('/postback', async function(req, res){
                 console.log('Postback from AdscendMedia received.');
                 payout = parseInt(req.query.payout);
             }
-            //find user and add points
+
+            //start payout process
             let user = await User.findOne({_id: object_id});
             let adjustedPayout = payout;
 
+            //check, apply, and update daily bonus
             if(!user.daily_bonus_claimed){
                 console.log(user.username + ' has claimed their daily bonus gaining ' + payout/2 + ' extra points.');
                 adjustedPayout += payout/2;
-                user.daily_bonus_claimed = true;
+                user.update({$set: {daily_bonus_claimed: true}}).exec();
             }
 
             //add in level bonus;
             adjustedPayout += Math.floor( payout * ((user.level-1) * 0.025));
 
             //add payout to user and give experience
-            user.points += adjustedPayout;
-            user.total_points_earned += adjustedPayout;
-            user.current_level_experience += payout;
+            await user.addPoints(adjustedPayout);
+            await user.addExperience(payout);
 
-            //calculate required exp for leveling up, base requirement is 600 (for first level)
-            //and an additional 400 for each level past that
-            let requiredExp = 600 + ((user.level-1) * 400);
-            //check for level up, if user is not max level and has more than required exp to level up
-            if(user.level < 20 && user.current_level_experience >= requiredExp){
-                console.log(user.username + ' has leveled up to level ' + user.level + ', getting a bonus of ' + user.level*40);
-
-                //give bonus reward for leveling up, max bonus is $2
-                user.points += 40 * user.level;
-
-                //subtract required exp and add level
-                user.current_level_experience -= requiredExp;
-                user.level += 1;
-            }
-
-            await user.save();
             console.log(user.username + " was paid " + adjustedPayout);
             return res.status(200).send('Postback recieved.');
         } else {

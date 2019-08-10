@@ -182,8 +182,9 @@ user.methods.percolateReferrals = async function () {
             );
             await User.updateOne(
                 {_id: refID},
-                {$inc: {points: 100}}
+                {$inc: {points: 100, total_points_earned: 100, current_level_experience: 100}}
             ).then(function() {
+
                 console.log("Referrals percolated for " + refID);
             });
             return false;
@@ -216,7 +217,47 @@ user.methods.banAccount = async function() {
         })
         .catch(function(err){
             console.log("Error in banning : " + err);
-        })
+        });
+};
+
+user.methods.checkLevelUp = async function(){
+    let requiredExp = 600 + ((this.level-1) * 400);
+    let reward =  ((this.level-1) * 40);
+    if(this.level < 20 && this.current_level_experience >= requiredExp){
+        await User.findOneAndUpdate(
+            {_id: this._id},
+            {
+                $inc: {level: 1, points: reward, current_level_experience: - requiredExp}
+            }
+        ).catch(function(err){
+            console.log('Error leveling up user ' + this.username);
+            console.log(err);
+        });
+    }
+};
+
+user.methods.addPoints = async function(amount){
+    User.findOneAndUpdate(
+        {_id: this._id},
+        {
+            $inc: {points: amount}
+        }
+    ).catch(function(err){
+        console.log('Error adding points to user: ' + this.username);
+        console.log(err);
+    });
+};
+
+user.methods.addExperience = async function(amount){
+    User.findOneAndUpdate(
+        {_id: this._id},
+        {
+            $inc: {current_level_experience: amount}
+        }
+    ).then(this.checkLevelUp).catch(function(err){
+        console.log('Error adding experience to user: ' + this.username);
+        console.log(err);
+    });
 };
 
 user.methods.unbanAccount = async function() {
