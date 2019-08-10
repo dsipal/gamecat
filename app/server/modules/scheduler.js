@@ -4,7 +4,12 @@ const User = require('../models/User');
 
 //Schedules job that resets
 module.exports.createDailyBonusReset = function(){
-    schedule.scheduleJob('* 0 * * *', function(){
+
+    let rule = new schedule.RecurrenceRule();
+    rule.hour = 23;
+    rule.minute = 30;
+
+    schedule.scheduleJob(rule, function(){
         console.log('Beginning the reset for daily bonuses');
         User.dailyBonusReset();
     });
@@ -40,24 +45,22 @@ let newEventSchedule = function(start, end, modifier, event){
     }.bind(null, event._id));
 };
 
-let test = function(){
-    console.log('Starting test');
-    let start = new Date(Date.now() + 7000);
-    let end = new Date(Date.now() +50000);
-    let name = 'Test Event';
-    let modifier = 2;
-
-         Event.newEvent(name,start,end,modifier, function(err, event){
-            if(err){
-                console.log('error in newEvent process ' + err);
-            } else{
-                newEventSchedule(start, end, modifier, event);
-            }
-
-        });
-
-};
-
+// module.exports.test = function(){
+//     console.log('Starting test');
+//     let start = new Date(Date.now() + 7000);
+//     let end = new Date(Date.now() +50000);
+//     let name = 'Test Event';
+//     let modifier = 2;
+//
+//          Event.newEvent(name,start,end,modifier, function(err, event){
+//             if(err){
+//                 console.log('error in newEvent process ' + err);
+//             } else {
+//                 newEventSchedule(start, end, modifier, event);
+//             }
+//         });
+//
+// };
 
 
 module.exports.newEventSchedule = newEventSchedule;

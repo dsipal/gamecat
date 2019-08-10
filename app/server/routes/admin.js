@@ -148,7 +148,7 @@ router.post('/cashouts/completed', authLimiter.ensureAuthenticated(), async func
         return res.status(500).send('Error querying the Order collection.' + '\n' + err);
     });
 
-    if(order !== null || order !== undefined){
+    if(order !== null){
         console.log("Order found, attempting to complete.");
         await order.completeCashout(giftCode).then(async function(success){
             if(success){
@@ -176,4 +176,21 @@ router.get('/events', authLimiter.ensureAuthenticated(), async function(req, res
     });
 });
 
+router.post('/events/create', authLimiter.ensureAuthenticated(), async function(req, res){
+    let modifier = req.body['modifier'];
+    let name = req.body['name'];
+    let start = new Date(Date.parse(req.body['start']));
+    let end = new Date(Date.parse(req.body['end']));
+    console.log('Request to create new modifier: ' + modifier + ' event starting at: ' + start + ' and ending at: ' + end);
+
+    await Event.newEvent(name,start,end,modifier, async function(err, event){
+        if(err){
+            console.log('error in newEvent process ' + err);
+            res.redirect('./');
+        } else {
+            sched.newEventSchedule(start, end, modifier, event);
+            res.redirect('./');
+        }
+    });
+});
 module.exports = router;
