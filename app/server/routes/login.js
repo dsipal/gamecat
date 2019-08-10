@@ -77,16 +77,25 @@ router.post('/finalize', function(req, res){
             return res.status(401).send(err);
         },
         function(user){
-            try{
-                req.user.username = userData.username;
-                req.user.ref_by = userData.ref_by;
-                req.user.email = userData.email;
-                req.user.rank = 'activated';
-                req.user.save();
-                res.status(200).send('ok');
-            } catch(err){
-                res.status(401).send(err);
-            }
+            User.findOneAndUpdate(
+                {_id: user._id},
+                {
+                    $set: {
+                        username: userData.username,
+                        ref_by: userData.ref_by,
+                        email: userData.email,
+                        rank: 'activated'
+                    }
+                }
+            ).then(function(){
+                console.log('Finalized social account ' + userData.username);
+                return res.status(200).send('ok');
+
+            }).catch(function(err){
+                console.log('Error finalizing social account ' + userData.username);
+                console.log(err);
+                return res.status(401).send(err);
+            });
         });
     validator.validateSocial();
 });

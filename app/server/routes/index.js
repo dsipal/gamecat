@@ -7,7 +7,6 @@ const UserValidator = require('../modules/user-validator');
 const Event =  require('../models/Event');
 
 router.get('/', async function(req, res){
-
     let event = await Event.findOne({status: 'active'}).catch(function(err){
         console.log('Error fetching event.');
         console.log(err);
