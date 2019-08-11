@@ -9,14 +9,29 @@ const user = new mongoose.Schema({
         username: {
             type: String,
             unique: true,
-            required: true
+            required: [true, "A username is required."],
+            validate: {
+                validator: function(value){
+                    return RegExp(`^(?=.{3,16}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$`).test(value);
+                },
+                message: 'Usernames can not contain symbols or spaces, and must be 3-16 characters.',
+            }
         },
         password: {
             type: String,
+            //validation for password can't be done here as it is hashed first
+            //possibly could implement something like this https://stackoverflow.com/questions/14588032/mongoose-password-hashing
         },
         email: {
             type: String,
             unique: true,
+            required: [true, 'A proper email address is required'],
+            validate: {
+                validator: function(value){
+                    return RegExp(`^([\\w\\-\\.]+)@((\\[([0-9]{1,3}\\.){3}[0-9]{1,3}\\])|(([\\w\\-]+\\.)+)([a-zA-Z]{2,4}))$`).test(value);
+                },
+                message: 'A proper email address is required.'
+            }
         },
         orders: [{type: mongoose.Schema.ObjectId, ref: 'Order'}],
         awarded_prizes: [{type: mongoose.Schema.ObjectId, ref: 'Prize'}],
@@ -41,6 +56,8 @@ const user = new mongoose.Schema({
     },
     {collection: 'Users'}
 );
+
+//adds actual validation error to unique keys
 user.plugin(uniqueValidator);
 
 user.statics.findOrCreate = async function(userData, callback) {
