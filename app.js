@@ -44,10 +44,9 @@ app.set('view engine', 'hbs');
 
 if(process.env.NODE_ENV !== 'local'){
     app.use('/offers/postback', function(req, res, next) {
-        // filtering here, calls `res` method to stop progress or calls `next` to proceed
         let ip = req.headers['cf-connecting-ip'];
-        // The IP from the CPA site
-        if (ip === '54.204.57.82' || ip === '35.196.95.104' || ip === '35.196.169.46') {
+        let authorized_ips = process.env.POSTBACK_IPS.split(', ');
+        if (authorized_ips.includes(ip)) {
             console.log('valid postback attempt from: ' + ip);
             next();
         } else {
@@ -69,12 +68,6 @@ if(process.env.NODE_ENV !== 'local'){
         } else {
             return res.redirect('/');
         }
-
-        // if (ip === '75.40.152.150' || ip === '71.217.183.27') {
-        //     next();
-        // } else {
-        //     return res.redirect('/');
-        // }
     });
 }
 
