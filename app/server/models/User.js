@@ -353,7 +353,6 @@ user.methods.updatePassword = async function(passKey, newPass, callback) {
 
 // Shop Functions //
 user.methods.purchasePrize = async function(prize, option){
-    let user = this;
     if(this.points >= option){
         this.points -= option;
 
