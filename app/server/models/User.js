@@ -352,27 +352,44 @@ user.methods.updatePassword = async function(passKey, newPass, callback) {
 };
 
 // Shop Functions //
-user.methods.purchasePrize = async function(prize, option, callback){
+user.methods.purchasePrize = async function(prize, option){
     let user = this;
     if(this.points >= option){
         this.points -= option;
-        Order.collection.insertOne({
+
+        //insert new order into order collection
+        let order = await Order.collection.insertOne({
             prize: prize._id,
             option: option,
             user: this._id,
             status: 'pending',
             code:   null,
             order_date: new Date(),
-        }).then(async function(order){
-            user.orders.push(order.insertedId);
-            await user.save(function(err){
-                console.log('Error adding prize to user: ' + user.username);
-                console.log(err);
-            });
-            return callback(order.ops[0], user);
+        }).catch(function(err){
+            console.log('Error adding new order to order collection.');
+            console.log(err);
         });
+
+        //add reference to order in user
+        await User.findOneAndUpdate(
+            {_id: this._id},
+            {
+                $push: {
+                    orders: order.ops[0]._id
+                },
+                $inc: {
+                    points: -option
+                }
+            }).catch(function(err){
+                console.log('Error adding reference to order in user.');
+                console.log(err);
+        });
+
+        //calls back to shop/buy route, possibly should make this into a promise instead of a callback.
+        return order.ops[0];
     } else {
-        return callback(null, this)
+        //user did not have enough points to purchase prize.
+        return null;
     }
 };
 

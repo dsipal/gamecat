@@ -42,15 +42,16 @@ router.post('/buy', authLimiter.ensureAuthenticated(), async function(req,res){
         if(err){
             console.log(err);
         } else {
-            await req.user.purchasePrize(prize, option,async function(order, user){
-                if(order){
-                    console.log(user.username + ' purchased ' + prize.name + ' for ' + option + ' crystals.');
-                    return res.status(200).send('Order placed');
-                } else {
-                    console.log('failure purchasing ' + prize.name + ' for ', user.username);
-                    return res.status(500).send('Failure purchasing prize');
-                }
-            })
+            await req.user.purchasePrize(prize, option)
+                .then(function(order){
+                    if(order){
+                        console.log(req.user.username + ' purchased ' + prize.name + ' for ' + option + ' crystals.');
+                        return res.status(200).send('Order placed');
+                    } else {
+                        console.log('failure purchasing ' + prize.name + ' for ', req.user.username);
+                        return res.status(500).send('Failure purchasing prize');
+                    }
+                })
         }
     });
 });

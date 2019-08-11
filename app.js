@@ -57,16 +57,16 @@ app.use('/offers/postback', function(req, res, next) {
     }
 });
 
-app.use('/admin', function(req, res, next) {
-    // filtering here, calls `res` method to stop progress or calls `next` to proceed
-    let ip = req.headers['cf-connecting-ip'];
-    // Our IPs
-    if (ip === '75.40.152.150' || ip === '71.217.183.27') {
-        next();
-    } else {
-        return res.redirect('/');
-    }
-});
+// app.use('/admin', function(req, res, next) {
+//     // filtering here, calls `res` method to stop progress or calls `next` to proceed
+//     let ip = req.headers['cf-connecting-ip'];
+//     // Our IPs
+//     if (ip === '75.40.152.150' || ip === '71.217.183.27') {
+//         next();
+//     } else {
+//         return res.redirect('/');
+//     }
+// });
 
 let sitemap = sm.createSitemap({
     hostname: 'https://gamecat.co',
