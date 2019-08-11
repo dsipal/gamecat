@@ -98,6 +98,8 @@ router.post('/finalize', async function(req, res){
                     console.log(err);
                 });
             }
+
+            console.log(user);
             User.findOneAndUpdate(
                 {_id: user._id},
                 {
