@@ -87,18 +87,23 @@ router.post('/finalize', async function(req, res){
                 User.findOneAndUpdate(
                     {_id: user._id},
                     {
-                        $set: {
-                            ref_by: referrer._id
+                        "$set": {
+                            "ref_by": referrer._id
                         }
                     }
-                );
+                ).exec().then(function(){
+                    console.log('Set referrer for ' + user.username);
+                }).catch(function(err){
+                    console.log('Error setting referrer for ' + user.username);
+                    console.log(err);
+                });
             }
             User.findOneAndUpdate(
                 {_id: user._id},
                 {
-                    $set: {
-                        username: user.username,
-                        rank: 'activated'
+                    "$set": {
+                        "username": user.username,
+                        "rank": 'activated'
                     }
                 }
             ).exec().then(function(){
