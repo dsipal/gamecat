@@ -77,10 +77,10 @@ router.post('/finalize', async function(req, res){
         },
         async function(user){
             let referrer;
-            if(user.ref_by !== null){
+            if(userData.ref_by !== null){
                 console.log(user.ref_by);
-                referrer = await User.findOne({username: user.ref_by}).catch(function(err){
-                    console.log('Invalid referrer for ' + user.username);
+                referrer = await User.findOne({username: userData.ref_by}).catch(function(err){
+                    console.log('Invalid referrer for ' + userData.username);
                     console.log(err);
                 });
 
@@ -92,19 +92,19 @@ router.post('/finalize', async function(req, res){
                         }
                     }
                 ).exec().then(function(){
-                    console.log('Set referrer for ' + user.username);
+                    console.log('Set referrer for ' + userData.username);
                 }).catch(function(err){
-                    console.log('Error setting referrer for ' + user.username);
+                    console.log('Error setting referrer for ' + userData.username);
                     console.log(err);
                 });
             }
 
             console.log(user);
             User.findOneAndUpdate(
-                {_id: user._id},
+                {_id: userData._id},
                 {
                     "$set": {
-                        "username": user.username,
+                        "username": userData.username,
                         "rank": 'activated'
                     }
                 }
