@@ -78,7 +78,7 @@ router.post('/finalize', async function(req, res){
         async function(user){
             let referrer;
             if(userData.ref_by !== null){
-                console.log(user.ref_by);
+                console.log(req.user.ref_by);
                 referrer = await User.findOne({username: userData.ref_by}).catch(function(err){
                     console.log('Invalid referrer for ' + userData.username);
                     console.log(err);
