@@ -82,15 +82,21 @@ router.post('/finalize', async function(req, res){
                     console.log('Invalid referrer for ' + user.username);
                     console.log(err);
                 });
-            } else {
-                referrer._id = null;
+
+                User.findOneAndUpdate(
+                    {_id: user._id},
+                    {
+                        $set: {
+                            ref_by: referrer._id
+                        }
+                    }
+                );
             }
             User.findOneAndUpdate(
                 {_id: user._id},
                 {
                     $set: {
                         username: user.username,
-                        ref_by: referrer._id || null,
                         rank: 'activated'
                     }
                 }
