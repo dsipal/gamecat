@@ -97,7 +97,6 @@ router.post('/finalize', async function(req, res){
     //base for update user
     let updateData = {rank: 'activated'};
     if(req.user.username !== userData.username) updateData.username = userData.username;
-    console.log(updateData);
     User.findOneAndUpdate(
         {_id: req.user._id},
         updateData,

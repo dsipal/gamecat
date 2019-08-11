@@ -42,7 +42,7 @@ app.engine('hbs', exphbs( {
 }));
 app.set('view engine', 'hbs');
 
-if(process.env.NODE_ENV === 'live'){
+if(process.env.NODE_ENV !== 'local'){
     app.use('/offers/postback', function(req, res, next) {
         // filtering here, calls `res` method to stop progress or calls `next` to proceed
         let ip = req.headers['cf-connecting-ip'];
