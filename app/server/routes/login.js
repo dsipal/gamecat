@@ -76,11 +76,15 @@ router.post('/finalize', async function(req, res){
             return res.status(401).send(err);
         },
         async function(user){
-
-            let referrer = await User.findOne({username: user.ref_by}).catch(function(err){
-                console.log('Invalid referrer for ' + user.username);
-                console.log(err);
-            });
+            let referrer;
+            if(user.ref_by !== undefined){
+                referrer = await User.findOne({username: user.ref_by}).catch(function(err){
+                    console.log('Invalid referrer for ' + user.username);
+                    console.log(err);
+                });
+            } else {
+                referrer._id = null;
+            }
             User.findOneAndUpdate(
                 {_id: user._id},
                 {
