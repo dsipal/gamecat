@@ -90,11 +90,11 @@ router.post('/finalize', async function(req, res){
                 {
                     $set: {
                         username: user.username,
-                        ref_by: referrer._id,
+                        ref_by: referrer._id || null,
                         rank: 'activated'
                     }
                 }
-            ).then(function(){
+            ).exec().then(function(){
                 console.log('Finalized social account ' + userData.username);
                 return res.status(200).send('ok');
 
