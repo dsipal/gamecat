@@ -6,7 +6,7 @@
   font-size: 12px; }
   #level .bonus-amount {
     color: #52bb6f;
-    float: right; }
+    margin-right: auto; }
 
 .xp-bar-container {
   height: 5px;
