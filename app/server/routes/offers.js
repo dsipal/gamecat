@@ -48,14 +48,14 @@ router.get('/postback', async function(req, res){
                 console.log('Postback from PWNGames received.');
                 let offer_id = req.query.offer;
                 let offer = await Game.find({'offer_ids': {$elemMatch: {'offer_id':offer_id}}});
-                payout = offer.payout;
-            }
 
-            //if postback is from AdscendMedia
-            else if(ip === '54.204.57.82'){
+                payout = offer.payout;
+                console.log(offer.payout);
+            } else {
                 console.log('Postback from AdscendMedia received.');
                 payout = parseInt(req.query.payout);
             }
+
 
             //start payout process
             let user = await User.findOne({_id: object_id});
@@ -77,6 +77,16 @@ router.get('/postback', async function(req, res){
                 console.log(user.username + ' has claimed their daily bonus gaining ' + payout/2 + ' extra points.');
                 adjustedPayout += payout/2;
                 user.update({$set: {daily_bonus_claimed: true}}).exec();
+            }
+
+            if(!user.earned_referrer_points
+                && (user.total_points_earned >= 100 || payout >= 100)
+                && user.ref_by != null){
+
+                //user was referred, got to 100 points, adding reward
+                console.log(user.username + ' has reached 100 points! Percolating referral.');
+                adjustedPayout += 100;
+                await user.percolateReferrals();
             }
 
 

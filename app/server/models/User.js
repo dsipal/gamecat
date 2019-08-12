@@ -51,6 +51,7 @@ const user = new mongoose.Schema({
         facebookID: String,
         googleID: String,
         daily_bonus_claimed: Boolean,
+        earned_referrer_points: Boolean,
         current_level_experience: Number,
         level: Number,
     },
@@ -112,7 +113,7 @@ user.methods.validatePassword = function(plainPass){
 
 //takes in registration form data, callback is handled in routes.
 //ensures that username & email are unique, and that referrer exists.
-user.statics.formatNewAccount = function(newData, callback){
+user.statics.formatNewAccount = async function(newData){
     if(newData.password) newData.password = saltAndHash(newData.password);
     if(!newData.googleID && !newData.facebookID) {
         newData.rank = 'new';
@@ -129,42 +130,49 @@ user.statics.formatNewAccount = function(newData, callback){
     newData.level = 1;
     newData.current_level_experience = 0;
     newData.daily_bonus_claimed = false;
+    newData.earned_referrer_points = false;
     newData.token = crypto.randomBytes(20).toString('hex');
+    if(newData.ref_by === '') newData.ref_by = null;
 
-    if(newData.ref_by) {
+    if(newData.ref_by != null) {
         console.log('Populating ' + newData.ref_by +' as referrer for new user: ' + newData.username);
-        User.findOne({username: newData.ref_by}).exec(function(err, user) {
-            if(err) {
-                console.log('Error populating the referrer for ' + newData.username);
-                console.log(err);
-                callback(err, null);
-            } else {
-                if(user !== null) {
-                    newData.ref_by = user._id;
-                    User.addNewAccount(newData, callback);
-                } else {
-                    console.log('Invalid referral for ' + newData.username);
-                    callback(['invalid-referral'], null);
-                }
-            }
-        });
-    } else {
-        console.log('Account ' + newData.username + ' formatted, creating new account.');
-        User.addNewAccount(newData, callback);
+        console.log(newData.ref_by);
+        await User.populateReferrer(newData);
     }
+    return Promise.resolve(newData);
 };
 
-user.statics.addNewAccount  = function(newData, callback) {
-    User.create(newData, function(e,o) {
-        if(e) {
-            console.log('Error creating new account: ' + newData.username);
-            console.log(e);
-            return callback(e, null);
+user.statics.populateReferrer = async function(newData) {
+    console.log('Populating ' + newData.ref_by +' as referrer for new user: ' + newData.username);
+    return new Promise(async function(resolve, reject){
+        let referrer = await User.findOne({username: newData.ref_by});
+        console.log(referrer);
+        if(referrer != null) {
+            newData.ref_by = referrer._id;
+            resolve();
         } else {
-            console.log('Adding new account: ' + o.username);
-            if(newData.rank === 'new') emdisp.dispatchConfirm(newData.email, newData.token, newData.username);
-            return callback(null,o);
+            console.log('Invalid referrer');
+            reject('Invalid Referrer');
         }
+    });
+};
+
+
+user.statics.addNewAccount  = async function(newData) {
+    console.log('Creating new account: ' + newData.username);
+
+    return new Promise(function(resolve, reject) {
+        User.create(newData, function (err, user) {
+            if (err) {
+                console.log('Error creating user');
+                console.log(err);
+                reject(err);
+            } else {
+                console.log('Adding new account: ' + user.username);
+                if (newData.rank === 'new') emdisp.dispatchConfirm(user.email, user.token, user.username);
+                resolve(user);
+            }
+        })
     });
 };
 
@@ -176,36 +184,47 @@ user.statics.dailyBonusReset = function(){
 
 //used at end of registration, adds new user to referrer's list
 user.methods.percolateReferrals = async function () {
-    try{
-        let ref_by = this.ref_by;
-        let refID = this._id;
-
-        if(ref_by !== null) {
-            //add referral, points, and experience to referrer
-            await User.updateOne(
-                {_id: ref_by},
-                {$push: {referrals: refID}, $inc: {points: 100, total_points_earned: 100, current_level_experience: 100}}
-            ).catch(function(err){
-                console.log('Error percolating to referrer');
-                console.log(err);
-            });
-            //add referral, points, and experience to referred user
-            await User.updateOne(
-                {_id: refID},
-                {$inc: {points: 100, total_points_earned: 100, current_level_experience: 100}}
-            ).then(function() {
-                console.log("Referrals percolated for " + this.username);
-            }).catch(function(err){
-                console.log('Error percolating to referred user');
-                console.log(err);
-            });
-            return false;
-        }
-    } catch(err) {
-        console.log('Error percolating referrals.');
-        console.log(err);
-        return err;
+    let ref_bonus = 100;
+    if(this.ref_by !== null) {
+        //add referral, points, and experience to referrer
+        User.updateOne(
+            {_id: this.ref_by},
+            {
+                $push: {referrals: this._id},
+                $inc: {
+                    points: ref_bonus,
+                    total_points_earned: ref_bonus,
+                    current_level_experience: ref_bonus
+                }
+            }
+        ).catch(function(err){
+            console.log('Error percolating to referrer');
+            console.log(err);
+            throw new Error('Invalid Referrer');
+        });
+        //add referral, points, and experience to referred user
+        User.updateOne(
+            {_id: this._id},
+            {
+                $inc: {
+                    points: ref_bonus,
+                    total_points_earned: ref_bonus,
+                    current_level_experience: 100
+                },
+                $set: {earned_referrer_points: true}
+            }
+        ).then(function() {
+            console.log("Referrals percolated, checking for level up");
+        }).catch(function(err){
+            console.log('Error percolating to referred user');
+            console.log(err);
+            throw new Error('Invalid Referrer');
+        });
+        return user;
+    } else {
+        throw new Error('No Referrer');
     }
+
 };
 
 // update account functions //
@@ -237,7 +256,7 @@ user.methods.checkLevelUp = async function(){
                 $inc: {level: 1, points: reward, current_level_experience: - requiredExp}
             }
         ).catch(function(err){
-            console.log('Error leveling up user ' + this.username);
+            console.log('Error leveling up user.');
             console.log(err);
         });
     }
@@ -247,7 +266,7 @@ user.methods.addPoints = async function(amount){
     User.findOneAndUpdate(
         {_id: this._id},
         {
-            $inc: {points: amount}
+            $inc: {points: amount, total_points_earned: amount}
         }
     ).catch(function(err){
         console.log('Error adding points to user: ' + this.username);
@@ -296,9 +315,6 @@ user.methods.confirmAccount = async function(token) {
 
     try{
         await emdisp.joinMailingList(this.email, this.name, this.email_optin);
-        if(this.ref_by !== null){
-            this.percolateReferrals();
-        }
         return true;
     } catch(err){
         console.log('Error adding user to mailing list.');
@@ -380,8 +396,8 @@ user.methods.purchasePrize = async function(prize, option){
                     points: -option
                 }
             }).catch(function(err){
-                console.log('Error adding reference to order in user.');
-                console.log(err);
+            console.log('Error adding reference to order in user.');
+            console.log(err);
         });
 
         //calls back to shop/buy route, possibly should make this into a promise instead of a callback.
