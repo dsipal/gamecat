@@ -38,20 +38,25 @@ router.get('/surveys', authLimiter.ensureAuthenticated(), async function(req, re
 router.get('/postback', async function(req, res){
     try{
         let source_id = req.query.subid1;
+        let network = req.query.network;
         let object_id = require('mongodb').ObjectId(req.query.subid2);
         let ip = req.headers['cf-connecting-ip'];
         let payout;
 
+        //check for correct sourceid
         if(source_id === 'gc'){
-            //if postback is from PWN Games
-            if(ip === '35.196.95.104' || ip === '35.196.169.46'){
+            if(network === 'pwn'){
+                //if postback is from PWN Games
                 console.log('Postback from PWNGames received.');
                 let offer_id = req.query.offer;
-                let offer = await Game.find({'offer_ids': {$elemMatch: {'offer_id':offer_id}}});
+                let offer = await Game.findOne(
+                    {'offer_ids': {$elemMatch: {'offer_id':offer_id}}});
+                console.log(offer);
 
                 payout = offer.payout;
                 console.log(offer.payout);
-            } else {
+            }
+            else if(network === 'adscend') {
                 console.log('Postback from AdscendMedia received.');
                 payout = parseInt(req.query.payout);
             }

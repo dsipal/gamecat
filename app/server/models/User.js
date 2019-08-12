@@ -399,8 +399,6 @@ user.methods.purchasePrize = async function(prize, option){
             console.log('Error adding reference to order in user.');
             console.log(err);
         });
-
-        //calls back to shop/buy route, possibly should make this into a promise instead of a callback.
         return order.ops[0];
     } else {
         //user did not have enough points to purchase prize.
