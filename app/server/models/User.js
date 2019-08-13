@@ -74,11 +74,12 @@ user.statics.findOrCreate = async function(userData) {
                         .then(function(newUser){
                             console.log('Created new user: ' + newUser);
                             resolve(newUser);
-                        }).catch(function(err){
-                        console.log('Error formatting new account: ' + userData.username);
-                        console.log(err);
-                        reject(err);
-                    });
+                        })
+                        .catch(function(err){
+                            console.log('Error formatting new account: ' + userData.username);
+                            console.log(err);
+                            reject(err);
+                        });
                 }
             }).catch(function(err){
             console.log(err);
