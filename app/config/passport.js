@@ -50,6 +50,8 @@ module.exports = function(passport) {
             passReqToCallback: true,
         },
         async function(req, accessToken, refreshToken, profile, done) {
+            console.log(profile);
+            console.log(profile.displayName.slice(7));
             let username = removeDiacritics(profile.displayName.slice(7));
             let userData = {
                 username: username,
@@ -81,7 +83,7 @@ module.exports = function(passport) {
             profileFields: ['email', 'displayName']
         },
         async function(accessToken, refreshToken, profile, done) {
-        let username = removeDiacritics(profile.displayName.slice(7));
+            let username = removeDiacritics(profile.displayName.slice(7));
             let userData = {
                 username: username,
                 email: profile.emails[0].value,
