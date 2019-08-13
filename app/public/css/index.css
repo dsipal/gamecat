@@ -138,3 +138,7 @@
   margin-left: 40px;
   max-height: 200px;
   width: auto; }
+
+.social-login {
+  -webkit-box-pack: center;
+          justify-content: center; }
