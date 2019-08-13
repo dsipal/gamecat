@@ -122,7 +122,7 @@ footer {
 
 .xp-bar-container {
   height: 5px;
-  background-color: #495057;
+  background-color: #4f5761;
   border-radius: 3px;
   overflow: hidden; }
   .xp-bar-container .xp-bar {
@@ -176,7 +176,7 @@ ul {
   margin: 4px 0 0 0; }
 
 input {
-  background-color: #495057; }
+  background-color: #4f5761; }
 
 .card {
   background-color: #262626; }
@@ -193,7 +193,7 @@ form {
     color: white;
     border-bottom: 2px solid #8b33bb; }
     form .form-control:focus {
-      background-color: #495057;
+      background-color: #4f5761;
       color: inherit;
       outline: none !important;
       border: none !important;
@@ -201,7 +201,7 @@ form {
     form .form-control:-webkit-autofill {
       -webkit-text-fill-color: #fff; }
     form .form-control:disabled, form .form-control[readonly] {
-      background-color: #495057 !important; }
+      background-color: #4f5761 !important; }
   form .header-reg {
     padding-top: 15px; }
   form label, form h6 {

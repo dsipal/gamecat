@@ -17,7 +17,7 @@
   border-top: 5px solid #8b33bb; }
   .prize .prize-form select {
     border-radius: 10px;
-    background-color: #495057;
+    background-color: #4f5761;
     color: white;
     border: none;
     font-size: 14px;
@@ -37,7 +37,7 @@
 
 .prize .prize-info .prize-desc {
   padding: 10px;
-  background-color: #495057;
+  background-color: #4f5761;
   border-radius: 0 0 5px 5px;
   border: 3px solid #767D92;
   border-top: none; }
