@@ -1,4 +1,3 @@
-//TODO clean up code in passport.js, capitalization and wording of text shown to user.
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleOAuth = require('passport-google-oauth').OAuth2Strategy;
 const FbStrategy = require('passport-facebook').Strategy;
