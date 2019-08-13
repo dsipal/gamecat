@@ -50,23 +50,25 @@ module.exports = function(passport) {
             passReqToCallback: true,
         },
         async function(req, accessToken, refreshToken, profile, done) {
-            console.log(profile);
             let userData = {
                 username: profile.displayName,
                 email: profile.emails[0].value,
                 googleID: profile.id,
             };
-            let user = await User.findOrCreate(userData)
+            User.findOrCreate(userData)
+                .then(function(user){
+                    if(user){
+                        console.log(user);
+                        return done(null, user);
+                    } else {
+                        return done(new Error('no user'), null);
+                    }
+                })
                 .catch(function(err){
-                    console.log('Error finding or creating Google user.');
+                    console.log('Error finding or creating Facebook user.');
                     console.log(err);
                     return done(err);
                 });
-            if(user){
-                return done(null, user);
-            } else {
-                return done(null, new Error('no user'));
-            }
 
         })
     );
@@ -78,31 +80,25 @@ module.exports = function(passport) {
             profileFields: ['email', 'displayName']
         },
         async function(accessToken, refreshToken, profile, done) {
-
-            console.log(profile);
             let userData = {
                 username: profile.displayName,
                 email: profile.emails[0].value,
                 facebookID: profile.id,
             };
             User.findOrCreate(userData)
+                .then(function(user){
+                    if(user){
+                        console.log(user);
+                        return done(null, user);
+                    } else {
+                        return done(new Error('no user'), null);
+                    }
+                })
                 .catch(function(err){
                     console.log('Error finding or creating Facebook user.');
                     console.log(err);
                     return done(err);
                 });
-            let user = await User.findOrCreate(userData)
-                .catch(function(err){
-                    console.log('Error finding or creating Google user.');
-                    console.log(err);
-                    return done(err);
-                });
-            if(user){
-                console.log(user);
-                return done(null, user);
-            } else {
-                return done(null, new Error('no user'));
-            }
         })
     );
 
