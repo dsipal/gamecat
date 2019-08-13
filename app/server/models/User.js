@@ -71,13 +71,16 @@ user.statics.findOrCreate = async function(userData) {
                 } else {
                     console.log('User not found for email: ' + userData.email + ' creating account.');
                     User.formatNewAccount(userData)
+                        .then(function(userData){
+                            console.log('Formatted new user: ' + userData.username);
+                            User.addNewAccount(userData);
+                        })
                         .then(function(newUser){
-                            console.log('Created new user: ' + newUser);
-                            console.log(newUser);
+                            console.log('Created new user: ' + newUser.username);
                             resolve(newUser);
                         })
                         .catch(function(err){
-                            console.log('Error formatting new account: ' + userData.username);
+                            console.log('Error creating or finding new account: ' + userData.username);
                             console.log(err);
                             reject(err);
                         });
