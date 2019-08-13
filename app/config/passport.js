@@ -49,23 +49,25 @@ module.exports = function(passport) {
             callbackURL: process.env.ROOT_URL + '/login/google/callback',
             passReqToCallback: true,
         },
-        function(req, accessToken, refreshToken, profile, done) {
+        async function(req, accessToken, refreshToken, profile, done) {
             console.log(profile);
             let userData = {
                 username: profile.displayName,
                 email: profile.emails[0].value,
                 googleID: profile.id,
             };
-            User.findOrCreate(userData)
-                .then(function(user){
-                    console.log('Logging in Google user: ' + user.username);
-                    return done(null, user);
-                })
+            let user = await User.findOrCreate(userData)
                 .catch(function(err){
-                    console.log('Error logging in Google user.');
+                    console.log('Error finding or creating Google user.');
                     console.log(err);
                     return done(err);
                 });
+            if(user){
+                return done(null, user);
+            } else {
+                return done(null, new Error('no user'));
+            }
+
         })
     );
 
@@ -75,7 +77,7 @@ module.exports = function(passport) {
             callbackURL: process.env.ROOT_URL + '/login/facebook/callback',
             profileFields: ['email', 'displayName']
         },
-        function(accessToken, refreshToken, profile, done) {
+        async function(accessToken, refreshToken, profile, done) {
 
             console.log(profile);
             let userData = {
@@ -84,15 +86,22 @@ module.exports = function(passport) {
                 facebookID: profile.id,
             };
             User.findOrCreate(userData)
-                .then(function(user){
-                    console.log('Logging in Facebook user: ' + user.username);
-                    return done(null, user);
-                })
                 .catch(function(err){
-                console.log('Error logging in Facebook user.');
-                console.log(err);
-                return done(err);
-            });
+                    console.log('Error finding or creating Facebook user.');
+                    console.log(err);
+                    return done(err);
+                });
+            let user = await User.findOrCreate(userData)
+                .catch(function(err){
+                    console.log('Error finding or creating Google user.');
+                    console.log(err);
+                    return done(err);
+                });
+            if(user){
+                return done(null, user);
+            } else {
+                return done(null, new Error('no user'));
+            }
         })
     );
 
