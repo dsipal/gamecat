@@ -2,7 +2,6 @@ const User = require('../models/User');
 const passport = require('passport');
 const express = require('express');
 let router = express.Router();
-const UserValidator = require('../modules/user-validator');
 
 
 router.get('/', function(req, res){

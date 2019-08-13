@@ -3,7 +3,6 @@ const User = require('../models/User');
 const express = require('express');
 let router = express.Router();
 const authLimiter = require('../modules/authLimiter');
-const UserValidator = require('../modules/user-validator');
 const Event =  require('../models/Event');
 
 router.get('/', async function(req, res){
@@ -75,42 +74,6 @@ router.post('/signup', async function(req, res){
     } else {
         return res.redirect('/');
     }
-
-
-
-    // if(req.isAuthenticated && req.isAuthenticated()){
-    //     return res.redirect('/');
-    // } else {
-    //     console.log('Registration for ' + req.body['username']);
-    //     let userData = {
-    //         username:   req.body['username'],
-    //         password:   req.body['password'],
-    //         passwordV:  req.body['password_verify'],
-    //         email:      req.body['email'],
-    //         ref_by:     req.body['ref_by'],
-    //         email_optin: req.body['email_optin'] === 'true',
-    //         terms_conditions: req.body['terms_conditions'] === 'true'
-    //     };
-    //
-    //     let validator = new UserValidator(
-    //         userData,
-    //         function(err){
-    //             return res.status(401).send(err);
-    //         },
-    //         function(user){
-    //             User.formatNewAccount(user, function(err){
-    //                 if(err){
-    //                     console.log('Error formatting new account: ' + err);
-    //                     console.log(err.errors);
-    //                     return res.status(401).send(err);
-    //                 } else {
-    //                     return res.status(200).send('ok');
-    //                 }
-    //             });
-    //         }
-    //     );
-    //     validator.validate();
-    // }
 });
 
 router.post('/lost-password', async function(req, res){
