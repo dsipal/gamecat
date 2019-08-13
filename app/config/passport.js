@@ -56,18 +56,16 @@ module.exports = function(passport) {
                 email: profile.emails[0].value,
                 googleID: profile.id,
             };
-            User.findOrCreate(userData, function(err, user){
-                if(err){
-                    return done(err);
-                } else {
+            User.findOrCreate(userData)
+                .then(function(user){
                     console.log('Logging in Google user: ' + user.username);
                     return done(null, user);
-                }
-            }).catch(function(err){
-                console.log('Error logging in Google user.');
-                console.log(err);
-                return done(err);
-            });
+                })
+                .catch(function(err){
+                    console.log('Error logging in Google user.');
+                    console.log(err);
+                    return done(err);
+                });
         })
     );
 
@@ -85,14 +83,12 @@ module.exports = function(passport) {
                 email: profile.emails[0].value,
                 facebookID: profile.id,
             };
-            User.findOrCreate(userData, function(err, user){
-                if(err){
-                    return done(err);
-                } else {
+            User.findOrCreate(userData)
+                .then(function(user){
                     console.log('Logging in Facebook user: ' + user.username);
                     return done(null, user);
-                }
-            }).catch(function(err){
+                })
+                .catch(function(err){
                 console.log('Error logging in Facebook user.');
                 console.log(err);
                 return done(err);

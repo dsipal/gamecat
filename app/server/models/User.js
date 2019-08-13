@@ -61,27 +61,29 @@ const user = new mongoose.Schema({
 //adds actual validation error to unique keys
 user.plugin(uniqueValidator);
 
-user.statics.findOrCreate = async function(userData, callback) {
-    User.findOne({email: userData.email}).then(function(user){
-        if(user){
-            console.log('User already exists for email: ' + userData.email);
-            callback(null, user);
-        } else {
-            console.log('User not found for email: ' + userData.email + ' creating account.');
-            User.formatNewAccount(userData, function(err, newUser){
-                if(err){
-                    console.log('Error formatting new account: ' + userData.username);
-                    console.log(err);
-                    callback(err, null);
+user.statics.findOrCreate = async function(userData) {
+    return new Promise(function(resolve, reject){
+        User.findOne({email: userData.email}).exec()
+            .then(function(user){
+                if(user){
+                    console.log('User already exists for email: ' + userData.email);
+                    resolve(user);
                 } else {
-                    console.log('Created new user: ' + newUser);
-                    callback(null, newUser);
+                    console.log('User not found for email: ' + userData.email + ' creating account.');
+                    User.formatNewAccount(userData)
+                        .then(function(newUser){
+                            console.log('Created new user: ' + newUser);
+                            resolve(newUser);
+                        }).catch(function(err){
+                        console.log('Error formatting new account: ' + userData.username);
+                        console.log(err);
+                        reject(err);
+                    });
                 }
-            });
-        }
-    }).catch(function(err){
-        console.log(err);
-        callback(err, null);
+            }).catch(function(err){
+            console.log(err);
+            reject(err, null);
+        });
     });
 };
 
