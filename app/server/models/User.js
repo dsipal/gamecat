@@ -140,9 +140,9 @@ user.statics.formatNewAccount = async function(newData){
     newData.daily_bonus_claimed = false;
     newData.earned_referrer_points = false;
     newData.token = crypto.randomBytes(20).toString('hex');
-    if(newData.ref_by === '') newData.ref_by = null;
+    if(newData.ref_by === '') newData.ref_by = undefined;
 
-    if(newData.ref_by != null) {
+    if(newData.ref_by) {
         console.log('Populating ' + newData.ref_by +' as referrer for new user: ' + newData.username);
         console.log(newData.ref_by);
         await User.populateReferrer(newData);
@@ -154,7 +154,6 @@ user.statics.populateReferrer = async function(newData) {
     console.log('Populating ' + newData.ref_by +' as referrer for new user: ' + newData.username);
     return new Promise(async function(resolve, reject){
         let referrer = await User.findOne({username: newData.ref_by});
-        console.log(referrer);
         if(referrer != null) {
             newData.ref_by = referrer._id;
             resolve(newData);
