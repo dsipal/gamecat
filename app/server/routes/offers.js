@@ -135,7 +135,7 @@ async function getOffers(country_code, user){
         offer_ids.push(match.offer_id);
         descriptions.push(offer.description);
         names.push(offer.name);
-        payouts.push(Math.floor(offer.payout + (offer.payout * (user.level * 0.025))));
+        payouts.push(Math.floor(offer.payout + (offer.payout * ((user.level-1) * 0.025))));
     });
 
     let promises = [];
