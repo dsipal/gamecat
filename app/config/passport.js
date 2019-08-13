@@ -80,7 +80,7 @@ module.exports = function(passport) {
             profileFields: ['email', 'displayName']
         },
         async function(accessToken, refreshToken, profile, done) {
-            let username = removeDiacritics(profile.displayName);
+            let username = removeDiacritics(profile.displayName.slice(0,7)[0]);
             let userData = {
                 username: username,
                 email: profile.emails[0].value,
