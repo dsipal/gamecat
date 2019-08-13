@@ -50,7 +50,6 @@ module.exports = function(passport) {
             passReqToCallback: true,
         },
         async function(req, accessToken, refreshToken, profile, done) {
-            console.log(profile);
             let userData = {
                 username: profile.displayName,
                 email: profile.emails[0].value,

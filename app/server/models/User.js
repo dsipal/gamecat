@@ -73,7 +73,7 @@ user.statics.findOrCreate = async function(userData) {
                     User.formatNewAccount(userData)
                         .then(function(userData){
                             console.log('Formatted new user: ' + userData.username);
-                            User.addNewAccount(userData);
+                            return User.addNewAccount(userData);
                         })
                         .then(function(newUser){
                             console.log('Created new user: ' + newUser.username);
