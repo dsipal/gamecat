@@ -65,7 +65,7 @@ module.exports = function(passport) {
                     }
                 })
                 .catch(function(err){
-                    console.log('Error finding or creating Facebook user.');
+                    console.log('Error finding or creating Google user.');
                     console.log(err);
                     return done(err);
                 });
