@@ -1,10 +1,17 @@
 #home #level {
   font-size: 24px;
-  text-align: left; }
+  text-align: left;
+  margin-left: 20px; }
+
+#home .bonus-amount {
+  margin-right: 20px; }
 
 #home .xp-bar-container {
   height: 25px;
-  border-radius: 5px; }
+  margin-top: 5px;
+  border-radius: 25px;
+  box-sizing: content-box;
+  border: 10px solid #323239; }
   #home .xp-bar-container .xp-bar {
     text-align: center; }
 

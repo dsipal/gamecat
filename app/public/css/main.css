@@ -111,14 +111,14 @@ footer {
           border-bottom: 2px solid #a351d0; }
 
 #level-information {
-  width: 100px;
+  width: 150px;
   color: rgba(255, 255, 255, 0.5); }
 
 #level {
   font-size: 12px; }
   #level .bonus-amount {
     color: #52bb6f;
-    float: right; }
+    margin-left: auto; }
 
 .xp-bar-container {
   height: 5px;
@@ -127,8 +127,9 @@ footer {
   overflow: hidden; }
   .xp-bar-container .xp-bar {
     background-color: #8b33bb;
-    border-bottom: #4f1d6b;
-    height: 100%; }
+    border-right: 10px solid #6d2893;
+    height: 100%;
+    width: 0; }
 
 .row {
   margin: 0; }

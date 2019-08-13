@@ -1,6 +1,6 @@
 @import 'base';
 #level-information{
-  width: 100px;
+  width: 150px;
   color: rgba(255,255,255,.5);
 }
 #level{
@@ -17,7 +17,8 @@
   overflow: hidden;
   .xp-bar {
     background-color: $accent-purple;
-    border-bottom: darken($accent-purple, 20%);
+    border-right: 10px solid darken($accent-purple, 10%);
     height: 100%;
+    width: 0;
   }
 }
