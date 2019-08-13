@@ -98,6 +98,7 @@ module.exports = function(passport) {
                     return done(err);
                 });
             if(user){
+                console.log(user);
                 return done(null, user);
             } else {
                 return done(null, new Error('no user'));
