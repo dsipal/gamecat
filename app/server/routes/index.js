@@ -86,7 +86,8 @@ router.post('/lost-password', async function(req, res){
             return res.status(400).send('Reset email not sent, invalid email');
         } else{
             console.log('Sent password reset email to ' + o.username);
-            await EM.dispatchPasswordReset(resetEmail, o.updateToken(), o.username, function(err){
+            let token = await o.updateToken();
+            await EM.dispatchPasswordReset(resetEmail, token, o.username, function(err){
                 if(!err){
                     return res.redirect('/');
                 } else {
