@@ -1,8 +1,8 @@
 <div class="row">
     {{#each users}}
         <div class="col-sm-3">
-            <h2>{{this.name}}</h2>
             <h3>{{this.username}}</h3>
+            <p>Points: {{this.points}}</p>
             <p>{{this.email}}</p>
             <form>
                 <input type="hidden" id="user" name="user" value="{{this.username}}">

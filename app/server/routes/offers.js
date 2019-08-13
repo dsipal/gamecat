@@ -4,20 +4,33 @@ const express = require('express');
 const router = express.Router();
 const request = require('request-promise');
 const Game = require('../models/Game');
+const Event =  require('../models/Event');
 
 router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     let country_code = req.headers['cf-ipcountry'];
-    const offers = await getOffers(country_code, req.user._id);
+    const offers = await getOffers(country_code, req.user);
+
+    let event = await Event.findOne({status: 'active'}).catch(function(err){
+        console.log('Error fetching event.');
+        console.log(err);
+    });
 
     return res.render('offers/quests', {
         udata: req.user,
-        offers: offers
+        offers: offers,
+        event: event
     });
 });
 
 router.get('/surveys', authLimiter.ensureAuthenticated(), async function(req, res){
+    let event = await Event.findOne({status: 'active'}).catch(function(err){
+        console.log('Error fetching event.');
+        console.log(err);
+    });
+
     res.render('offers/offers', {
         udata: req.user,
+        event: event
     });
 });
 
@@ -25,27 +38,71 @@ router.get('/surveys', authLimiter.ensureAuthenticated(), async function(req, re
 router.get('/postback', async function(req, res){
     try{
         let source_id = req.query.subid1;
+        let network = req.query.network;
         let object_id = require('mongodb').ObjectId(req.query.subid2);
         let ip = req.headers['cf-connecting-ip'];
         let payout;
+
+        //check for correct sourceid
         if(source_id === 'gc'){
-            //if postback is from PWN Games
-            if(ip === '35.196.95.104' || ip === '35.196.169.46'){
-                console.log('Postback from PWNGames recieved.');
-                let offer_id = req.query.offer
-                let offer = await Game.find({'offer_ids': {$elemMatch: {'offer_id':offer_id}}});
+            if(network === 'pwn'){
+                //if postback is from PWN Games
+                console.log('Postback from PWNGames received.');
+                let offer_id = req.query.offer;
+                let offer = await Game.findOne(
+                    {'offer_ids': {$elemMatch: {'offer_id':offer_id}}});
+                console.log(offer);
+
                 payout = offer.payout;
+                console.log(offer.payout);
             }
-            //if postback is from AdscendMedia
-            else if(ip === '54.204.57.82'){
-                console.log('Postback from AdscendMedia revieved.');
+            else if(network === 'adscend') {
+                console.log('Postback from AdscendMedia received.');
                 payout = parseInt(req.query.payout);
             }
-            //find user and add points
+
+
+            //start payout process
             let user = await User.findOne({_id: object_id});
-            user.points+= payout;
-            await user.save();
-            console.log(req.query.subid1 + " was paid " + req.query.payout);
+            let adjustedPayout = payout;
+
+            //check for active events
+            let event = await Event.findOne({status: 'active'}).catch(function(err){
+                console.log('Error fetching event.');
+                console.log(err);
+            });
+            //if active event add modifier to payout
+            if(event){
+                adjustedPayout += payout * event.modifier;
+                console.log('Active event, adding ' + payout * event.modifier + ' points to payout');
+            }
+
+            //check, apply, and update daily bonus
+            if(!user.daily_bonus_claimed){
+                console.log(user.username + ' has claimed their daily bonus gaining ' + payout/2 + ' extra points.');
+                adjustedPayout += payout/2;
+                user.update({$set: {daily_bonus_claimed: true}}).exec();
+            }
+
+            if(!user.earned_referrer_points
+                && (user.total_points_earned >= 100 || payout >= 100)
+                && user.ref_by != null){
+
+                //user was referred, got to 100 points, adding reward
+                console.log(user.username + ' has reached 100 points! Percolating referral.');
+                adjustedPayout += 100;
+                await user.percolateReferrals();
+            }
+
+
+            //add in level bonus;
+            adjustedPayout += Math.floor( payout * ((user.level-1) * 0.025));
+
+            //add payout to user and give experience
+            await user.addPoints(adjustedPayout);
+            await user.addExperience(payout);
+
+            console.log(user.username + " was paid " + adjustedPayout);
             return res.status(200).send('Postback recieved.');
         } else {
             return res.status(200).send('Postback not for Gamecat.');
@@ -58,7 +115,8 @@ router.get('/postback', async function(req, res){
     }
 });
 
-async function getOffers(country_code, subid){
+//get offers from PWNGames
+async function getOffers(country_code, user){
     const base_uri = 'https://api.eflow.team/v1/affiliates';
     let offer_ids = [];
     let descriptions = [];
@@ -67,7 +125,6 @@ async function getOffers(country_code, subid){
 
     //get games from the mongo db collection where there is a country code match
     let games = await Game.find({'offer_ids': {$elemMatch: {'country_codes': country_code}}});
-
 
     games.forEach((offer) => {
         //get the offerid that matches the country code
@@ -78,7 +135,7 @@ async function getOffers(country_code, subid){
         offer_ids.push(match.offer_id);
         descriptions.push(offer.description);
         names.push(offer.name);
-        payouts.push(offer.payout);
+        payouts.push(Math.floor(offer.payout + (offer.payout * (user.level * 0.025))));
     });
 
     let promises = [];
@@ -98,7 +155,7 @@ async function getOffers(country_code, subid){
     let responses = await Promise.all(promises);
 
     responses.map((response,key) => {
-        response.tracking_url += `?sub1=gc&sub2=${subid}`;
+        response.tracking_url += `?sub1=gc&sub2=${user._id}`;
         response.description = descriptions[key];
         response.name = names[key];
         response.payout = payouts[key];

@@ -2,7 +2,6 @@ const User = require('../models/User');
 const passport = require('passport');
 const express = require('express');
 let router = express.Router();
-const UserValidator = require('../modules/user-validator');
 
 
 router.get('/', function(req, res){
@@ -66,29 +65,50 @@ router.get('/finalize', function(req, res){
     }
 });
 
-router.post('/finalize', function(req, res){
+router.post('/finalize', async function(req, res){
     let userData = {
         username: req.body['username'],
-        ref_by: req.body['ref_by'],
-        email: req.body['email']
+        ref_by: req.body['ref_by']
     };
-    let validator = new UserValidator(userData,
-        function(err){
-            return res.status(401).send(err);
-        },
-        function(user){
-            try{
-                req.user.username = userData.username;
-                req.user.ref_by = userData.ref_by;
-                req.user.email = userData.email;
-                req.user.rank = 'activated';
-                req.user.save();
-                res.status(200).send('ok');
-            } catch(err){
-                res.status(401).send(err);
-            }
+    //probably should be in own function, checks if referrer and sets it if exists.
+    if(userData.ref_by != ''){
+        let referrer = await User.findOne({username: userData.ref_by}).catch(function(err){
+            console.log('Invalid referrer for ' + userData.username);
+            console.log(err);
         });
-    validator.validateSocial();
+        console.log(referrer);
+        User.findOneAndUpdate(
+            {_id: req.user._id},
+            {
+                "$set": {
+                    "ref_by": referrer._id
+                }
+            },
+            {runValidators: true}
+        ).exec().then(function(){
+            console.log('Set referrer for ' + userData.username);
+        }).catch(function(err){
+            console.log('Error setting referrer for ' + userData.username);
+            console.log(err);
+        });
+    }
+
+    //base for update user
+    let updateData = {rank: 'activated'};
+    if(req.user.username !== userData.username) updateData.username = userData.username;
+    User.findOneAndUpdate(
+        {_id: req.user._id},
+        updateData,
+        {runValidators: true}
+    ).exec().then(function(){
+        console.log('Finalized social account ' + userData.username);
+        return res.status(200).send('ok');
+
+    }).catch(function(err){
+        console.log('Error finalizing social account ' + userData.username);
+        console.log(err);
+        return res.status(401).send(err);
+    });
 });
 
 router.get('/unverified', function(req, res){

@@ -2,6 +2,7 @@ const EM = require('../modules/email-dispatcher');
 const User = require('../models/User');
 const Prize = require('../models/Prize');
 const Order = require('../models/Order');
+const Event = require('../models/Event');
 const express = require('express');
 const authLimiter = require('../modules/authLimiter');
 const sched = require('../modules/scheduler');
@@ -59,11 +60,11 @@ router.post('/users/unban', authLimiter.ensureAuthenticated(), function(req, res
 router.post('/users/ban', authLimiter.ensureAuthenticated(), async function (req, res) {
     let username = req.body['user'];
 
-    User.findOne({username:username}).then( function(e, o) {
+    User.findOne({username:username}).then( async function(e, o) {
         if(e){
             console.log(e);
         } else {
-            o.banAccount();
+            await o.banAccount();
         }
     }).catch(function(err){
         console.log('Error banning account: ' + username);
@@ -147,7 +148,7 @@ router.post('/cashouts/completed', authLimiter.ensureAuthenticated(), async func
         return res.status(500).send('Error querying the Order collection.' + '\n' + err);
     });
 
-    if(order !== null || order !== undefined){
+    if(order !== null){
         console.log("Order found, attempting to complete.");
         await order.completeCashout(giftCode).then(async function(success){
             if(success){
@@ -161,4 +162,35 @@ router.post('/cashouts/completed', authLimiter.ensureAuthenticated(), async func
     }
 });
 
+router.get('/events', authLimiter.ensureAuthenticated(), async function(req, res){
+    let events = await Event.find({status: 'active'})
+        .catch(function(err){
+           console.log('Error querying Event collection');
+           console.log(err);
+           res.status(500).send('Error querying Event collection');
+        });
+
+    return res.render('admin/events', {
+        events: events,
+        udata: req.user
+    });
+});
+
+router.post('/events/create', authLimiter.ensureAuthenticated(), async function(req, res){
+    let modifier = req.body['modifier'];
+    let name = req.body['name'];
+    let start = new Date(Date.parse(req.body['start']));
+    let end = new Date(Date.parse(req.body['end']));
+    console.log('Request to create new modifier: ' + modifier + ' event starting at: ' + start + ' and ending at: ' + end);
+
+    await Event.newEvent(name,start,end,modifier, async function(err, event){
+        if(err){
+            console.log('error in newEvent process ' + err);
+            res.redirect('./');
+        } else {
+            sched.newEventSchedule(start, end, modifier, event);
+            res.redirect('./');
+        }
+    });
+});
 module.exports = router;

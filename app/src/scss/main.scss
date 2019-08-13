@@ -2,7 +2,8 @@
 @import 'modals';
 @import 'nav';
 @import 'footer';
-
+@import 'xpBar';
+@import url('https://fonts.googleapis.com/css?family=Nunito|Roboto&display=swap');
 @mixin raiseText() {
   color: grey;
   text-shadow: -1px 1px 0 white;
@@ -18,22 +19,31 @@ body {
   margin: 0;
   padding: 0;
   color: white;
+  font-family: 'Roboto', sans-serif;
 }
 
 main{
   min-height: 100vh;
   position: relative;
   a{
-    color: $accent-purple;
+    color: $link-color;
     &:hover{
       text-decoration: none;
-      color: lighten($accent-purple, 20%);
+      color: lighten($link-color, 8%);
     }
     &:visited{
-      color: $accent-purple;
+      color: $link-color;
       text-decoration: none;
+      &:hover{
+        text-decoration: none;
+        color: lighten($link-color, 8%);
+      }
     }
   }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Nunito', sans-serif;
 }
 
 h1{
@@ -132,7 +142,7 @@ form{
     height: 280px;
     margin-left: -15px;
     margin-right: -15px;
-    background-color: inherit;
+    background-color: lighten($base-color, 2%);
     background-image: url("/img/textures/cubes.png");
     border-bottom: 7px solid $secondary-purple;
     box-shadow: 0 3px 5px 0 rgb(50, 50, 50);
@@ -160,4 +170,17 @@ form{
   display: inline-block;
   position: relative;
   bottom: 1px;
+}
+
+#event-info{
+  background-color: $button-green;
+  margin-right: -15px;
+  margin-left: -15px;
+  border-bottom: 5px solid darken($button-green, 10%);
+}
+
+.daily-bonus{
+  background-color: $button-green;
+  text-align: center;
+  border-bottom: 5px solid darken($button-green, 10%);
 }

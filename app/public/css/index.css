@@ -25,7 +25,7 @@
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: #3b3b3b;
+    background-color: #404040;
     opacity: 0.3;
     z-index: 1;
     text-align: center; }
@@ -50,15 +50,28 @@
     .hero #tagline h3 {
       color: #fff; }
 
+.container .banner-info {
+  margin: 0 -15px 0 -15px; }
+  .container .banner-info .banner-info-header {
+    background-color: #767D92;
+    box-shadow: 0px 5px 15px 2px #323232;
+    margin-bottom: 0;
+    padding: 25px;
+    z-index: 2;
+    width: 100%;
+    text-align: center; }
+
 .container #top-banner-group {
   background-color: #8b33bb;
   margin-left: -15px;
-  margin-right: -15px; }
+  margin-right: -15px;
+  overflow: hidden; }
 
 .container #top-info {
   padding: 25px; }
   .container #top-info .landing-description {
-    margin-top: 40px; }
+    margin-top: 40px;
+    text-align: center; }
     .container #top-info .landing-description h1 {
       text-align: center; }
     .container #top-info .landing-description p {
@@ -66,42 +79,45 @@
       padding: 20px; }
 
 .container #signup-banner {
-  background-color: #212121;
+  background-color: #262626;
   -webkit-box-pack: center;
           justify-content: center;
   padding: 60px;
   border-radius: 300px 300px 0 0; }
 
 .container #how-work {
-  margin-left: -15px;
-  margin-right: -15px; }
+  text-align: center; }
   .container #how-work #complete-quests {
     padding: 20px;
     background-color: #389bda; }
   .container #how-work #tell-friends {
     padding: 20px;
-    background-color: #3b3b3b; }
+    background-color: #404040; }
   .container #how-work #get-loot {
     padding: 20px;
     background-color: #495057; }
 
+.feature {
+  padding: 25px;
+  text-align: center; }
+  .feature img {
+    height: 86px;
+    width: auto; }
+
+#dailybonus {
+  background-color: #6a278f; }
+
+#levelup {
+  background-color: #389bda; }
+
 #rewards {
-  margin-left: -15px;
-  margin-right: -15px;
   padding-bottom: 25px;
-  background-color: #3b3b3b; }
+  background-color: #404040; }
   #rewards #rewards-list {
     padding: 35px; }
 
 .form-check-label {
   font-size: 12px; }
-
-.banner-info-header {
-  background-color: #767D92;
-  box-shadow: 0px 5px 15px 2px #323232;
-  margin-bottom: 0;
-  padding: 25px;
-  z-index: 2; }
 
 .reward-item {
   margin: 25px 0 25px; }

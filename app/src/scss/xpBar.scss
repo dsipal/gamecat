@@ -1,0 +1,24 @@
+@import 'base';
+#level-information{
+  width: 150px;
+  color: rgba(255,255,255,.5);
+}
+#level{
+  font-size: 12px;
+  .bonus-amount{
+    color: $button-green;
+    margin-left: auto;
+  }
+}
+.xp-bar-container {
+  height: 5px;
+  background-color: $dialogue-background;
+  border-radius: 3px;
+  overflow: hidden;
+  .xp-bar {
+    background-color: $accent-purple;
+    border-right: 10px solid darken($accent-purple, 10%);
+    height: 100%;
+    width: 0;
+  }
+}

@@ -6,9 +6,10 @@
 {{#section 'body_scripts'}}
     <script src="/js/views/offers.min.js"></script>
 {{/section}}
-
+{{>widgets/dailyBonus user=udata}}
 <section class="container">
     {{>container_header header_image="/img/layout/surveypage.svg" header_text="Surveys"}}
+    {{>widgets/eventNotifier event=event}}
 
     <ul class="nav nav-tabs" id="offers-tabs" role="tablist">
         <li class="nav-item">
@@ -25,7 +26,7 @@
         </li>
     </ul>
 
-    <div class="tab-content" id="offersContent" data-userid="{{udata._id}}">
+    <div class="tab-content" id="offersContent" data-userid="{{udata._id}}" data-userlevel="{{udata.level}}">
         <div class="tab-pane fade show active" id="surveys" role="tabpanel" aria-labelledby="surveys-tab" data-page="0">
             <ul class="row offer-list">
             </ul>

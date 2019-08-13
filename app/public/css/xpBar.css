@@ -1,0 +1,20 @@
+#level-information {
+  width: 150px;
+  color: rgba(255, 255, 255, 0.5); }
+
+#level {
+  font-size: 12px; }
+  #level .bonus-amount {
+    color: #52bb6f;
+    margin-left: auto; }
+
+.xp-bar-container {
+  height: 5px;
+  background-color: #495057;
+  border-radius: 3px;
+  overflow: hidden; }
+  .xp-bar-container .xp-bar {
+    background-color: #8b33bb;
+    border-right: 10px solid #6d2893;
+    height: 100%;
+    width: 0; }

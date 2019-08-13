@@ -10,8 +10,8 @@ let helmet = require('helmet');
 let passport = require('passport');
 let mongoose = require('mongoose');
 let sm = require('sitemap');
-const dotenv = require('dotenv');
-dotenv.config();
+require('dotenv').config();
+let scheduler = require('./app/server/modules/scheduler');
 
 // create instance of express server //
 var app = express();
@@ -19,12 +19,12 @@ app.use(helmet());
 app.set('port', process.env.PORT || 8080);
 
 // route files //
-const index = require('./app/server/routes/index.js');
-const login = require('./app/server/routes/login.js');
+const index = require('./app/server/routes/index');
+const login = require('./app/server/routes/login');
 const account = require('./app/server/routes/account');
 const shop = require('./app/server/routes/shop');
 const offers = require('./app/server/routes/offers');
-const admin = require('./app/server/routes/admin.js');
+const admin = require('./app/server/routes/admin');
 
 // setup handlebars templating //
 app.engine('hbs', exphbs( {
@@ -42,31 +42,35 @@ app.engine('hbs', exphbs( {
 }));
 app.set('view engine', 'hbs');
 
+if(process.env.NODE_ENV !== 'local'){
+    app.use('/offers/postback', function(req, res, next) {
+        let ip = req.headers['cf-connecting-ip'];
+        let authorized_ips = process.env.POSTBACK_IPS.split(', ');
+        if (authorized_ips.includes(ip)) {
+            console.log('valid postback attempt from: ' + ip);
+            next();
+        } else {
+            console.log('invalid postback attempt from: ' + ip);
+            res.end();
+        }
+    });
 
-// // TODO use below expression to limit ips that access /postback and /admin
-app.use('/offers/postback', function(req, res, next) {
-    // filtering here, calls `res` method to stop progress or calls `next` to proceed
-    let ip = req.headers['cf-connecting-ip'];
-    // The IP from the CPA site
-    if (ip === '54.204.57.82' || ip === '35.196.95.104' || ip === '35.196.169.46') {
-        console.log('valid postback attempt from: ' + ip);
-        next();
-    } else {
-        console.log('invalid postback attempt from: ' + ip);
-        res.end();
-    }
-});
+    app.use('/admin', function(req, res, next) {
+        // filtering here, calls `res` method to stop progress or calls `next` to proceed
+        let ip = req.headers['cf-connecting-ip'];
+        console.log(ip + ' attempting connection to /admin');
 
-app.use('/admin', function(req, res, next) {
-    // filtering here, calls `res` method to stop progress or calls `next` to proceed
-    let ip = req.headers['cf-connecting-ip'];
-    // Our IPs
-    if (ip === '75.40.152.150' || ip === '71.217.183.27') {
-        next();
-    } else {
-        res.end();
-    }
-});
+        let authorized_ips = process.env.ADMIN_IPS.split(', ');
+        console.log(authorized_ips);
+        // Our IPs
+        if (authorized_ips.includes(ip)) {
+            next();
+        } else {
+            return res.redirect('/');
+        }
+    });
+}
+
 
 let sitemap = sm.createSitemap({
     hostname: 'https://gamecat.co',
@@ -159,3 +163,5 @@ app.use(function(req, res, next) {
 http.createServer(app).listen(process.env.PORT, function(){
     console.log('Express server listening on port ' + process.env.PORT);
 });
+
+scheduler.createDailyBonusReset();

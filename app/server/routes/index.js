@@ -3,13 +3,18 @@ const User = require('../models/User');
 const express = require('express');
 let router = express.Router();
 const authLimiter = require('../modules/authLimiter');
-const UserValidator = require('../modules/user-validator');
+const Event =  require('../models/Event');
 
-router.get('/', function(req, res){
+router.get('/', async function(req, res){
+    let event = await Event.findOne({status: 'active'}).catch(function(err){
+        console.log('Error fetching event.');
+        console.log(err);
+    });
+
     if(req.user){
-        return res.render('index/home', {udata: req.user});
+        return res.render('index/home', {udata: req.user, event: event});
     }else{
-        return res.render('index/index', {udata: req.user});
+        return res.render('index/index', {udata: req.user, event: event});
     }
 
 });
@@ -40,11 +45,9 @@ router.get('/signup', function(req, res) {
     }
 });
 
-router.post('/signup', function(req, res){
-    if(req.isAuthenticated && req.isAuthenticated()){
-        return res.redirect('/');
-    } else {
-        console.log('Registration for ' + req.body['username']);
+router.post('/signup', async function(req, res){
+
+    if(req.isAuthenticated && req.isAuthenticated) {
         let userData = {
             username:   req.body['username'],
             password:   req.body['password'],
@@ -54,25 +57,22 @@ router.post('/signup', function(req, res){
             email_optin: req.body['email_optin'] === 'true',
             terms_conditions: req.body['terms_conditions'] === 'true'
         };
-
-        let validator = new UserValidator(
-            userData,
-            function(err){
+        let newUser = await User.formatNewAccount(userData)
+            .then(async function(userData){
+                await User.addNewAccount(userData);
+            })
+            .then(function(user){
+                return res.status(200).send('ok');
+            })
+            .catch(function(err){
+                console.log('Error creating new account: ' + err);
+                console.log(err.errors);
                 return res.status(401).send(err);
-            },
-            function(user){
-                User.formatNewAccount(user, function(err){
-                    if(err){
-                        console.log('Error formatting new account: ' + err);
-                        console.log(err.errors);
-                        return res.status(401).send(err);
-                    } else {
-                        return res.status(200).send('ok');
-                    }
-                });
-            }
-        );
-        validator.validate();
+            });
+
+
+    } else {
+        return res.redirect('/');
     }
 });
 

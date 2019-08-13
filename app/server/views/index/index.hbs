@@ -32,15 +32,17 @@
 </section>
 
 <section class='container'>
-
+    {{>widgets/eventNotifier event=event}}
     <div id="top-banner-group">
-        <div class="row banner-info" id="top-info">
+        <div class="row" id="top-info">
             <div class="landing-description">
                 <h1>Welcome to Gamecat.</h1>
                 <hr />
                 <p>
-                    Gamecat is an exclusive rewards site where you can earn gift cards for Steam, Amazon, League of Legends and more! Made by a dedicated team of gamers, for gamers,
-                    you can wave goodbye to all the scams and spam and impress your friends with all the new loot you'll acquire.
+                    Gamecat is an exclusive rewards site where you can earn gift cards for Steam, Amazon, League of Legends,
+                    iTunes and more! Made by a dedicated team of gamers, for gamers, you can wave goodbye to all the scams
+                    and spam and impress your friends with all the new loot you'll acquire. Earn crystals to spend on rewards,
+                    and level up to gain more and more crystals every day!
                 </p>
             </div>
         </div>
@@ -54,7 +56,10 @@
                     </div>
                     <div class="form-group text-right">
                         <input type="checkbox" name="agree" value="true" class="form-check-input" id="agree" required />
-                        <label for="agree" class="form-check-label">I agree to recieve emails from Gamecat as well as the <a href="/tos">terms of service</a>.</label>
+                        <label for="agree" class="form-check-label">
+                            I agree to recieve emails from Gamecat as well as the
+                            <a href="/tos">terms of service</a>.
+                        </label>
                     </div>
 
                     <div class="text-center">
@@ -73,70 +78,116 @@
         <div class="col-md-4" id="complete-quests">
             <img src="/img/quest.svg" alt="Complete quests!" class="img-fluid" />
             <h4 class="text-center">1. Complete quests.</h4>
-            <p class="text-left">
-                Play new games, fill out surveys, or try out free trials for sites like Hulu, all for a reward! For every quest you complete <img src="/img/crystal.svg" alt="crystals" class="crystal-ico" /> will be added to your vault. We're always adding new ones so don't worry about us running out.
+            <p>
+                Play new games, fill out surveys, or try out free trials for sites like Hulu, to level up and earn
+                rewards! For every quest you complete you earn <img src="/img/crystal.svg" alt="crystals" class="crystal-ico" />
+                and experience. Every time you level up you will get a 2.5% bonus to your rewards and a bonus reward.
             </p>
         </div>
         <div class="col-md-4" id="tell-friends">
             <img src="/img/friend.svg" alt="Invite your friends!" class="img-fluid" />
             <h4 class="text-center">2. Tell your friends.</h4>
-            <p class="text-left">
-                Got a Discord server? You and your friends can both earn 100 free <img src="/img/crystal.svg" alt="crystals" class="crystal-ico" /> if they sign up using your personal invite code. Not to mention you can earn up to 5% of whatever your referrals earn. You can also <a href="/contact">partner with
+            <p>
+                Got a Discord server? You and your friends can both earn 100 free
+                <img src="/img/crystal.svg" alt="crystals" class="crystal-ico" /> when they earn 200 themselves if they
+                sign up using your personal invite code. Not to mention you can earn up to 5% of whatever your referrals
+                earn. You can also <a href="/contact">partner with
                 us</a> for even better deals.
             </p>
         </div>
         <div class="col-md-4" id="get-loot">
             <img src="/img/treasure.svg" alt="Get paid!" class="img-fluid" />
             <h4 class="text-center">3. Get epic loot.</h4>
-            <p class="text-left">
-                Once you've saved up as little as 500 <img src="/img/crystal.svg" alt="crystals" class="crystal-ico" /> you can exchange them for gift cards, premium currency, steam wallet, and more to be announced. If you don't see what you want on the store you can always contact one of our staff members
+            <p>
+                Once you've saved up as little as 500 <img src="/img/crystal.svg" alt="crystals" class="crystal-ico" />
+                you can exchange them for gift cards, premium currency, steam wallet, and more to be announced. If you
+                don't see what you want on the store you can always contact one of our staff members
                 to suggest new products.
             </p>
         </div>
     </div>
 
+    <div class="row banner-info" id="dailybonus">
+        <div class="col-12 banner-info-header">
+            <h2>Daily Bonuses</h2>
+        </div>
+        <div class="row feature" >
+            <div class="col-md-10">
+                <p>
+                    Check in every day and complete a quest or survey and get sweet bonuses- the first one you complete
+                    each day will give you 50% more bonus crystals. This makes it incredibly easy to get whatever skin
+                    or new game you're after. No other site gives you as many bonuses and rewards as Gamecat.
+                </p>
+            </div>
+            <div class="col-md-2">
+                <img src="/img/nav/earn.svg" class="img-fluid">
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row banner-info" id="levelup">
+        <div class="col-12 banner-info-header">
+            <h2>Level Up</h2>
+        </div>
+        <div class="row feature" >
+            <div class="col-md-2">
+                <img src="/img/levelup.svg" class="img-fluid">
+            </div>
+
+            <div class="col-md-10">
+                <p>
+                    Every time you refer a friend or complete a quest or survey you gain experience! For each level you
+                    achieve you get a 2.5% bonus to <i>EVERY</i> quest and survey you complete. You also get a sizeable
+                    stack of crystals as a reward. You can reach a max level of 20 which gives you a huge 50% bonus on
+                    every activity you complete!
+                </p>
+            </div>
+        </div>
+    </div>
+
     <div class="row banner-info" id="rewards">
         <div class="col-12 banner-info-header">
-            <h2>What you can get</h2>
+            <h2>What you can earn</h2>
         </div>
         <div class="row" id="rewards-list">
-            <div class="col-md-4 reward-item">
+            <div class="col-md-4 reward-item" id="#league">
                 <a href="/shop/riot-gift-card">
                     <img src="/img/rewards/riotcards.png" alt="Riot store gift cards" class="img-fluid reward-img" />
                     <h4 class="reward-name">League of Legends Gift Cards</h4>
                 </a>
             </div>
-            <div class="col-md-4 reward-item">
+            <div class="col-md-4 reward-item" id="#steam">
                 <a href="/shop/steam-gift-card">
                     <img src="/img/rewards/steamwallet.png"  alt="Steam wallet gift cards" class="img-fluid reward-img" />
                     <h4 class="reward-name">Steam Gift Cards</h4>
                 </a>
             </div>
-            <div class="col-md-4 reward-item">
+            <div class="col-md-4 reward-item" id="xbox">
                 <a href="/shop/xbox-gift-card">
                     <img src="/img/rewards/xboxcards.png" alt="XBox store gift cards" class="img-fluid reward-img" />
                     <h4 class="reward-name">XBox Store Gift Cards</h4>
                 </a>
             </div>
-            <div class="col-md-4 reward-item">
-                <a href="/shop/google-play-gift-card">
+            <div class="col-md-4 reward-item" id="googleplay">
+                <a href="/shop/google-play-gift-card" >
                     <img src="/img/rewards/googleplaycards.png" alt="Google play gift cards" class="img-fluid reward-img" />
                     <h4 class="reward-name">Google Play Store Gift Cards</h4>
                 </a>
             </div>
-            <div class="col-md-4 reward-item">
+            <div class="col-md-4 reward-item" id="itunes">
                 <a href="/shop/itunes-gift-card">
                     <img src="/img/rewards/itunescards.png" alt="iTunes gift cards" class="img-fluid reward-img" />
                     <h4 class="reward-name">iTunes Gift Cards</h4>
                 </a>
             </div>
-            <div class="col-md-4 reward-item">
+            <div class="col-md-4 reward-item" id="amazon">
                 <a href="/shop/amazon-gift-card">
                     <img src="/img/rewards/amazongiftcards.png" alt="Amazon gift cards" class="img-fluid reward-img" />
                     <h4 class="reward-name">Amazon Gift Cards</h4>
                 </a>
             </div>
         </div>
-        <h2 class="col-12 text-center">And more!</h2>
+        <h2 class="col-12 text-center" id="and-more"><a href="/shop">And more!</a></h2>
     </div>
 </section>
