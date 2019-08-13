@@ -157,7 +157,7 @@ user.statics.populateReferrer = async function(newData) {
         console.log(referrer);
         if(referrer != null) {
             newData.ref_by = referrer._id;
-            resolve();
+            resolve(newData);
         } else {
             console.log('Invalid referrer');
             reject('Invalid Referrer');

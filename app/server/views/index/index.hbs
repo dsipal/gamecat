@@ -5,8 +5,8 @@
     <meta property="og:url" content="https://www.gamecat.co/" />
     <meta property="og:image" content="https://gamecat.co/img/social.png" />
     <meta property="og:description" content="Gamecat is an exclusive rewards program for gamers, by gamers. Play new games, watch videos, and get paid!" />
-
-    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/social-login.min.css">
+    <link rel="stylesheet" href="/css/index.min.css">
 {{/section}}
 
 {{#section 'body_scripts'}}
@@ -49,7 +49,8 @@
 
         {{#unless udata}}
             <div class="row banner-info" id="signup-banner">
-                <form class="signup-form" method="get" action="/signup">
+                <form class="text-center justify-content-center signup-form" method="get" action="/signup">
+                    {{>social_login}}
                     <h4 class="text-center">Sign up and earn today!</h4>
                     <div class="form-group">
                         <input type="email" name="email" class="form-control" id="email" placeholder="Enter your email" required />
