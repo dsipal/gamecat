@@ -63,7 +63,7 @@ user.plugin(uniqueValidator);
 
 user.statics.findOrCreate = async function(userData) {
     return new Promise(function(resolve, reject){
-        User.findOne({email: userData.email}).exec()
+        let user = User.findOne({email: userData.email})
             .then(function(user){
                 if(user){
                     console.log('User already exists for email: ' + userData.email);
@@ -71,17 +71,22 @@ user.statics.findOrCreate = async function(userData) {
                 } else {
                     console.log('User not found for email: ' + userData.email + ' creating account.');
                     User.formatNewAccount(userData)
+                        .then(function(userData){
+                            console.log('Formatted new user: ' + userData.username);
+                            return User.addNewAccount(userData);
+                        })
                         .then(function(newUser){
-                            console.log('Created new user: ' + newUser);
+                            console.log('Created new user: ' + newUser.username);
                             resolve(newUser);
                         })
                         .catch(function(err){
-                            console.log('Error formatting new account: ' + userData.username);
+                            console.log('Error creating or finding new account: ' + userData.username);
                             console.log(err);
                             reject(err);
                         });
                 }
-            }).catch(function(err){
+            })
+            .catch(function(err){
             console.log(err);
             reject(err, null);
         });
