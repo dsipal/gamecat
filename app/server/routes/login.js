@@ -71,26 +71,28 @@ router.post('/finalize', async function(req, res){
         ref_by: req.body['ref_by']
     };
     //probably should be in own function, checks if referrer and sets it if exists.
-    if(userData.ref_by !== ''){
-        let referrer = await User.findOne({username: userData.ref_by}).catch(function(err){
+    if(userData.ref_by != ''){
+        let referrer = await User.findOne({username: userData.ref_by}).exec().catch(function(err){
             console.log('Invalid referrer for ' + userData.username);
             console.log(err);
         });
-        console.log(referrer);
-        User.findOneAndUpdate(
-            {_id: req.user._id},
-            {
-                "$set": {
-                    "ref_by": referrer._id
-                }
-            },
-            {runValidators: true}
-        ).exec().then(function(){
-            console.log('Set referrer for ' + userData.username);
-        }).catch(function(err){
-            console.log('Error setting referrer for ' + userData.username);
-            console.log(err);
-        });
+        if(referrer){
+            await User.findOneAndUpdate(
+                {_id: req.user._id},
+                {
+                    "$set": {
+                        "ref_by": referrer._id
+                    }
+                },
+                {runValidators: true}
+            ).exec().then(function(){
+                console.log('Set referrer for ' + userData.username);
+            }).catch(function(err){
+                console.log('Error setting referrer for ' + userData.username);
+                console.log(err);
+                return res.status(401).send('Invalid Referrer');
+            });
+        }
     }
 
     //base for update user
@@ -103,7 +105,6 @@ router.post('/finalize', async function(req, res){
     ).exec().then(function(){
         console.log('Finalized social account ' + userData.username);
         return res.status(200).send('ok');
-
     }).catch(function(err){
         console.log('Error finalizing social account ' + userData.username);
         console.log(err);
