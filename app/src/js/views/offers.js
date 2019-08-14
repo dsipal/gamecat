@@ -23,7 +23,7 @@ $(document).ready(function(){
             limit: limit,
             offset: offset,
             category_id: category,
-            sort_by: 'payout',
+            sort_by: 'popularity',
         });
         let eventModifier = $('#offersContent').data('event-modifier');
 

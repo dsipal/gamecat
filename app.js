@@ -61,7 +61,6 @@ if(process.env.NODE_ENV !== 'local'){
         console.log(ip + ' attempting connection to /admin');
 
         let authorized_ips = process.env.ADMIN_IPS.split(', ');
-        console.log(authorized_ips);
         // Our IPs
         if (authorized_ips.includes(ip)) {
             next();
