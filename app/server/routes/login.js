@@ -71,26 +71,28 @@ router.post('/finalize', async function(req, res){
         ref_by: req.body['ref_by']
     };
     //probably should be in own function, checks if referrer and sets it if exists.
-    if(userData.ref_by !== ''){
+    if(userData.ref_by != ''){
         let referrer = await User.findOne({username: userData.ref_by}).catch(function(err){
             console.log('Invalid referrer for ' + userData.username);
             console.log(err);
         });
         console.log(referrer);
-        User.findOneAndUpdate(
-            {_id: req.user._id},
-            {
-                "$set": {
-                    "ref_by": referrer._id
-                }
-            },
-            {runValidators: true}
-        ).exec().then(function(){
-            console.log('Set referrer for ' + userData.username);
-        }).catch(function(err){
-            console.log('Error setting referrer for ' + userData.username);
-            console.log(err);
-        });
+        if(referrer){
+            User.findOneAndUpdate(
+                {_id: req.user._id},
+                {
+                    "$set": {
+                        "ref_by": referrer._id
+                    }
+                },
+                {runValidators: true}
+            ).exec().then(function(){
+                console.log('Set referrer for ' + userData.username);
+            }).catch(function(err){
+                console.log('Error setting referrer for ' + userData.username);
+                console.log(err);
+            });
+        }
     }
 
     //base for update user
