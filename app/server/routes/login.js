@@ -86,9 +86,9 @@ router.post('/finalize', async function(req, res){
                 },
                 {runValidators: true, context: 'query'}
             ).exec().then(function(){
-                console.log('Set referrer for ' + userData.username);
+                console.log('Set referrer for new social account');
             }).catch(function(err){
-                console.log('Error setting referrer for ' + userData.username);
+                console.log('Error setting referrer for social account.' );
                 console.log(err);
                 return res.status(401).send('Invalid Referrer');
             });
