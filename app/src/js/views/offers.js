@@ -19,12 +19,13 @@ $(document).ready(function(){
 
         const query_strings = $.param({
             subid1: 'gc',
-            subid2: $('div.tab-content').attr('data-userid'),
+            subid2: $('div.tab-content').data('userid'),
             limit: limit,
             offset: offset,
             category_id: category,
             sort_by: 'payout',
         });
+        let eventModifier = $('#offersContent').data('event-modifier');
 
         $.getJSON(url+'?'+query_strings).done(function(data){
             //on success
@@ -37,7 +38,10 @@ $(document).ready(function(){
                 }
                 $.each(data.offers, function(key, offer){
                     offer.currency_count = Math.floor(offer.currency_count + (offer.currency_count * ($('div.tab-content').attr('data-userlevel') * 0.025)));
-
+                    if(eventModifier){
+                        console.log(eventModifier);
+                        offer.currency_count += (offer.currency_count * parseInt(eventModifier));
+                    }
                     var element = `
                     <li class="col-md-3 justify-content-center">
                         <div class="offer-item">

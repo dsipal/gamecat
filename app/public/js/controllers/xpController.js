@@ -6,7 +6,6 @@ $(document).ready(function(){
     let userXP = parseInt(levelElem.data('cur-exp'));
 
     const bonusAmount = (((parseInt(userLevel) - 1) * 0.025) * 100).toFixed(2);
-    console.log('bonus: ' + bonusAmount);
     let bonusString = String('+' + bonusAmount  + '%');
     bonusElem.text(bonusString);
     let requiredXP = Math.floor(600 + (userLevel * 400));

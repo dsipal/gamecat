@@ -8,6 +8,7 @@ const Event =  require('../models/Event');
 
 router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     let country_code = req.headers['cf-ipcountry'];
+    country_code = 'US';
     const offers = await getOffers(country_code, req.user);
 
     let modifierText=1;
@@ -15,7 +16,11 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
         .then(function(event){
             if(event){
                 modifierText = (event.modifier+1);
+                offers.forEach(function(o){
+                    o.payout += o.payout * event.modifier;
+                });
             }
+
             return res.render('offers/quests', {
                 udata: req.user,
                 offers: offers,
