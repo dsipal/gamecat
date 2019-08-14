@@ -3,7 +3,7 @@
 .modal .modal-dialog {
   width: 480px; }
   .modal .modal-dialog .modal-content {
-    background-color: #404040; }
+    background-color: #303030; }
 
 .modal .form-group {
   margin-bottom: 0px; }
@@ -56,7 +56,7 @@ header {
       height: 16px !important; }
     header nav .nav-link {
       font-size: 18px;
-      font-weight: 500; }
+      font-weight: 400; }
     header nav .navbar-brand {
       color: white;
       font-weight: 500;
@@ -137,7 +137,7 @@ footer {
 
 body {
   min-height: 100%;
-  background-color: #505050;
+  background-color: #4f4f4f;
   margin: 0;
   padding: 0;
   color: white;
@@ -227,7 +227,7 @@ form {
   transform: translate(-50%, -50%); }
 
 .container {
-  background-color: #404040;
+  background-color: #303030;
   padding-bottom: 25px;
   margin-bottom: 50px;
   box-shadow: 0px 0px 15px 2px #323232; }
