@@ -5,7 +5,7 @@
 {{>widgets/dailyBonus user=udata}}
 <section class="container">
     {{>container_header header_image="/img/layout/questpage.svg" header_text="Quests"}}
-    {{>widgets/eventNotifier event=event}}
+    {{>widgets/eventNotifier event=event modifierText=modifierText}}
     <ul class="row offer-list">
 
         {{#each offers}}
