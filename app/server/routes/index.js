@@ -13,7 +13,11 @@ router.get('/', async function(req, res){
     let prizes = await Prize.find({}).limit(8);
 
     if(req.user){
-        return res.render('index/home', {udata: req.user, event: event});
+        let modifierText;
+        if(event){
+            modifierText = (event.modifier+1);
+        }
+        return res.render('index/home', {udata: req.user, event: event, modifierText: modifierText});
     }else{
         return res.render('index/index', {udata: req.user, event: event, prizes: prizes});
     }

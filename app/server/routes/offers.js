@@ -18,7 +18,8 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     return res.render('offers/quests', {
         udata: req.user,
         offers: offers,
-        event: event
+        event: event,
+        modifierText: (event.modifier+1)
     });
 });
 
@@ -30,7 +31,8 @@ router.get('/surveys', authLimiter.ensureAuthenticated(), async function(req, re
 
     res.render('offers/offers', {
         udata: req.user,
-        event: event
+        event: event,
+        modifierText: (event.modifier+1)
     });
 });
 
