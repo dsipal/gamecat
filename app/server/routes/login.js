@@ -90,6 +90,7 @@ router.post('/finalize', async function(req, res){
             }).catch(function(err){
                 console.log('Error setting referrer for ' + userData.username);
                 console.log(err);
+                return res.status(401).send('Invalid Referrer');
             });
         }
     }
