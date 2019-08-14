@@ -25,9 +25,11 @@ router.get('/:uri', async function(req, res){
     let uri = req.params.uri;
     try {
         let prize = await Prize.findOne({'uri': uri});
+        let prizeTitle = ('- ' + prize.name);
         return res.render('shop/prize', {
             prize: prize,
-            udata: req.user
+            udata: req.user,
+            pageTitle: prizeTitle
         });
     } catch(err) {
         return res.render('404');
