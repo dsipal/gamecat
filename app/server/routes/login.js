@@ -9,7 +9,7 @@ router.get('/', function(req, res){
     if(req.isAuthenticated && req.isAuthenticated()){
         return res.redirect('/');
     }else{
-        return res.render('index/login');
+        return res.render('index/login', {pageTitle: '- Login Page'});
     }
 });
 
@@ -61,7 +61,7 @@ router.get('/finalize', function(req, res){
     if(req.user.rank !== "social-new"){
         res.redirect('/');
     } else {
-        res.render('login/finalize_registration', {udata: req.user});
+        res.render('login/finalize_registration', {udata: req.user, pageTitle: '- Finalize Registration'});
     }
 });
 
@@ -116,7 +116,7 @@ router.get('/unverified', function(req, res){
     if(req.user.rank !== "new"){
         res.redirect('/');
     } else {
-        res.render('login/unverified', {udata: req.user});
+        res.render('login/unverified', {udata: req.user, pageTitle: '- New Account Redirect'});
     }
 });
 module.exports = router;
