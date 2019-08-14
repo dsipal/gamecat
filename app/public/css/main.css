@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Lexend+Peta&display=swap");
-@import url("https://fonts.googleapis.com/css?family=Oswald|Red+Hat+Display&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Cardo|Oswald&display=swap");
 .modal .modal-dialog {
   width: 480px; }
   .modal .modal-dialog .modal-content {
@@ -144,7 +144,8 @@ body {
   font-family: 'Red Hat Display', sans-serif; }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Oswald', sans-serif; }
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase; }
 
 main {
   min-height: 100vh;

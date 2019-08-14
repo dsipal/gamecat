@@ -3,7 +3,7 @@
 @import 'nav';
 @import 'footer';
 @import 'xpBar';
-@import url('https://fonts.googleapis.com/css?family=Oswald|Red+Hat+Display&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Cardo|Oswald&display=swap');
 @mixin raiseText() {
   color: grey;
   text-shadow: -1px 1px 0 white;
@@ -23,6 +23,7 @@ body {
 }
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
 }
 main{
   min-height: 100vh;
