@@ -18,7 +18,8 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res) {
 
     return res.render('account/accountpage', {
         title: 'Control Panel',
-        udata: populated_user
+        udata: populated_user,
+        pageTitle: '- Account Information'
     });
 });
 

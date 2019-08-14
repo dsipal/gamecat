@@ -49,7 +49,8 @@ router.get('/signup', function(req, res) {
             title: 'Signup',
             ref_by: req.query.ref_by,
             email: req.query.email,
-            agree: req.query.agree
+            agree: req.query.agree,
+            pageTitle: '- Sign Up'
         });
     }
 });
@@ -162,13 +163,15 @@ router.get('/tos', function(req, res){
 
 router.get('/about', function(req, res){
     return res.render('index/about', {
-        udata: req.user
+        udata: req.user,
+        pageTitle: '- About Us'
     });
 });
 
 router.get('/contact', function(req, res){
     return res.render('index/contact', {
-        udata: req.user
+        udata: req.user,
+        pageTitle: '- Contact Us'
     });
 });
 
