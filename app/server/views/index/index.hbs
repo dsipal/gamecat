@@ -1,5 +1,4 @@
 {{#section 'head'}}
-
     <meta property="og:title" content="Gamecat- Rewards for Gamers" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.gamecat.co/" />
@@ -11,9 +10,6 @@
 {{/section}}
 
 {{#section 'body_scripts'}}
-    <script src="/js/views/signup.min.js"></script>
-    <script src="/js/controllers/signupController.min.js"></script>
-    <script src="/js/form-validators/accountValidator.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
 {{/section}}
 
@@ -44,28 +40,28 @@
             </div>
         </div>
 
-        {{#unless udata}}
-            <div class="row banner-info" id="signup-banner">
-                <form class="text-center justify-content-center signup-form" method="get" action="/signup">
-                    <h2 class="text-center">Sign up and earn today!</h2>
-                    {{>social_login}}
-                    <div class="form-group">
-                        <input type="email" name="email" class="form-control" id="email" placeholder="Enter your email" required />
-                    </div>
-                    <div class="form-group text-right">
-                        <input type="checkbox" name="agree" value="true" class="form-check-input" id="agree" required />
-                        <label for="agree" class="form-check-label">
-                            I agree to recieve emails from Gamecat as well as the
-                            <a href="/tos">terms of service</a>.
-                        </label>
-                    </div>
 
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Continue</button>
-                    </div>
-                </form>
-            </div>
-        {{/unless}}
+        <div class="row banner-info" id="signup-banner">
+            <form class="text-center justify-content-center signup-form" method="get" action="/signup">
+                <h2 class="text-center">Sign up and earn today!</h2>
+                {{>social_login}}
+                <div class="form-group">
+                    <input type="email" name="email" class="form-control" id="email" placeholder="Enter your email" required />
+                </div>
+                <div class="form-group text-right">
+                    <input type="checkbox" name="agree" value="true" class="form-check-input" id="agree" required />
+                    <label for="agree" class="form-check-label">
+                        I agree to recieve emails from Gamecat as well as the
+                        <a href="/tos">terms of service</a>.
+                    </label>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Continue</button>
+                </div>
+            </form>
+        </div>
+
     </div>
 
     <div class="row banner-info" id="how-work">
