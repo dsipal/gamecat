@@ -3,7 +3,7 @@
 @import 'nav';
 @import 'footer';
 @import 'xpBar';
-@import url('https://fonts.googleapis.com/css?family=Nunito|Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Oswald|Red+Hat+Display&display=swap');
 @mixin raiseText() {
   color: grey;
   text-shadow: -1px 1px 0 white;
@@ -19,9 +19,11 @@ body {
   margin: 0;
   padding: 0;
   color: white;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Red Hat Display', sans-serif;
 }
-
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Oswald', sans-serif;
+}
 main{
   min-height: 100vh;
   position: relative;
@@ -42,9 +44,7 @@ main{
   }
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Nunito', sans-serif;
-}
+
 
 h1{
   font-weight: 600;

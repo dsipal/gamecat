@@ -1,5 +1,5 @@
 @import 'base';
-@import url('https://fonts.googleapis.com/css?family=Lexend+Peta|Roboto+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Lexend+Peta&display=swap');
 
 header{
   top: 0;
@@ -11,13 +11,12 @@ header{
     width: 100%;
     min-height: 63px;
     z-index: 5;
-
     background-color: $base-color !important;
     box-shadow: 0 3px 5px 0 rgb(50, 50, 50);
     .nav-item{
       color: #ffffff;
       margin-left: 25px;
-      font-family: 'Lexend Peta', sans-serif;
+      font-family: 'Oswald', sans-serif;
       img{
         height: 21px;
         margin-right: 5px;
@@ -33,13 +32,13 @@ header{
     }
 
     .nav-link{
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 500;
     }
     .navbar-brand {
       color: white;
       font-weight: 500;
-      font-family: 'Lexend Peta', sans-serif;
+      font-family: 'Oswald', sans-serif;
       #navbar-logo{
         height: 16px;
         position: relative;

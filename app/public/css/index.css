@@ -53,7 +53,8 @@
 .container .banner-info {
   margin: 0 -15px 0 -15px; }
   .container .banner-info .banner-info-header {
-    background-color: #767D92;
+    background-color: #485461;
+    background-image: linear-gradient(315deg, #485461 0%, #28313b 74%);
     box-shadow: 0px 5px 15px 2px #323232;
     margin-bottom: 0;
     padding: 25px;
@@ -62,7 +63,8 @@
     text-align: center; }
 
 .container #top-banner-group {
-  background-color: #8b33bb;
+  background-color: #a4508b;
+  background-image: linear-gradient(326deg, #a4508b 0%, #5f0a87 74%);
   margin-left: -15px;
   margin-right: -15px;
   overflow: hidden; }
@@ -87,6 +89,9 @@
 
 .container #how-work {
   text-align: center; }
+  .container #how-work img.img-fluid {
+    -webkit-filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+            filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5)); }
   .container #how-work #complete-quests {
     padding: 20px;
     background-color: #389bda; }
@@ -98,21 +103,28 @@
     background-color: #4f5761; }
 
 .feature {
-  padding: 25px;
-  text-align: center; }
+  padding: 30px;
+  text-align: center;
+  font-size: 1.5rem; }
   .feature img {
-    height: 86px;
+    height: 100%;
+    max-height: 256px;
     width: auto; }
+  .feature p {
+    margin-top: 2rem; }
 
 #dailybonus {
-  background-color: #6a278f; }
+  background-color: #7f5a83;
+  background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%); }
 
 #levelup {
-  background-color: #389bda; }
+  background-color: #af8c9d;
+  background-image: linear-gradient(315deg, #6c5f68 0%, #8cacac 74%); }
 
 #rewards {
   padding-bottom: 25px;
-  background-color: #232829; }
+  background-color: #000000;
+  background-image: linear-gradient(315deg, #000000 0%, #414141 74%); }
   #rewards #rewards-list {
     padding: 35px; }
 
@@ -158,8 +170,9 @@
 #get-paid-to-play {
   -webkit-box-pack: center;
           justify-content: center;
-  padding: 30px;
-  margin-top: 50px; }
+  margin-top: 6rem; }
+  #get-paid-to-play h1 {
+    margin-top: 2rem; }
 
 .light-green {
   color: #68c481; }
