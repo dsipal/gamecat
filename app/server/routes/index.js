@@ -6,17 +6,31 @@ const authLimiter = require('../modules/authLimiter');
 const Event =  require('../models/Event');
 let Prize = require('../models/Prize');
 router.get('/', async function(req, res){
-    let event = await Event.findOne({status: 'active'}).catch(function(err){
-        console.log('Error fetching event.');
-        console.log(err);
-    });
+    let modifierText=1;
     let prizes = await Prize.find({}).limit(8);
+    Event.findOne({status: 'active'})
+        .then(function(event){
 
-    if(req.user){
-        return res.render('index/home', {udata: req.user, event: event});
-    }else{
-        return res.render('index/index', {udata: req.user, event: event, prizes: prizes});
-    }
+            if(event){
+                console.log(event);
+                modifierText = (event.modifier+1);
+            }
+            console.log(modifierText);
+            if(req.user){
+                return res.render('index/home', {udata: req.user, event: event, modifierText: modifierText});
+            }else{
+                return res.render('index/index', {udata: req.user, event: event, prizes: prizes, modifierText: modifierText});
+            }
+        })
+        .catch(function(err){
+        console.log('Error Loading Main Page');
+        console.log(err);
+        return res.status(500).send(err);
+    });
+
+
+
+
 
 });
 

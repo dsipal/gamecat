@@ -10,28 +10,48 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     let country_code = req.headers['cf-ipcountry'];
     const offers = await getOffers(country_code, req.user);
 
-    let event = await Event.findOne({status: 'active'}).catch(function(err){
-        console.log('Error fetching event.');
-        console.log(err);
-    });
+    let modifierText=1;
+    Event.findOne({status: 'active'})
+        .then(function(event){
+            if(event){
+                modifierText = (event.modifier+1);
+            }
+            return res.render('offers/quests', {
+                udata: req.user,
+                offers: offers,
+                event: event,
+                modifierText: modifierText
+            });
+        })
+        .catch(function(err){
+            console.log('Error fetching event.');
+            console.log(err);
+            return res.status(500).send(err);
+        });
 
-    return res.render('offers/quests', {
-        udata: req.user,
-        offers: offers,
-        event: event
-    });
+
 });
 
 router.get('/surveys', authLimiter.ensureAuthenticated(), async function(req, res){
-    let event = await Event.findOne({status: 'active'}).catch(function(err){
-        console.log('Error fetching event.');
-        console.log(err);
-    });
+    let modifierText=1;
+     Event.findOne({status: 'active'})
+        .then(function(event){
+            if(event){
+                modifierText = (event.modifier+1);
+            }
+            res.render('offers/offers', {
+                udata: req.user,
+                event: event,
+                modifierText: modifierText
+            });
+        })
+        .catch(function(err){
+            console.log('Error fetching event.');
+            console.log(err);
+            return res(500).send(err);
+        });
 
-    res.render('offers/offers', {
-        udata: req.user,
-        event: event
-    });
+
 });
 
 
