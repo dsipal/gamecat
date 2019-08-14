@@ -312,7 +312,7 @@ user.methods.unbanAccount = async function() {
 //Checking if the token from URL matches token stored in user data, if yes, activate account
 user.methods.confirmAccount = async function(token) {
     await User.updateOne(
-        {_id: this._id },
+        {token: token },
         {$set: {rank: 'activated'}}
     ).catch(function(err){
         console.log('Error confirming user with token: ' + token);
@@ -320,9 +320,12 @@ user.methods.confirmAccount = async function(token) {
         return err;
     });
 
+    console.log('Resetting token');
+    await this.updateToken();
+
     try{
         await emdisp.joinMailingList(this.email, this.name, this.email_optin);
-        return true;
+        return 'success';
     } catch(err){
         console.log('Error adding user to mailing list.');
         console.log(err);
