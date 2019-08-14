@@ -11,7 +11,8 @@
   }
 
   .prize-form{
-    background-color: $secondary-purple;
+    background-color: #485461;
+    background-image: linear-gradient(315deg, #262e39 0%, #35353f 74%);
     border: none;
     font-size: 16px;
     color: white;
@@ -41,6 +42,7 @@
   }
 
   .prize-info{
+    filter: drop-shadow(0 0 5px rgba(0,0,0,.5));
     @media screen and (min-width: $breakpoint-md){
       padding: 30px;
       .prize-name{
@@ -53,7 +55,6 @@
       padding: 10px;
       background-color: $dialogue-background;
       border-radius: 0 0 5px 5px;
-      border: 3px solid $secondary-purple;
       border-top: none;
     }
   }
