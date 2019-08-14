@@ -149,7 +149,6 @@ async function getOffers(country_code, user){
     let games = await Game.find({'offer_ids': {$elemMatch: {'country_codes': country_code}}});
 
     games.forEach((offer) => {
-        console.log(offer);
         //get the offerid that matches the country code
         const match = offer.offer_ids.find((offer_id) => {
             return offer_id.country_codes.indexOf(country_code) > -1;
