@@ -11,43 +11,47 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     const offers = await getOffers(country_code, req.user);
 
     let modifierText=1;
-    let event = await Event.findOne({status: 'active'})
+    Event.findOne({status: 'active'})
         .then(function(event){
             if(event){
                 modifierText = (event.modifier+1);
             }
+            return res.render('offers/quests', {
+                udata: req.user,
+                offers: offers,
+                event: event,
+                modifierText: modifierText
+            });
         })
         .catch(function(err){
             console.log('Error fetching event.');
             console.log(err);
+            return res.status(500).send(err);
         });
 
-    return res.render('offers/quests', {
-        udata: req.user,
-        offers: offers,
-        event: event,
-        modifierText: modifierText
-    });
+
 });
 
 router.get('/surveys', authLimiter.ensureAuthenticated(), async function(req, res){
     let modifierText=1;
-    let event = await Event.findOne({status: 'active'})
+     Event.findOne({status: 'active'})
         .then(function(event){
             if(event){
                 modifierText = (event.modifier+1);
             }
+            res.render('offers/offers', {
+                udata: req.user,
+                event: event,
+                modifierText: modifierText
+            });
         })
         .catch(function(err){
             console.log('Error fetching event.');
             console.log(err);
+            return res(500).send(err);
         });
 
-    res.render('offers/offers', {
-        udata: req.user,
-        event: event,
-        modifierText: modifierText
-    });
+
 });
 
 

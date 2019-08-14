@@ -8,15 +8,11 @@ let Prize = require('../models/Prize');
 router.get('/', async function(req, res){
     let modifierText=1;
     let prizes = await Prize.find({}).limit(8);
-    let event = await Event.findOne({status: 'active'})
+    Event.findOne({status: 'active'})
         .then(function(event){
-            console.log(event);
-
             if(event){
                 modifierText = (event.modifier+1);
             }
-            console.log(modifierText);
-
             if(req.user){
                 return res.render('index/home', {udata: req.user, event: event, modifierText: modifierText});
             }else{
@@ -26,7 +22,7 @@ router.get('/', async function(req, res){
         .catch(function(err){
         console.log('Error Loading Main Page');
         console.log(err);
-        res.status(500).send(err);
+        return res.status(500).send(err);
     });
 
 
