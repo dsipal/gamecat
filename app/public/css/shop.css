@@ -7,7 +7,9 @@
           justify-content: center;
   text-align: center;
   padding: 10px;
-  overflow: hidden; }
+  overflow: hidden;
+  -webkit-filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+          filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5)); }
   .prize a {
     color: white; }
     .prize a:hover {
@@ -15,9 +17,7 @@
     .prize a:visited {
       color: white; }
   .prize .prize-head {
-    border-radius: 80% 80% 0 0;
     margin: 30px 30px 0 30px;
-    background-color: #606872;
     z-index: 0;
     padding: 5px; }
     .prize .prize-head .prize-img {
@@ -27,7 +27,6 @@
   .prize .prize-info {
     -webkit-box-pack: center;
             justify-content: center;
-    border: 3px solid #767D92;
     border-top: none;
     border-radius: 0 0 5px 5px; }
     @media screen and (min-width: 991px) {
@@ -38,7 +37,8 @@
       padding: 10px;
       margin: 0; }
     .prize .prize-info .prize-price {
-      background-color: #8b33bb;
+      background-color: #485461;
+      background-image: linear-gradient(315deg, #262e39 0%, #35353f 74%);
       text-align: center;
       width: 100%;
       padding: 5px;
