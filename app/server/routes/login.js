@@ -84,7 +84,7 @@ router.post('/finalize', async function(req, res){
                         "ref_by": referrer._id
                     }
                 },
-                {runValidators: true}
+                {runValidators: true, context: 'query'}
             ).exec().then(function(){
                 console.log('Set referrer for ' + userData.username);
             }).catch(function(err){
