@@ -1,0 +1,24 @@
+@import 'base';
+#carousel{
+  margin: 30px;
+  height: 500px;
+  .carousel-inner{
+    margin: 20px;
+    border-radius: 15px;
+    height: auto;
+  }
+  .carousel-item{
+    text-align: center;
+
+
+    img.d-block{
+      background-color: #5e6477;
+    }
+    .carousel-caption{
+      background-color: #3a3e49;
+      position: relative;
+      bottom:0;
+      left:0;
+    }
+  }
+}

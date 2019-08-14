@@ -4,17 +4,18 @@ const express = require('express');
 let router = express.Router();
 const authLimiter = require('../modules/authLimiter');
 const Event =  require('../models/Event');
-
+let Prize = require('../models/Prize');
 router.get('/', async function(req, res){
     let event = await Event.findOne({status: 'active'}).catch(function(err){
         console.log('Error fetching event.');
         console.log(err);
     });
+    let prizes = await Prize.find({}).limit(8);
 
     if(req.user){
         return res.render('index/home', {udata: req.user, event: event});
     }else{
-        return res.render('index/index', {udata: req.user, event: event});
+        return res.render('index/index', {udata: req.user, event: event, prizes: prizes});
     }
 
 });

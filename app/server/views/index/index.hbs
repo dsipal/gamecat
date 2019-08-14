@@ -6,6 +6,7 @@
     <meta property="og:image" content="https://gamecat.co/img/social.png" />
     <meta property="og:description" content="Gamecat is an exclusive rewards program for gamers, by gamers. Play new games, watch videos, and get paid!" />
     <link rel="stylesheet" href="/css/social-login.min.css">
+    <link rel="stylesheet" href="/css/rewardsCarousel.min.css">
     <link rel="stylesheet" href="/css/index.min.css">
 {{/section}}
 
@@ -13,6 +14,7 @@
     <script src="/js/views/signup.min.js"></script>
     <script src="/js/controllers/signupController.min.js"></script>
     <script src="/js/form-validators/accountValidator.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
 {{/section}}
 
 <section class="hero">
@@ -45,7 +47,7 @@
         {{#unless udata}}
             <div class="row banner-info" id="signup-banner">
                 <form class="text-center justify-content-center signup-form" method="get" action="/signup">
-                    <h4 class="text-center">Sign up and earn today!</h4>
+                    <h2 class="text-center">Sign up and earn today!</h2>
                     {{>social_login}}
                     <div class="form-group">
                         <input type="email" name="email" class="form-control" id="email" placeholder="Enter your email" required />
@@ -68,12 +70,12 @@
 
     <div class="row banner-info" id="how-work">
         <div class="col-12 banner-info-header">
-            <h2>How it works</h2>
+            <h1>How it works</h1>
         </div>
 
         <div class="col-md-4" id="complete-quests">
             <img src="/img/quest.svg" alt="Complete quests!" class="img-fluid" />
-            <h4 class="text-center">1. Complete quests.</h4>
+            <h2 class="text-center">1. Complete quests.</h2>
             <p>
                 Play new games, fill out surveys, or try out free trials for sites like Hulu, to level up and earn
                 rewards! For every quest you complete you earn <img src="/img/crystal.svg" alt="crystals" class="crystal-ico" />
@@ -82,7 +84,7 @@
         </div>
         <div class="col-md-4" id="tell-friends">
             <img src="/img/friend.svg" alt="Invite your friends!" class="img-fluid" />
-            <h4 class="text-center">2. Tell your friends.</h4>
+            <h2 class="text-center">2. Tell your friends.</h2>
             <p>
                 Got a Discord server? You and your friends can both earn 100 free
                 <img src="/img/crystal.svg" alt="crystals" class="crystal-ico" /> when they earn 200 themselves if they
@@ -93,7 +95,7 @@
         </div>
         <div class="col-md-4" id="get-loot">
             <img src="/img/treasure.svg" alt="Get paid!" class="img-fluid" />
-            <h4 class="text-center">3. Get epic loot.</h4>
+            <h2 class="text-center">3. Get epic loot.</h2>
             <p>
                 Once you've saved up as little as 500 <img src="/img/crystal.svg" alt="crystals" class="crystal-ico" />
                 you can exchange them for gift cards, premium currency, steam wallet, and more to be announced. If you
@@ -105,17 +107,18 @@
 
     <div class="row banner-info" id="dailybonus">
         <div class="col-12 banner-info-header">
-            <h2>Daily Bonuses</h2>
+            <h1>New Bonuses Every Day.</h1>
         </div>
         <div class="row feature" >
-            <div class="col-md-10">
+            <div class="col-md-9">
                 <p>
                     Check in every day and complete a quest or survey and get sweet bonuses- the first one you complete
                     each day will give you 50% more bonus crystals. This makes it incredibly easy to get whatever skin
-                    or new game you're after. No other site gives you as many bonuses and rewards as Gamecat.
+                    or new game you're after. No other site gives you as many bonuses and rewards as Gamecat. We also run
+                    events where you can earn up to twice as much! Make sure to check in and claim all your rewards.
                 </p>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <img src="/img/nav/earn.svg" class="img-fluid">
             </div>
 
@@ -124,14 +127,14 @@
 
     <div class="row banner-info" id="levelup">
         <div class="col-12 banner-info-header">
-            <h2>Level Up</h2>
+            <h1>Level Up!</h1>
         </div>
         <div class="row feature" >
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <img src="/img/levelup.svg" class="img-fluid">
             </div>
 
-            <div class="col-md-10">
+            <div class="col-md-9">
                 <p>
                     Every time you refer a friend or complete a quest or survey you gain experience! For each level you
                     achieve you get a 2.5% bonus to <i>EVERY</i> quest and survey you complete. You also get a sizeable
@@ -142,48 +145,24 @@
         </div>
     </div>
 
+
     <div class="row banner-info" id="rewards">
         <div class="col-12 banner-info-header">
-            <h2>What you can earn</h2>
+            <h1>Rewards</h1>
         </div>
-        <div class="row" id="rewards-list">
-            <div class="col-md-4 reward-item" id="#league">
-                <a href="/shop/riot-gift-card">
-                    <img src="/img/rewards/riotcards.png" alt="Riot store gift cards" class="img-fluid reward-img" />
-                    <h4 class="reward-name">League of Legends Gift Cards</h4>
-                </a>
+
+        <div class="col-md-6" id="get-paid-to-play">
+            <div class="row">
+                <img src="/img/nav/nav-logo.svg">
             </div>
-            <div class="col-md-4 reward-item" id="#steam">
-                <a href="/shop/steam-gift-card">
-                    <img src="/img/rewards/steamwallet.png"  alt="Steam wallet gift cards" class="img-fluid reward-img" />
-                    <h4 class="reward-name">Steam Gift Cards</h4>
-                </a>
-            </div>
-            <div class="col-md-4 reward-item" id="xbox">
-                <a href="/shop/xbox-gift-card">
-                    <img src="/img/rewards/xboxcards.png" alt="XBox store gift cards" class="img-fluid reward-img" />
-                    <h4 class="reward-name">XBox Store Gift Cards</h4>
-                </a>
-            </div>
-            <div class="col-md-4 reward-item" id="googleplay">
-                <a href="/shop/google-play-gift-card" >
-                    <img src="/img/rewards/googleplaycards.png" alt="Google play gift cards" class="img-fluid reward-img" />
-                    <h4 class="reward-name">Google Play Store Gift Cards</h4>
-                </a>
-            </div>
-            <div class="col-md-4 reward-item" id="itunes">
-                <a href="/shop/itunes-gift-card">
-                    <img src="/img/rewards/itunescards.png" alt="iTunes gift cards" class="img-fluid reward-img" />
-                    <h4 class="reward-name">iTunes Gift Cards</h4>
-                </a>
-            </div>
-            <div class="col-md-4 reward-item" id="amazon">
-                <a href="/shop/amazon-gift-card">
-                    <img src="/img/rewards/amazongiftcards.png" alt="Amazon gift cards" class="img-fluid reward-img" />
-                    <h4 class="reward-name">Amazon Gift Cards</h4>
-                </a>
+            <div class="row">
+                <h1 class="stylistic-header" id="get-paid">
+                    Get Paid To Play.
+                </h1>
             </div>
         </div>
-        <h2 class="col-12 text-center" id="and-more"><a href="/shop">And more!</a></h2>
+
+        <div class="col-md-6 justify-content-center">{{>widgets/rewardsCarousel prizes_list = prizes}}</div>
     </div>
+
 </section>
