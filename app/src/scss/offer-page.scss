@@ -45,7 +45,6 @@
   }
   .offer-item {
     justify-content: center;
-    border: 3px solid $dialogue-background;
     border-radius: 7px;
     margin: 35px;
 
@@ -72,7 +71,8 @@
       margin-bottom: 0;
     }
     .offer-info{
-      background-color: $lighter-base;
+      background-color: #537895;
+      background-image: linear-gradient(315deg, #537895 0%, #09203f 74%);
       padding: 10px;
       width: 100%;
       .offer-description{
