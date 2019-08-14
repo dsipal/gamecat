@@ -70,15 +70,20 @@ router.get('/verify', async function(req, res){
             return res.status(500).send('Invalid username or ID.');
         });
 
+        console.log('About to confirm account for: ');
+        console.log(user);
+
         if(user !== null){
             console.log('User found, attempting verification.');
             user.confirmAccount(token).then(function(err){
                 if(err){
-                    return res.redirect('/');
+                    return res.redirect('/login');
                 } else {
                     return res.redirect('/login');
                 }
             });
+        } else {
+            return res.redirect('/login');
         }
     } else {
         return res.status(500).send('Invalid username or ID.');
