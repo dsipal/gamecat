@@ -112,7 +112,7 @@
 
 #rewards {
   padding-bottom: 25px;
-  background-color: #404040; }
+  background-color: #232829; }
   #rewards #rewards-list {
     padding: 35px; }
 
@@ -136,9 +136,38 @@
 
 #signup {
   margin-left: 40px;
-  max-height: 200px;
-  width: auto; }
+  max-height: 200px; }
 
 .social-login {
   -webkit-box-pack: center;
           justify-content: center; }
+
+.stylistic-header {
+  font-size: 4rem;
+  width: 100%;
+  min-height: 50%;
+  padding: 50px;
+  text-align: center; }
+  .stylistic-header span {
+    margin-left: 1rem;
+    padding-top: 2px; }
+
+#to-play {
+  text-align: right; }
+
+#get-paid-to-play {
+  -webkit-box-pack: center;
+          justify-content: center;
+  padding: 30px;
+  margin-top: 50px; }
+
+.light-green {
+  color: #68c481; }
+
+.light-red {
+  color: #f68b82; }
+
+#carousel {
+  margin-top: 50px;
+  -webkit-filter: drop-shadow(0 0 20px rgba(109, 109, 109, 0.42));
+          filter: drop-shadow(0 0 20px rgba(109, 109, 109, 0.42)); }
