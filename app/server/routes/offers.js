@@ -8,7 +8,6 @@ const Event =  require('../models/Event');
 
 router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
     let country_code = req.headers['cf-ipcountry'];
-    country_code = 'US';
     const offers = await getOffers(country_code, req.user);
 
     let modifierText=1;
@@ -76,10 +75,7 @@ router.get('/postback', async function(req, res){
                 let offer_id = req.query.offer;
                 let offer = await Game.findOne(
                     {'offer_ids': {$elemMatch: {'offer_id':offer_id}}});
-                console.log(offer);
-
                 payout = offer.payout;
-                console.log(offer.payout);
             }
             else if(network === 'adscend') {
                 console.log('Postback from AdscendMedia received.');
@@ -147,11 +143,13 @@ async function getOffers(country_code, user){
     let descriptions = [];
     let names = [];
     let payouts = [];
+    let conditions = [];
 
     //get games from the mongo db collection where there is a country code match
     let games = await Game.find({'offer_ids': {$elemMatch: {'country_codes': country_code}}});
 
     games.forEach((offer) => {
+        console.log(offer);
         //get the offerid that matches the country code
         const match = offer.offer_ids.find((offer_id) => {
             return offer_id.country_codes.indexOf(country_code) > -1;
@@ -161,6 +159,7 @@ async function getOffers(country_code, user){
         descriptions.push(offer.description);
         names.push(offer.name);
         payouts.push(Math.floor(offer.payout + (offer.payout * ((user.level-1) * 0.025))));
+        conditions.push(offer.conditions);
     });
 
     let promises = [];
@@ -184,6 +183,7 @@ async function getOffers(country_code, user){
         response.description = descriptions[key];
         response.name = names[key];
         response.payout = payouts[key];
+        response.conditions = conditions[key];
     });
 
     return responses;
