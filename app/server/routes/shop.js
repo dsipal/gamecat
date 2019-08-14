@@ -29,7 +29,7 @@ router.get('/:uri', async function(req, res){
         return res.render('shop/prize', {
             prize: prize,
             udata: req.user,
-            pageTitle: prizeTitle
+            pageTitle: prizeTitle + 's'
         });
     } catch(err) {
         return res.render('404');
