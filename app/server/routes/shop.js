@@ -13,12 +13,14 @@ router.get('/', function(req,res){
         } else {
             return res.render('shop/index',{
                 prizes: prizes,
-                udata: req.user
+                udata: req.user,
+                pageTitle: '- Rewards Page'
             });
         }
     })
 });
 
+//TODO make the pagetitles for prizes work
 router.get('/:uri', async function(req, res){
     let uri = req.params.uri;
     try {
