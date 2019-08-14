@@ -77,7 +77,7 @@ router.post('/finalize', async function(req, res){
             console.log(err);
         });
         if(referrer){
-            User.findOneAndUpdate(
+            await User.findOneAndUpdate(
                 {_id: req.user._id},
                 {
                     "$set": {
@@ -105,7 +105,6 @@ router.post('/finalize', async function(req, res){
     ).exec().then(function(){
         console.log('Finalized social account ' + userData.username);
         return res.status(200).send('ok');
-
     }).catch(function(err){
         console.log('Error finalizing social account ' + userData.username);
         console.log(err);

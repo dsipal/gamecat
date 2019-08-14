@@ -63,6 +63,9 @@
 .btn-google .google-content p {
   color: #757575; }
 
+.btn-google .google-content > .logo {
+  margin-top: 4px; }
+
 .btn-fb {
   padding-top: 1.5px;
   background: #4267b2;

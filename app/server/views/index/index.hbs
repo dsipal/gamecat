@@ -17,18 +17,13 @@
 
 <section class="hero">
     <div class="overlay">
-        <img class="mascot-img" src="/img/mascot.svg">
+        <img class="mascot-img" src="/img/nav/nav-logo.svg">
     </div>
 
     <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
         <source src="/video/main.mp4" alt="hero video" type="video/mp4">
     </video>
 
-    <div class="row" id="tagline">
-
-        <h3 class="col-12">So... you've found us,</h3>
-        <h2 class="col-12">are you ready to travel down the rabbit hole?</h2>
-    </div>
 </section>
 
 <section class='container'>
@@ -50,8 +45,8 @@
         {{#unless udata}}
             <div class="row banner-info" id="signup-banner">
                 <form class="text-center justify-content-center signup-form" method="get" action="/signup">
-                    {{>social_login}}
                     <h4 class="text-center">Sign up and earn today!</h4>
+                    {{>social_login}}
                     <div class="form-group">
                         <input type="email" name="email" class="form-control" id="email" placeholder="Enter your email" required />
                     </div>
