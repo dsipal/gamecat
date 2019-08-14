@@ -253,6 +253,9 @@ form {
       .container .container-header .row img {
         width: 100%;
         max-width: 200px; }
+      .container .container-header .row h1 {
+        font-size: 4rem;
+        font-weight: 600; }
 
 .col-form-label {
   margin-right: 25px; }
