@@ -1,0 +1,43 @@
+footer {
+  min-height: 50px;
+  width: 100%;
+  background-color: #262626; }
+  @media screen and (min-width: 991px) {
+    footer .site-description {
+      width: 80%; } }
+  @media screen and (max-width: 767px) {
+    footer .navbar-brand {
+      font-size: 16px; } }
+  footer .social-icons {
+    -webkit-box-pack: center;
+            justify-content: center; }
+    footer .social-icons .social-icon {
+      padding: 10px;
+      min-width: 58px; }
+      footer .social-icons .social-icon a {
+        border: none; }
+        footer .social-icons .social-icon a img {
+          height: 100%; }
+        footer .social-icons .social-icon a:hover img {
+          -webkit-filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.55));
+                  filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.55)); }
+      footer .social-icons .social-icon img {
+        width: 100%;
+        max-width: 56px;
+        min-width: 48px; }
+  footer .list-group {
+    background: inherit; }
+    footer .list-group .list-group-item {
+      background: inherit;
+      padding: .1rem 1.2rem;
+      border: none; }
+      footer .list-group .list-group-item > a {
+        border-bottom: 2px solid #8b33bb;
+        color: white; }
+        footer .list-group .list-group-item > a:visited {
+          color: inherit;
+          text-decoration: none; }
+        footer .list-group .list-group-item > a:hover {
+          text-decoration: none;
+          color: #b3b3b3;
+          border-bottom: 2px solid #a351d0; }
