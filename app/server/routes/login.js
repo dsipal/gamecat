@@ -101,7 +101,7 @@ router.post('/finalize', async function(req, res){
     User.findOneAndUpdate(
         {_id: req.user._id},
         updateData,
-        {runValidators: true}
+        {runValidators: true, context: 'query'}
     ).exec().then(function(){
         console.log('Finalized social account ' + userData.username);
         return res.status(200).send('ok');
