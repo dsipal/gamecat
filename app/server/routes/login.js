@@ -71,9 +71,9 @@ router.post('/finalize', async function(req, res){
         ref_by: req.body['ref_by']
     };
     //probably should be in own function, checks if referrer and sets it if exists.
-    if(userData.ref_by != ''){
+    if(userData.ref_by !== ''){
         let referrer = await User.findOne({username: userData.ref_by}).exec().catch(function(err){
-            console.log('Invalid referrer for ' + userData.username);
+            console.log('Invalid referrer for new social account');
             console.log(err);
         });
         if(referrer){
@@ -86,9 +86,9 @@ router.post('/finalize', async function(req, res){
                 },
                 {runValidators: true, context: 'query'}
             ).exec().then(function(){
-                console.log('Set referrer for ' + userData.username);
+                console.log('Set referrer for new social account');
             }).catch(function(err){
-                console.log('Error setting referrer for ' + userData.username);
+                console.log('Error setting referrer for social account.' );
                 console.log(err);
                 return res.status(401).send('Invalid Referrer');
             });
@@ -101,7 +101,7 @@ router.post('/finalize', async function(req, res){
     User.findOneAndUpdate(
         {_id: req.user._id},
         updateData,
-        {runValidators: true}
+        {runValidators: true, context: 'query'}
     ).exec().then(function(){
         console.log('Finalized social account ' + userData.username);
         return res.status(200).send('ok');
