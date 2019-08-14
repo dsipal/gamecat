@@ -10,12 +10,9 @@ router.get('/', async function(req, res){
     let prizes = await Prize.find({}).limit(8);
     Event.findOne({status: 'active'})
         .then(function(event){
-
             if(event){
-                console.log(event);
                 modifierText = (event.modifier+1);
             }
-            console.log(modifierText);
             if(req.user){
                 return res.render('index/home', {udata: req.user, event: event, modifierText: modifierText});
             }else{
