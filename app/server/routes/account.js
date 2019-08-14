@@ -76,10 +76,12 @@ router.get('/verify', async function(req, res){
         if(user !== null){
             console.log('User found, attempting verification.');
             user.confirmAccount(token).then(function(err){
-                if(err){
+                if(err === 'success'){
+                    console.log('Verification success');
                     return res.redirect('/login');
                 } else {
-                    return res.redirect('/login');
+                    console.log('Error in verifying: ' + err);
+                    return res.redirect('/');
                 }
             });
         } else {
