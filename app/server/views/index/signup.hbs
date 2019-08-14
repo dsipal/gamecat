@@ -2,6 +2,8 @@
     <meta name="google-signin-client_id" content="1030276056125-vtv82bgbggango3bd351ijfc3drl7j3u.apps.googleusercontent.com">
     <meta name="google-signin-redirect_uri" content="https://gamecat.co/login/google/callback">
     <meta name="google-signin-scope" content="profile email openid">
+    <meta property="og:url" content="https://www.gamecat.co/signup" />
+    <meta property="og:description" content="Sign up for Gamecat and get paid to play!" />
     <link rel="stylesheet" href="/css/signup.css">
 {{/section}}
 
@@ -18,7 +20,7 @@
 {{>"modals/alert"}}
 
 <section class="container">
-    {{>container_header header_image="/img/nav/signup.svg" header_text="Sign Up"}}
+    {{>container_header header_text="Sign Up"}}
 
     {{>"registration" ref_by=ref_by}}
 </section>

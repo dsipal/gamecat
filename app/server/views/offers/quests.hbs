@@ -1,10 +1,12 @@
 {{#section 'head'}}
+    <meta property="og:url" content="https://www.gamecat.co/offers" />
+    <meta property="og:description" content="Embark on quests that'll earn points you can redeem on other games." />
     <meta name="referrer" content="no-referrer" />
     <link rel="stylesheet" href="/css/offer-page.css">
 {{/section}}
 {{>widgets/dailyBonus user=udata}}
 <section class="container">
-    {{>container_header header_image="/img/layout/questpage.svg" header_text="Quests"}}
+    {{>container_header header_text="Quests"}}
     {{>widgets/eventNotifier event=event modifierText=modifierText}}
     <ul class="row offer-list">
 

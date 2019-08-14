@@ -7,6 +7,9 @@
             text-align: center !important;
         }
     </style>
+    <meta property="og:url" content="https://www.gamecat.co/contact" />
+    <meta property="og:description" content="Contact Gamecat if you want to become a promoter, get better deals, or suggest new features!" />
+
 {{/section}}
 
 {{#section 'body_scripts'}}
@@ -14,13 +17,7 @@
 {{/section}}
 
 <section class="card center-vertical">
-    <div class="container-header">
-        <div class="row">
-            <img class="col-12 img-fluid" src="/img/layout/accountpage.svg">
-            <h1 class="col-12 text-center">Contact</h1>
-        </div>
-    </div>
-
+    {{>container_header header_text="Contact"}}
     {{>contact}}
 </section>
 

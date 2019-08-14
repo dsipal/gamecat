@@ -24,7 +24,8 @@ router.get('/', authLimiter.ensureAuthenticated(), async function(req, res){
                 udata: req.user,
                 offers: offers,
                 event: event,
-                modifierText: modifierText
+                modifierText: modifierText,
+                pageTitle: '- Quest Offers'
             });
         })
         .catch(function(err){
@@ -46,7 +47,8 @@ router.get('/surveys', authLimiter.ensureAuthenticated(), async function(req, re
             res.render('offers/offers', {
                 udata: req.user,
                 event: event,
-                modifierText: modifierText
+                modifierText: modifierText,
+                pageTitle: '- Survey Offers'
             });
         })
         .catch(function(err){

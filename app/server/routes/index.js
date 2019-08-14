@@ -5,6 +5,7 @@ let router = express.Router();
 const authLimiter = require('../modules/authLimiter');
 const Event =  require('../models/Event');
 let Prize = require('../models/Prize');
+
 router.get('/', async function(req, res){
     let modifierText=1;
     let prizes = await Prize.find({}).limit(8);
@@ -14,9 +15,9 @@ router.get('/', async function(req, res){
                 modifierText = (event.modifier+1);
             }
             if(req.user){
-                return res.render('index/home', {udata: req.user, event: event, modifierText: modifierText});
+                return res.render('index/home', {udata: req.user, event: event, modifierText: modifierText, pageTitle: '- Home Page'});
             }else{
-                return res.render('index/index', {udata: req.user, event: event, prizes: prizes, modifierText: modifierText});
+                return res.render('index/index', {udata: req.user, event: event, prizes: prizes, modifierText: modifierText, pageTitle: '- Rewards for Gamers'});
             }
         })
         .catch(function(err){
@@ -24,10 +25,6 @@ router.get('/', async function(req, res){
         console.log(err);
         return res.status(500).send(err);
     });
-
-
-
-
 
 });
 
@@ -52,7 +49,8 @@ router.get('/signup', function(req, res) {
             title: 'Signup',
             ref_by: req.query.ref_by,
             email: req.query.email,
-            agree: req.query.agree
+            agree: req.query.agree,
+            pageTitle: '- Sign Up'
         });
     }
 });
@@ -165,13 +163,15 @@ router.get('/tos', function(req, res){
 
 router.get('/about', function(req, res){
     return res.render('index/about', {
-        udata: req.user
+        udata: req.user,
+        pageTitle: '- About Us'
     });
 });
 
 router.get('/contact', function(req, res){
     return res.render('index/contact', {
-        udata: req.user
+        udata: req.user,
+        pageTitle: '- Contact Us'
     });
 });
 

@@ -18,7 +18,7 @@ router.get('/leaderboard', function(req, res){
             console.log(err);
         } else {
             // console.log(users);
-            res.render('leaderboards', {users: users});
+            res.render('leaderboards', {users: users, pageTitle: '- Login'});
         }
     });
 

@@ -1,5 +1,7 @@
 {{#section 'head'}}
     <link rel="stylesheet" href="/css/prize.css">
+    <meta property="og:description" content="{{prize.description}}" />
+    <meta property="og:url" content="https://www.gamecat.co/shop/{{prize.uri}}" />
 {{/section}}
 
 {{#section 'body_scripts'}}
@@ -11,7 +13,7 @@
 {{>"modals/alert"}}
 
 <section class="container">
-    {{>container_header header_image="/img/nav/shop.svg" header_text="Shop"}}
+    {{>container_header header_text="Shop"}}
 
     <div class="row prize">
         <img class="col-lg-6 prize-img" src="{{prize.image_path}}" alt="{{prize.name}}" />
