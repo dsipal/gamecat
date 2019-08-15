@@ -48,10 +48,10 @@ if(process.env.NODE_ENV !== 'local'){
         let authorized_ips = process.env.POSTBACK_IPS.split(', ');
         if (authorized_ips.includes(ip)) {
             console.log('valid postback attempt from: ' + ip);
-            next();
+            return next();
         } else {
             console.log('invalid postback attempt from: ' + ip);
-            res.end();
+            return res.end();
         }
     });
 
@@ -63,7 +63,7 @@ if(process.env.NODE_ENV !== 'local'){
         let authorized_ips = process.env.ADMIN_IPS.split(', ');
         // Our IPs
         if (authorized_ips.includes(ip)) {
-            next();
+            return next();
         } else {
             return res.redirect('/');
         }
