@@ -119,10 +119,13 @@ router.get('/postback', async function(req, res){
             if(user.ref_by && user.earned_referrer_points) {
                 //percolate 5% to referrer.
 
-                let referrer = User.findOne({_id: object_id});
+                let referrer = await User.findOne({_id: object_id});
                 if(referrer){
                     console.log('User has referrer, adding 5% of payout to ' + referrer + ' totalling ' + (payout *.05) + ' crystals.');
-                    referrer.update({$inc: {points: (payout*.05)}}, {scope: 'query'});
+                    referrer.addPoints((payout * 0.05)).catch(function(err){
+                        console.log('Error adding points to referrer.');
+                        console.log(err);
+                    });
                 }
 
             }
