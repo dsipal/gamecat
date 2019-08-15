@@ -64,7 +64,7 @@
 
 .container #top-banner-group {
   background-color: #a4508b;
-  background-image: linear-gradient(326deg, #a4508b 0%, #5f0a87 74%);
+  background-image: linear-gradient(168deg, #c35a9e 0%, #5b367a 54%);
   margin-left: -15px;
   margin-right: -15px;
   overflow: hidden; }
@@ -76,6 +76,9 @@
     text-align: center; }
     .container #top-info .landing-description h1 {
       text-align: center; }
+      .container #top-info .landing-description h1 span {
+        padding: 0 10px 0 10px;
+        background-color: rgba(1, 1, 1, 0.5); }
     .container #top-info .landing-description p {
       font-size: 18px;
       padding: 20px; }
@@ -114,16 +117,14 @@
     margin-top: 2rem; }
 
 #dailybonus {
-  background-color: #7f5a83;
-  background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%); }
+  background-color: #0d324d; }
 
 #levelup {
-  background-color: #af8c9d;
-  background-image: linear-gradient(315deg, #6c5f68 0%, #8cacac 74%); }
+  background-color: #8cacac; }
 
 #rewards {
   padding-bottom: 25px;
-  background-color: #000000;
+  background-color: #414141;
   background-image: linear-gradient(315deg, #000000 0%, #414141 74%); }
   #rewards #rewards-list {
     padding: 35px; }
