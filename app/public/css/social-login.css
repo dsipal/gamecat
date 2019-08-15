@@ -70,6 +70,8 @@
   padding-top: 1.5px;
   background: #4267b2;
   background-color: #3b5998; }
+  .btn-fb .fb-content > .logo {
+    margin-top: 4px; }
 
 .btn-fb:hover {
   box-shadow: 0 0 3px 3px rgba(59, 89, 152, 0.3); }
