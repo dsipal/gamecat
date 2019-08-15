@@ -150,7 +150,7 @@ router.get('/postback', async function(req, res){
     } catch(err) {
         console.log('Error with Postback.');
         console.log(err);
-        return res.status(400).send('Invalid Postback');
+        return res.status(200).send('Invalid Postback');
     }
 });
 
