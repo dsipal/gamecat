@@ -89,6 +89,8 @@ router.get('/postback', async function(req, res){
             let user = await User.findOne({_id: object_id});
             let adjustedPayout = payout;
 
+
+
             //check for active events
             let event = await Event.findOne({status: 'active'}).catch(function(err){
                 console.log('Error fetching event.');
@@ -108,15 +110,29 @@ router.get('/postback', async function(req, res){
             }
 
             if(!user.earned_referrer_points
-                && (user.total_points_earned >= 100 || payout >= 100)
+                && (user.total_points_earned >= 800 || payout >= 800)
                 && user.ref_by != null){
-
                 //user was referred, got to 100 points, adding reward
-                console.log(user.username + ' has reached 100 points! Percolating referral.');
-                adjustedPayout += 100;
+                console.log(user.username + ' has reached 800 points! Percolating referral.');
                 await user.percolateReferrals();
             }
+            if(user.ref_by && user.earned_referrer_points) {
+                //percolate 5% to referrer.
 
+                let referrer = await User.findOne({_id: user.ref_by});
+                if(referrer){
+                    console.log('User has referrer, adding 5% of payout to ' + referrer.username + ' totalling ' + (payout *.05) + ' crystals.');
+                    referrer.addPoints((payout * 0.05)).catch(function(err){
+                        console.log('Error adding points to referrer.');
+                        console.log(err);
+                    });
+                    referrer.addExperience((payout * 0.05)).catch(function(err){
+                        console.log('Error adding experince to referrer.');
+                        console.log(err);
+                    });
+                }
+
+            }
 
             //add in level bonus;
             adjustedPayout += Math.floor( payout * ((user.level-1) * 0.025));
