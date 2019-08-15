@@ -122,11 +122,11 @@ router.get('/postback', async function(req, res){
                 let referrer = await User.findOne({_id: user.ref_by});
                 if(referrer){
                     console.log('User has referrer, adding 5% of payout to ' + referrer.username + ' totalling ' + (payout *.05) + ' crystals.');
-                    await referrer.addPoints((payout * 0.05)).catch(function(err){
+                    referrer.addPoints((payout * 0.05)).catch(function(err){
                         console.log('Error adding points to referrer.');
                         console.log(err);
                     });
-                    await referrer.addExperience((payout * 0.05)).catch(function(err){
+                    referrer.addExperience((payout * 0.05)).catch(function(err){
                         console.log('Error adding experince to referrer.');
                         console.log(err);
                     });
