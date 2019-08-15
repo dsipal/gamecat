@@ -191,7 +191,7 @@ user.statics.dailyBonusReset = function(){
 
 //used at end of registration, adds new user to referrer's list
 user.methods.percolateReferrals = async function () {
-    let ref_bonus = 100;
+    let ref_bonus = 500;
     if(this.ref_by !== null) {
         //add referral, points, and experience to referrer
         User.updateOne(
