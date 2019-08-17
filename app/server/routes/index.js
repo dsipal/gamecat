@@ -180,7 +180,7 @@ router.post('/contact', function(req,res){
     let category = req.param('category');
     let message = req.param('message');
 
-    EM.dispatchSupport(email, category, message).then(function(err){
+    EM.dispatchSupport(email, category, message, function(){
         if(err){
             return res.redirect('/');
         } else {
