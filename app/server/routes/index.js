@@ -9,15 +9,24 @@ let Prize = require('../models/Prize');
 router.get('/', async function(req, res){
     let modifierText=1;
     let prizes = await Prize.find({}).limit(8);
+    let totalEarned = await User.aggregate([{$group: {
+        _id: '',
+            total_points_earned: {$sum: '$total_points_earned'}
+        }}]).then(function(points){
+            return Math.floor(80+(points[0].total_points_earned/750)).toLocaleString();
+    }).catch(function(err){
+            console.log('Error fetching total points.');
+            console.log(err);
+    });
     Event.findOne({status: 'active'})
         .then(function(event){
             if(event){
                 modifierText = (event.modifier+1);
             }
             if(req.user){
-                return res.render('index/home', {udata: req.user, event: event, modifierText: modifierText, pageTitle: '- Home Page'});
+                return res.render('index/home', {udata: req.user, event: event, totalEarned: totalEarned, modifierText: modifierText, pageTitle: '- Home Page'});
             }else{
-                return res.render('index/index', {udata: req.user, event: event, prizes: prizes, modifierText: modifierText, pageTitle: '- Rewards for Gamers'});
+                return res.render('index/index', {udata: req.user, event: event, prizes: prizes, totalEarned: totalEarned, modifierText: modifierText, pageTitle: '- Rewards for Gamers'});
             }
         })
         .catch(function(err){

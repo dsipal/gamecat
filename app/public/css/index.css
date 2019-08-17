@@ -112,7 +112,9 @@
   .feature img {
     height: 100%;
     max-height: 256px;
-    width: auto; }
+    width: auto;
+    -webkit-filter: drop-shadow(0 0 20px rgba(109, 109, 109, 0.6));
+            filter: drop-shadow(0 0 20px rgba(109, 109, 109, 0.6)); }
   .feature p {
     margin-top: 2rem; }
 
@@ -187,3 +189,6 @@
   width: 100%;
   -webkit-filter: drop-shadow(0 0 20px rgba(109, 109, 109, 0.42));
           filter: drop-shadow(0 0 20px rgba(109, 109, 109, 0.42)); }
+
+#total-earned {
+  background-color: #170c2a; }

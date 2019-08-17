@@ -3,6 +3,7 @@
     <meta property="og:description" content="Gamecat is an exclusive rewards program for gamers, by gamers. Play new games, watch videos, and get paid!" />
     <link rel="stylesheet" href="/css/social-login.min.css">
     <link rel="stylesheet" href="/css/rewardsCarousel.min.css">
+    <link rel="stylesheet" href="/css/totalEarned.min.css">
     <link rel="stylesheet" href="/css/index.min.css">
 {{/section}}
 
@@ -96,6 +97,16 @@
                 to suggest new products.
             </p>
         </div>
+    </div>
+
+    <div class="row banner-info" id="total-earned">
+        <div class="col-12 banner-info-header">
+            <h1>Total Earned On Gamecat</h1>
+        </div>
+
+        {{>widgets/totalEarned totalEarned=totalEarned}}
+
+
     </div>
 
     <div class="row banner-info" id="dailybonus">
