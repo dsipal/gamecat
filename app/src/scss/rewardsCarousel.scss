@@ -1,10 +1,6 @@
 @import 'base';
 #carousel{
-  margin: 30px;
-  height: 500px;
   .carousel-inner{
-    margin: 20px;
-    border-radius: 15px;
     height: auto;
   }
   .carousel-item{
@@ -12,7 +8,9 @@
 
 
     img.d-block{
-      background-color: #5e6477;
+      object-fit: contain;
+      object-position: center;
+      max-height: 400px;
     }
     .carousel-caption{
       background-color: #3a3e49;

@@ -123,7 +123,6 @@
   background-color: #8cacac; }
 
 #rewards {
-  padding-bottom: 25px;
   background-color: #414141;
   background-image: linear-gradient(315deg, #000000 0%, #414141 74%); }
   #rewards #rewards-list {
@@ -168,20 +167,23 @@
 #to-play {
   text-align: right; }
 
-#get-paid-to-play {
-  -webkit-box-pack: center;
-          justify-content: center;
-  margin-top: 6rem; }
-  #get-paid-to-play h1 {
-    margin-top: 2rem; }
-
 .light-green {
   color: #68c481; }
 
 .light-red {
   color: #f68b82; }
 
+#get-paid-to-play {
+  height: 10vh;
+  min-height: 200px; }
+  #get-paid-to-play img {
+    height: 5vh;
+    min-height: 100px;
+    margin: 0 auto; }
+  #get-paid-to-play h1 {
+    margin-top: 2rem; }
+
 #carousel {
-  margin-top: 50px;
+  width: 100%;
   -webkit-filter: drop-shadow(0 0 20px rgba(109, 109, 109, 0.42));
           filter: drop-shadow(0 0 20px rgba(109, 109, 109, 0.42)); }

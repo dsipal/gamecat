@@ -76,7 +76,7 @@ exports.dispatchSupport = async function(email, category, message, callback){
         'v:email': email
     };
 
-    await mailgun.messages().send(data, function(err, bod) {
+    mailgun.messages().send(data, function(err, bod) {
         if(err){
             console.log('Error dispatching support email: ');
             callback(err);
