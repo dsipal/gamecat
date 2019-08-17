@@ -1,11 +1,11 @@
 
-<div id="carousel" class="row carousel slide" data-ride="carousel" data-slide-to="2">
-    <div class="carousel-inner">
+<div id="carousel" class="carousel slide" data-ride="carousel" data-slide-to="2">
+    <div class="carousel-inner" role="listbox">
         {{#each prizes_list}}
             <div class="carousel-item justify-content-center {{#if @first}}active{{/if}}">
                 <img class="d-block row w-100" src="{{this.image_path}}" alt="{{this.name}}s">
-                <div class="row w-100 carousel-caption d-none d-md-block">
-                    <h3>{{this.name}}s only {{this.options.[0].point_cost}} <img src="/img/crystal.svg" alt="crystals" class="crystal-ico"/></h3>
+                <div class="carousel-caption">
+                    <h4>{{this.name}}s only {{this.options.[0].point_cost}} <img src="/img/crystal.svg" alt="crystals" class="crystal-ico"/></h4>
                 </div>
             </div>
         {{/each}}
