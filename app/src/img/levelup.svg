@@ -1,1 +1,25 @@
-<?xml version="1.0" ?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'><svg height="100%" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;" version="1.1" viewBox="0 0 100 126" width="100%" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:serif="http://www.serif.com/" xmlns:xlink="http://www.w3.org/1999/xlink"><clipPath id="_clip1"><rect height="125" width="100" x="0" y="0.04"/></clipPath><g clip-path="url(#_clip1)"><path d="M100,42.077c0,-16.313 -13.224,-29.537 -29.537,-29.537c-12.909,0 -28.017,0 -40.926,0c-16.313,0 -29.537,13.224 -29.537,29.537c0,12.909 0,28.017 0,40.926c0,16.313 13.224,29.537 29.537,29.537c12.909,0 28.017,0 40.926,0c16.313,0 29.537,-13.224 29.537,-29.537c0,-12.909 0,-28.017 0,-40.926Z" style="fill:#4aff95;"/><path d="M71.8,78.24l5.5,-5.8l-27.3,-25.6l-27.3,25.6l5.5,5.8l21.8,-20.4l21.8,20.4Z" style="fill:#020000;fill-opacity:0.5;fill-rule:nonzero;"/></g></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns:serif="http://www.serif.com/"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 500 500"
+	 style="enable-background:new 0 0 500 500;" xml:space="preserve">
+<style type="text/css">
+	.st0{clip-path:url(#SVGID_2_);}
+	.st1{fill-rule:evenodd;clip-rule:evenodd;fill:#E8ECEF;}
+	.st2{fill:#020000;fill-opacity:0.5;}
+</style>
+<g>
+	<defs>
+		<rect id="SVGID_1_" x="51.6" y="0.2" width="396.8" height="496"/>
+	</defs>
+	<clipPath id="SVGID_2_">
+		<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
+	</clipPath>
+	<g class="st0">
+		<path class="st1" d="M448.4,167c0-64.7-52.5-117.2-117.2-117.2c-51.2,0-111.2,0-162.4,0c-64.7,0-117.2,52.5-117.2,117.2
+			c0,51.2,0,111.2,0,162.4c0,64.7,52.5,117.2,117.2,117.2c51.2,0,111.2,0,162.4,0c64.7,0,117.2-52.5,117.2-117.2
+			C448.4,278.2,448.4,218.2,448.4,167z"/>
+		<path class="st2" d="M336.5,310.5l21.8-23L250,185.9L141.7,287.5l21.8,23l86.5-81L336.5,310.5z"/>
+	</g>
+</g>
+</svg>
