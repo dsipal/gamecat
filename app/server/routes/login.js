@@ -42,27 +42,32 @@ router.get('/facebook', passport.authenticate('facebook', { scope: ['email']}));
 router.get('/instagram/callback',
     passport.authenticate('instagram', { failureRedirect: '/login' }),
     function(req, res) {
-        res.redirect('/login/finalize');
+        return res.redirect('/login/finalize');
     }
 );
 
 router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), function(req, res){
-    res.redirect('/login/finalize');
+    return res.redirect('/login/finalize');
 });
 
 router.get('/facebook/callback',
     passport.authenticate('facebook',{ failureRedirect: '/login' }),
     function(req, res){
-        res.redirect('/login/finalize');
+        return res.redirect('/login/finalize');
     }
 );
 
 router.get('/finalize', function(req, res){
-    if(req.user.rank !== "social-new"){
-        res.redirect('/');
+    if(req.user){
+        if(req.user.rank !== "social-new"){
+            res.redirect('/');
+        } else {
+            res.render('login/finalize_registration', {udata: req.user, pageTitle: '- Finalize Registration'});
+        }
     } else {
-        res.render('login/finalize_registration', {udata: req.user, pageTitle: '- Finalize Registration'});
+        return res.redirect('/login');
     }
+
 });
 
 router.post('/finalize', async function(req, res){
