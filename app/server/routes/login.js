@@ -39,83 +39,17 @@ router.get('/google', passport.authenticate('google', {scope: ['profile', 'email
 
 router.get('/facebook', passport.authenticate('facebook', { scope: ['email']}));
 
-router.get('/instagram/callback',
-    passport.authenticate('instagram', { failureRedirect: '/login' }),
-    function(req, res) {
-        return res.redirect('/login/finalize');
-    }
-);
-
-router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), function(req, res){
-    return res.redirect('/login/finalize');
+router.get('/google/callback',
+    passport.authenticate('google', { failureRedirect: '/login' }), function(req, res){
+    return res.redirect('/login');
 });
 
 router.get('/facebook/callback',
     passport.authenticate('facebook',{ failureRedirect: '/login' }),
     function(req, res){
-        return res.redirect('/login/finalize');
-    }
-);
-
-router.get('/finalize', function(req, res){
-    if(req.user){
-        if(req.user.rank !== "social-new"){
-            res.redirect('/');
-        } else {
-            res.render('login/finalize_registration', {udata: req.user, pageTitle: '- Finalize Registration'});
-        }
-    } else {
         return res.redirect('/login');
     }
-
-});
-
-router.post('/finalize', async function(req, res){
-    let userData = {
-        username: req.body['username'],
-        ref_by: req.body['ref_by']
-    };
-    //probably should be in own function, checks if referrer and sets it if exists.
-    if(userData.ref_by !== ''){
-        let referrer = await User.findOne({username: userData.ref_by}).exec().catch(function(err){
-            console.log('Invalid referrer for new social account');
-            console.log(err);
-        });
-        if(referrer){
-            await User.findOneAndUpdate(
-                {_id: req.user._id},
-                {
-                    "$set": {
-                        "ref_by": referrer._id
-                    }
-                },
-                {runValidators: true, context: 'query'}
-            ).exec().then(function(){
-                console.log('Set referrer for new social account');
-            }).catch(function(err){
-                console.log('Error setting referrer for social account.' );
-                console.log(err);
-                return res.status(401).send('Invalid Referrer');
-            });
-        }
-    }
-
-    //base for update user
-    let updateData = {rank: 'activated'};
-    if(req.user.username !== userData.username) updateData.username = userData.username;
-    User.findOneAndUpdate(
-        {_id: req.user._id},
-        updateData,
-        {runValidators: true, context: 'query'}
-    ).exec().then(function(){
-        console.log('Finalized social account ' + userData.username);
-        return res.status(200).send('ok');
-    }).catch(function(err){
-        console.log('Error finalizing social account ' + userData.username);
-        console.log(err);
-        return res.status(401).send(err);
-    });
-});
+);
 
 router.get('/unverified', function(req, res){
     if(req.user.rank !== "new"){

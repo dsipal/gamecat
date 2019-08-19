@@ -62,15 +62,15 @@ const user = new mongoose.Schema({
 user.plugin(uniqueValidator);
 
 user.statics.findOrCreate = async function(userData) {
-    return new Promise(function(resolve, reject){
-        let user = User.findOne({email: userData.email})
-            .then(function(user){
+    return new Promise(async function(resolve, reject){
+        let user = await User.findOne({email: userData.email})
+            .then(async function(user){
                 if(user){
                     console.log('User already exists for email: ' + userData.email);
                     resolve(user);
                 } else {
                     console.log('User not found for email: ' + userData.email + ' creating account.');
-                    User.formatNewAccount(userData)
+                    await User.formatNewAccount(userData)
                         .then(function(userData){
                             console.log('Formatted new user: ' + userData.username);
                             return User.addNewAccount(userData);
@@ -126,7 +126,7 @@ user.statics.formatNewAccount = async function(newData){
     if(!newData.googleID && !newData.facebookID) {
         newData.rank = 'new';
     } else {
-        newData.rank = 'social-new';
+        newData.rank = 'activated';
         let tempNum = Math.floor(Math.random() * 1000);
         let tempUser = newData.username.replace(/\s/g, '');
         newData.username = tempUser + tempNum;
