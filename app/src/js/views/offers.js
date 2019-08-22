@@ -18,7 +18,7 @@ $(document).ready(function(){
         const url = "https://adscendmedia.com/adwall/api/publisher/9359/profile/16028/offers.json";
 
         const query_strings = $.param({
-            subid1: 'gc',
+            subid1: 'gamecat',
             subid2: $('div.tab-content').data('userid'),
             limit: limit,
             offset: offset,

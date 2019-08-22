@@ -20,6 +20,7 @@
             </p>
         </div>
     </div>
+    {{>widgets/totalEarned totalEarned=totalEarned}}
     <div class="row banner-info pt-3 pb-3 text-center justify-content-center" id="crystal-info">
         <h1>You currently have {{udata.points}} <img src="/img/crystal.svg" alt="crystals" class="crystal-ico"></h1>
         {{>widgets/dailyBonus user=udata}}

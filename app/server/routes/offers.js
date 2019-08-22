@@ -70,7 +70,7 @@ router.get('/postback', async function(req, res){
         let payout;
 
         //check for correct sourceid
-        if(source_id === 'gc'){
+        if(source_id === 'gamecat'){
             if(network === 'pwn'){
                 //if postback is from PWN Games
                 console.log('Postback from PWNGames received.');
@@ -196,7 +196,7 @@ async function getOffers(country_code, user){
     let responses = await Promise.all(promises);
 
     responses.map((response,key) => {
-        response.tracking_url += `?sub1=gc&sub2=${user._id}`;
+        response.tracking_url += `?sub1=gamecat&sub2=${user._id}`;
         response.description = descriptions[key];
         response.name = names[key];
         response.payout = payouts[key];
