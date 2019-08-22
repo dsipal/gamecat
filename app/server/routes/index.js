@@ -13,7 +13,7 @@ router.get('/', async function(req, res){
         _id: '',
             total_points_earned: {$sum: '$total_points_earned'}
         }}]).then(function(points){
-            return Math.floor(80+(points[0].total_points_earned/750)).toLocaleString();
+            return Math.floor(100+(points[0].total_points_earned/350)).toLocaleString();
     }).catch(function(err){
             console.log('Error fetching total points.');
             console.log(err);
